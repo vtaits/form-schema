@@ -17,12 +17,14 @@ module.exports = {
     'no-plusplus': 'off',
     'no-nested-ternary': 'off',
 
+    'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {
         packageDir: [
           __dirname,
           './packages/form-schema',
+          './packages/react-final-form-schema',
         ],
 
         devDependencies: [
