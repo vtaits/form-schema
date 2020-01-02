@@ -75,8 +75,8 @@ const FormWrapper = (props) => {
     mapErrors,
   ]);
 
-  const renderField = useCallback((fieldSchemaRaw, payload) => {
-    const fieldSchema = getFieldSchema(fieldSchemaRaw);
+  const renderField = useCallback((fieldUniq, payload) => {
+    const fieldSchema = getFieldSchema(fieldUniq);
     const fieldType = getFieldType(fieldSchema);
 
     const {
@@ -90,6 +90,7 @@ const FormWrapper = (props) => {
 
     return (
       <FieldComponent
+        fieldUniq={fieldUniq}
         fieldSchema={fieldSchema}
         payload={payload}
         getFieldSchema={computedGetFieldSchema}

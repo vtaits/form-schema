@@ -284,6 +284,7 @@ test('should render field', () => {
 
   const fieldNode = fieldWrapper.find(FieldComponent);
 
+  expect(fieldNode.prop('fieldUniq')).toBe('testField');
   expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
   expect(fieldNode.prop('payload')).toBe('testPayload');
   expect(fieldNode.prop('getFieldSchema')).toBe(getFieldSchema);
@@ -340,6 +341,7 @@ test('should render field with redefined getFieldSchema for children', () => {
 
   const fieldNode = fieldWrapper.find(FieldComponent);
 
+  expect(fieldNode.prop('fieldUniq')).toBe('testField');
   expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
   expect(fieldNode.prop('payload')).toBe('testPayload');
   expect(fieldNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
