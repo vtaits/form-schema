@@ -14,10 +14,7 @@ const fieldSchemas = {
   },
 };
 
-const defaultGetFieldSchema = (name) => ({
-  ...fieldSchemas[name],
-  name,
-});
+const defaultGetFieldSchema = (name) => fieldSchemas[name];
 
 test('should return null for falsy values object', () => {
   expect(
@@ -72,34 +69,47 @@ test('should call default parser for empty value', () => {
 });
 
 test('should call redefined parser', () => {
+  const rawValues = {
+    value: 'test',
+    value2: 'test2',
+  };
+
+  const parser = jest.fn((values, name) => ({
+    [name]: values[name] + values[name],
+  }));
+
+  const getFieldType = () => ({
+    parser,
+  });
+
   expect(
     parse(
-      {
-        value: 'test',
-        value2: 'test2',
-      },
+      rawValues,
       [
         'value',
       ],
       defaultGetFieldSchema,
-      () => ({
-        parser: (values, { name }) => ({
-          [name]: values[name] + values[name],
-        }),
-      }),
+      getFieldType,
     ),
   ).toEqual(
     {
       value: 'testtest',
     },
   );
+
+  expect(parser.mock.calls.length).toBe(1);
+  expect(parser.mock.calls[0][0]).toBe(rawValues);
+  expect(parser.mock.calls[0][1]).toBe('value');
+  expect(parser.mock.calls[0][2]).toBe(fieldSchemas.value);
+  expect(parser.mock.calls[0][3]).toBe(defaultGetFieldSchema);
+  expect(parser.mock.calls[0][4]).toBe(getFieldType);
 });
 
 test('should call multiple parsers', () => {
   const fields = {
     testType1: {},
     testType2: {
-      parser: (values, { name }) => ({
+      parser: (values, name) => ({
         [name]: values[name] + values[name],
       }),
     },
@@ -154,7 +164,7 @@ test('should redefine getFieldSchema', () => {
   );
 
   expect(parser.mock.calls.length).toBe(1);
-  expect(parser.mock.calls[0][2]).toBe(getFieldSchema);
+  expect(parser.mock.calls[0][3]).toBe(getFieldSchema);
 
   expect(createGetFieldSchema.mock.calls.length).toBe(1);
   expect(createGetFieldSchema.mock.calls[0][0]).toEqual({

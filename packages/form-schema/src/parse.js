@@ -1,12 +1,12 @@
-const defaultParser = (values, { name }) => {
-  if (typeof values[name] !== 'undefined') {
+const defaultParser = (values, fieldUniq) => {
+  if (typeof values[fieldUniq] !== 'undefined') {
     return {
-      [name]: values[name],
+      [fieldUniq]: values[fieldUniq],
     };
   }
 
   return {
-    [name]: null,
+    [fieldUniq]: null,
   };
 };
 
@@ -17,8 +17,8 @@ const parse = (values, schema, getFieldSchema, getFieldType) => {
 
   const res = {};
 
-  schema.forEach((schemaItem) => {
-    const fieldSchema = getFieldSchema(schemaItem);
+  schema.forEach((fieldUniq) => {
+    const fieldSchema = getFieldSchema(fieldUniq);
     const fieldType = getFieldType(fieldSchema);
 
     const parser = fieldType.parser || defaultParser;
@@ -28,6 +28,7 @@ const parse = (values, schema, getFieldSchema, getFieldType) => {
 
     Object.assign(res, parser(
       values,
+      fieldUniq,
       fieldSchema,
       computedGetFieldSchema,
       getFieldType,

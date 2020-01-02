@@ -27,33 +27,49 @@ test('should call default serializer', () => {
 });
 
 test('should call redefined serializer', () => {
+  const rawValues = {
+    value: 'test',
+    value2: 'test2',
+  };
+
+  const serializer = jest.fn((values, name) => ({
+    [name]: values[name] + values[name],
+  }));
+
+  const getFieldType = () => ({
+    serializer,
+  });
+
+  const fieldSchema = {
+    type: 'testType',
+    name: 'value',
+  };
+
+  const getFieldSchema = () => fieldSchema;
+
   expect(
     serialize(
-      {
-        value: 'test',
-        value2: 'test2',
-      },
+      rawValues,
 
       [
         'value',
       ],
 
-      () => ({
-        type: 'testType',
-        name: 'value',
-      }),
-
-      () => ({
-        serializer: (values, { name }) => ({
-          [name]: values[name] + values[name],
-        }),
-      }),
+      getFieldSchema,
+      getFieldType,
     ),
   ).toEqual(
     {
       value: 'testtest',
     },
   );
+
+  expect(serializer.mock.calls.length).toBe(1);
+  expect(serializer.mock.calls[0][0]).toBe(rawValues);
+  expect(serializer.mock.calls[0][1]).toBe('value');
+  expect(serializer.mock.calls[0][2]).toBe(fieldSchema);
+  expect(serializer.mock.calls[0][3]).toBe(getFieldSchema);
+  expect(serializer.mock.calls[0][4]).toBe(getFieldType);
 });
 
 test('should call multiple serializers', () => {
@@ -69,7 +85,7 @@ test('should call multiple serializers', () => {
   const fieldTypes = {
     testType1: {},
     testType2: {
-      serializer: (values, { name }) => ({
+      serializer: (values, name) => ({
         [name]: values[name] + values[name],
       }),
     },
@@ -130,7 +146,7 @@ test('should redefine getFieldSchema', () => {
   );
 
   expect(serializer.mock.calls.length).toBe(1);
-  expect(serializer.mock.calls[0][2]).toBe(getFieldSchema);
+  expect(serializer.mock.calls[0][3]).toBe(getFieldSchema);
 
   expect(createGetFieldSchema.mock.calls.length).toBe(1);
   expect(createGetFieldSchema.mock.calls[0][0]).toEqual({

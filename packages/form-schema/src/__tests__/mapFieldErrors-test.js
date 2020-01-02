@@ -39,7 +39,7 @@ test('should call redefined errors mapper', () => {
         name: 'value',
       }),
       () => ({
-        errorsMapper: (values, { name }) => ({
+        errorsMapper: (values, name) => ({
           [name]: [values[name][0] + values[name][0]],
         }),
       }),
@@ -64,12 +64,12 @@ test('should call multiple errors mappers', () => {
 
   const fieldTypes = {
     testType1: {
-      errorsMapper: (values, { name }) => ({
+      errorsMapper: (values, name) => ({
         [name]: [values[name][0] + values[name][0] + values[name][0]],
       }),
     },
     testType2: {
-      errorsMapper: (values, { name }) => ({
+      errorsMapper: (values, name) => ({
         [name]: [values[name][0] + values[name][0]],
       }),
     },
@@ -138,6 +138,7 @@ test('should call multiple nested errors mappers', () => {
     wrapper: {
       errorsMapper: (
         errors,
+        name,
         {
           childNames,
           childs,
@@ -156,13 +157,13 @@ test('should call multiple nested errors mappers', () => {
     },
 
     testType1: {
-      errorsMapper: (values, { name }) => ({
+      errorsMapper: (values, name) => ({
         [name]: [values[name][0] + values[name][0] + values[name][0]],
       }),
     },
 
     testType2: {
-      errorsMapper: (values, { name }) => ({
+      errorsMapper: (values, name) => ({
         [name]: [values[name][0] + values[name][0]],
       }),
     },
@@ -200,7 +201,7 @@ test('should call multiple nested errors mappers', () => {
 });
 
 test('should provide correct arguments to errorsMapper', () => {
-  const errorsMapper = jest.fn((errors, { name }) => ({
+  const errorsMapper = jest.fn((errors, name) => ({
     [name]: errors[name],
   }));
 
@@ -238,14 +239,15 @@ test('should provide correct arguments to errorsMapper', () => {
   expect(errorsMapper.mock.calls[0][0]).toEqual({
     value: 'test',
   });
-  expect(errorsMapper.mock.calls[0][1]).toEqual({
+  expect(errorsMapper.mock.calls[0][1]).toBe('value');
+  expect(errorsMapper.mock.calls[0][2]).toEqual({
     type: 'testType',
     name: 'value',
   });
-  expect(errorsMapper.mock.calls[0][2]).toBe(getFieldSchema);
-  expect(errorsMapper.mock.calls[0][3]).toBe(getFieldType);
-  expect(errorsMapper.mock.calls[0][4]).toBe(values);
-  expect(errorsMapper.mock.calls[0][5]).toBe(valuesRaw);
+  expect(errorsMapper.mock.calls[0][3]).toBe(getFieldSchema);
+  expect(errorsMapper.mock.calls[0][4]).toBe(getFieldType);
+  expect(errorsMapper.mock.calls[0][5]).toBe(values);
+  expect(errorsMapper.mock.calls[0][6]).toBe(valuesRaw);
 });
 
 test('should redefine getFieldSchema', () => {
@@ -276,7 +278,7 @@ test('should redefine getFieldSchema', () => {
   );
 
   expect(errorsMapper.mock.calls.length).toBe(1);
-  expect(errorsMapper.mock.calls[0][2]).toBe(getFieldSchema);
+  expect(errorsMapper.mock.calls[0][3]).toBe(getFieldSchema);
 
   expect(createGetFieldSchema.mock.calls.length).toBe(1);
   expect(createGetFieldSchema.mock.calls[0][0]).toEqual({
