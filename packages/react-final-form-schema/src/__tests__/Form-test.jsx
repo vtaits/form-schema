@@ -246,16 +246,10 @@ test('should provide form render props to children', () => {
 });
 
 test('should render field', () => {
-  const FieldComponent = () => <div />;
+  const renderFieldBySchema = jest.fn(() => 'test field');
 
-  const fieldType = {
-    component: FieldComponent,
-  };
-
-  const fieldSchema = Symbol('field schema');
-
-  const getFieldSchema = jest.fn(() => fieldSchema);
-  const getFieldType = jest.fn(() => fieldType);
+  const getFieldSchema = jest.fn();
+  const getFieldType = jest.fn();
 
   const children = jest.fn();
 
@@ -264,6 +258,8 @@ test('should render field', () => {
     getFieldType,
 
     children,
+
+    renderFieldBySchema,
   });
 
   const formNode = page.getFormNode();
@@ -276,84 +272,11 @@ test('should render field', () => {
 
   const renderedField = renderField('testField', 'testPayload');
 
-  const fieldWrapper = shallow(
-    <div>
-      {renderedField}
-    </div>,
-  );
+  expect(renderedField).toBe('test field');
 
-  const fieldNode = fieldWrapper.find(FieldComponent);
-
-  expect(fieldNode.prop('fieldUniq')).toBe('testField');
-  expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
-  expect(fieldNode.prop('payload')).toBe('testPayload');
-  expect(fieldNode.prop('getFieldSchema')).toBe(getFieldSchema);
-  expect(fieldNode.prop('getFieldType')).toBe(getFieldType);
-
-  expect(getFieldSchema.mock.calls.length).toBe(1);
-  expect(getFieldSchema.mock.calls[0][0]).toBe('testField');
-
-  expect(getFieldType.mock.calls.length).toBe(1);
-  expect(getFieldType.mock.calls[0][0]).toBe(fieldSchema);
-});
-
-test('should render field with redefined getFieldSchema for children', () => {
-  const FieldComponent = () => <div />;
-
-  const nextGetFieldSchema = jest.fn();
-
-  const createGetFieldSchema = jest.fn(() => nextGetFieldSchema);
-
-  const fieldType = {
-    createGetFieldSchema,
-    component: FieldComponent,
-  };
-
-  const fieldSchema = Symbol('field schema');
-
-  const getFieldSchema = jest.fn(() => fieldSchema);
-  const getFieldType = jest.fn(() => fieldType);
-
-  const children = jest.fn();
-
-  const page = setup({
-    getFieldSchema,
-    getFieldType,
-
-    children,
-  });
-
-  const formNode = page.getFormNode();
-
-  formNode.prop('children')({});
-
-  const {
-    renderField,
-  } = children.mock.calls[0][0];
-
-  const renderedField = renderField('testField', 'testPayload');
-
-  const fieldWrapper = shallow(
-    <div>
-      {renderedField}
-    </div>,
-  );
-
-  const fieldNode = fieldWrapper.find(FieldComponent);
-
-  expect(fieldNode.prop('fieldUniq')).toBe('testField');
-  expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
-  expect(fieldNode.prop('payload')).toBe('testPayload');
-  expect(fieldNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
-  expect(fieldNode.prop('getFieldType')).toBe(getFieldType);
-
-  expect(createGetFieldSchema.mock.calls.length).toBe(1);
-  expect(createGetFieldSchema.mock.calls[0][0]).toBe(fieldSchema);
-  expect(createGetFieldSchema.mock.calls[0][1]).toBe(getFieldSchema);
-
-  expect(getFieldSchema.mock.calls.length).toBe(1);
-  expect(getFieldSchema.mock.calls[0][0]).toBe('testField');
-
-  expect(getFieldType.mock.calls.length).toBe(1);
-  expect(getFieldType.mock.calls[0][0]).toBe(fieldSchema);
+  expect(renderFieldBySchema.mock.calls.length).toBe(1);
+  expect(renderFieldBySchema.mock.calls[0][0]).toBe(getFieldSchema);
+  expect(renderFieldBySchema.mock.calls[0][1]).toBe(getFieldType);
+  expect(renderFieldBySchema.mock.calls[0][2]).toBe('testField');
+  expect(renderFieldBySchema.mock.calls[0][3]).toBe('testPayload');
 });

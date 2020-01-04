@@ -8,6 +8,8 @@ import {
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
 
+import renderFieldBySchema from './renderFieldBySchema';
+
 export const defaultGetFieldSchema = (fieldSchema) => fieldSchema;
 export const defaultMapErrors = (errors) => errors;
 
@@ -20,6 +22,7 @@ const FormWrapper = (props) => {
 
     onSubmit: onSubmitProp,
 
+    renderFieldBySchema: renderFieldBySchemaProp,
     formSchemaSerialize: serialize,
     formSchemaParse: parse,
     formSchemaMapFieldErrors: mapFieldErrors,
@@ -75,29 +78,12 @@ const FormWrapper = (props) => {
     mapErrors,
   ]);
 
-  const renderField = useCallback((fieldUniq, payload) => {
-    const fieldSchema = getFieldSchema(fieldUniq);
-    const fieldType = getFieldType(fieldSchema);
-
-    const {
-      createGetFieldSchema,
-      component: FieldComponent,
-    } = fieldType;
-
-    const computedGetFieldSchema = createGetFieldSchema
-      ? createGetFieldSchema(fieldSchema, getFieldSchema)
-      : getFieldSchema;
-
-    return (
-      <FieldComponent
-        fieldUniq={fieldUniq}
-        fieldSchema={fieldSchema}
-        payload={payload}
-        getFieldSchema={computedGetFieldSchema}
-        getFieldType={getFieldType}
-      />
-    );
-  }, [
+  const renderField = useCallback((fieldUniq, payload) => renderFieldBySchemaProp(
+    getFieldSchema,
+    getFieldType,
+    fieldUniq,
+    payload,
+  ), [
     getFieldSchema,
     getFieldType,
   ]);
@@ -129,6 +115,7 @@ FormWrapper.propTypes = {
 
   mapErrors: PropTypes.func,
 
+  renderFieldBySchema: PropTypes.func,
   formSchemaSerialize: PropTypes.func,
   formSchemaParse: PropTypes.func,
   formSchemaMapFieldErrors: PropTypes.func,
@@ -140,6 +127,7 @@ FormWrapper.defaultProps = {
   initialValues: null,
   getFieldSchema: defaultGetFieldSchema,
 
+  renderFieldBySchema,
   formSchemaSerialize,
   formSchemaParse,
   formSchemaMapFieldErrors,
