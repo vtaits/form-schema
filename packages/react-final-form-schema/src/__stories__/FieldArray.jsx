@@ -15,11 +15,11 @@ import { useFieldArray } from 'react-final-form-arrays';
 import { Form } from '../index';
 
 const ArrayComponent = ({
-  fieldUniq,
+  name,
 
   fieldSchema: {
     label,
-    schema,
+    names,
     initialValues,
   },
 
@@ -32,7 +32,7 @@ const ArrayComponent = ({
       dirtySinceLastSubmit,
       submitError,
     },
-  } = useFieldArray(fieldUniq);
+  } = useFieldArray(name);
 
   return (
     <>
@@ -45,16 +45,16 @@ const ArrayComponent = ({
       }
 
       {
-        fields.map((name, index) => (
+        fields.map((namePrefix, index) => (
           <div
-            key={name}
+            key={namePrefix}
           >
             {
-              schema.map((fieldName) => (
+              names.map((fieldName) => (
                 <Fragment
                   key={fieldName}
                 >
-                  {renderField(fieldName, name)}
+                  {renderField(fieldName, namePrefix)}
                 </Fragment>
               ))
             }
@@ -100,20 +100,20 @@ const ArrayComponent = ({
 };
 
 ArrayComponent.propTypes = {
-  fieldUniq: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 
   fieldSchema: PropTypes.shape({
     label: PropTypes.string,
     initialValues: PropTypes.object,
 
-    schema: PropTypes.array.isRequired,
+    names: PropTypes.array.isRequired,
   }).isRequired,
 
   renderField: PropTypes.func.isRequired,
 };
 
 const InputComponent = ({
-  fieldUniq,
+  name: nameProp,
 
   fieldSchema: {
     label,
@@ -123,8 +123,8 @@ const InputComponent = ({
   payload,
 }) => {
   const name = payload
-    ? `${payload}.${fieldUniq}`
-    : fieldUniq;
+    ? `${payload}.${nameProp}`
+    : nameProp;
 
   const {
     input: {
@@ -179,7 +179,7 @@ const InputComponent = ({
 };
 
 InputComponent.propTypes = {
-  fieldUniq: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 
   fieldSchema: PropTypes.shape({
     label: PropTypes.string,
@@ -198,25 +198,25 @@ const fieldTypes = {
     component: ArrayComponent,
 
     createGetFieldSchema: ({ fields }) => {
-      const getChildFieldSchema = (fieldUniq) => fields[fieldUniq];
+      const getChildFieldSchema = (name) => fields[name];
 
       return getChildFieldSchema;
     },
 
-    serializer: (values, fieldUniq, { schema }, getFieldSchema, getFieldType) => {
-      const arrayValues = values[fieldUniq];
+    serializer: (values, name, { names }, getFieldSchema, getFieldType) => {
+      const arrayValues = values[name];
 
       if (!arrayValues) {
         return {
-          [fieldUniq]: [],
+          [name]: [],
         };
       }
 
       return {
-        [fieldUniq]: arrayValues.map(
+        [name]: arrayValues.map(
           (arrayValue) => serialize(
             arrayValue || {},
-            schema,
+            names,
             getFieldSchema,
             getFieldType,
           ),
@@ -224,20 +224,20 @@ const fieldTypes = {
       };
     },
 
-    valueParser: (values, fieldUniq, { schema }, getFieldSchema, getFieldType) => {
-      const arrayValues = values[fieldUniq];
+    valueParser: (values, name, { names }, getFieldSchema, getFieldType) => {
+      const arrayValues = values[name];
 
       if (!arrayValues || arrayValues.length === 0) {
         return {
-          [fieldUniq]: [parse({}, schema, getFieldSchema, getFieldType)],
+          [name]: [parse({}, names, getFieldSchema, getFieldType)],
         };
       }
 
       return {
-        [fieldUniq]: arrayValues.map(
+        [name]: arrayValues.map(
           (arrayValue) => parse(
             arrayValue || {},
-            schema,
+            names,
             getFieldSchema,
             getFieldType,
           ),
@@ -245,8 +245,8 @@ const fieldTypes = {
       };
     },
 
-    errorsMapper: (errors, fieldUniq, { schema }, getFieldSchema, getFieldType) => {
-      const arrayErrors = errors[fieldUniq];
+    errorsMapper: (errors, name, { names }, getFieldSchema, getFieldType) => {
+      const arrayErrors = errors[name];
 
       if (!arrayErrors) {
         return {};
@@ -254,17 +254,17 @@ const fieldTypes = {
 
       if (arrayErrors instanceof Array && typeof arrayErrors[0] === 'string') {
         return {
-          [fieldUniq]: {
+          [name]: {
             [ARRAY_ERROR]: arrayErrors,
           },
         };
       }
 
       return {
-        [fieldUniq]: arrayErrors.map(
+        [name]: arrayErrors.map(
           (arrayError) => mapFieldErrors(
             arrayError || {},
-            schema,
+            names,
             getFieldSchema,
             getFieldType,
           ),
@@ -305,13 +305,13 @@ const fullSchema = {
       },
     },
 
-    schema: ['firstName', 'lastName'],
+    names: ['firstName', 'lastName'],
   },
 };
 
 const getFieldSchema = (fieldName) => fullSchema[fieldName];
 
-const schema = ['users'];
+const names = ['users'];
 
 const delay = (ms) => new Promise((resolve) => {
   setTimeout(() => {
@@ -374,7 +374,7 @@ const Example = () => {
         mutators={arrayMutators}
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
-        schema={schema}
+        names={names}
         onSubmit={onSubmit}
       >
         {({

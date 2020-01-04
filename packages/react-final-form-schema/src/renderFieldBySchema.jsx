@@ -1,7 +1,7 @@
 import React from 'react';
 
-const renderFieldBySchema = (getFieldSchema, getFieldType, fieldUniq, payload) => {
-  const fieldSchema = getFieldSchema(fieldUniq);
+const renderFieldBySchema = (getFieldSchema, getFieldType, name, payload) => {
+  const fieldSchema = getFieldSchema(name);
   const fieldType = getFieldType(fieldSchema);
 
   const {
@@ -13,16 +13,16 @@ const renderFieldBySchema = (getFieldSchema, getFieldType, fieldUniq, payload) =
     ? createGetFieldSchema(fieldSchema, getFieldSchema)
     : getFieldSchema;
 
-  const renderField = (childUniq, childPayload) => renderFieldBySchema(
+  const renderField = (childName, childPayload) => renderFieldBySchema(
     computedGetFieldSchema,
     getFieldType,
-    childUniq,
+    childName,
     childPayload,
   );
 
   return (
     <FieldComponent
-      fieldUniq={fieldUniq}
+      name={name}
       fieldSchema={fieldSchema}
       payload={payload}
       getFieldSchema={computedGetFieldSchema}

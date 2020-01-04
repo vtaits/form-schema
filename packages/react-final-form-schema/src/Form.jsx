@@ -15,7 +15,7 @@ export const defaultMapErrors = (errors) => errors;
 
 const FormWrapper = (props) => {
   const {
-    schema,
+    names,
     getFieldSchema,
     getFieldType,
     initialValues: initialValuesProp,
@@ -36,18 +36,18 @@ const FormWrapper = (props) => {
 
   const initialValues = useMemo(() => parse(
     initialValuesProp || {},
-    schema,
+    names,
     getFieldSchema,
     getFieldType,
   ), [
     initialValuesProp,
-    schema,
+    names,
     getFieldSchema,
     getFieldType,
   ]);
 
   const onSubmit = useCallback(async (values) => {
-    const valuesForSubmit = serialize(values, schema, getFieldSchema, getFieldType);
+    const valuesForSubmit = serialize(values, names, getFieldSchema, getFieldType);
 
     const rawErrors = await onSubmitProp(valuesForSubmit, values);
 
@@ -62,7 +62,7 @@ const FormWrapper = (props) => {
     );
     const mappedErrors = mapFieldErrors(
       preparedErrors,
-      schema,
+      names,
       getFieldSchema,
       getFieldType,
       valuesForSubmit,
@@ -72,16 +72,16 @@ const FormWrapper = (props) => {
     return mappedErrors;
   }, [
     onSubmitProp,
-    schema,
+    names,
     getFieldSchema,
     getFieldType,
     mapErrors,
   ]);
 
-  const renderField = useCallback((fieldUniq, payload) => renderFieldBySchemaProp(
+  const renderField = useCallback((name, payload) => renderFieldBySchemaProp(
     getFieldSchema,
     getFieldType,
-    fieldUniq,
+    name,
     payload,
   ), [
     getFieldSchema,
@@ -111,7 +111,7 @@ FormWrapper.propTypes = {
   getFieldSchema: PropTypes.func,
   getFieldType: PropTypes.func.isRequired,
 
-  schema: PropTypes.arrayOf(PropTypes.any).isRequired,
+  names: PropTypes.arrayOf(PropTypes.any).isRequired,
 
   mapErrors: PropTypes.func,
 

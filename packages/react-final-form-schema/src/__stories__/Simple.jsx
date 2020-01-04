@@ -6,7 +6,7 @@ import { useField } from 'react-final-form';
 import { Form } from '../index';
 
 const InputComponent = ({
-  fieldUniq,
+  name,
 
   fieldSchema: {
     label,
@@ -23,7 +23,7 @@ const InputComponent = ({
       dirtySinceLastSubmit,
       submitError,
     },
-  } = useField(fieldUniq);
+  } = useField(name);
 
   return (
     <div>
@@ -37,7 +37,7 @@ const InputComponent = ({
 
       <p>
         <input
-          name={fieldUniq}
+          name={name}
           value={value || ''}
           placeholder={placeholder || ''}
           onChange={onChange}
@@ -66,7 +66,7 @@ const InputComponent = ({
 };
 
 InputComponent.propTypes = {
-  fieldUniq: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 
   fieldSchema: PropTypes.shape({
     label: PropTypes.string,
@@ -98,7 +98,7 @@ const fullSchema = {
 
 const getFieldSchema = (fieldName) => fullSchema[fieldName];
 
-const schema = ['firstName', 'lastName'];
+const names = ['firstName', 'lastName'];
 
 const delay = (ms) => new Promise((resolve) => {
   setTimeout(() => {
@@ -137,7 +137,7 @@ const Example = () => {
       <Form
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
-        schema={schema}
+        names={names}
         onSubmit={onSubmit}
       >
         {({

@@ -7,7 +7,7 @@ import { useField } from 'react-final-form';
 import { Form } from '../index';
 
 const SelectComponent = ({
-  fieldUniq,
+  name,
 
   fieldSchema: {
     label,
@@ -24,7 +24,7 @@ const SelectComponent = ({
       dirtySinceLastSubmit,
       submitError,
     },
-  } = useField(fieldUniq);
+  } = useField(name);
 
   return (
     <div>
@@ -38,7 +38,7 @@ const SelectComponent = ({
 
       <Select
         isClearable
-        name={fieldUniq}
+        name={name}
         value={value || null}
         options={options}
         onChange={onChange}
@@ -66,7 +66,7 @@ const SelectComponent = ({
 };
 
 SelectComponent.propTypes = {
-  fieldUniq: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 
   fieldSchema: PropTypes.shape({
     label: PropTypes.string,
@@ -140,7 +140,7 @@ const fullSchema = {
 
 const getFieldSchema = (fieldName) => fullSchema[fieldName];
 
-const schema = ['animal'];
+const names = ['animal'];
 
 const delay = (ms) => new Promise((resolve) => {
   setTimeout(() => {
@@ -167,7 +167,7 @@ const Example = () => {
         initialValues={initialValues}
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
-        schema={schema}
+        names={names}
         onSubmit={onSubmit}
       >
         {({

@@ -1,18 +1,18 @@
-const defaultSerializer = (values, fieldUniq) => {
-  if (typeof values[fieldUniq] !== 'undefined') {
+const defaultSerializer = (values, name) => {
+  if (typeof values[name] !== 'undefined') {
     return {
-      [fieldUniq]: values[fieldUniq],
+      [name]: values[name],
     };
   }
 
   return {};
 };
 
-const serialize = (values, schema, getFieldSchema, getFieldType) => {
+const serialize = (values, names, getFieldSchema, getFieldType) => {
   const res = {};
 
-  schema.forEach((fieldUniq) => {
-    const fieldSchema = getFieldSchema(fieldUniq);
+  names.forEach((name) => {
+    const fieldSchema = getFieldSchema(name);
     const fieldType = getFieldType(fieldSchema);
 
     const serializer = fieldType.serializer || defaultSerializer;
@@ -22,7 +22,7 @@ const serialize = (values, schema, getFieldSchema, getFieldType) => {
 
     Object.assign(res, serializer(
       values,
-      fieldUniq,
+      name,
       fieldSchema,
       computedGetFieldSchema,
       getFieldType,

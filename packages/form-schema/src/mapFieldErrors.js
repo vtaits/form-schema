@@ -1,20 +1,20 @@
-const defaultFieldErrorsMapper = (errors, fieldUniq) => {
-  if (typeof errors[fieldUniq] !== 'undefined') {
+const defaultFieldErrorsMapper = (errors, name) => {
+  if (typeof errors[name] !== 'undefined') {
     return {
-      [fieldUniq]: errors[fieldUniq],
+      [name]: errors[name],
     };
   }
 
   return {};
 };
 
-const mapFieldErrors = (errors, schema, getFieldSchema, getFieldType, values, rawValues) => {
+const mapFieldErrors = (errors, names, getFieldSchema, getFieldType, values, rawValues) => {
   const res = {
     ...errors,
   };
 
-  schema.forEach((fieldUniq) => {
-    const fieldSchema = getFieldSchema(fieldUniq);
+  names.forEach((name) => {
+    const fieldSchema = getFieldSchema(name);
     const fieldType = getFieldType(fieldSchema);
 
     const errorsMapper = fieldType.errorsMapper || defaultFieldErrorsMapper;
@@ -26,7 +26,7 @@ const mapFieldErrors = (errors, schema, getFieldSchema, getFieldType, values, ra
       res,
       errorsMapper(
         res,
-        fieldUniq,
+        name,
         fieldSchema,
         computedGetFieldSchema,
         getFieldType,

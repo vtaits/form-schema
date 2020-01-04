@@ -25,7 +25,7 @@ test('should render field', () => {
 
   const fieldNode = fieldWrapper.find(FieldComponent);
 
-  expect(fieldNode.prop('fieldUniq')).toBe('testField');
+  expect(fieldNode.prop('name')).toBe('testField');
   expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
   expect(fieldNode.prop('payload')).toBe('testPayload');
   expect(fieldNode.prop('getFieldSchema')).toBe(getFieldSchema);
@@ -78,7 +78,7 @@ test('should render field with redefined getFieldSchema for children', () => {
 
   const wrapperNode = fieldWrapper.find(WrapperComponent);
 
-  expect(wrapperNode.prop('fieldUniq')).toBe('wrapperField');
+  expect(wrapperNode.prop('name')).toBe('wrapperField');
   expect(wrapperNode.prop('fieldSchema')).toBe(wrapperSchema);
   expect(wrapperNode.prop('payload')).toBe('testPayload1');
   expect(wrapperNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
@@ -106,7 +106,7 @@ test('should render field with redefined getFieldSchema for children', () => {
 
   const childNode = childWrapper.find(ChildComponent);
 
-  expect(childNode.prop('fieldUniq')).toBe('childField');
+  expect(childNode.prop('name')).toBe('childField');
   expect(childNode.prop('fieldSchema')).toBe(childSchema);
   expect(childNode.prop('payload')).toBe('testPayload2');
   expect(childNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);

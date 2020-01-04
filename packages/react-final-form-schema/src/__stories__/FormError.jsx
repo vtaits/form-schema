@@ -7,7 +7,7 @@ const getFieldType = () => null;
 
 const getFieldSchema = () => null;
 
-const schema = [];
+const names = [];
 
 const delay = (ms) => new Promise((resolve) => {
   setTimeout(() => {
@@ -45,7 +45,7 @@ const Example = () => {
       mapErrors={mapErrors}
       getFieldSchema={getFieldSchema}
       getFieldType={getFieldType}
-      schema={schema}
+      names={names}
       onSubmit={onSubmit}
     >
       {({

@@ -6,7 +6,7 @@ import { Form } from 'react-final-form';
 import FormWrapper from '../Form';
 
 const defaultProps = {
-  schema: [],
+  names: [],
   children: () => null,
   formSchemaParse: () => ({}),
   onSubmit: Function.prototype,
@@ -34,7 +34,7 @@ afterEach(() => {
 test('should provide parsed initial values', () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
-  const schema = ['test'];
+  const names = ['test'];
 
   const initialValues = {
     test1: 'value1',
@@ -50,7 +50,7 @@ test('should provide parsed initial values', () => {
     initialValues,
     getFieldSchema,
     getFieldType,
-    schema,
+    names,
 
     formSchemaParse: parse,
   });
@@ -61,7 +61,7 @@ test('should provide parsed initial values', () => {
 
   expect(parse.mock.calls.length).toBe(1);
   expect(parse.mock.calls[0][0]).toBe(initialValues);
-  expect(parse.mock.calls[0][1]).toBe(schema);
+  expect(parse.mock.calls[0][1]).toBe(names);
   expect(parse.mock.calls[0][2]).toBe(getFieldSchema);
   expect(parse.mock.calls[0][3]).toBe(getFieldType);
 });
@@ -69,7 +69,7 @@ test('should provide parsed initial values', () => {
 test('should provide empty object to parser if initial values not defined', () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
-  const schema = ['test'];
+  const names = ['test'];
 
   const parsedValues = {
     test2: 'value2',
@@ -80,7 +80,7 @@ test('should provide empty object to parser if initial values not defined', () =
   const page = setup({
     getFieldSchema,
     getFieldType,
-    schema,
+    names,
 
     formSchemaParse: parse,
   });
@@ -91,7 +91,7 @@ test('should provide empty object to parser if initial values not defined', () =
 
   expect(parse.mock.calls.length).toBe(1);
   expect(parse.mock.calls[0][0]).toEqual({});
-  expect(parse.mock.calls[0][1]).toBe(schema);
+  expect(parse.mock.calls[0][1]).toBe(names);
   expect(parse.mock.calls[0][2]).toBe(getFieldSchema);
   expect(parse.mock.calls[0][3]).toBe(getFieldType);
 });
@@ -99,7 +99,7 @@ test('should provide empty object to parser if initial values not defined', () =
 test('should submit successfully', async () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
-  const schema = ['test'];
+  const names = ['test'];
 
   const values = {
     test1: 'value1',
@@ -118,7 +118,7 @@ test('should submit successfully', async () => {
   const page = setup({
     getFieldSchema,
     getFieldType,
-    schema,
+    names,
 
     mapErrors,
 
@@ -136,7 +136,7 @@ test('should submit successfully', async () => {
 
   expect(serialize.mock.calls.length).toBe(1);
   expect(serialize.mock.calls[0][0]).toBe(values);
-  expect(serialize.mock.calls[0][1]).toBe(schema);
+  expect(serialize.mock.calls[0][1]).toBe(names);
   expect(serialize.mock.calls[0][2]).toBe(getFieldSchema);
   expect(serialize.mock.calls[0][3]).toBe(getFieldType);
 
@@ -151,7 +151,7 @@ test('should submit successfully', async () => {
 test('should submit with error', async () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
-  const schema = ['test'];
+  const names = ['test'];
 
   const values = {
     test1: 'value1',
@@ -182,7 +182,7 @@ test('should submit with error', async () => {
   const page = setup({
     getFieldSchema,
     getFieldType,
-    schema,
+    names,
 
     mapErrors,
 
@@ -200,7 +200,7 @@ test('should submit with error', async () => {
 
   expect(serialize.mock.calls.length).toBe(1);
   expect(serialize.mock.calls[0][0]).toBe(values);
-  expect(serialize.mock.calls[0][1]).toBe(schema);
+  expect(serialize.mock.calls[0][1]).toBe(names);
   expect(serialize.mock.calls[0][2]).toBe(getFieldSchema);
   expect(serialize.mock.calls[0][3]).toBe(getFieldType);
 
@@ -215,7 +215,7 @@ test('should submit with error', async () => {
 
   expect(mapFieldErrors.mock.calls.length).toBe(1);
   expect(mapFieldErrors.mock.calls[0][0]).toBe(preparedErrors);
-  expect(mapFieldErrors.mock.calls[0][1]).toBe(schema);
+  expect(mapFieldErrors.mock.calls[0][1]).toBe(names);
   expect(mapFieldErrors.mock.calls[0][2]).toBe(getFieldSchema);
   expect(mapFieldErrors.mock.calls[0][3]).toBe(getFieldType);
   expect(mapFieldErrors.mock.calls[0][4]).toBe(serializedValues);
