@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
+import type {
+  FC,
+  ReactNode,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import { useField } from 'react-final-form';
+import type {
+  Errors,
+  GetFieldSchema,
+} from '@vtaits/form-schema';
 
 import { Form } from '../index';
+import type {
+  GetFieldType,
+  FieldType,
+} from '../index';
 
-const InputComponent = ({
+type InputProps = {
+  name: string;
+
+  fieldSchema: {
+    label?: string;
+    placeholder?: string;
+  };
+};
+
+const InputComponent: FC<InputProps> = ({
   name,
 
   fieldSchema: {
@@ -74,13 +95,13 @@ InputComponent.propTypes = {
   }).isRequired,
 };
 
-const fieldTypes = {
+const fieldTypes: Record<string, FieldType> = {
   input: {
     component: InputComponent,
   },
 };
 
-const getFieldType = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType = ({ type }: { type: string }) => fieldTypes[type];
 
 const fullSchema = {
   firstName: {
@@ -96,25 +117,25 @@ const fullSchema = {
   },
 };
 
-const getFieldSchema = (fieldName) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema = (fieldName: string) => fullSchema[fieldName];
 
 const names = ['firstName', 'lastName'];
 
-const delay = (ms) => new Promise((resolve) => {
+const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
     resolve();
   }, ms);
 });
 
-const Example = () => {
+const Example: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values): Promise<Errors> => {
     setSubmittedValues(null);
 
     await delay(1000);
 
-    const errors = {};
+    const errors: Errors = {};
 
     if (!values.firstName) {
       errors.firstName = ['This field is required'];
@@ -144,7 +165,7 @@ const Example = () => {
           handleSubmit,
           submitting,
           renderField,
-        }) => (
+        }): ReactNode => (
           <form onSubmit={handleSubmit}>
             {renderField('firstName')}
             {renderField('lastName')}

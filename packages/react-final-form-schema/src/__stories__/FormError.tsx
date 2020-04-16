@@ -1,21 +1,36 @@
 import React from 'react';
+import type {
+  FC,
+  ReactNode,
+} from 'react';
 import { FORM_ERROR } from 'final-form';
+import type {
+  GetFieldSchema,
+  Errors,
+} from '@vtaits/form-schema';
 
 import { Form } from '../index';
+import type {
+  GetFieldType,
+} from '../index';
 
-const getFieldType = () => null;
+const EmptyComponent: FC = () => <div />;
 
-const getFieldSchema = () => null;
+const getFieldType: GetFieldType = () => ({
+  component: EmptyComponent,
+});
+
+const getFieldSchema: GetFieldSchema = () => null;
 
 const names = [];
 
-const delay = (ms) => new Promise((resolve) => {
+const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
     resolve();
   }, ms);
 });
 
-const mapErrors = (rawErrors) => {
+const mapErrors = (rawErrors: Errors): Errors => {
   if (rawErrors.formError) {
     const {
       formError,
@@ -31,8 +46,8 @@ const mapErrors = (rawErrors) => {
   return rawErrors;
 };
 
-const Example = () => {
-  const onSubmit = async () => {
+const Example: FC = () => {
+  const onSubmit = async (): Promise<Errors> => {
     await delay(1000);
 
     return {
@@ -52,7 +67,7 @@ const Example = () => {
         handleSubmit,
         submitting,
         submitError,
-      }) => (
+      }): ReactNode => (
         <form onSubmit={handleSubmit}>
           {
             submitError && (

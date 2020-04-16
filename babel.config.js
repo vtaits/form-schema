@@ -2,6 +2,7 @@ module.exports = {
   env: {
     cjs: {
       presets: [
+        '@babel/preset-typescript',
         '@babel/preset-env',
         '@babel/preset-react',
       ],
@@ -9,7 +10,7 @@ module.exports = {
 
     es: {
       presets: [
-        '@babel/preset-flow',
+        '@babel/preset-typescript',
         [
           '@babel/preset-env',
           {
@@ -22,6 +23,7 @@ module.exports = {
 
     test: {
       presets: [
+        '@babel/preset-typescript',
         '@babel/preset-env',
         '@babel/preset-react',
       ],

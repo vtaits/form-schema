@@ -4,13 +4,28 @@ module.exports = {
     es6: true,
     'jest/globals': true,
   },
-  extends: ['eslint:recommended', 'airbnb'],
-  parser: 'babel-eslint',
+  extends: [
+    'eslint:recommended',
+    'airbnb-typescript',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
 
   plugins: [
     'react',
     'jest',
+    '@typescript-eslint',
   ],
+
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+  },
+
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
 
   rules: {
     'arrow-parens': ['error', 'always'],
@@ -21,12 +36,6 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        packageDir: [
-          __dirname,
-          './packages/form-schema',
-          './packages/react-final-form-schema',
-        ],
-
         devDependencies: [
           '**/__tests__/**/*',
           '**/__stories__/**/*',
@@ -36,5 +45,17 @@ module.exports = {
 
     'react/jsx-props-no-spreading': 'off',
     'react/no-array-index-key': 'off',
+
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        mjs: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
   },
 };

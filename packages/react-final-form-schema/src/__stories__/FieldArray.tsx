@@ -1,10 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/prop-types */
 import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
+import type {
+  FC,
+  ReactNode,
+} from 'react';
 
 import {
   serialize,
   parse,
   mapFieldErrors,
+} from '@vtaits/form-schema';
+import type {
+  GetFieldSchema,
+  Errors,
+  Values,
 } from '@vtaits/form-schema';
 
 import { ARRAY_ERROR } from 'final-form';
@@ -13,8 +23,26 @@ import arrayMutators from 'final-form-arrays';
 import { useFieldArray } from 'react-final-form-arrays';
 
 import { Form } from '../index';
+import type {
+  RenderField,
+  FieldType,
+  GetFieldType,
+} from '../index';
 
-const ArrayComponent = ({
+type ArrayProps = {
+  name: string;
+
+  fieldSchema: {
+    label: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    initialValues?: Record<string, any>;
+    names: string[];
+  };
+
+  renderField: RenderField;
+};
+
+const ArrayComponent: FC<ArrayProps> = ({
   name,
 
   fieldSchema: {
@@ -61,7 +89,9 @@ const ArrayComponent = ({
 
             <button
               type="button"
-              onClick={() => fields.remove(index)}
+              onClick={(): void => {
+                fields.remove(index);
+              }}
             >
               Remove
             </button>
@@ -73,7 +103,9 @@ const ArrayComponent = ({
 
       <button
         type="button"
-        onClick={() => fields.push(initialValues || {})}
+        onClick={(): void => {
+          fields.push(initialValues || {});
+        }}
       >
         Add
       </button>
@@ -99,20 +131,18 @@ const ArrayComponent = ({
   );
 };
 
-ArrayComponent.propTypes = {
-  name: PropTypes.string.isRequired,
+type InputProps = {
+  name: string;
 
-  fieldSchema: PropTypes.shape({
-    label: PropTypes.string,
-    initialValues: PropTypes.object,
+  fieldSchema: {
+    label?: string;
+    placeholder?: string;
+  };
 
-    names: PropTypes.array.isRequired,
-  }).isRequired,
-
-  renderField: PropTypes.func.isRequired,
+  payload?: string;
 };
 
-const InputComponent = ({
+const InputComponent: FC<InputProps> = ({
   name: nameProp,
 
   fieldSchema: {
@@ -178,32 +208,27 @@ const InputComponent = ({
   );
 };
 
-InputComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-
-  fieldSchema: PropTypes.shape({
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-  }).isRequired,
-
-  payload: PropTypes.string,
-};
-
 InputComponent.defaultProps = {
   payload: null,
 };
 
-const fieldTypes = {
+const fieldTypes: Record<string, FieldType> = {
   array: {
     component: ArrayComponent,
 
-    createGetFieldSchema: ({ fields }) => {
-      const getChildFieldSchema = (name) => fields[name];
+    createGetFieldSchema: ({ fields }: { fields: Record<string, any>}): GetFieldSchema => {
+      const getChildFieldSchema: GetFieldSchema = (name: string) => fields[name];
 
       return getChildFieldSchema;
     },
 
-    serializer: (values, name, { names }, getFieldSchema, getFieldType) => {
+    serializer: (
+      values: Values,
+      name: string,
+      { names }: { names: string[] },
+      getFieldSchema: GetFieldSchema,
+      getFieldType: GetFieldType,
+    ): Values => {
       const arrayValues = values[name];
 
       if (!arrayValues) {
@@ -224,7 +249,13 @@ const fieldTypes = {
       };
     },
 
-    valueParser: (values, name, { names }, getFieldSchema, getFieldType) => {
+    parser: (
+      values: Values,
+      name: string,
+      { names }: { names: string[] },
+      getFieldSchema: GetFieldSchema,
+      getFieldType: GetFieldType,
+    ): Values => {
       const arrayValues = values[name];
 
       if (!arrayValues || arrayValues.length === 0) {
@@ -245,7 +276,15 @@ const fieldTypes = {
       };
     },
 
-    errorsMapper: (errors, name, { names }, getFieldSchema, getFieldType) => {
+    errorsMapper: (
+      errors: Errors,
+      name: string,
+      { names }: { names: string[] },
+      getFieldSchema: GetFieldSchema,
+      getFieldType: GetFieldType,
+      values: Values,
+      rawValues: Values,
+    ): Errors => {
       const arrayErrors = errors[name];
 
       if (!arrayErrors) {
@@ -267,6 +306,8 @@ const fieldTypes = {
             names,
             getFieldSchema,
             getFieldType,
+            values,
+            rawValues,
           ),
         ),
       };
@@ -278,7 +319,7 @@ const fieldTypes = {
   },
 };
 
-const getFieldType = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType = ({ type }: { type: string }) => fieldTypes[type];
 
 const fullSchema = {
   users: {
@@ -309,25 +350,25 @@ const fullSchema = {
   },
 };
 
-const getFieldSchema = (fieldName) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema = (fieldName: string) => fullSchema[fieldName];
 
-const names = ['users'];
+const names: string[] = ['users'];
 
-const delay = (ms) => new Promise((resolve) => {
+const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
     resolve();
   }, ms);
 });
 
-const Example = () => {
+const Example: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values): Promise<Errors> => {
     setSubmittedValues(null);
 
     await delay(1000);
 
-    const errors = {};
+    const errors: Errors = {};
 
     if (values.users.length === 0) {
       errors.users = ['This field is required'];
@@ -341,7 +382,7 @@ const Example = () => {
       }, index) => {
         if (!firstName || !lastName) {
           hasError = true;
-          const errorObj = {};
+          const errorObj: Record<string, any> = {};
 
           if (!firstName) {
             errorObj.firstName = ['This field is required'];
@@ -371,7 +412,9 @@ const Example = () => {
   return (
     <>
       <Form
-        mutators={arrayMutators}
+        mutators={{
+          ...arrayMutators,
+        }}
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
         names={names}
@@ -381,7 +424,7 @@ const Example = () => {
           handleSubmit,
           submitting,
           renderField,
-        }) => (
+        }): ReactNode => (
           <form onSubmit={handleSubmit}>
             {renderField('users')}
 

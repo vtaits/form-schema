@@ -1,10 +1,27 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import React, {
+  FC,
+  ReactNode,
+} from 'react';
+import {
+  shallow,
+  ShallowWrapper,
+} from 'enzyme';
+
+import {
+  GetFieldSchema,
+} from '@vtaits/form-schema';
 
 import renderFieldBySchema from '../renderFieldBySchema';
 
+import {
+  FieldComponentProps,
+  RenderField,
+} from '../types';
+
 test('should render field', () => {
-  const FieldComponent = () => <div />;
+  const FieldComponent: FC<FieldComponentProps> = () => <div />;
 
   const fieldType = {
     component: FieldComponent,
@@ -12,18 +29,20 @@ test('should render field', () => {
 
   const fieldSchema = Symbol('field schema');
 
-  const getFieldSchema = jest.fn(() => fieldSchema);
-  const getFieldType = jest.fn(() => fieldType);
+  const getFieldSchema = jest.fn<any, [
+    string,
+  ]>(() => fieldSchema);
+  const getFieldType = jest.fn<any, [any]>(() => fieldType);
 
   const renderedField = renderFieldBySchema(getFieldSchema, getFieldType, 'testField', 'testPayload');
 
-  const fieldWrapper = shallow(
+  const fieldWrapper: ShallowWrapper = shallow(
     <div>
       {renderedField}
     </div>,
   );
 
-  const fieldNode = fieldWrapper.find(FieldComponent);
+  const fieldNode: ShallowWrapper = fieldWrapper.find(FieldComponent);
 
   expect(fieldNode.prop('name')).toBe('testField');
   expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
@@ -39,8 +58,8 @@ test('should render field', () => {
 });
 
 test('should render field with redefined getFieldSchema for children', () => {
-  const WrapperComponent = () => <div />;
-  const ChildComponent = () => <div />;
+  const WrapperComponent: FC<FieldComponentProps> = () => <div />;
+  const ChildComponent: FC<FieldComponentProps> = () => <div />;
 
   const wrapperSchema = {
     type: 'wrapper',
@@ -50,9 +69,14 @@ test('should render field with redefined getFieldSchema for children', () => {
     type: 'child',
   };
 
-  const nextGetFieldSchema = jest.fn(() => childSchema);
+  const nextGetFieldSchema = jest.fn<any, [
+    string,
+  ]>(() => childSchema);
 
-  const createGetFieldSchema = jest.fn(() => nextGetFieldSchema);
+  const createGetFieldSchema = jest.fn<any, [
+    any,
+    GetFieldSchema,
+  ]>(() => nextGetFieldSchema);
 
   const fieldTypes = {
     wrapper: {
@@ -65,12 +89,14 @@ test('should render field with redefined getFieldSchema for children', () => {
     },
   };
 
-  const getFieldSchema = jest.fn(() => wrapperSchema);
+  const getFieldSchema = jest.fn<any, [
+    string,
+  ]>(() => wrapperSchema);
   const getFieldType = jest.fn(({ type }) => fieldTypes[type]);
 
   const renderedField = renderFieldBySchema(getFieldSchema, getFieldType, 'wrapperField', 'testPayload1');
 
-  const fieldWrapper = shallow(
+  const fieldWrapper: ShallowWrapper = shallow(
     <div>
       {renderedField}
     </div>,
@@ -94,17 +120,17 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(getFieldType.mock.calls.length).toBe(1);
   expect(getFieldType.mock.calls[0][0]).toBe(wrapperSchema);
 
-  const renderField = wrapperNode.prop('renderField');
+  const renderField: RenderField = wrapperNode.prop('renderField');
 
-  const renderedChild = renderField('childField', 'testPayload2');
+  const renderedChild: ReactNode = renderField('childField', 'testPayload2');
 
-  const childWrapper = shallow(
+  const childWrapper: ShallowWrapper = shallow(
     <div>
       {renderedChild}
     </div>,
   );
 
-  const childNode = childWrapper.find(ChildComponent);
+  const childNode: ShallowWrapper = childWrapper.find(ChildComponent);
 
   expect(childNode.prop('name')).toBe('childField');
   expect(childNode.prop('fieldSchema')).toBe(childSchema);

@@ -1,5 +1,6 @@
 .idea
 lib
 es
+ts
 node_modules
 *.log

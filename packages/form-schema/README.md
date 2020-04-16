@@ -1,4 +1,5 @@
 [![NPM](https://img.shields.io/npm/v/@vtaits/form-schema.svg)](https://www.npmjs.com/package/@vtaits/form-schema)
+[![Types](https://img.shields.io/npm/types/@vtaits/form-schema.svg)](https://www.npmjs.com/package/@vtaits/form-schema)
 
 # @vtaits/form-schema
 

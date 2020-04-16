@@ -1,4 +1,5 @@
 [![NPM](https://img.shields.io/npm/v/@vtaits/react-final-form-schema.svg)](https://www.npmjs.com/package/@vtaits/react-final-form-schema)
+[![Types](https://img.shields.io/npm/types/@vtaits/react-final-form-schema.svg)](https://www.npmjs.com/package/@vtaits/react-final-form-schema)
 
 # @vtaits/react-final-form-schema
 

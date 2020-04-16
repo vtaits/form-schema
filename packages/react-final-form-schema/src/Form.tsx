@@ -1,19 +1,38 @@
-import React, { useMemo, useCallback } from 'react';
+import React, {
+  useMemo,
+  useCallback,
+} from 'react';
+import type {
+  FC,
+} from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'react-final-form';
+import {
+  Form,
+} from 'react-final-form';
 
 import {
   serialize as formSchemaSerialize,
   parse as formSchemaParse,
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
+import type {
+  Errors,
+  Values,
+  GetFieldSchema,
+} from '@vtaits/form-schema';
+
+import type {
+  MapErrors,
+  FormProps,
+  RenderField,
+} from './types';
 
 import renderFieldBySchema from './renderFieldBySchema';
 
-export const defaultGetFieldSchema = (fieldSchema) => fieldSchema;
-export const defaultMapErrors = (errors) => errors;
+export const defaultGetFieldSchema: GetFieldSchema = (fieldSchema) => fieldSchema;
+export const defaultMapErrors: MapErrors = (errors) => errors;
 
-const FormWrapper = (props) => {
+const FormWrapper: FC<FormProps> = (props) => {
   const {
     names,
     getFieldSchema,
@@ -34,7 +53,7 @@ const FormWrapper = (props) => {
     ...rest
   } = props;
 
-  const initialValues = useMemo(() => parse(
+  const initialValues: Values = useMemo(() => parse(
     initialValuesProp || {},
     names,
     getFieldSchema,
@@ -47,20 +66,20 @@ const FormWrapper = (props) => {
   ]);
 
   const onSubmit = useCallback(async (values) => {
-    const valuesForSubmit = serialize(values, names, getFieldSchema, getFieldType);
+    const valuesForSubmit: Values = serialize(values, names, getFieldSchema, getFieldType);
 
-    const rawErrors = await onSubmitProp(valuesForSubmit, values);
+    const rawErrors: Errors | void | null = await onSubmitProp(valuesForSubmit, values);
 
     if (!rawErrors) {
       return null;
     }
 
-    const preparedErrors = mapErrors(
+    const preparedErrors: Errors = mapErrors(
       rawErrors,
       valuesForSubmit,
       values,
     );
-    const mappedErrors = mapFieldErrors(
+    const mappedErrors: Errors = mapFieldErrors(
       preparedErrors,
       names,
       getFieldSchema,
@@ -78,7 +97,7 @@ const FormWrapper = (props) => {
     mapErrors,
   ]);
 
-  const renderField = useCallback((name, payload) => renderFieldBySchemaProp(
+  const renderField: RenderField = useCallback((name, payload) => renderFieldBySchemaProp(
     getFieldSchema,
     getFieldType,
     name,

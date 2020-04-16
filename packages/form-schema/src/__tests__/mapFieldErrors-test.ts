@@ -1,4 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import {
+  Errors,
+  FieldType,
+  GetFieldSchema,
+  GetFieldType,
+  Values,
+} from '../types';
+
 import mapFieldErrors from '../mapFieldErrors';
+
+type ErrorsMapperArgs = [
+  Errors,
+  string,
+  any,
+  GetFieldSchema,
+  GetFieldType,
+  Values,
+  Values,
+];
 
 test('should call default errors mapper', () => {
   expect(
@@ -10,11 +30,13 @@ test('should call default errors mapper', () => {
       [
         'value',
       ],
-      () => ({
+      (): any => ({
         type: 'testType',
         name: 'value',
       }),
-      () => ({}),
+      (): FieldType => ({}),
+      {},
+      {},
     ),
   ).toEqual(
     {
@@ -34,15 +56,17 @@ test('should call redefined errors mapper', () => {
       [
         'value',
       ],
-      () => ({
+      (): any => ({
         type: 'testType',
         name: 'value',
       }),
       () => ({
-        errorsMapper: (values, name) => ({
-          [name]: [values[name][0] + values[name][0]],
+        errorsMapper: (errors: Errors, name: string): Errors => ({
+          [name]: [errors[name][0] + errors[name][0]],
         }),
       }),
+      {},
+      {},
     ),
   ).toEqual(
     {
@@ -64,13 +88,13 @@ test('should call multiple errors mappers', () => {
 
   const fieldTypes = {
     testType1: {
-      errorsMapper: (values, name) => ({
-        [name]: [values[name][0] + values[name][0] + values[name][0]],
+      errorsMapper: (errors: Errors, name: string): Errors => ({
+        [name]: [errors[name][0] + errors[name][0] + errors[name][0]],
       }),
     },
     testType2: {
-      errorsMapper: (values, name) => ({
-        [name]: [values[name][0] + values[name][0]],
+      errorsMapper: (errors: Errors, name: string): Errors => ({
+        [name]: [errors[name][0] + errors[name][0]],
       }),
     },
   };
@@ -85,11 +109,13 @@ test('should call multiple errors mappers', () => {
         'value1',
         'value2',
       ],
-      (name) => ({
+      (name): any => ({
         ...fields[name],
         name,
       }),
-      ({ type }) => fieldTypes[type],
+      ({ type }: { type: string }): FieldType => fieldTypes[type],
+      {},
+      {},
     ),
   ).toEqual(
     {
@@ -134,18 +160,18 @@ test('should call multiple nested errors mappers', () => {
     },
   };
 
-  const fieldTypes = {
+  const fieldTypes: Record<string, FieldType> = {
     wrapper: {
       errorsMapper: (
-        errors,
-        name,
+        errors: Errors,
+        name: string,
         {
           childNames,
           childs,
-        },
-        getFieldSchema,
-        getFieldType,
-      ) => mapFieldErrors(
+        }: any,
+        getFieldSchema: GetFieldSchema,
+        getFieldType: GetFieldType,
+      ): Errors => mapFieldErrors(
         errors,
         childNames,
         (childName) => ({
@@ -153,18 +179,20 @@ test('should call multiple nested errors mappers', () => {
           name: childName,
         }),
         getFieldType,
+        {},
+        {},
       ),
     },
 
     testType1: {
-      errorsMapper: (values, name) => ({
-        [name]: [values[name][0] + values[name][0] + values[name][0]],
+      errorsMapper: (errors: Errors, name: string): Errors => ({
+        [name]: [errors[name][0] + errors[name][0] + errors[name][0]],
       }),
     },
 
     testType2: {
-      errorsMapper: (values, name) => ({
-        [name]: [values[name][0] + values[name][0]],
+      errorsMapper: (errors: Errors, name: string): Errors => ({
+        [name]: [errors[name][0] + errors[name][0]],
       }),
     },
   };
@@ -183,12 +211,15 @@ test('should call multiple nested errors mappers', () => {
         'wrapper2',
       ],
 
-      (name) => ({
+      (name: string): any => ({
         ...fields[name],
         name,
       }),
 
-      ({ type }) => fieldTypes[type],
+      ({ type }: { type: string }): FieldType => fieldTypes[type],
+
+      {},
+      {},
     ),
   ).toEqual(
     {
@@ -201,24 +232,24 @@ test('should call multiple nested errors mappers', () => {
 });
 
 test('should provide correct arguments to errorsMapper', () => {
-  const errorsMapper = jest.fn((errors, name) => ({
+  const errorsMapper = jest.fn<any, ErrorsMapperArgs>((errors, name) => ({
     [name]: errors[name],
   }));
 
-  const values = {
+  const values: Values = {
     value: 'testValue',
   };
 
-  const valuesRaw = {
+  const valuesRaw: Values = {
     value: 'testValueRaw',
   };
 
-  const getFieldSchema = () => ({
+  const getFieldSchema: GetFieldSchema = () => ({
     type: 'testType',
     name: 'value',
   });
 
-  const getFieldType = () => ({
+  const getFieldType: GetFieldType = () => ({
     errorsMapper,
   });
 
@@ -251,13 +282,16 @@ test('should provide correct arguments to errorsMapper', () => {
 });
 
 test('should redefine getFieldSchema', () => {
-  const errorsMapper = jest.fn(() => ({}));
+  const errorsMapper = jest.fn<any, ErrorsMapperArgs>(() => ({}));
   const parentGetFieldSchema = jest.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
   const getFieldSchema = jest.fn();
-  const createGetFieldSchema = jest.fn(() => getFieldSchema);
+  const createGetFieldSchema = jest.fn<any, [
+    any,
+    GetFieldSchema,
+  ]>(() => getFieldSchema);
 
   mapFieldErrors(
     {
@@ -275,6 +309,9 @@ test('should redefine getFieldSchema', () => {
 
       createGetFieldSchema,
     }),
+
+    {},
+    {},
   );
 
   expect(errorsMapper.mock.calls.length).toBe(1);

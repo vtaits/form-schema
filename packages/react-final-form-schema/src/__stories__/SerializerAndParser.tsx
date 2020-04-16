@@ -1,12 +1,41 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import type {
+  FC,
+  ReactNode,
+} from 'react';
 import Select from 'react-select';
+import type {
+  GetFieldSchema,
+  Values,
+} from '@vtaits/form-schema';
 
 import { useField } from 'react-final-form';
 
 import { Form } from '../index';
+import type {
+  FieldType,
+  GetFieldType,
+} from '../index';
 
-const SelectComponent = ({
+type Option = {
+  value: number;
+  label: string;
+};
+
+type Options = Option[];
+
+type SelectSchema = {
+  label?: string;
+  options: Options;
+};
+
+type SelectProps = {
+  name: string;
+  fieldSchema: SelectSchema;
+};
+
+const SelectComponent: FC<SelectProps> = ({
   name,
 
   fieldSchema: {
@@ -65,23 +94,11 @@ const SelectComponent = ({
   );
 };
 
-SelectComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-
-  fieldSchema: PropTypes.shape({
-    label: PropTypes.string,
-    options: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
-    })).isRequired,
-  }).isRequired,
-};
-
-const fieldTypes = {
+const fieldTypes: Record<string, FieldType> = {
   select: {
     component: SelectComponent,
 
-    serializer: (values, name) => {
+    serializer: (values: Values, name: string): Values => {
       const value = values[name];
 
       return {
@@ -89,7 +106,11 @@ const fieldTypes = {
       };
     },
 
-    parser: (values, name, { options }) => {
+    parser: (
+      values: Values,
+      name: string,
+      { options }: SelectSchema,
+    ): Values => {
       const value = values[name];
 
       return {
@@ -107,7 +128,7 @@ const fieldTypes = {
   },
 };
 
-const getFieldType = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType = ({ type }: { type: string }) => fieldTypes[type];
 
 const fullSchema = {
   animal: {
@@ -138,11 +159,11 @@ const fullSchema = {
   },
 };
 
-const getFieldSchema = (fieldName) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema = (fieldName) => fullSchema[fieldName];
 
 const names = ['animal'];
 
-const delay = (ms) => new Promise((resolve) => {
+const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
     resolve();
   }, ms);
@@ -152,10 +173,10 @@ const initialValues = {
   animal: 2,
 };
 
-const Example = () => {
+const Example: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values): Promise<void> => {
     await delay(1000);
 
     setSubmittedValues(values);
@@ -174,7 +195,7 @@ const Example = () => {
           handleSubmit,
           submitting,
           renderField,
-        }) => (
+        }): ReactNode => (
           <form onSubmit={handleSubmit}>
             {renderField('animal')}
 

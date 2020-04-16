@@ -4,6 +4,7 @@
   "description": "Integration of react-final-form and @vtaits/form-schema",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "typings": "ts/index.d.ts",
   "files": [
     "/es",
     "/lib"
@@ -21,10 +22,15 @@
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "yarn build:cjs && yarn build:es",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\",\"src/**/__fixtures__\"",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\",\"src/**/__fixtures__\"",
-    "prepare": "yarn build"
+    "clean": "rimraf es lib ts",
+    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:ts": "tsc --declaration",
+    "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
+    "test:unit": "jest",
+    "test": "yarn test:unit",
+    "prepare": "yarn clean && yarn build"
   },
   "peerDependencies": {
     "final-form": "^4.0.0",
@@ -37,6 +43,9 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
+    "@storybook/react": "^5.3.18",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "final-form": "^4.19.1",
     "final-form-arrays": "^3.0.2",
     "react": "^16.13.1",

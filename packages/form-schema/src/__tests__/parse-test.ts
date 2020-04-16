@@ -1,4 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import parse from '../parse';
+import {
+  FieldType,
+  GetFieldSchema,
+  GetFieldType,
+  Values,
+} from '../types';
+
+type ParserArgs = [
+  Values,
+  string,
+  any,
+  GetFieldSchema,
+  GetFieldType,
+];
 
 const fieldSchemas = {
   value: {
@@ -14,7 +30,7 @@ const fieldSchemas = {
   },
 };
 
-const defaultGetFieldSchema = (name) => fieldSchemas[name];
+const defaultGetFieldSchema: GetFieldSchema = (name: string) => fieldSchemas[name];
 
 test('should return null for falsy values object', () => {
   expect(
@@ -24,7 +40,7 @@ test('should return null for falsy values object', () => {
         'value',
       ],
       defaultGetFieldSchema,
-      () => ({}),
+      (): FieldType => ({}),
     ),
   ).toEqual(null);
 });
@@ -40,7 +56,7 @@ test('should call default parser', () => {
         'value',
       ],
       defaultGetFieldSchema,
-      () => ({}),
+      (): FieldType => ({}),
     ),
   ).toEqual(
     {
@@ -69,16 +85,16 @@ test('should call default parser for empty value', () => {
 });
 
 test('should call redefined parser', () => {
-  const rawValues = {
+  const rawValues: Values = {
     value: 'test',
     value2: 'test2',
   };
 
-  const parser = jest.fn((values, name) => ({
+  const parser = jest.fn<any, ParserArgs>((values: Values, name: string): Values => ({
     [name]: values[name] + values[name],
   }));
 
-  const getFieldType = () => ({
+  const getFieldType: GetFieldType = () => ({
     parser,
   });
 
@@ -109,7 +125,7 @@ test('should call multiple parsers', () => {
   const fields = {
     testType1: {},
     testType2: {
-      parser: (values, name) => ({
+      parser: (values: Values, name: string): Values => ({
         [name]: values[name] + values[name],
       }),
     },
@@ -137,13 +153,16 @@ test('should call multiple parsers', () => {
 });
 
 test('should redefine getFieldSchema', () => {
-  const parser = jest.fn(() => ({}));
+  const parser = jest.fn<any, ParserArgs>(() => ({}));
   const parentGetFieldSchema = jest.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
   const getFieldSchema = jest.fn();
-  const createGetFieldSchema = jest.fn(() => getFieldSchema);
+  const createGetFieldSchema = jest.fn<any, [
+    any,
+    GetFieldSchema,
+  ]>(() => getFieldSchema);
 
   parse(
     {
@@ -156,7 +175,7 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
 
-    () => ({
+    (): FieldType => ({
       parser,
 
       createGetFieldSchema,

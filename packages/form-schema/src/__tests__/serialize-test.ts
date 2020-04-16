@@ -1,4 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import serialize from '../serialize';
+import {
+  GetFieldType,
+  GetFieldSchema,
+  Values,
+  FieldType,
+} from '../types';
+
+type SerializerArgs = [
+  Values,
+  string,
+  any,
+  GetFieldSchema,
+  GetFieldType,
+];
 
 test('should call default serializer', () => {
   expect(
@@ -12,7 +28,7 @@ test('should call default serializer', () => {
         'value',
       ],
 
-      () => ({
+      (): any => ({
         type: 'testType',
         name: 'value',
       }),
@@ -32,11 +48,11 @@ test('should call redefined serializer', () => {
     value2: 'test2',
   };
 
-  const serializer = jest.fn((values, name) => ({
+  const serializer = jest.fn<any, SerializerArgs>((values: Values, name: string): Values => ({
     [name]: values[name] + values[name],
   }));
 
-  const getFieldType = () => ({
+  const getFieldType: GetFieldType = () => ({
     serializer,
   });
 
@@ -45,7 +61,7 @@ test('should call redefined serializer', () => {
     name: 'value',
   };
 
-  const getFieldSchema = () => fieldSchema;
+  const getFieldSchema: GetFieldSchema = () => fieldSchema;
 
   expect(
     serialize(
@@ -85,7 +101,7 @@ test('should call multiple serializers', () => {
   const fieldTypes = {
     testType1: {},
     testType2: {
-      serializer: (values, name) => ({
+      serializer: (values: Values, name: string): Values => ({
         [name]: values[name] + values[name],
       }),
     },
@@ -103,12 +119,12 @@ test('should call multiple serializers', () => {
         'value2',
       ],
 
-      (name) => ({
+      (name): any => ({
         ...fields[name],
         name,
       }),
 
-      ({ type }) => fieldTypes[type],
+      ({ type }: { type: string }): FieldType => fieldTypes[type],
     ),
   ).toEqual(
     {
@@ -119,13 +135,16 @@ test('should call multiple serializers', () => {
 });
 
 test('should redefine getFieldSchema', () => {
-  const serializer = jest.fn(() => ({}));
+  const serializer = jest.fn<any, SerializerArgs>(() => ({}));
   const parentGetFieldSchema = jest.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
   const getFieldSchema = jest.fn();
-  const createGetFieldSchema = jest.fn(() => getFieldSchema);
+  const createGetFieldSchema = jest.fn<any, [
+    any,
+    GetFieldSchema,
+  ]>(() => getFieldSchema);
 
   serialize(
     {
@@ -138,7 +157,7 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
 
-    () => ({
+    (): FieldType => ({
       serializer,
 
       createGetFieldSchema,

@@ -1,26 +1,44 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import React, {
+  ReactNode,
+} from 'react';
+import {
+  shallow,
+  ShallowWrapper,
+} from 'enzyme';
 
 import { Form } from 'react-final-form';
+
+import {
+  GetFieldSchema,
+  GetFieldType,
+  Errors,
+  Values,
+} from '@vtaits/form-schema';
 
 import FormWrapper from '../Form';
 
 const defaultProps = {
   names: [],
-  children: () => null,
-  formSchemaParse: () => ({}),
-  onSubmit: Function.prototype,
+  children: (): ReactNode => null,
+  formSchemaParse: (): Values => ({}),
+  onSubmit: (): void => {},
 };
 
-const setup = (props) => {
-  const wrapper = shallow(
+type PageObject = {
+  getFormNode: () => ShallowWrapper;
+};
+
+const setup = (props: Record<string, any>): PageObject => {
+  const wrapper: ShallowWrapper = shallow(
     <FormWrapper
       {...defaultProps}
       {...props}
     />,
   );
 
-  const getFormNode = () => wrapper.find(Form);
+  const getFormNode = (): ShallowWrapper => wrapper.find(Form);
 
   return {
     getFormNode,
@@ -30,6 +48,10 @@ const setup = (props) => {
 afterEach(() => {
   jest.clearAllMocks();
 });
+
+type ParseArgs = [Values, string[], GetFieldSchema, GetFieldType];
+type SerializeArgs = [Values, string[], GetFieldSchema, GetFieldType];
+type MapFieldErrorsArgs = [Errors, string[], GetFieldSchema, GetFieldType, Values, Values];
 
 test('should provide parsed initial values', () => {
   const getFieldSchema = jest.fn();
@@ -44,7 +66,7 @@ test('should provide parsed initial values', () => {
     test2: 'value2',
   };
 
-  const parse = jest.fn(() => parsedValues);
+  const parse = jest.fn<Values, ParseArgs>(() => parsedValues);
 
   const page = setup({
     initialValues,
@@ -75,7 +97,7 @@ test('should provide empty object to parser if initial values not defined', () =
     test2: 'value2',
   };
 
-  const parse = jest.fn(() => parsedValues);
+  const parse = jest.fn<Values, ParseArgs>(() => parsedValues);
 
   const page = setup({
     getFieldSchema,
@@ -109,7 +131,7 @@ test('should submit successfully', async () => {
     test2: 'value2',
   };
 
-  const serialize = jest.fn(() => serializedValues);
+  const serialize = jest.fn<Values, ParseArgs>(() => serializedValues);
 
   const onSubmit = jest.fn();
   const mapErrors = jest.fn();
@@ -173,11 +195,18 @@ test('should submit with error', async () => {
     test3: 'error3',
   };
 
-  const serialize = jest.fn(() => serializedValues);
+  const serialize = jest.fn<any, SerializeArgs>(() => serializedValues);
 
-  const onSubmit = jest.fn(() => rawErrors);
-  const mapErrors = jest.fn(() => preparedErrors);
-  const mapFieldErrors = jest.fn(() => errors);
+  const onSubmit = jest.fn<any, [
+    Values,
+    Values,
+  ]>(() => rawErrors);
+  const mapErrors = jest.fn<any, [
+    Errors,
+    Values,
+    Values,
+  ]>(() => preparedErrors);
+  const mapFieldErrors = jest.fn<any, MapFieldErrorsArgs>(() => errors);
 
   const page = setup({
     getFieldSchema,
@@ -246,7 +275,12 @@ test('should provide form render props to children', () => {
 });
 
 test('should render field', () => {
-  const renderFieldBySchema = jest.fn(() => 'test field');
+  const renderFieldBySchema = jest.fn<any, [
+    GetFieldSchema,
+    GetFieldType,
+    string,
+    any,
+  ]>(() => 'test field');
 
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
