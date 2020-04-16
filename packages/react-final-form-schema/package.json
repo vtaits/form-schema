@@ -1,13 +1,14 @@
 {
   "name": "@vtaits/react-final-form-schema",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Integration of react-final-form and @vtaits/form-schema",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "ts/index.d.ts",
   "files": [
     "/es",
-    "/lib"
+    "/lib",
+    "/ts"
   ],
   "keywords": [
     "react",
