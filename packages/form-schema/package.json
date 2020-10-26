@@ -31,6 +31,6 @@
     "prepare": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.2"
+    "@babel/runtime": "^7.12.1"
   }
 }

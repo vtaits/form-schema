@@ -35,21 +35,21 @@
   },
   "peerDependencies": {
     "final-form": "^4.0.0",
-    "react": "^16.8.0",
+    "react": "^16.8.0 || ^17.0.0",
     "react-final-form": "^6.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
+    "@babel/runtime": "^7.12.1",
     "@vtaits/form-schema": "^0.1.0",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "@storybook/react": "^5.3.18",
+    "@storybook/react": "^6.0.27",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "final-form": "^4.19.1",
     "final-form-arrays": "^3.0.2",
-    "react": "^16.13.1",
+    "react": "^17.0.1",
     "react-final-form": "^6.4.0",
     "react-final-form-arrays": "^3.1.1",
     "react-select": "^3.1.0"
