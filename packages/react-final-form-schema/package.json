@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.1",
-    "@vtaits/form-schema": "^0.1.0"
+    "@vtaits/form-schema": "^0.2.0"
   },
   "devDependencies": {
     "@storybook/react": "^6.0.27",
