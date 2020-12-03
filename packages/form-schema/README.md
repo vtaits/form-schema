@@ -1,4 +1,6 @@
 [![NPM](https://img.shields.io/npm/v/@vtaits/form-schema.svg)](https://www.npmjs.com/package/@vtaits/form-schema)
+[![dependencies status](https://david-dm.org/vtaits/form-schema/status.svg?path=packages/form-schema)](https://david-dm.org/vtaits/form-schema?path=packages/form-schema)
+[![devDependencies status](https://david-dm.org/vtaits/form-schema/dev-status.svg?path=packages/form-schema)](https://david-dm.org/vtaits/form-schema?path=packages/form-schema&type=dev)
 [![Types](https://img.shields.io/npm/types/@vtaits/form-schema.svg)](https://www.npmjs.com/package/@vtaits/form-schema)
 
 # @vtaits/form-schema
