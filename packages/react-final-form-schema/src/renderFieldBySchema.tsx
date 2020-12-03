@@ -21,6 +21,7 @@ SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 Payload,
 >(
+  values: Values,
   getFieldSchema: GetFieldSchema<FieldSchema>,
   getFieldType: GetFieldType<
   FieldSchema,
@@ -49,13 +50,14 @@ Payload,
   } = fieldType;
 
   const computedGetFieldSchema: GetFieldSchema<FieldSchema> = createGetFieldSchema
-    ? createGetFieldSchema(fieldSchema, getFieldSchema)
+    ? createGetFieldSchema(fieldSchema, getFieldSchema, values, 'render')
     : getFieldSchema;
 
   const renderField: RenderField<Payload> = (
     childName,
     childPayload,
   ) => renderFieldBySchema(
+    values,
     computedGetFieldSchema,
     getFieldType,
     childName,

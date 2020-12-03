@@ -108,6 +108,7 @@ SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 Payload,
 > = (
+  values: Values,
   getFieldSchema: GetFieldSchema<FieldSchema>,
   getFieldType: GetFieldType<
   FieldSchema,

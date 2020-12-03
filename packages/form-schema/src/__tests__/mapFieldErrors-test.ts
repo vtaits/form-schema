@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
+  CreateGetFieldSchema,
   FieldType,
   GetFieldSchema,
   GetFieldType,
@@ -282,14 +283,14 @@ test('should redefine getFieldSchema', () => {
     name: 'value',
   }));
   const getFieldSchema = jest.fn();
-  const createGetFieldSchema = jest.fn<any, [
-    any,
-    GetFieldSchema<any>,
-  ]>(() => getFieldSchema);
+  const createGetFieldSchema = jest.fn<
+  any,
+  Parameters<CreateGetFieldSchema<any, any, any>>
+  >(() => getFieldSchema);
 
   mapFieldErrors(
     {
-      value: 'test',
+      value: 'error',
     },
 
     [
@@ -305,16 +306,25 @@ test('should redefine getFieldSchema', () => {
     }),
 
     {},
-    {},
+
+    {
+      value: 'test',
+    },
   );
 
   expect(errorsMapper.mock.calls.length).toBe(1);
   expect(errorsMapper.mock.calls[0][3]).toBe(getFieldSchema);
 
-  expect(createGetFieldSchema.mock.calls.length).toBe(1);
-  expect(createGetFieldSchema.mock.calls[0][0]).toEqual({
-    type: 'testType',
-    name: 'value',
-  });
-  expect(createGetFieldSchema.mock.calls[0][1]).toBe(parentGetFieldSchema);
+  expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
+  expect(createGetFieldSchema).toHaveBeenCalledWith(
+    {
+      type: 'testType',
+      name: 'value',
+    },
+    parentGetFieldSchema,
+    {
+      value: 'test',
+    },
+    'serialize',
+  );
 });

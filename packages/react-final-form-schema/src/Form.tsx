@@ -3,6 +3,7 @@
 import {
   useMemo,
   useCallback,
+  ReactNode,
 } from 'react';
 import type {
   ReactElement,
@@ -26,7 +27,6 @@ import type {
 import type {
   MapErrors,
   FormProps,
-  RenderField,
 } from './types';
 
 import renderFieldBySchema from './renderFieldBySchema';
@@ -116,7 +116,12 @@ Payload,
     mapErrors,
   ]);
 
-  const renderField = useCallback<RenderField<Payload>>((name, payload) => renderFieldBySchemaProp(
+  const renderField = useCallback((
+    values: Values,
+    name: string,
+    payload: Payload,
+  ): ReactNode => renderFieldBySchemaProp(
+    values,
     getFieldSchema,
     getFieldType,
     name,
@@ -126,9 +131,12 @@ Payload,
     getFieldType,
   ]);
 
-  const renderForm = useCallback((formRenderProps) => children({
+  const renderForm = useCallback<FinalFormProps<Values, Values>['render']>((formRenderProps) => children({
     ...formRenderProps,
-    renderField,
+    renderField: (
+      name: string,
+      payload: Payload,
+    ): ReactNode => renderField(formRenderProps.values, name, payload),
   }), [children, renderField]);
 
   return (

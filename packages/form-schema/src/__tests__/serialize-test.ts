@@ -2,6 +2,7 @@
 
 import serialize from '../serialize';
 import {
+  CreateGetFieldSchema,
   GetFieldType,
   GetFieldSchema,
   FieldType,
@@ -137,10 +138,10 @@ test('should redefine getFieldSchema', () => {
     name: 'value',
   }));
   const getFieldSchema = jest.fn();
-  const createGetFieldSchema = jest.fn<any, [
-    any,
-    GetFieldSchema<any>,
-  ]>(() => getFieldSchema);
+  const createGetFieldSchema = jest.fn<
+  any,
+  Parameters<CreateGetFieldSchema<any, any, any>>
+  >(() => getFieldSchema);
 
   serialize(
     {
@@ -163,10 +164,16 @@ test('should redefine getFieldSchema', () => {
   expect(serializer.mock.calls.length).toBe(1);
   expect(serializer.mock.calls[0][3]).toBe(getFieldSchema);
 
-  expect(createGetFieldSchema.mock.calls.length).toBe(1);
-  expect(createGetFieldSchema.mock.calls[0][0]).toEqual({
-    type: 'testType',
-    name: 'value',
-  });
-  expect(createGetFieldSchema.mock.calls[0][1]).toBe(parentGetFieldSchema);
+  expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
+  expect(createGetFieldSchema).toHaveBeenCalledWith(
+    {
+      type: 'testType',
+      name: 'value',
+    },
+    parentGetFieldSchema,
+    {
+      value: 'test',
+    },
+    'serialize',
+  );
 });

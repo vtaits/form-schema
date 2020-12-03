@@ -2,7 +2,6 @@
 
 import type {
   FC,
-  ReactNode,
 } from 'react';
 import {
   shallow,
@@ -12,18 +11,24 @@ import type {
 } from 'enzyme';
 
 import type {
-  GetFieldSchema,
+  CreateGetFieldSchema,
 } from '@vtaits/form-schema';
 
 import renderFieldBySchema from '../renderFieldBySchema';
 
 import {
   FieldComponentProps,
-  RenderField,
 } from '../types';
 
 test('should render field', () => {
-  const FieldComponent: FC<FieldComponentProps> = () => <div />;
+  const FieldComponent: FC<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >> = () => <div />;
 
   const fieldType = {
     component: FieldComponent,
@@ -36,15 +41,21 @@ test('should render field', () => {
   ]>(() => fieldSchema);
   const getFieldType = jest.fn<any, [any]>(() => fieldType);
 
-  const renderedField = renderFieldBySchema(getFieldSchema, getFieldType, 'testField', 'testPayload');
+  const renderedField = renderFieldBySchema(
+    {},
+    getFieldSchema,
+    getFieldType,
+    'testField',
+    'testPayload',
+  );
 
-  const fieldWrapper: ShallowWrapper = shallow(
+  const fieldWrapper = shallow(
     <div>
       {renderedField}
     </div>,
   );
 
-  const fieldNode: ShallowWrapper = fieldWrapper.find(FieldComponent);
+  const fieldNode = fieldWrapper.find(FieldComponent);
 
   expect(fieldNode.prop('name')).toBe('testField');
   expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
@@ -60,8 +71,22 @@ test('should render field', () => {
 });
 
 test('should render field with redefined getFieldSchema for children', () => {
-  const WrapperComponent: FC<FieldComponentProps> = () => <div />;
-  const ChildComponent: FC<FieldComponentProps> = () => <div />;
+  const WrapperComponent: FC<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >> = () => <div />;
+  const ChildComponent: FC<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >> = () => <div />;
 
   const wrapperSchema = {
     type: 'wrapper',
@@ -75,10 +100,10 @@ test('should render field with redefined getFieldSchema for children', () => {
     string,
   ]>(() => childSchema);
 
-  const createGetFieldSchema = jest.fn<any, [
-    any,
-    GetFieldSchema,
-  ]>(() => nextGetFieldSchema);
+  const createGetFieldSchema = jest.fn<
+  any,
+  Parameters<CreateGetFieldSchema<any, any, any>>
+  >(() => nextGetFieldSchema);
 
   const fieldTypes = {
     wrapper: {
@@ -96,9 +121,17 @@ test('should render field with redefined getFieldSchema for children', () => {
   ]>(() => wrapperSchema);
   const getFieldType = jest.fn(({ type }) => fieldTypes[type]);
 
-  const renderedField = renderFieldBySchema(getFieldSchema, getFieldType, 'wrapperField', 'testPayload1');
+  const renderedField = renderFieldBySchema(
+    {
+      fieldName: 'value',
+    },
+    getFieldSchema,
+    getFieldType,
+    'wrapperField',
+    'testPayload1',
+  );
 
-  const fieldWrapper: ShallowWrapper = shallow(
+  const fieldWrapper = shallow(
     <div>
       {renderedField}
     </div>,
@@ -112,9 +145,15 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(wrapperNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
   expect(wrapperNode.prop('getFieldType')).toBe(getFieldType);
 
-  expect(createGetFieldSchema.mock.calls.length).toBe(1);
-  expect(createGetFieldSchema.mock.calls[0][0]).toBe(wrapperSchema);
-  expect(createGetFieldSchema.mock.calls[0][1]).toBe(getFieldSchema);
+  expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
+  expect(createGetFieldSchema).toHaveBeenCalledWith(
+    wrapperSchema,
+    getFieldSchema,
+    {
+      fieldName: 'value',
+    },
+    'render',
+  );
 
   expect(getFieldSchema.mock.calls.length).toBe(1);
   expect(getFieldSchema.mock.calls[0][0]).toBe('wrapperField');
@@ -122,11 +161,11 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(getFieldType.mock.calls.length).toBe(1);
   expect(getFieldType.mock.calls[0][0]).toBe(wrapperSchema);
 
-  const renderField: RenderField = wrapperNode.prop('renderField');
+  const renderField = wrapperNode.prop('renderField');
 
-  const renderedChild: ReactNode = renderField('childField', 'testPayload2');
+  const renderedChild = renderField('childField', 'testPayload2');
 
-  const childWrapper: ShallowWrapper = shallow(
+  const childWrapper = shallow(
     <div>
       {renderedChild}
     </div>,

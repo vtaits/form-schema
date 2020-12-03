@@ -15,9 +15,17 @@ SerializedValues,
 Errors
 >;
 
-export type CreateGetFieldSchema<FieldSchema> = (
+export type PhaseType = 'parse' | 'serialize' | 'render';
+
+export type CreateGetFieldSchema<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+> = (
   fieldSchema: FieldSchema,
   getFieldSchema: GetFieldSchema<FieldSchema>,
+  values: Values | RawValues,
+  phase: PhaseType,
 ) => GetFieldSchema<FieldSchema>;
 
 export type Serializer<
@@ -89,7 +97,7 @@ RawValues extends Record<string, any>,
 SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 > = {
-  createGetFieldSchema?: CreateGetFieldSchema<FieldSchema>;
+  createGetFieldSchema?: CreateGetFieldSchema<FieldSchema, Values, RawValues>;
   serializer?: Serializer<
   FieldSchema,
   Values,

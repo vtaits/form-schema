@@ -87,7 +87,12 @@ Type declaration is an object with next params:
   }
   ```
 
-- `createGetFieldSchema` - function for create `getFieldSchema` for nested fields. Can be helpful for arrays of repeating fields etc.
+- `createGetFieldSchema` - function for create `getFieldSchema` for nested fields. Can be helpful for arrays of repeating fields etc. Arguments:
+
+  1. `fieldSchema` - schema of current field;
+  2. `getFieldSchema` - default `getFieldSchema`;
+  3. `values` - current values (values of form during render and serialization or raw values during parsing);
+  4. `phase` - one of next values: `'parse'`, `'serialize'`, `'render'`;
 
 ## Usage
 

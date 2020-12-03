@@ -313,7 +313,11 @@ test('should render field', () => {
 
   const formNode = page.getFormNode();
 
-  formNode.prop('children')({} as any);
+  formNode.prop('children')({
+    values: {
+      fieldName: 'value',
+    },
+  } as any);
 
   const {
     renderField,
@@ -323,9 +327,14 @@ test('should render field', () => {
 
   expect(renderedField).toBe('test field');
 
-  expect(renderFieldBySchema.mock.calls.length).toBe(1);
-  expect(renderFieldBySchema.mock.calls[0][0]).toBe(getFieldSchema);
-  expect(renderFieldBySchema.mock.calls[0][1]).toBe(getFieldType);
-  expect(renderFieldBySchema.mock.calls[0][2]).toBe('testField');
-  expect(renderFieldBySchema.mock.calls[0][3]).toBe('testPayload');
+  expect(renderFieldBySchema).toHaveBeenCalledTimes(1);
+  expect(renderFieldBySchema).toHaveBeenCalledWith(
+    {
+      fieldName: 'value',
+    },
+    getFieldSchema,
+    getFieldType,
+    'testField',
+    'testPayload',
+  );
 });
