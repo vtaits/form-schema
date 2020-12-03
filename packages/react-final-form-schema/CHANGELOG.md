@@ -4,6 +4,12 @@
 
 - Added new arguments to `createGetFieldSchema`: `values`, `phase`
 
+### Internal changes
+
+- Migrate to [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)
+
 ### Breaking changes
 
 - Make `typescript` typings more strict
+
+- Drop `react` less than `16.14.0`
