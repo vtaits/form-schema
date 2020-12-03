@@ -1,44 +1,57 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, {
+import type {
   ReactNode,
 } from 'react';
 import {
   shallow,
+} from 'enzyme';
+import type {
   ShallowWrapper,
 } from 'enzyme';
+import type {
+  serialize as formSchemaSerialize,
+  parse as formSchemaParse,
+  mapFieldErrors as formSchemaMapFieldErrors,
+} from '@vtaits/form-schema';
 
 import { Form } from 'react-final-form';
 
-import {
-  GetFieldSchema,
-  GetFieldType,
-  Errors,
-  Values,
-} from '@vtaits/form-schema';
-
 import FormWrapper from '../Form';
+import type {
+  FormProps,
+  RenderFieldBySchema,
+} from '../types';
 
-const defaultProps = {
+type Values = Record<string, any>;
+type Errors = Record<string, any>;
+
+const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
   names: [],
   children: (): ReactNode => null,
-  formSchemaParse: (): Values => ({}),
+  formSchemaParse: (): any => ({}),
   onSubmit: (): void => {},
 };
 
 type PageObject = {
-  getFormNode: () => ShallowWrapper;
+  getFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
 };
 
 const setup = (props: Record<string, any>): PageObject => {
-  const wrapper: ShallowWrapper = shallow(
+  const wrapper = shallow(
     <FormWrapper
       {...defaultProps}
       {...props}
     />,
   );
 
-  const getFormNode = (): ShallowWrapper => wrapper.find(Form);
+  const getFormNode = (): ShallowWrapper<FormProps<
+  any,
+  Values,
+  Values,
+  Values,
+  Errors,
+  any>> => wrapper.find(Form);
 
   return {
     getFormNode,
@@ -49,9 +62,9 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-type ParseArgs = [Values, string[], GetFieldSchema, GetFieldType];
-type SerializeArgs = [Values, string[], GetFieldSchema, GetFieldType];
-type MapFieldErrorsArgs = [Errors, string[], GetFieldSchema, GetFieldType, Values, Values];
+type ParseArgs = Parameters<typeof formSchemaParse>;
+type SerializeArgs = Parameters<typeof formSchemaSerialize>;
+type MapFieldErrorsArgs = Parameters<typeof formSchemaMapFieldErrors>;
 
 test('should provide parsed initial values', () => {
   const getFieldSchema = jest.fn();
@@ -152,7 +165,7 @@ test('should submit successfully', async () => {
 
   const formNode = page.getFormNode();
 
-  const result = await formNode.prop('onSubmit')(values);
+  const result = await formNode.prop('onSubmit')(values, {});
 
   expect(result).toBeFalsy();
 
@@ -223,7 +236,7 @@ test('should submit with error', async () => {
 
   const formNode = page.getFormNode();
 
-  const result = await formNode.prop('onSubmit')(values);
+  const result = await formNode.prop('onSubmit')(values, {});
 
   expect(result).toBe(errors);
 
@@ -268,19 +281,21 @@ test('should provide form render props to children', () => {
 
   formNode.prop('children')({
     testProp: 'testValue',
-  });
+  } as any);
 
   expect(children.mock.calls.length).toBe(1);
   expect(children.mock.calls[0][0].testProp).toBe('testValue');
 });
 
 test('should render field', () => {
-  const renderFieldBySchema = jest.fn<any, [
-    GetFieldSchema,
-    GetFieldType,
-    string,
-    any,
-  ]>(() => 'test field');
+  const renderFieldBySchema = jest.fn<any, Parameters<RenderFieldBySchema<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >>>(() => 'test field');
 
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
@@ -298,7 +313,7 @@ test('should render field', () => {
 
   const formNode = page.getFormNode();
 
-  formNode.prop('children')({});
+  formNode.prop('children')({} as any);
 
   const {
     renderField,

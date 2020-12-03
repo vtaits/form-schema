@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type {
   GetFieldSchema,
   GetFieldType,
-  Errors,
-  Values,
   ErrorsMapper,
-  FieldType,
 } from './types';
 
-const defaultFieldErrorsMapper: ErrorsMapper = (
-  errors: Errors,
-  name: string,
+const defaultFieldErrorsMapper: ErrorsMapper<any, any, any, any, any> = (
+  errors,
+  name,
 ) => {
   if (typeof errors[name] !== 'undefined') {
     return {
@@ -20,25 +19,36 @@ const defaultFieldErrorsMapper: ErrorsMapper = (
   return {};
 };
 
-const mapFieldErrors = (
-  errors: Errors,
-  names: string[],
-  getFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
-  values: Values,
-  rawValues: Values,
-): Errors => {
+const mapFieldErrors = <
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+>(
+    errors: Errors,
+    names: string[],
+    getFieldSchema: GetFieldSchema<FieldSchema>,
+    getFieldType: GetFieldType<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors
+    >,
+    values: SerializedValues,
+    rawValues: Values,
+  ): Errors => {
   const res = {
     ...errors,
   };
 
-  names.forEach((name: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const fieldSchema: any = getFieldSchema(name);
-    const fieldType: FieldType = getFieldType(fieldSchema);
+  names.forEach((name) => {
+    const fieldSchema = getFieldSchema(name);
+    const fieldType = getFieldType(fieldSchema);
 
-    const errorsMapper: ErrorsMapper = fieldType.errorsMapper || defaultFieldErrorsMapper;
-    const computedGetFieldSchema: GetFieldSchema = fieldType.createGetFieldSchema
+    const errorsMapper = fieldType.errorsMapper || defaultFieldErrorsMapper;
+    const computedGetFieldSchema = fieldType.createGetFieldSchema
       ? fieldType.createGetFieldSchema(fieldSchema, getFieldSchema)
       : getFieldSchema;
 

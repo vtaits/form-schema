@@ -1,45 +1,114 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export type GetFieldSchema = (name: string) => any;
-export type GetFieldType = (fieldSchema: any) => FieldType;
+export type GetFieldSchema<FieldSchema> = (name: string) => FieldSchema;
+export type GetFieldType<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = (fieldSchema: FieldSchema) => FieldType<
+FieldSchema,
+Values,
+RawValues,
+SerializedValues,
+Errors
+>;
 
-export type Values = Record<string, any>;
-export type Errors = Record<string, any>;
+export type CreateGetFieldSchema<FieldSchema> = (
+  fieldSchema: FieldSchema,
+  getFieldSchema: GetFieldSchema<FieldSchema>,
+) => GetFieldSchema<FieldSchema>;
 
-export type CreateGetFieldSchema = (
-  fieldSchema: any,
-  getFieldSchema: GetFieldSchema,
-) => GetFieldSchema;
-
-export type Serializer = (
+export type Serializer<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = (
   values: Values,
   name: string,
-  fieldSchema: any,
-  computedGetFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
-) => Values;
+  fieldSchema: FieldSchema,
+  computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >,
+) => SerializedValues;
 
-export type Parser = (
-  values: Values,
+export type Parser<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = (
+  values: RawValues,
   name: string,
-  fieldSchema: any,
-  computedGetFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
+  fieldSchema: FieldSchema,
+  computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >,
 ) => Values;
 
-export type ErrorsMapper = (
+export type ErrorsMapper<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = (
   res: Errors,
   name: string,
-  fieldSchema: any,
-  computedGetFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
-  values: Values,
+  fieldSchema: FieldSchema,
+  computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >,
+  values: SerializedValues,
   rawValues: Values,
 ) => Errors;
 
-export type FieldType = {
-  createGetFieldSchema?: CreateGetFieldSchema;
-  serializer?: Serializer;
-  parser?: Parser;
-  errorsMapper?: ErrorsMapper;
+export type FieldType<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = {
+  createGetFieldSchema?: CreateGetFieldSchema<FieldSchema>;
+  serializer?: Serializer<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >;
+  parser?: Parser<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >;
+  errorsMapper?: ErrorsMapper<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >;
 };

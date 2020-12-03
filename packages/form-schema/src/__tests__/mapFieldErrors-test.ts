@@ -1,24 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {
-  Errors,
   FieldType,
   GetFieldSchema,
   GetFieldType,
-  Values,
+  ErrorsMapper,
 } from '../types';
 
 import mapFieldErrors from '../mapFieldErrors';
 
-type ErrorsMapperArgs = [
-  Errors,
-  string,
-  any,
-  GetFieldSchema,
-  GetFieldType,
-  Values,
-  Values,
-];
+type Errors = Record<string, any>;
+type Values = Record<string, any>;
+
+type ErrorsMapperArgs = Parameters<ErrorsMapper<any, any, any, any, any>>;
 
 test('should call default errors mapper', () => {
   expect(
@@ -34,7 +28,7 @@ test('should call default errors mapper', () => {
         type: 'testType',
         name: 'value',
       }),
-      (): FieldType => ({}),
+      (): FieldType<any, any, any, any, any> => ({}),
       {},
       {},
     ),
@@ -113,7 +107,7 @@ test('should call multiple errors mappers', () => {
         ...fields[name],
         name,
       }),
-      ({ type }: { type: string }): FieldType => fieldTypes[type],
+      ({ type }: { type: string }): FieldType<any, any, any, any, any> => fieldTypes[type],
       {},
       {},
     ),
@@ -160,7 +154,7 @@ test('should call multiple nested errors mappers', () => {
     },
   };
 
-  const fieldTypes: Record<string, FieldType> = {
+  const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
     wrapper: {
       errorsMapper: (
         errors: Errors,
@@ -169,8 +163,8 @@ test('should call multiple nested errors mappers', () => {
           childNames,
           childs,
         }: any,
-        getFieldSchema: GetFieldSchema,
-        getFieldType: GetFieldType,
+        getFieldSchema: GetFieldSchema<any>,
+        getFieldType: GetFieldType<any, any, any, any, any>,
       ): Errors => mapFieldErrors(
         errors,
         childNames,
@@ -216,7 +210,7 @@ test('should call multiple nested errors mappers', () => {
         name,
       }),
 
-      ({ type }: { type: string }): FieldType => fieldTypes[type],
+      ({ type }: { type: string }): FieldType<any, any, any, any, any> => fieldTypes[type],
 
       {},
       {},
@@ -244,12 +238,12 @@ test('should provide correct arguments to errorsMapper', () => {
     value: 'testValueRaw',
   };
 
-  const getFieldSchema: GetFieldSchema = () => ({
+  const getFieldSchema: GetFieldSchema<any> = () => ({
     type: 'testType',
     name: 'value',
   });
 
-  const getFieldType: GetFieldType = () => ({
+  const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
     errorsMapper,
   });
 
@@ -290,7 +284,7 @@ test('should redefine getFieldSchema', () => {
   const getFieldSchema = jest.fn();
   const createGetFieldSchema = jest.fn<any, [
     any,
-    GetFieldSchema,
+    GetFieldSchema<any>,
   ]>(() => getFieldSchema);
 
   mapFieldErrors(

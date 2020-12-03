@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/prop-types */
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import type {
   FC,
   ReactNode,

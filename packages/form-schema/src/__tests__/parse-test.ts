@@ -5,16 +5,12 @@ import {
   FieldType,
   GetFieldSchema,
   GetFieldType,
-  Values,
+  Parser,
 } from '../types';
 
-type ParserArgs = [
-  Values,
-  string,
-  any,
-  GetFieldSchema,
-  GetFieldType,
-];
+type Values = Record<string, any>;
+
+type ParserArgs = Parameters<Parser<any, any, any, any, any>>;
 
 const fieldSchemas = {
   value: {
@@ -30,7 +26,7 @@ const fieldSchemas = {
   },
 };
 
-const defaultGetFieldSchema: GetFieldSchema = (name: string) => fieldSchemas[name];
+const defaultGetFieldSchema: GetFieldSchema<any> = (name: string) => fieldSchemas[name];
 
 test('should return null for falsy values object', () => {
   expect(
@@ -40,7 +36,7 @@ test('should return null for falsy values object', () => {
         'value',
       ],
       defaultGetFieldSchema,
-      (): FieldType => ({}),
+      (): FieldType<any, any, any, any, any> => ({}),
     ),
   ).toEqual(null);
 });
@@ -56,7 +52,7 @@ test('should call default parser', () => {
         'value',
       ],
       defaultGetFieldSchema,
-      (): FieldType => ({}),
+      (): FieldType<any, any, any, any, any> => ({}),
     ),
   ).toEqual(
     {
@@ -94,7 +90,7 @@ test('should call redefined parser', () => {
     [name]: values[name] + values[name],
   }));
 
-  const getFieldType: GetFieldType = () => ({
+  const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
     parser,
   });
 
@@ -161,7 +157,7 @@ test('should redefine getFieldSchema', () => {
   const getFieldSchema = jest.fn();
   const createGetFieldSchema = jest.fn<any, [
     any,
-    GetFieldSchema,
+    GetFieldSchema<any>,
   ]>(() => getFieldSchema);
 
   parse(
@@ -175,7 +171,7 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
 
-    (): FieldType => ({
+    (): FieldType<any, any, any, any, any> => ({
       parser,
 
       createGetFieldSchema,

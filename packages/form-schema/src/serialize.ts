@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type {
   GetFieldSchema,
   GetFieldType,
-  Values,
   Serializer,
-  FieldType,
 } from './types';
 
-const defaultSerializer: Serializer = (values, name) => {
+const defaultSerializer: Serializer<any, any, any, any, any> = (
+  values,
+  name,
+) => {
   if (typeof values[name] !== 'undefined') {
     return {
       [name]: values[name],
@@ -16,21 +19,32 @@ const defaultSerializer: Serializer = (values, name) => {
   return {};
 };
 
-const serialize = (
-  values: Values,
-  names: string[],
-  getFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
-): Values => {
-  const res = {};
+const serialize = <
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+>(
+    values: Values,
+    names: string[],
+    getFieldSchema: GetFieldSchema<FieldSchema>,
+    getFieldType: GetFieldType<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors
+    >,
+  ): SerializedValues => {
+  const res = {} as SerializedValues;
 
-  names.forEach((name: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const fieldSchema: any = getFieldSchema(name);
-    const fieldType: FieldType = getFieldType(fieldSchema);
+  names.forEach((name) => {
+    const fieldSchema = getFieldSchema(name);
+    const fieldType = getFieldType(fieldSchema);
 
-    const serializer: Serializer = fieldType.serializer || defaultSerializer;
-    const computedGetFieldSchema: GetFieldSchema = fieldType.createGetFieldSchema
+    const serializer = fieldType.serializer || defaultSerializer;
+    const computedGetFieldSchema = fieldType.createGetFieldSchema
       ? fieldType.createGetFieldSchema(fieldSchema, getFieldSchema)
       : getFieldSchema;
 

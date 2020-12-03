@@ -4,17 +4,13 @@ import serialize from '../serialize';
 import {
   GetFieldType,
   GetFieldSchema,
-  Values,
   FieldType,
+  Serializer,
 } from '../types';
 
-type SerializerArgs = [
-  Values,
-  string,
-  any,
-  GetFieldSchema,
-  GetFieldType,
-];
+type Values = Record<string, any>;
+
+type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
 
 test('should call default serializer', () => {
   expect(
@@ -52,7 +48,7 @@ test('should call redefined serializer', () => {
     [name]: values[name] + values[name],
   }));
 
-  const getFieldType: GetFieldType = () => ({
+  const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
     serializer,
   });
 
@@ -61,7 +57,7 @@ test('should call redefined serializer', () => {
     name: 'value',
   };
 
-  const getFieldSchema: GetFieldSchema = () => fieldSchema;
+  const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
   expect(
     serialize(
@@ -124,7 +120,7 @@ test('should call multiple serializers', () => {
         name,
       }),
 
-      ({ type }: { type: string }): FieldType => fieldTypes[type],
+      ({ type }: { type: string }): FieldType<any, any, any, any, any> => fieldTypes[type],
     ),
   ).toEqual(
     {
@@ -143,7 +139,7 @@ test('should redefine getFieldSchema', () => {
   const getFieldSchema = jest.fn();
   const createGetFieldSchema = jest.fn<any, [
     any,
-    GetFieldSchema,
+    GetFieldSchema<any>,
   ]>(() => getFieldSchema);
 
   serialize(
@@ -157,7 +153,7 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
 
-    (): FieldType => ({
+    (): FieldType<any, any, any, any, any> => ({
       serializer,
 
       createGetFieldSchema,

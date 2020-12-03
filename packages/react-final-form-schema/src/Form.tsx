@@ -1,13 +1,17 @@
-import React, {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import {
   useMemo,
   useCallback,
 } from 'react';
 import type {
-  FC,
+  ReactElement,
 } from 'react';
-import PropTypes from 'prop-types';
 import {
   Form,
+} from 'react-final-form';
+import type {
+  FormProps as FinalFormProps,
 } from 'react-final-form';
 
 import {
@@ -16,8 +20,6 @@ import {
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
 import type {
-  Errors,
-  Values,
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
@@ -29,10 +31,26 @@ import type {
 
 import renderFieldBySchema from './renderFieldBySchema';
 
-export const defaultGetFieldSchema: GetFieldSchema = (fieldSchema) => fieldSchema;
-export const defaultMapErrors: MapErrors = (errors) => errors;
+export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) => fieldSchema;
+export const defaultMapErrors: MapErrors<any, any, any> = (errors) => errors;
 
-const FormWrapper: FC<FormProps> = (props) => {
+function FormWrapper<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+Payload,
+>(
+  props: FormProps<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors,
+  Payload
+  >,
+): ReactElement {
   const {
     names,
     getFieldSchema,
@@ -53,7 +71,7 @@ const FormWrapper: FC<FormProps> = (props) => {
     ...rest
   } = props;
 
-  const initialValues: Values = useMemo(() => parse(
+  const initialValues = useMemo(() => parse(
     initialValuesProp || {},
     names,
     getFieldSchema,
@@ -65,21 +83,22 @@ const FormWrapper: FC<FormProps> = (props) => {
     getFieldType,
   ]);
 
-  const onSubmit = useCallback(async (values) => {
-    const valuesForSubmit: Values = serialize(values, names, getFieldSchema, getFieldType);
+  const onSubmit = useCallback<FinalFormProps<Values, Values>['onSubmit']>(async (values) => {
+    const valuesForSubmit = serialize(values, names, getFieldSchema, getFieldType);
 
-    const rawErrors: Errors | void | null = await onSubmitProp(valuesForSubmit, values);
+    const rawErrors = await onSubmitProp(valuesForSubmit, values);
 
     if (!rawErrors) {
       return null;
     }
 
-    const preparedErrors: Errors = mapErrors(
-      rawErrors,
+    const preparedErrors = mapErrors(
+      rawErrors as Errors,
       valuesForSubmit,
       values,
     );
-    const mappedErrors: Errors = mapFieldErrors(
+
+    const mappedErrors = mapFieldErrors(
       preparedErrors,
       names,
       getFieldSchema,
@@ -97,7 +116,7 @@ const FormWrapper: FC<FormProps> = (props) => {
     mapErrors,
   ]);
 
-  const renderField: RenderField = useCallback((name, payload) => renderFieldBySchemaProp(
+  const renderField = useCallback<RenderField<Payload>>((name, payload) => renderFieldBySchemaProp(
     getFieldSchema,
     getFieldType,
     name,
@@ -121,26 +140,7 @@ const FormWrapper: FC<FormProps> = (props) => {
       {renderForm}
     </Form>
   );
-};
-
-FormWrapper.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  initialValues: PropTypes.object,
-  getFieldSchema: PropTypes.func,
-  getFieldType: PropTypes.func.isRequired,
-
-  names: PropTypes.arrayOf(PropTypes.any).isRequired,
-
-  mapErrors: PropTypes.func,
-
-  renderFieldBySchema: PropTypes.func,
-  formSchemaSerialize: PropTypes.func,
-  formSchemaParse: PropTypes.func,
-  formSchemaMapFieldErrors: PropTypes.func,
-
-  children: PropTypes.func.isRequired,
-};
+}
 
 FormWrapper.defaultProps = {
   initialValues: null,

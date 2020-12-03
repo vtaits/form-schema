@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, {
+import type {
   FC,
   ReactNode,
 } from 'react';
 import {
   shallow,
+} from 'enzyme';
+import type {
   ShallowWrapper,
 } from 'enzyme';
 
-import {
+import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 

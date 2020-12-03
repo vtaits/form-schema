@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type {
   GetFieldSchema,
   GetFieldType,
-  Values,
   Parser,
-  FieldType,
 } from './types';
 
-const defaultParser: Parser = (values, name) => {
+const defaultParser: Parser<any, any, any, any, any> = (
+  values,
+  name,
+) => {
   if (typeof values[name] !== 'undefined') {
     return {
       [name]: values[name],
@@ -18,25 +21,36 @@ const defaultParser: Parser = (values, name) => {
   };
 };
 
-const parse = (
-  values: Values | null,
-  names: string[],
-  getFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
-): Values => {
+const parse = <
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+>(
+    values: RawValues | null,
+    names: string[],
+    getFieldSchema: GetFieldSchema<FieldSchema>,
+    getFieldType: GetFieldType<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors
+    >,
+  ): Values => {
   if (!values) {
     return null;
   }
 
-  const res = {};
+  const res = {} as Values;
 
-  names.forEach((name: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const fieldSchema: any = getFieldSchema(name);
-    const fieldType: FieldType = getFieldType(fieldSchema);
+  names.forEach((name) => {
+    const fieldSchema = getFieldSchema(name);
+    const fieldType = getFieldType(fieldSchema);
 
-    const parser: Parser = fieldType.parser || defaultParser;
-    const computedGetFieldSchema: GetFieldSchema = fieldType.createGetFieldSchema
+    const parser = fieldType.parser || defaultParser;
+    const computedGetFieldSchema = fieldType.createGetFieldSchema
       ? fieldType.createGetFieldSchema(fieldSchema, getFieldSchema)
       : getFieldSchema;
 

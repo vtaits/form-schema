@@ -17,58 +17,158 @@ import {
 } from '@vtaits/form-schema';
 import type {
   GetFieldSchema,
-  Errors,
-  Values,
   FieldType as FieldTypeBase,
 } from '@vtaits/form-schema';
 
-export type GetFieldType = (fieldSchema: any) => FieldType;
+export type GetFieldType<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+Payload,
+> = (fieldSchema: FieldSchema) => FieldType<
+FieldSchema,
+Values,
+RawValues,
+SerializedValues,
+Errors,
+Payload
+>;
 
-export type RenderField = (
+export type RenderField<Payload> = (
   name: string,
-  payload?: any,
+  payload?: Payload,
 ) => ReactNode;
 
-export type FieldComponentProps = {
+export type FieldComponentProps<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+Payload,
+> = {
   name: string;
-  fieldSchema: any;
-  payload?: any;
-  getFieldSchema: GetFieldSchema;
-  getFieldType: GetFieldType;
-  renderField: RenderField;
+  fieldSchema: FieldSchema;
+  payload?: Payload;
+  getFieldSchema: GetFieldSchema<FieldSchema>;
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors,
+  Payload
+  >;
+  renderField: RenderField<Payload>;
 };
 
-export type MapErrors = (
+export type MapErrors<
+Values extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = (
   rawErrors: Errors,
-  valuesForSubmit: Values,
+  valuesForSubmit: SerializedValues,
   values: Values,
 ) => Errors;
 
-export type FieldType = FieldTypeBase & {
-  component: ComponentType<FieldComponentProps>;
-};
+export type FieldType<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+Payload,
+> =
+  & FieldTypeBase<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >
+  & {
+    component: ComponentType<FieldComponentProps<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors,
+    Payload
+    >>;
+  };
 
-export type RenderFieldBySchema = (
-  getFieldSchema: GetFieldSchema,
-  getFieldType: GetFieldType,
+export type RenderFieldBySchema<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+Payload,
+> = (
+  getFieldSchema: GetFieldSchema<FieldSchema>,
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors,
+  Payload
+  >,
   name: string,
-  payload?: any,
+  payload?: Payload,
 ) => ReactNode;
 
-export type FormRenderProps = FinalFormRenderProps & {
-  renderField: RenderField;
-};
+export type FormRenderProps<Values extends Record<string, any>, Payload> =
+  & FinalFormRenderProps<Values>
+  & {
+    renderField: RenderField<Payload>;
+  };
 
-export type FormProps = FinalFormProps & {
-  names: string[];
-  getFieldSchema?: GetFieldSchema;
-  getFieldType?: GetFieldType;
+export type FormProps<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+Payload,
+> =
+  & FinalFormProps<Values, Values>
+  & {
+    names: string[];
+    getFieldSchema?: GetFieldSchema<FieldSchema>;
+    getFieldType?: GetFieldType<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors,
+    Payload
+    >;
 
-  renderFieldBySchema?: RenderFieldBySchema;
-  formSchemaSerialize?: typeof formSchemaSerialize;
-  formSchemaParse?: typeof formSchemaParse;
-  formSchemaMapFieldErrors?: typeof formSchemaMapFieldErrors;
-  mapErrors?: MapErrors;
+    renderFieldBySchema?: RenderFieldBySchema<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors,
+    Payload
+    >;
+    formSchemaSerialize?: typeof formSchemaSerialize;
+    formSchemaParse?: typeof formSchemaParse;
+    formSchemaMapFieldErrors?: typeof formSchemaMapFieldErrors;
+    mapErrors?: MapErrors<
+    Values,
+    SerializedValues,
+    Errors
+    >;
 
-  children: (renderProps: FormRenderProps) => ReactNode;
-};
+    onSubmit: (
+      serializedValues: SerializedValues,
+      rawValues: Values,
+    ) => ReturnType<FinalFormProps<Values, Values>['onSubmit']>;
+
+    children: (renderProps: FormRenderProps<Values, Payload>) => ReactNode;
+  };

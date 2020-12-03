@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type {
   FC,
   ReactNode,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import { useField } from 'react-final-form';
 import type {
@@ -84,15 +83,6 @@ const InputComponent: FC<InputProps> = ({
       }
     </div>
   );
-};
-
-InputComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-
-  fieldSchema: PropTypes.shape({
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-  }).isRequired,
 };
 
 const fieldTypes: Record<string, FieldType> = {
