@@ -98,12 +98,14 @@ test('should render field with redefined getFieldSchema for children', () => {
 
   const nextGetFieldSchema = jest.fn<any, [
     string,
-  ]>(() => childSchema);
+  ]>()
+    .mockReturnValue(childSchema);
 
   const createGetFieldSchema = jest.fn<
   any,
-  Parameters<CreateGetFieldSchema<any, any, any>>
-  >(() => nextGetFieldSchema);
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
+  >()
+    .mockReturnValue(nextGetFieldSchema);
 
   const fieldTypes = {
     wrapper: {
@@ -118,7 +120,8 @@ test('should render field with redefined getFieldSchema for children', () => {
 
   const getFieldSchema = jest.fn<any, [
     string,
-  ]>(() => wrapperSchema);
+  ]>()
+    .mockReturnValue(wrapperSchema);
   const getFieldType = jest.fn(({ type }) => fieldTypes[type]);
 
   const renderedField = renderFieldBySchema(
@@ -149,6 +152,7 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(createGetFieldSchema).toHaveBeenCalledWith(
     wrapperSchema,
     getFieldSchema,
+    getFieldType,
     {
       fieldName: 'value',
     },

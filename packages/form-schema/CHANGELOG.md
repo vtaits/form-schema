@@ -1,3 +1,9 @@
+## 0.2.2 (10 dec 2020)
+
+### New features
+
+- Added `getFieldType` argument to `createGetFieldSchema`
+
 ## 0.2.1 (10 dec 2020)
 
 ### New features

@@ -50,7 +50,7 @@ Payload,
   } = fieldType;
 
   const computedGetFieldSchema: GetFieldSchema<FieldSchema> = createGetFieldSchema
-    ? createGetFieldSchema(fieldSchema, getFieldSchema, values, 'render')
+    ? createGetFieldSchema(fieldSchema, getFieldSchema, getFieldType, values, 'render')
     : getFieldSchema;
 
   const renderField: RenderField<Payload> = (

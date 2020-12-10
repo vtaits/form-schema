@@ -51,7 +51,13 @@ Errors extends Record<string, any>,
 
     const parser = fieldType.parser || defaultParser;
     const computedGetFieldSchema = fieldType.createGetFieldSchema
-      ? fieldType.createGetFieldSchema(fieldSchema, getFieldSchema, values, 'parse')
+      ? fieldType.createGetFieldSchema(
+        fieldSchema,
+        getFieldSchema,
+        getFieldType,
+        values,
+        'parse',
+      )
       : getFieldSchema;
 
     Object.assign(res, parser(

@@ -91,8 +91,9 @@ Type declaration is an object with next params:
 
   1. `fieldSchema` - schema of current field;
   2. `getFieldSchema` - default `getFieldSchema`;
-  3. `values` - current values (values of form during render and serialization or raw values during parsing);
-  4. `phase` - one of next values: `'parse'`, `'serialize'`, `'render'`;
+  3. `getFieldType` - see above;
+  4. `values` - current values (values of form during render and serialization or raw values during parsing);
+  5. `phase` - one of next values: `'parse'`, `'serialize'`, `'render'`;
 
 ## Usage
 

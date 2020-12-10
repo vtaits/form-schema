@@ -45,7 +45,13 @@ Errors extends Record<string, any>,
 
     const serializer = fieldType.serializer || defaultSerializer;
     const computedGetFieldSchema = fieldType.createGetFieldSchema
-      ? fieldType.createGetFieldSchema(fieldSchema, getFieldSchema, values, 'serialize')
+      ? fieldType.createGetFieldSchema(
+        fieldSchema,
+        getFieldSchema,
+        getFieldType,
+        values,
+        'serialize',
+      )
       : getFieldSchema;
 
     Object.assign(res, serializer(

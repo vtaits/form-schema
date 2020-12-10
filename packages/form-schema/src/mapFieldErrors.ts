@@ -49,7 +49,13 @@ Errors extends Record<string, any>,
 
     const errorsMapper = fieldType.errorsMapper || defaultFieldErrorsMapper;
     const computedGetFieldSchema = fieldType.createGetFieldSchema
-      ? fieldType.createGetFieldSchema(fieldSchema, getFieldSchema, rawValues, 'serialize')
+      ? fieldType.createGetFieldSchema(
+        fieldSchema,
+        getFieldSchema,
+        getFieldType,
+        rawValues,
+        'serialize',
+      )
       : getFieldSchema;
 
     Object.assign(

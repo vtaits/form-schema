@@ -278,15 +278,24 @@ test('should provide correct arguments to errorsMapper', () => {
 
 test('should redefine getFieldSchema', () => {
   const errorsMapper = jest.fn<any, ErrorsMapperArgs>(() => ({}));
+
   const parentGetFieldSchema = jest.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
+
   const getFieldSchema = jest.fn();
+
   const createGetFieldSchema = jest.fn<
   any,
-  Parameters<CreateGetFieldSchema<any, any, any>>
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
   >(() => getFieldSchema);
+
+  const getFieldType = jest.fn()
+    .mockReturnValue({
+      errorsMapper,
+      createGetFieldSchema,
+    });
 
   mapFieldErrors(
     {
@@ -299,11 +308,7 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
 
-    () => ({
-      errorsMapper,
-
-      createGetFieldSchema,
-    }),
+    getFieldType,
 
     {},
 
@@ -322,6 +327,7 @@ test('should redefine getFieldSchema', () => {
       name: 'value',
     },
     parentGetFieldSchema,
+    getFieldType,
     {
       value: 'test',
     },

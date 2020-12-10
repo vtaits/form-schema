@@ -133,15 +133,25 @@ test('should call multiple serializers', () => {
 
 test('should redefine getFieldSchema', () => {
   const serializer = jest.fn<any, SerializerArgs>(() => ({}));
+
   const parentGetFieldSchema = jest.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
+
   const getFieldSchema = jest.fn();
+
   const createGetFieldSchema = jest.fn<
   any,
-  Parameters<CreateGetFieldSchema<any, any, any>>
-  >(() => getFieldSchema);
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
+  >()
+    .mockReturnValue(getFieldSchema);
+
+  const getFieldType = jest.fn()
+    .mockReturnValue({
+      serializer,
+      createGetFieldSchema,
+    });
 
   serialize(
     {
@@ -154,14 +164,10 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
 
-    (): FieldType<any, any, any, any, any> => ({
-      serializer,
-
-      createGetFieldSchema,
-    }),
+    getFieldType,
   );
 
-  expect(serializer.mock.calls.length).toBe(1);
+  expect(serializer).toHaveBeenCalledTimes(1);
   expect(serializer.mock.calls[0][3]).toBe(getFieldSchema);
 
   expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
@@ -171,6 +177,7 @@ test('should redefine getFieldSchema', () => {
       name: 'value',
     },
     parentGetFieldSchema,
+    getFieldType,
     {
       value: 'test',
     },

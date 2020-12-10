@@ -151,15 +151,24 @@ test('should call multiple parsers', () => {
 
 test('should redefine getFieldSchema', () => {
   const parser = jest.fn<any, ParserArgs>(() => ({}));
+
   const parentGetFieldSchema = jest.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
+
   const getFieldSchema = jest.fn();
+
   const createGetFieldSchema = jest.fn<
   any,
-  Parameters<CreateGetFieldSchema<any, any, any>>
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
   >(() => getFieldSchema);
+
+  const getFieldType = jest.fn()
+    .mockReturnValue({
+      parser,
+      createGetFieldSchema,
+    });
 
   parse(
     {
@@ -171,15 +180,10 @@ test('should redefine getFieldSchema', () => {
     ],
 
     parentGetFieldSchema,
-
-    (): FieldType<any, any, any, any, any> => ({
-      parser,
-
-      createGetFieldSchema,
-    }),
+    getFieldType,
   );
 
-  expect(parser.mock.calls.length).toBe(1);
+  expect(parser).toHaveBeenCalledTimes(1);
   expect(parser.mock.calls[0][3]).toBe(getFieldSchema);
 
   expect(createGetFieldSchema.mock.calls[0][1]).toBe(parentGetFieldSchema);
@@ -190,6 +194,7 @@ test('should redefine getFieldSchema', () => {
       name: 'value',
     },
     parentGetFieldSchema,
+    getFieldType,
     {
       value: 'test',
     },

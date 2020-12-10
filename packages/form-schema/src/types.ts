@@ -21,9 +21,18 @@ export type CreateGetFieldSchema<
 FieldSchema,
 Values extends Record<string, any>,
 RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
 > = (
   fieldSchema: FieldSchema,
   getFieldSchema: GetFieldSchema<FieldSchema>,
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >,
   values: Values | RawValues,
   phase: PhaseType,
 ) => GetFieldSchema<FieldSchema>;
@@ -97,7 +106,13 @@ RawValues extends Record<string, any>,
 SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 > = {
-  createGetFieldSchema?: CreateGetFieldSchema<FieldSchema, Values, RawValues>;
+  createGetFieldSchema?: CreateGetFieldSchema<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >;
   serializer?: Serializer<
   FieldSchema,
   Values,
