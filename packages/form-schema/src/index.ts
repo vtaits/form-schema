@@ -5,6 +5,7 @@ export { default as mapFieldErrors } from './mapFieldErrors';
 export type {
   GetFieldSchema,
   GetFieldType,
+  PhaseType,
   CreateGetFieldSchema,
   Serializer,
   Parser,
