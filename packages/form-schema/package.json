@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/form-schema",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Serialization and parsing form values by schema",
   "main": "lib/index.js",
   "module": "es/index.js",
