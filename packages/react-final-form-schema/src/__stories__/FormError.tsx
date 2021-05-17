@@ -48,7 +48,7 @@ const mapErrors = (rawErrors: Errors): Errors => {
   return rawErrors;
 };
 
-const Example: FC = () => {
+export const FormError: FC = () => {
   const onSubmit = async (): Promise<Errors> => {
     await delay(1000);
 
@@ -94,5 +94,3 @@ const Example: FC = () => {
     </Form>
   );
 };
-
-export default Example;

@@ -12,11 +12,6 @@ import type {
 import type {
   ReactNode,
 } from 'react';
-import type {
-  serialize as formSchemaSerialize,
-  parse as formSchemaParse,
-  mapFieldErrors as formSchemaMapFieldErrors,
-} from '@vtaits/form-schema';
 
 import { Form } from '../Form';
 import type {
@@ -30,6 +25,7 @@ type Errors = Record<string, any>;
 const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
   names: [],
   children: (): ReactNode => null,
+  formSchemaValidateBeforeSubmit: () => ({}) as any,
   formSchemaParse: (): any => ({}),
   onSubmit: (): void => {},
 };
@@ -38,7 +34,7 @@ type PageObject = {
   getFinalFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
 };
 
-const setup = (props: Record<string, any>): PageObject => {
+const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any>>): PageObject => {
   const wrapper = shallow(
     <Form
       {...defaultProps}
@@ -63,10 +59,6 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-type ParseArgs = Parameters<typeof formSchemaParse>;
-type SerializeArgs = Parameters<typeof formSchemaSerialize>;
-type MapFieldErrorsArgs = Parameters<typeof formSchemaMapFieldErrors>;
-
 test('should provide parsed initial values', () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
@@ -80,7 +72,8 @@ test('should provide parsed initial values', () => {
     test2: 'value2',
   };
 
-  const parse = jest.fn<Values, ParseArgs>(() => parsedValues);
+  const parse = jest.fn()
+    .mockReturnValue(parsedValues);
 
   const page = setup({
     initialValues,
@@ -95,11 +88,13 @@ test('should provide parsed initial values', () => {
 
   expect(formNode.prop('initialValues')).toBe(parsedValues);
 
-  expect(parse.mock.calls.length).toBe(1);
-  expect(parse.mock.calls[0][0]).toBe(initialValues);
-  expect(parse.mock.calls[0][1]).toBe(names);
-  expect(parse.mock.calls[0][2]).toBe(getFieldSchema);
-  expect(parse.mock.calls[0][3]).toBe(getFieldType);
+  expect(parse).toHaveBeenCalledTimes(1);
+  expect(parse).toHaveBeenCalledWith(
+    initialValues,
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
 });
 
 test('should provide empty object to parser if initial values not defined', () => {
@@ -111,7 +106,8 @@ test('should provide empty object to parser if initial values not defined', () =
     test2: 'value2',
   };
 
-  const parse = jest.fn<Values, ParseArgs>(() => parsedValues);
+  const parse = jest.fn()
+    .mockReturnValue(parsedValues);
 
   const page = setup({
     getFieldSchema,
@@ -125,11 +121,68 @@ test('should provide empty object to parser if initial values not defined', () =
 
   expect(formNode.prop('initialValues')).toBe(parsedValues);
 
-  expect(parse.mock.calls.length).toBe(1);
-  expect(parse.mock.calls[0][0]).toEqual({});
-  expect(parse.mock.calls[0][1]).toBe(names);
-  expect(parse.mock.calls[0][2]).toBe(getFieldSchema);
-  expect(parse.mock.calls[0][3]).toBe(getFieldType);
+  expect(parse).toHaveBeenCalledTimes(1);
+  expect(parse).toHaveBeenCalledWith(
+    {},
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
+});
+
+test('should validate before submit', async () => {
+  const getFieldSchema = jest.fn();
+  const getFieldType = jest.fn();
+  const names = ['test'];
+
+  const values = {
+    test1: 'value1',
+  };
+
+  const clientErrors = {
+    test2: 'error2',
+  };
+
+  const validateBeforeSubmit = jest.fn()
+    .mockReturnValue(clientErrors);
+
+  const serialize = jest.fn();
+  const onSubmit = jest.fn();
+  const mapErrors = jest.fn();
+  const mapFieldErrors = jest.fn();
+
+  const page = setup({
+    getFieldSchema,
+    getFieldType,
+    names,
+
+    mapErrors,
+
+    onSubmit,
+
+    formSchemaValidateBeforeSubmit: validateBeforeSubmit,
+    formSchemaSerialize: serialize,
+    formSchemaMapFieldErrors: mapFieldErrors,
+  });
+
+  const formNode = page.getFinalFormNode();
+
+  const result = await formNode.prop('onSubmit')(values, {});
+
+  expect(result).toBe(clientErrors);
+
+  expect(validateBeforeSubmit).toHaveBeenCalledTimes(1);
+  expect(validateBeforeSubmit).toHaveBeenCalledWith(
+    values,
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
+
+  expect(serialize).toHaveBeenCalledTimes(0);
+  expect(onSubmit).toHaveBeenCalledTimes(0);
+  expect(mapErrors).toHaveBeenCalledTimes(0);
+  expect(mapFieldErrors).toHaveBeenCalledTimes(0);
 });
 
 test('should submit successfully', async () => {
@@ -145,7 +198,8 @@ test('should submit successfully', async () => {
     test2: 'value2',
   };
 
-  const serialize = jest.fn<Values, ParseArgs>(() => serializedValues);
+  const serialize = jest.fn()
+    .mockReturnValue(serializedValues);
 
   const onSubmit = jest.fn();
   const mapErrors = jest.fn();
@@ -170,18 +224,22 @@ test('should submit successfully', async () => {
 
   expect(result).toBeFalsy();
 
-  expect(serialize.mock.calls.length).toBe(1);
-  expect(serialize.mock.calls[0][0]).toBe(values);
-  expect(serialize.mock.calls[0][1]).toBe(names);
-  expect(serialize.mock.calls[0][2]).toBe(getFieldSchema);
-  expect(serialize.mock.calls[0][3]).toBe(getFieldType);
+  expect(serialize).toHaveBeenCalledTimes(1);
+  expect(serialize).toHaveBeenCalledWith(
+    values,
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
 
-  expect(onSubmit.mock.calls.length).toBe(1);
-  expect(onSubmit.mock.calls[0][0]).toBe(serializedValues);
-  expect(onSubmit.mock.calls[0][1]).toBe(values);
+  expect(onSubmit).toHaveBeenCalledTimes(1);
+  expect(onSubmit).toHaveBeenCalledWith(
+    serializedValues,
+    values,
+  );
 
-  expect(mapErrors.mock.calls.length).toBe(0);
-  expect(mapFieldErrors.mock.calls.length).toBe(0);
+  expect(mapErrors).toHaveBeenCalledTimes(0);
+  expect(mapFieldErrors).toHaveBeenCalledTimes(0);
 });
 
 test('should submit with error', async () => {
@@ -209,7 +267,8 @@ test('should submit with error', async () => {
     test3: 'error3',
   };
 
-  const serialize = jest.fn<any, SerializeArgs>(() => serializedValues);
+  const serialize = jest.fn()
+    .mockReturnValue(serializedValues);
 
   const onSubmit = jest.fn<any, [
     Values,
@@ -220,7 +279,8 @@ test('should submit with error', async () => {
     Values,
     Values,
   ]>(() => preparedErrors);
-  const mapFieldErrors = jest.fn<any, MapFieldErrorsArgs>(() => errors);
+  const mapFieldErrors = jest.fn()
+    .mockReturnValue(errors);
 
   const page = setup({
     getFieldSchema,
@@ -241,28 +301,36 @@ test('should submit with error', async () => {
 
   expect(result).toBe(errors);
 
-  expect(serialize.mock.calls.length).toBe(1);
-  expect(serialize.mock.calls[0][0]).toBe(values);
-  expect(serialize.mock.calls[0][1]).toBe(names);
-  expect(serialize.mock.calls[0][2]).toBe(getFieldSchema);
-  expect(serialize.mock.calls[0][3]).toBe(getFieldType);
+  expect(serialize).toHaveBeenCalledTimes(1);
+  expect(serialize).toHaveBeenCalledWith(
+    values,
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
 
-  expect(onSubmit.mock.calls.length).toBe(1);
-  expect(onSubmit.mock.calls[0][0]).toBe(serializedValues);
-  expect(onSubmit.mock.calls[0][1]).toBe(values);
+  expect(onSubmit).toHaveBeenCalledTimes(1);
+  expect(onSubmit).toHaveBeenCalledWith(
+    serializedValues,
+    values,
+  );
 
-  expect(mapErrors.mock.calls.length).toBe(1);
-  expect(mapErrors.mock.calls[0][0]).toBe(rawErrors);
-  expect(mapErrors.mock.calls[0][1]).toBe(serializedValues);
-  expect(mapErrors.mock.calls[0][2]).toBe(values);
+  expect(mapErrors).toHaveBeenCalledTimes(1);
+  expect(mapErrors).toHaveBeenCalledWith(
+    rawErrors,
+    serializedValues,
+    values,
+  );
 
-  expect(mapFieldErrors.mock.calls.length).toBe(1);
-  expect(mapFieldErrors.mock.calls[0][0]).toBe(preparedErrors);
-  expect(mapFieldErrors.mock.calls[0][1]).toBe(names);
-  expect(mapFieldErrors.mock.calls[0][2]).toBe(getFieldSchema);
-  expect(mapFieldErrors.mock.calls[0][3]).toBe(getFieldType);
-  expect(mapFieldErrors.mock.calls[0][4]).toBe(serializedValues);
-  expect(mapFieldErrors.mock.calls[0][5]).toBe(values);
+  expect(mapFieldErrors).toHaveBeenCalledTimes(1);
+  expect(mapFieldErrors).toHaveBeenCalledWith(
+    preparedErrors,
+    names,
+    getFieldSchema,
+    getFieldType,
+    serializedValues,
+    values,
+  );
 });
 
 test('should provide form render props to children', () => {
@@ -296,7 +364,8 @@ test('should render field', () => {
   any,
   any,
   any
-  >>>(() => 'test field');
+  >>>()
+    .mockReturnValue('test field');
 
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();

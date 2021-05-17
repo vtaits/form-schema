@@ -137,7 +137,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-const Example: FC = () => {
+export const Simple: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values: Values): Promise<Errors> => {
@@ -210,5 +210,3 @@ const Example: FC = () => {
     </>
   );
 };
-
-export default Example;

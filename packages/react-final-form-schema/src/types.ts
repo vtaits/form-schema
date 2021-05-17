@@ -3,6 +3,7 @@
 import {
   serialize as formSchemaSerialize,
   parse as formSchemaParse,
+  validateBeforeSubmit as formSchemaValidateBeforeSubmit,
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
 import type {
@@ -157,6 +158,7 @@ Payload,
     >;
     formSchemaSerialize?: typeof formSchemaSerialize;
     formSchemaParse?: typeof formSchemaParse;
+    formSchemaValidateBeforeSubmit?: typeof formSchemaValidateBeforeSubmit;
     formSchemaMapFieldErrors?: typeof formSchemaMapFieldErrors;
     mapErrors?: MapErrors<
     Values,

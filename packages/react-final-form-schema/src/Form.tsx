@@ -19,6 +19,7 @@ import type {
 import {
   serialize as formSchemaSerialize,
   parse as formSchemaParse,
+  validateBeforeSubmit as formSchemaValidateBeforeSubmit,
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
 import type {
@@ -63,6 +64,7 @@ Payload,
     renderFieldBySchema: renderFieldBySchemaProp,
     formSchemaSerialize: serialize,
     formSchemaParse: parse,
+    formSchemaValidateBeforeSubmit: validateBeforeSubmit,
     formSchemaMapFieldErrors: mapFieldErrors,
 
     mapErrors,
@@ -85,6 +87,12 @@ Payload,
   ]);
 
   const onSubmit = useCallback<FinalFormProps<Values, Values>['onSubmit']>(async (values) => {
+    const validationErrors = validateBeforeSubmit(values, names, getFieldSchema, getFieldType);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return validationErrors;
+    }
+
     const valuesForSubmit = serialize(values, names, getFieldSchema, getFieldType);
 
     const rawErrors = await onSubmitProp(valuesForSubmit, values);
@@ -158,6 +166,7 @@ Form.defaultProps = {
   renderFieldBySchema,
   formSchemaSerialize,
   formSchemaParse,
+  formSchemaValidateBeforeSubmit,
   formSchemaMapFieldErrors,
 
   mapErrors: defaultMapErrors,

@@ -16,7 +16,7 @@ RawValues extends Record<string, any>,
 SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 >(
-    values: RawValues | null,
+    values: Values,
     names: string[],
     getFieldSchema: GetFieldSchema<FieldSchema>,
     getFieldType: GetFieldType<
@@ -26,12 +26,8 @@ Errors extends Record<string, any>,
     SerializedValues,
     Errors
     >,
-  ): Values => {
-  if (!values) {
-    return null;
-  }
-
-  const res = {} as Values;
+  ): Errors => {
+  const res = {} as Errors;
 
   names.forEach((name) => {
     const fieldSchema = getFieldSchema(name);

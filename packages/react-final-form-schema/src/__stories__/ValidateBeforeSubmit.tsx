@@ -27,6 +27,7 @@ type SelectSchema = {
   type: 'select';
   label?: string;
   options: Options;
+  required?: boolean;
 };
 
 type SelectProps = {
@@ -107,7 +108,7 @@ unknown
   select: {
     component: SelectComponent,
 
-    serializer: (values: Values, name: string): Values => {
+    serializer: (values, name) => {
       const value = values[name];
 
       return {
@@ -115,11 +116,7 @@ unknown
       };
     },
 
-    parser: (
-      values: Values,
-      name: string,
-      { options }: SelectSchema,
-    ): Values => {
+    parser: (values, name, { options }) => {
       const value = values[name];
 
       return {
@@ -134,6 +131,16 @@ unknown
           : null,
       };
     },
+
+    validatorBeforeSubmit: (values, name, { required }) => {
+      if (required && !values[name]) {
+        return {
+          [name]: ['This field is required.'],
+        };
+      }
+
+      return {};
+    },
   },
 };
 
@@ -147,9 +154,37 @@ unknown
 > = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
-  animal: {
+  animalRequired: {
     type: 'select',
-    label: 'Animal',
+    label: 'Animal (required)',
+    required: true,
+
+    options: [
+      {
+        value: 1,
+        label: 'Cat',
+      },
+
+      {
+        value: 2,
+        label: 'Dog',
+      },
+
+      {
+        value: 3,
+        label: 'Elephant',
+      },
+
+      {
+        value: 4,
+        label: 'Cow',
+      },
+    ],
+  },
+
+  animalNotRequired: {
+    type: 'select',
+    label: 'Animal (not required)',
 
     options: [
       {
@@ -177,7 +212,10 @@ const fullSchema = {
 
 const getFieldSchema: GetFieldSchema<SelectSchema> = (fieldName) => fullSchema[fieldName];
 
-const names = ['animal'];
+const names = [
+  'animalRequired',
+  'animalNotRequired',
+];
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
@@ -185,11 +223,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-const initialValues = {
-  animal: 2,
-};
-
-export const SerializerAndParser: FC = () => {
+export const ValidateBeforeSubmit: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values): Promise<void> => {
@@ -201,7 +235,6 @@ export const SerializerAndParser: FC = () => {
   return (
     <>
       <Form
-        initialValues={initialValues}
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
         names={names}
@@ -213,7 +246,8 @@ export const SerializerAndParser: FC = () => {
           renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('animal')}
+            {renderField('animalRequired')}
+            {renderField('animalNotRequired')}
 
             <hr />
 
