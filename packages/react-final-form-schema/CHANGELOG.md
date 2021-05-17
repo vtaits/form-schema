@@ -1,3 +1,9 @@
+## 0.2.2 (17 may 2021)
+
+### New features
+
+- Support validation before submit
+
 ## 0.2.0 (03 dec 2020)
 
 ### New features
