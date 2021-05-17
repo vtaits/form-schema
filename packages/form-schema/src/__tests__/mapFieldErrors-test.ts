@@ -8,7 +8,7 @@ import {
   ErrorsMapper,
 } from '../types';
 
-import mapFieldErrors from '../mapFieldErrors';
+import { mapFieldErrors } from '../mapFieldErrors';
 
 type Errors = Record<string, any>;
 type Values = Record<string, any>;

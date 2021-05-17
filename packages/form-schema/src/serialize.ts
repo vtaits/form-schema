@@ -19,7 +19,7 @@ const defaultSerializer: Serializer<any, any, any, any, any> = (
   return {};
 };
 
-const serialize = <
+export const serialize = <
 FieldSchema,
 Values extends Record<string, any>,
 RawValues extends Record<string, any>,
@@ -65,5 +65,3 @@ Errors extends Record<string, any>,
 
   return res;
 };
-
-export default serialize;

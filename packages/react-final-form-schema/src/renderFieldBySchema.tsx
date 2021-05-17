@@ -13,7 +13,7 @@ import type {
   RenderField,
 } from './types';
 
-function renderFieldBySchema<
+export function renderFieldBySchema<
 FieldSchema,
 Values extends Record<string, any>,
 RawValues extends Record<string, any>,
@@ -75,5 +75,3 @@ Payload,
     />
   );
 }
-
-export default renderFieldBySchema;

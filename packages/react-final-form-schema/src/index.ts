@@ -1,4 +1,4 @@
-export { default as Form } from './Form';
+export { Form } from './Form';
 
 export type {
   GetFieldType,

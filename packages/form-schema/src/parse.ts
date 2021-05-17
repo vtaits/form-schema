@@ -21,7 +21,7 @@ const defaultParser: Parser<any, any, any, any, any> = (
   };
 };
 
-const parse = <
+export const parse = <
 FieldSchema,
 Values extends Record<string, any>,
 RawValues extends Record<string, any>,
@@ -71,5 +71,3 @@ Errors extends Record<string, any>,
 
   return res;
 };
-
-export default parse;

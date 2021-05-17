@@ -10,7 +10,7 @@ import type {
   ReactNode,
 } from 'react';
 import {
-  Form,
+  Form as FinalForm,
 } from 'react-final-form';
 import type {
   FormProps as FinalFormProps,
@@ -30,12 +30,12 @@ import type {
   FormProps,
 } from './types';
 
-import renderFieldBySchema from './renderFieldBySchema';
+import { renderFieldBySchema } from './renderFieldBySchema';
 
 export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) => fieldSchema;
 export const defaultMapErrors: MapErrors<any, any, any> = (errors) => errors;
 
-function FormWrapper<
+export function Form<
 FieldSchema,
 Values extends Record<string, any>,
 RawValues extends Record<string, any>,
@@ -141,17 +141,17 @@ Payload,
   }), [children, renderField]);
 
   return (
-    <Form
+    <FinalForm
       {...rest}
       onSubmit={onSubmit}
       initialValues={initialValues}
     >
       {renderForm}
-    </Form>
+    </FinalForm>
   );
 }
 
-FormWrapper.defaultProps = {
+Form.defaultProps = {
   initialValues: null,
   getFieldSchema: defaultGetFieldSchema,
 
@@ -162,5 +162,3 @@ FormWrapper.defaultProps = {
 
   mapErrors: defaultMapErrors,
 };
-
-export default FormWrapper;

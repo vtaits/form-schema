@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Form } from 'react-final-form';
+import {
+  Form as FinalForm,
+} from 'react-final-form';
 import {
   shallow,
 } from 'enzyme';
@@ -16,7 +18,7 @@ import type {
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
 
-import FormWrapper from '../Form';
+import { Form } from '../Form';
 import type {
   FormProps,
   RenderFieldBySchema,
@@ -33,27 +35,27 @@ const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
 };
 
 type PageObject = {
-  getFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
+  getFinalFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
 };
 
 const setup = (props: Record<string, any>): PageObject => {
   const wrapper = shallow(
-    <FormWrapper
+    <Form
       {...defaultProps}
       {...props}
     />,
   );
 
-  const getFormNode = (): ShallowWrapper<FormProps<
+  const getFinalFormNode = (): ShallowWrapper<FormProps<
   any,
   Values,
   Values,
   Values,
   Errors,
-  any>> => wrapper.find(Form);
+  any>> => wrapper.find(FinalForm);
 
   return {
-    getFormNode,
+    getFinalFormNode,
   };
 };
 
@@ -89,7 +91,7 @@ test('should provide parsed initial values', () => {
     formSchemaParse: parse,
   });
 
-  const formNode = page.getFormNode();
+  const formNode = page.getFinalFormNode();
 
   expect(formNode.prop('initialValues')).toBe(parsedValues);
 
@@ -119,7 +121,7 @@ test('should provide empty object to parser if initial values not defined', () =
     formSchemaParse: parse,
   });
 
-  const formNode = page.getFormNode();
+  const formNode = page.getFinalFormNode();
 
   expect(formNode.prop('initialValues')).toBe(parsedValues);
 
@@ -162,7 +164,7 @@ test('should submit successfully', async () => {
     formSchemaMapFieldErrors: mapFieldErrors,
   });
 
-  const formNode = page.getFormNode();
+  const formNode = page.getFinalFormNode();
 
   const result = await formNode.prop('onSubmit')(values, {});
 
@@ -233,7 +235,7 @@ test('should submit with error', async () => {
     formSchemaMapFieldErrors: mapFieldErrors,
   });
 
-  const formNode = page.getFormNode();
+  const formNode = page.getFinalFormNode();
 
   const result = await formNode.prop('onSubmit')(values, {});
 
@@ -276,7 +278,7 @@ test('should provide form render props to children', () => {
     children,
   });
 
-  const formNode = page.getFormNode();
+  const formNode = page.getFinalFormNode();
 
   formNode.prop('children')({
     testProp: 'testValue',
@@ -310,7 +312,7 @@ test('should render field', () => {
     renderFieldBySchema,
   });
 
-  const formNode = page.getFormNode();
+  const formNode = page.getFinalFormNode();
 
   formNode.prop('children')({
     values: {

@@ -1,8 +1,8 @@
 import * as formSchamaLib from '../index';
 
-import serialize from '../serialize';
-import parse from '../parse';
-import mapFieldErrors from '../mapFieldErrors';
+import { serialize } from '../serialize';
+import { parse } from '../parse';
+import { mapFieldErrors } from '../mapFieldErrors';
 import { validateBeforeSubmit } from '../validateBeforeSubmit';
 
 test('should export needed modules', () => {

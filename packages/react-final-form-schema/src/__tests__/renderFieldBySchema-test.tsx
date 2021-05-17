@@ -14,7 +14,7 @@ import type {
   CreateGetFieldSchema,
 } from '@vtaits/form-schema';
 
-import renderFieldBySchema from '../renderFieldBySchema';
+import { renderFieldBySchema } from '../renderFieldBySchema';
 
 import {
   FieldComponentProps,
