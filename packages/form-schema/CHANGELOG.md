@@ -1,3 +1,10 @@
+## 0.2.3 (17 may 2021)
+
+### New features
+
+- Added `validatorBeforeSubmit` property for field types
+- Added `validateBeforeSubmit` helper
+
 ## 0.2.2 (10 dec 2020)
 
 ### New features

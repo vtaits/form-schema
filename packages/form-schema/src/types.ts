@@ -77,6 +77,26 @@ Errors extends Record<string, any>,
   >,
 ) => Values;
 
+export type ValidatorBeforeSubmit<
+FieldSchema,
+Values extends Record<string, any>,
+RawValues extends Record<string, any>,
+SerializedValues extends Record<string, any>,
+Errors extends Record<string, any>,
+> = (
+  values: Values,
+  name: string,
+  fieldSchema: FieldSchema,
+  computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+  getFieldType: GetFieldType<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >,
+) => Errors;
+
 export type ErrorsMapper<
 FieldSchema,
 Values extends Record<string, any>,
@@ -121,6 +141,13 @@ Errors extends Record<string, any>,
   Errors
   >;
   parser?: Parser<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >;
+  validatorBeforeSubmit?: ValidatorBeforeSubmit<
   FieldSchema,
   Values,
   RawValues,

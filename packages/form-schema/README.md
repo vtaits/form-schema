@@ -69,6 +69,30 @@ Type declaration is an object with next params:
   }
   ```
 
+- `validatorBeforeSubmit` - function for collect validation errors of form before submit. Receives next arguments:
+
+  1. `values` - all values of form;
+  2. `name` - name of current field;
+  3. `fieldSchema` - full schema of field;
+  4. `getFieldSchema` - see above;
+  5. `getFieldType` - see above.
+
+  Should return **OBJECT** of values. By default returns empty object. Example:
+
+  ```
+  {
+    validateBeforeSubmit: (values, name, { required }) => {
+      if (required && !values[name]) {
+        return {
+          [name]: 'This field is required',
+        };
+      }
+
+      return {};
+    },
+  }
+  ```
+
 - `errorsMapper` - function for map errors of field from backend format to format of field. Receives next arguments:
 
   1. `errors` - intermediate result (default errors of form and collected erros of other fields);
@@ -115,6 +139,16 @@ import { parse } from '@vtaits/form-schema';
 ...
 
 parse(values, names, getFieldSchema, getFieldType);
+```
+
+### Validation before submit
+
+```javascript
+import { validateBeforeSubmit } from '@vtaits/form-schema';
+
+...
+
+validateBeforeSubmit(values, names, getFieldSchema, getFieldType);
 ```
 
 ### Mapping of errors of fields
