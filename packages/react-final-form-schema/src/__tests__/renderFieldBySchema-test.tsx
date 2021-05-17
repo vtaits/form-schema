@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type {
-  FC,
-} from 'react';
 import {
   shallow,
 } from 'enzyme';
 import type {
   ShallowWrapper,
 } from 'enzyme';
+import type {
+  FC,
+} from 'react';
 
 import type {
   CreateGetFieldSchema,

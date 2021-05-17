@@ -25,12 +25,13 @@
     "build:cjs": "cross-env BABEL_ENV=cjs babel --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
     "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
     "build:ts": "tsc --declaration",
+    "test:ts": "tsc -p ./tsconfig.eslint.json",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
     "test:unit": "jest",
     "test": "yarn test:unit",
     "prepare": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.1"
+    "@babel/runtime": "^7.14.0"
   }
 }

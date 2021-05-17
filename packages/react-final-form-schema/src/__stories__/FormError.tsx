@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FORM_ERROR } from 'final-form';
 import type {
   FC,
   ReactNode,
 } from 'react';
-import { FORM_ERROR } from 'final-form';
 import type {
   GetFieldSchema,
-  Errors,
 } from '@vtaits/form-schema';
 
 import { Form } from '../index';
@@ -13,13 +13,16 @@ import type {
   GetFieldType,
 } from '../index';
 
+type Values = Record<string, any>;
+type Errors = Record<string, any>;
+
 const EmptyComponent: FC = () => <div />;
 
-const getFieldType: GetFieldType = () => ({
+const getFieldType: GetFieldType<unknown, Values, Values, Values, Errors, unknown> = () => ({
   component: EmptyComponent,
 });
 
-const getFieldSchema: GetFieldSchema = () => null;
+const getFieldSchema: GetFieldSchema<unknown> = () => null;
 
 const names = [];
 

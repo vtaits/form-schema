@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
   FC,
   ReactNode,
 } from 'react';
 
-import { useField } from 'react-final-form';
 import type {
-  Errors,
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
@@ -16,13 +16,16 @@ import type {
   FieldType,
 } from '../index';
 
+type InputSchema = {
+  type: 'input';
+  label?: string;
+  placeholder?: string;
+};
+
 type InputProps = {
   name: string;
 
-  fieldSchema: {
-    label?: string;
-    placeholder?: string;
-  };
+  fieldSchema: InputSchema;
 };
 
 const InputComponent: FC<InputProps> = ({
@@ -85,13 +88,30 @@ const InputComponent: FC<InputProps> = ({
   );
 };
 
-const fieldTypes: Record<string, FieldType> = {
+type Values = Record<string, any>;
+type Errors = Record<string, any>;
+
+const fieldTypes: Record<string, FieldType<
+InputSchema,
+Values,
+Values,
+Values,
+Errors,
+unknown
+>> = {
   input: {
     component: InputComponent,
   },
 };
 
-const getFieldType: GetFieldType = ({ type }: { type: string }) => fieldTypes[type];
+const getFieldType: GetFieldType<
+InputSchema,
+Values,
+Values,
+Values,
+Errors,
+unknown
+> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
   firstName: {
@@ -107,7 +127,7 @@ const fullSchema = {
   },
 };
 
-const getFieldSchema: GetFieldSchema = (fieldName: string) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema<InputSchema> = (fieldName: string) => fullSchema[fieldName];
 
 const names = ['firstName', 'lastName'];
 
@@ -120,7 +140,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
 const Example: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values): Promise<Errors> => {
+  const onSubmit = async (values: Values): Promise<Errors> => {
     setSubmittedValues(null);
 
     await delay(1000);

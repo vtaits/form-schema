@@ -1,15 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type {
-  ComponentType,
-  ReactNode,
-} from 'react';
-
-import type {
-  FormProps as FinalFormProps,
-  FormRenderProps as FinalFormRenderProps,
-} from 'react-final-form';
-
 import {
   serialize as formSchemaSerialize,
   parse as formSchemaParse,
@@ -19,6 +9,14 @@ import type {
   GetFieldSchema,
   FieldType as FieldTypeBase,
 } from '@vtaits/form-schema';
+import type {
+  FormProps as FinalFormProps,
+  FormRenderProps as FinalFormRenderProps,
+} from 'react-final-form';
+import type {
+  ComponentType,
+  ReactNode,
+} from 'react';
 
 export type GetFieldType<
 FieldSchema,

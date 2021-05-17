@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Select from 'react-select';
+import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
   FC,
   ReactNode,
 } from 'react';
-import Select from 'react-select';
 import type {
   GetFieldSchema,
-  Values,
 } from '@vtaits/form-schema';
-
-import { useField } from 'react-final-form';
 
 import { Form } from '../index';
 import type {
@@ -25,6 +24,7 @@ type Option = {
 type Options = Option[];
 
 type SelectSchema = {
+  type: 'select';
   label?: string;
   options: Options;
 };
@@ -93,7 +93,17 @@ const SelectComponent: FC<SelectProps> = ({
   );
 };
 
-const fieldTypes: Record<string, FieldType> = {
+type Values = Record<string, any>;
+type Errors = Record<string, any>;
+
+const fieldTypes: Record<string, FieldType<
+SelectSchema,
+Values,
+Values,
+Values,
+Errors,
+unknown
+>> = {
   select: {
     component: SelectComponent,
 
@@ -127,7 +137,14 @@ const fieldTypes: Record<string, FieldType> = {
   },
 };
 
-const getFieldType: GetFieldType = ({ type }: { type: string }) => fieldTypes[type];
+const getFieldType: GetFieldType<
+SelectSchema,
+Values,
+Values,
+Values,
+Errors,
+unknown
+> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
   animal: {
@@ -158,7 +175,7 @@ const fullSchema = {
   },
 };
 
-const getFieldSchema: GetFieldSchema = (fieldName) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema<SelectSchema> = (fieldName) => fullSchema[fieldName];
 
 const names = ['animal'];
 

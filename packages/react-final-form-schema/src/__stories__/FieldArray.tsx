@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useFieldArray } from 'react-final-form-arrays';
+import arrayMutators from 'final-form-arrays';
+import { useField } from 'react-final-form';
+import { ARRAY_ERROR } from 'final-form';
 import { Fragment, useState } from 'react';
 import type {
   FC,
   ReactNode,
 } from 'react';
-
+// eslint-disable-next-line import/order
 import {
   serialize,
   parse,
@@ -12,14 +16,7 @@ import {
 } from '@vtaits/form-schema';
 import type {
   GetFieldSchema,
-  Errors,
-  Values,
 } from '@vtaits/form-schema';
-
-import { ARRAY_ERROR } from 'final-form';
-import { useField } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { useFieldArray } from 'react-final-form-arrays';
 
 import { Form } from '../index';
 import type {
@@ -28,30 +25,35 @@ import type {
   GetFieldType,
 } from '../index';
 
+type FieldArraySchema = {
+  type: 'array';
+  label: string;
+  fields: Record<string, FieldSchema>;
+  initialValues?: Record<string, any>;
+  names: string[];
+};
+
 type ArrayProps = {
   name: string;
 
-  fieldSchema: {
-    label: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    initialValues?: Record<string, any>;
-    names: string[];
-  };
+  fieldSchema: FieldSchema;
 
-  renderField: RenderField;
+  renderField: RenderField<string>;
 };
 
 const ArrayComponent: FC<ArrayProps> = ({
   name,
 
-  fieldSchema: {
-    label,
-    names,
-    initialValues,
-  },
+  fieldSchema,
 
   renderField,
 }) => {
+  const {
+    label,
+    names,
+    initialValues,
+  } = fieldSchema as FieldArraySchema;
+
   const {
     fields,
 
@@ -130,27 +132,30 @@ const ArrayComponent: FC<ArrayProps> = ({
   );
 };
 
+type InputSchema = {
+  type: 'input';
+  label?: string;
+  placeholder?: string;
+};
+
 type InputProps = {
   name: string;
-
-  fieldSchema: {
-    label?: string;
-    placeholder?: string;
-  };
-
+  fieldSchema: FieldSchema;
   payload?: string;
 };
 
 const InputComponent: FC<InputProps> = ({
   name: nameProp,
 
-  fieldSchema: {
-    label,
-    placeholder,
-  },
+  fieldSchema,
 
   payload,
 }) => {
+  const {
+    label,
+    placeholder,
+  } = fieldSchema as InputSchema;
+
   const name = payload
     ? `${payload}.${nameProp}`
     : nameProp;
@@ -211,23 +216,41 @@ InputComponent.defaultProps = {
   payload: null,
 };
 
-const fieldTypes: Record<string, FieldType> = {
+type FieldSchema = FieldArraySchema | InputSchema;
+type Values = Record<string, any>;
+type Errors = Record<string, any>;
+
+const fieldTypes: Record<string, FieldType<
+FieldSchema,
+Values,
+Values,
+Values,
+Errors,
+string
+>> = {
   array: {
     component: ArrayComponent,
 
-    createGetFieldSchema: ({ fields }: { fields: Record<string, any>}): GetFieldSchema => {
-      const getChildFieldSchema: GetFieldSchema = (name: string) => fields[name];
+    createGetFieldSchema: (schema) => {
+      const {
+        fields,
+      } = schema as FieldArraySchema;
+      const getChildFieldSchema: GetFieldSchema<FieldSchema> = (name: string) => fields[name];
 
       return getChildFieldSchema;
     },
 
     serializer: (
-      values: Values,
-      name: string,
-      { names }: { names: string[] },
-      getFieldSchema: GetFieldSchema,
-      getFieldType: GetFieldType,
-    ): Values => {
+      values,
+      name,
+      schema,
+      getFieldSchema,
+      getFieldType,
+    ) => {
+      const {
+        names,
+      } = schema as FieldArraySchema;
+
       const arrayValues = values[name];
 
       if (!arrayValues) {
@@ -237,7 +260,7 @@ const fieldTypes: Record<string, FieldType> = {
       }
 
       return {
-        [name]: arrayValues.map(
+        [name]: (arrayValues as Values[]).map(
           (arrayValue) => serialize(
             arrayValue || {},
             names,
@@ -249,12 +272,16 @@ const fieldTypes: Record<string, FieldType> = {
     },
 
     parser: (
-      values: Values,
-      name: string,
-      { names }: { names: string[] },
-      getFieldSchema: GetFieldSchema,
-      getFieldType: GetFieldType,
-    ): Values => {
+      values,
+      name,
+      schema,
+      getFieldSchema,
+      getFieldType,
+    ) => {
+      const {
+        names,
+      } = schema as FieldArraySchema;
+
       const arrayValues = values[name];
 
       if (!arrayValues || arrayValues.length === 0) {
@@ -264,7 +291,7 @@ const fieldTypes: Record<string, FieldType> = {
       }
 
       return {
-        [name]: arrayValues.map(
+        [name]: (arrayValues as Values[]).map(
           (arrayValue) => parse(
             arrayValue || {},
             names,
@@ -276,14 +303,18 @@ const fieldTypes: Record<string, FieldType> = {
     },
 
     errorsMapper: (
-      errors: Errors,
-      name: string,
-      { names }: { names: string[] },
-      getFieldSchema: GetFieldSchema,
-      getFieldType: GetFieldType,
-      values: Values,
-      rawValues: Values,
-    ): Errors => {
+      errors,
+      name,
+      schema,
+      getFieldSchema,
+      getFieldType,
+      values,
+      rawValues,
+    ) => {
+      const {
+        names,
+      } = schema as FieldArraySchema;
+
       const arrayErrors = errors[name];
 
       if (!arrayErrors) {
@@ -299,7 +330,7 @@ const fieldTypes: Record<string, FieldType> = {
       }
 
       return {
-        [name]: arrayErrors.map(
+        [name]: (arrayErrors as Errors[]).map(
           (arrayError) => mapFieldErrors(
             arrayError || {},
             names,
@@ -318,7 +349,14 @@ const fieldTypes: Record<string, FieldType> = {
   },
 };
 
-const getFieldType: GetFieldType = ({ type }: { type: string }) => fieldTypes[type];
+const getFieldType: GetFieldType<
+FieldSchema,
+Values,
+Values,
+Values,
+Errors,
+string
+> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
   users: {
@@ -349,7 +387,7 @@ const fullSchema = {
   },
 };
 
-const getFieldSchema: GetFieldSchema = (fieldName: string) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: string) => fullSchema[fieldName];
 
 const names: string[] = ['users'];
 

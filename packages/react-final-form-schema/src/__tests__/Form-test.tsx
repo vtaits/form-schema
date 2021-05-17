@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type {
-  ReactNode,
-} from 'react';
+import { Form } from 'react-final-form';
 import {
   shallow,
 } from 'enzyme';
@@ -10,12 +8,13 @@ import type {
   ShallowWrapper,
 } from 'enzyme';
 import type {
+  ReactNode,
+} from 'react';
+import type {
   serialize as formSchemaSerialize,
   parse as formSchemaParse,
   mapFieldErrors as formSchemaMapFieldErrors,
 } from '@vtaits/form-schema';
-
-import { Form } from 'react-final-form';
 
 import FormWrapper from '../Form';
 import type {
