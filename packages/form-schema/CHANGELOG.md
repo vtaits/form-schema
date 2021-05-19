@@ -2,11 +2,15 @@
 
 ### New features
 
-* Export next utils:
+- Export next utils:
 
   - `defaultSerializer`
   - `defaultParser`
   - `defaultFieldErrorsMapper`
+
+### Improvement
+
+- Use default values in generics
 
 ## 0.2.3 (17 may 2021)
 

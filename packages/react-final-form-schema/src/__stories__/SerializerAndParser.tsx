@@ -93,21 +93,11 @@ const SelectComponent: FC<SelectProps> = ({
   );
 };
 
-type Values = Record<string, any>;
-type Errors = Record<string, any>;
-
-const fieldTypes: Record<string, FieldType<
-SelectSchema,
-Values,
-Values,
-Values,
-Errors,
-unknown
->> = {
+const fieldTypes: Record<string, FieldType<SelectSchema>> = {
   select: {
     component: SelectComponent,
 
-    serializer: (values: Values, name: string): Values => {
+    serializer: (values, name) => {
       const value = values[name];
 
       return {
@@ -115,11 +105,7 @@ unknown
       };
     },
 
-    parser: (
-      values: Values,
-      name: string,
-      { options }: SelectSchema,
-    ): Values => {
+    parser: (values, name, { options }) => {
       const value = values[name];
 
       return {
@@ -137,14 +123,7 @@ unknown
   },
 };
 
-const getFieldType: GetFieldType<
-SelectSchema,
-Values,
-Values,
-Values,
-Errors,
-unknown
-> = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType<SelectSchema> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
   animal: {
@@ -192,7 +171,7 @@ const initialValues = {
 export const SerializerAndParser: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values): Promise<void> => {
+  const onSubmit = async (values: Record<string, any>): Promise<void> => {
     await delay(1000);
 
     setSubmittedValues(values);

@@ -3,10 +3,10 @@
 export type GetFieldSchema<FieldSchema> = (name: string) => FieldSchema;
 export type GetFieldType<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (fieldSchema: FieldSchema) => FieldType<
 FieldSchema,
 Values,
@@ -19,10 +19,10 @@ export type PhaseType = 'parse' | 'serialize' | 'render';
 
 export type CreateGetFieldSchema<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (
   fieldSchema: FieldSchema,
   getFieldSchema: GetFieldSchema<FieldSchema>,
@@ -39,10 +39,10 @@ Errors extends Record<string, any>,
 
 export type Serializer<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (
   values: Values,
   name: string,
@@ -59,10 +59,10 @@ Errors extends Record<string, any>,
 
 export type Parser<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (
   values: RawValues,
   name: string,
@@ -79,10 +79,10 @@ Errors extends Record<string, any>,
 
 export type ValidatorBeforeSubmit<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (
   values: Values,
   name: string,
@@ -99,10 +99,10 @@ Errors extends Record<string, any>,
 
 export type ErrorsMapper<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (
   res: Errors,
   name: string,
@@ -121,10 +121,10 @@ Errors extends Record<string, any>,
 
 export type FieldType<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = {
   createGetFieldSchema?: CreateGetFieldSchema<
   FieldSchema,

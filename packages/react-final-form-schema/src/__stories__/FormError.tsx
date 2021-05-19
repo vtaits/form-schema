@@ -11,14 +11,12 @@ import type {
 import { Form } from '../index';
 import type {
   GetFieldType,
+  MapErrors,
 } from '../index';
-
-type Values = Record<string, any>;
-type Errors = Record<string, any>;
 
 const EmptyComponent: FC = () => <div />;
 
-const getFieldType: GetFieldType<unknown, Values, Values, Values, Errors, unknown> = () => ({
+const getFieldType: GetFieldType<unknown> = () => ({
   component: EmptyComponent,
 });
 
@@ -32,7 +30,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-const mapErrors = (rawErrors: Errors): Errors => {
+const mapErrors: MapErrors = (rawErrors) => {
   if (rawErrors.formError) {
     const {
       formError,
@@ -49,7 +47,7 @@ const mapErrors = (rawErrors: Errors): Errors => {
 };
 
 export const FormError: FC = () => {
-  const onSubmit = async (): Promise<Errors> => {
+  const onSubmit = async (): Promise<Record<string, any>> => {
     await delay(1000);
 
     return {

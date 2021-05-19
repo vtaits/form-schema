@@ -21,11 +21,11 @@ import type {
 
 export type GetFieldType<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
-Payload,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
+Payload = any,
 > = (fieldSchema: FieldSchema) => FieldType<
 FieldSchema,
 Values,
@@ -35,18 +35,18 @@ Errors,
 Payload
 >;
 
-export type RenderField<Payload> = (
+export type RenderField<Payload = any> = (
   name: string,
   payload?: Payload,
 ) => ReactNode;
 
 export type FieldComponentProps<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
-Payload,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
+Payload = any,
 > = {
   name: string;
   fieldSchema: FieldSchema;
@@ -64,9 +64,9 @@ Payload,
 };
 
 export type MapErrors<
-Values extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
+Values extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
 > = (
   rawErrors: Errors,
   valuesForSubmit: SerializedValues,
@@ -75,11 +75,11 @@ Errors extends Record<string, any>,
 
 export type FieldType<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
-Payload,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
+Payload = any,
 > =
   & FieldTypeBase<
   FieldSchema,
@@ -101,11 +101,11 @@ Payload,
 
 export type RenderFieldBySchema<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
-Payload,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
+Payload = any,
 > = (
   values: Values,
   getFieldSchema: GetFieldSchema<FieldSchema>,
@@ -121,7 +121,10 @@ Payload,
   payload?: Payload,
 ) => ReactNode;
 
-export type FormRenderProps<Values extends Record<string, any>, Payload> =
+export type FormRenderProps<
+Values extends Record<string, any> = Record<string, any>,
+Payload = any,
+> =
   & FinalFormRenderProps<Values>
   & {
     renderField: RenderField<Payload>;
@@ -129,11 +132,11 @@ export type FormRenderProps<Values extends Record<string, any>, Payload> =
 
 export type FormProps<
 FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
-Payload,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
+Payload = any,
 > =
   & FinalFormProps<Values, Values>
   & {

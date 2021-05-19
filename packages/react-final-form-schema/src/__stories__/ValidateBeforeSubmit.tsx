@@ -94,17 +94,7 @@ const SelectComponent: FC<SelectProps> = ({
   );
 };
 
-type Values = Record<string, any>;
-type Errors = Record<string, any>;
-
-const fieldTypes: Record<string, FieldType<
-SelectSchema,
-Values,
-Values,
-Values,
-Errors,
-unknown
->> = {
+const fieldTypes: Record<string, FieldType<SelectSchema>> = {
   select: {
     component: SelectComponent,
 
@@ -144,14 +134,7 @@ unknown
   },
 };
 
-const getFieldType: GetFieldType<
-SelectSchema,
-Values,
-Values,
-Values,
-Errors,
-unknown
-> = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType<SelectSchema> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
   animalRequired: {

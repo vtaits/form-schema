@@ -88,30 +88,13 @@ const InputComponent: FC<InputProps> = ({
   );
 };
 
-type Values = Record<string, any>;
-type Errors = Record<string, any>;
-
-const fieldTypes: Record<string, FieldType<
-InputSchema,
-Values,
-Values,
-Values,
-Errors,
-unknown
->> = {
+const fieldTypes: Record<string, FieldType<InputSchema>> = {
   input: {
     component: InputComponent,
   },
 };
 
-const getFieldType: GetFieldType<
-InputSchema,
-Values,
-Values,
-Values,
-Errors,
-unknown
-> = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType<InputSchema> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
   firstName: {
@@ -140,12 +123,12 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
 export const Simple: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values: Values): Promise<Errors> => {
+  const onSubmit = async (values: Record<string, any>): Promise<Record<string, any>> => {
     setSubmittedValues(null);
 
     await delay(1000);
 
-    const errors: Errors = {};
+    const errors: Record<string, any> = {};
 
     if (!values.firstName) {
       errors.firstName = ['This field is required'];

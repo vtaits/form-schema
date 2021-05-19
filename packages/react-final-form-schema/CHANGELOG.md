@@ -1,3 +1,9 @@
+## 0.2.3
+
+### Improvement
+
+- Use default values in generics
+
 ## 0.2.2 (17 may 2021)
 
 ### New features
