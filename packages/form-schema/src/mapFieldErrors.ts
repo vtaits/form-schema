@@ -6,7 +6,7 @@ import type {
   ErrorsMapper,
 } from './types';
 
-const defaultFieldErrorsMapper: ErrorsMapper<any, any, any, any, any> = (
+export const defaultFieldErrorsMapper: ErrorsMapper<any, any, any, any, any> = (
   errors,
   name,
 ) => {

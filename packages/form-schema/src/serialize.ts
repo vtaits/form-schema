@@ -6,7 +6,7 @@ import type {
   Serializer,
 } from './types';
 
-const defaultSerializer: Serializer<any, any, any, any, any> = (
+export const defaultSerializer: Serializer<any, any, any, any, any> = (
   values,
   name,
 ) => {

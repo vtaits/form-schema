@@ -1,3 +1,13 @@
+## 0.2.4
+
+### New features
+
+* Export next utils:
+
+  - `defaultSerializer`
+  - `defaultParser`
+  - `defaultFieldErrorsMapper`
+
 ## 0.2.3 (17 may 2021)
 
 ### New features

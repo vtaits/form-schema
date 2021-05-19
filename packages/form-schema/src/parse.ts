@@ -6,7 +6,7 @@ import type {
   Parser,
 } from './types';
 
-const defaultParser: Parser<any, any, any, any, any> = (
+export const defaultParser: Parser<any, any, any, any, any> = (
   values,
   name,
 ) => {
