@@ -13,9 +13,6 @@ import type {
 import { Form } from '@vtaits/react-final-form-schema';
 import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
 import type {
-  DynamicSchema,
-} from '@vtaits/react-final-form-schema/fields/dynamic';
-import type {
   GetFieldType,
   FieldType,
 } from '@vtaits/react-final-form-schema';

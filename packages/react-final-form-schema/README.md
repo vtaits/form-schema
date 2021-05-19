@@ -22,7 +22,7 @@ npm install final-form react-final-form @vtaits/react-final-form-schema --save
 ## Examples
 
 - [All features](https://codesandbox.io/s/meddo)
-
+- [Dynamic fields](https://codesandbox.io/s/msif8)
 
 ## Usage
 
@@ -90,3 +90,41 @@ Type declaration is similar with [@vtaits/form-schema](https://github.com/vtaits
   - `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
   - `renderField` - function, can be helpful for render nested fields.
+
+## Built-in field types
+
+### Dynamic
+
+Field depends from other fields. Example:
+
+```javascript
+import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
+
+const schema = {
+  type: 'dynamic',
+
+  getSchema: ({
+    otherField,
+  }, phase) => ({
+    type: 'string',
+    label: 'String field',
+    required: Boolean(otherField),
+  }),
+};
+
+const getFieldType = (fieldSchema) => {
+  if (fieldSchema.type === 'dynamic') {
+    return dynamic;
+  }
+
+  ...
+}
+```
+
+Parameters:
+
+- `getSchema` - required, function, should return schema for render or `null`. Arguments:
+
+  1. `values` - object of values of form, depends from 2nd argument;
+
+  2. `phase` - current phase (`'parse'`, `'serialize'`, `'render'`). If phase is `'parse'`, 1st argument is initial values before parsing, otherwise it is current values of form.
