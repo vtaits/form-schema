@@ -1,45 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Select from 'react-select';
 import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
   FC,
   ReactNode,
 } from 'react';
+
 import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '../index';
+import { Form } from '@vtaits/react-final-form-schema';
 import type {
-  FieldType,
   GetFieldType,
-} from '../index';
+  FieldType,
+} from '@vtaits/react-final-form-schema';
 
-type Option = {
-  value: number;
-  label: string;
-};
-
-type Options = Option[];
-
-type SelectSchema = {
-  type: 'select';
+type InputSchema = {
+  type: 'input';
   label?: string;
-  options: Options;
+  placeholder?: string;
 };
 
-type SelectProps = {
+type InputProps = {
   name: string;
-  fieldSchema: SelectSchema;
+
+  fieldSchema: InputSchema;
 };
 
-const SelectComponent: FC<SelectProps> = ({
+const InputComponent: FC<InputProps> = ({
   name,
 
   fieldSchema: {
     label,
-    options,
+    placeholder,
   },
 }) => {
   const {
@@ -64,13 +58,14 @@ const SelectComponent: FC<SelectProps> = ({
         )
       }
 
-      <Select
-        isClearable
-        name={name}
-        value={value || null}
-        options={options}
-        onChange={onChange}
-      />
+      <p>
+        <input
+          name={name}
+          value={value || ''}
+          placeholder={placeholder || ''}
+          onChange={onChange}
+        />
+      </p>
 
       {
         !dirtySinceLastSubmit && submitError && (
@@ -93,70 +88,31 @@ const SelectComponent: FC<SelectProps> = ({
   );
 };
 
-const fieldTypes: Record<string, FieldType<SelectSchema>> = {
-  select: {
-    component: SelectComponent,
-
-    serializer: (values, name) => {
-      const value = values[name];
-
-      return {
-        [name]: value ? value.value : null,
-      };
-    },
-
-    parser: (values, name, { options }) => {
-      const value = values[name];
-
-      return {
-        [name]: value
-          ? options.find((option) => {
-            if (option.value === value) {
-              return true;
-            }
-
-            return false;
-          })
-          : null,
-      };
-    },
+const fieldTypes: Record<string, FieldType<InputSchema>> = {
+  input: {
+    component: InputComponent,
   },
 };
 
-const getFieldType: GetFieldType<SelectSchema> = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType<InputSchema> = ({ type }) => fieldTypes[type];
 
 const fullSchema = {
-  animal: {
-    type: 'select',
-    label: 'Animal',
+  firstName: {
+    type: 'input',
+    label: 'First name',
+    placeholder: 'Input your first name',
+  },
 
-    options: [
-      {
-        value: 1,
-        label: 'Cat',
-      },
-
-      {
-        value: 2,
-        label: 'Dog',
-      },
-
-      {
-        value: 3,
-        label: 'Elephant',
-      },
-
-      {
-        value: 4,
-        label: 'Cow',
-      },
-    ],
+  lastName: {
+    type: 'input',
+    label: 'Last name',
+    placeholder: 'Input your last name',
   },
 };
 
-const getFieldSchema: GetFieldSchema<SelectSchema> = (fieldName) => fullSchema[fieldName];
+const getFieldSchema: GetFieldSchema<InputSchema> = (fieldName: string) => fullSchema[fieldName];
 
-const names = ['animal'];
+const names = ['firstName', 'lastName'];
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
@@ -164,23 +120,35 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-const initialValues = {
-  animal: 2,
-};
-
-export const SerializerAndParser: FC = () => {
+export const Simple: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
-  const onSubmit = async (values: Record<string, any>): Promise<void> => {
+  const onSubmit = async (values: Record<string, any>): Promise<Record<string, any>> => {
+    setSubmittedValues(null);
+
     await delay(1000);
 
-    setSubmittedValues(values);
+    const errors: Record<string, any> = {};
+
+    if (!values.firstName) {
+      errors.firstName = ['This field is required'];
+    }
+
+    if (!values.lastName) {
+      errors.lastName = ['This field is required'];
+    }
+
+    if (Object.keys(errors).length === 0) {
+      setSubmittedValues(values);
+      return null;
+    }
+
+    return errors;
   };
 
   return (
     <>
       <Form
-        initialValues={initialValues}
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
         names={names}
@@ -192,7 +160,8 @@ export const SerializerAndParser: FC = () => {
           renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('animal')}
+            {renderField('firstName')}
+            {renderField('lastName')}
 
             <hr />
 

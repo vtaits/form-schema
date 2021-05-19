@@ -2,11 +2,12 @@
   "name": "@vtaits/react-final-form-schema",
   "version": "0.2.2",
   "description": "Integration of react-final-form and @vtaits/form-schema",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "typings": "ts/index.d.ts",
+  "main": "lib/core/index.js",
+  "module": "es/core/index.js",
+  "typings": "ts/core/index.d.ts",
   "files": [
     "/es",
+    "/fields",
     "/lib",
     "/ts"
   ],
@@ -25,8 +26,8 @@
   "scripts": {
     "clean": "rimraf es lib ts",
     "build": "yarn build:cjs && yarn build:es && yarn build:ts",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
-    "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\",\"src/**/__stories__\"",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\"",
+    "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\"",
     "build:ts": "tsc --declaration",
     "test:ts": "tsc -p ./tsconfig.eslint.json",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",

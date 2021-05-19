@@ -1,5 +1,6 @@
 import { storiesOf } from '@storybook/react';
 
+import { Dynamic } from './Dynamic';
 import { FieldArray } from './FieldArray';
 import { FormError } from './FormError';
 import { SerializerAndParser } from './SerializerAndParser';
@@ -11,4 +12,5 @@ storiesOf('react-final-form-schema', module)
   .add('Serializer and parser', () => <SerializerAndParser />)
   .add('Validate before submit', () => <ValidateBeforeSubmit />)
   .add('FieldArray', () => <FieldArray />)
-  .add('Form error', () => <FormError />);
+  .add('Form error', () => <FormError />)
+  .add('Dynamic fields', () => <Dynamic />);

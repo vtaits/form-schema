@@ -1,0 +1,5 @@
+{
+  "main": "../../lib/fields/dynamic/index.js",
+  "module": "../../es/fields/dynamic/index.js",
+  "typings": "../../ts/fields/dynamic/index.d.ts"
+}

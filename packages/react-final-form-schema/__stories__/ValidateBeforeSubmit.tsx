@@ -10,11 +10,11 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '../index';
+import { Form } from '@vtaits/react-final-form-schema';
 import type {
   FieldType,
   GetFieldType,
-} from '../index';
+} from '@vtaits/react-final-form-schema';
 
 type Option = {
   value: number;

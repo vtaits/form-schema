@@ -8,11 +8,11 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '../index';
+import { Form } from '@vtaits/react-final-form-schema';
 import type {
   GetFieldType,
   MapErrors,
-} from '../index';
+} from '@vtaits/react-final-form-schema';
 
 const EmptyComponent: FC = () => <div />;
 

@@ -10,16 +10,21 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '../index';
+import { Form } from '@vtaits/react-final-form-schema';
+import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
+import type {
+  DynamicSchema,
+} from '@vtaits/react-final-form-schema/fields/dynamic';
 import type {
   GetFieldType,
   FieldType,
-} from '../index';
+} from '@vtaits/react-final-form-schema';
 
 type InputSchema = {
   type: 'input';
   label?: string;
   placeholder?: string;
+  disabled?: boolean;
 };
 
 type InputProps = {
@@ -34,6 +39,7 @@ const InputComponent: FC<InputProps> = ({
   fieldSchema: {
     label,
     placeholder,
+    disabled,
   },
 }) => {
   const {
@@ -64,6 +70,7 @@ const InputComponent: FC<InputProps> = ({
           value={value || ''}
           placeholder={placeholder || ''}
           onChange={onChange}
+          disabled={disabled}
         />
       </p>
 
@@ -88,10 +95,12 @@ const InputComponent: FC<InputProps> = ({
   );
 };
 
-const fieldTypes: Record<string, FieldType<InputSchema>> = {
+const fieldTypes: Record<string, FieldType<any>> = {
   input: {
     component: InputComponent,
   },
+
+  dynamic,
 };
 
 const getFieldType: GetFieldType<InputSchema> = ({ type }) => fieldTypes[type];
@@ -104,15 +113,44 @@ const fullSchema = {
   },
 
   lastName: {
-    type: 'input',
-    label: 'Last name',
-    placeholder: 'Input your last name',
+    type: 'dynamic',
+
+    getSchema: ({
+      firstName,
+    }: {
+      firstName?: string;
+    }) => ({
+      type: 'input',
+      label: firstName ? `Last name of ${firstName}` : 'INPUT YOUR FIRST NAME FIRST!!!',
+      placeholder: 'Input your last name',
+      disabled: !firstName,
+    }),
+  },
+
+  wow: {
+    type: 'dynamic',
+
+    getSchema: ({
+      lastName,
+    }: {
+      lastName?: string;
+    }) => {
+      if (!lastName) {
+        return null;
+      }
+
+      return {
+        type: 'input',
+        label: 'WOW',
+        placeholder: 'WOW',
+      };
+    },
   },
 };
 
 const getFieldSchema: GetFieldSchema<InputSchema> = (fieldName: string) => fullSchema[fieldName];
 
-const names = ['firstName', 'lastName'];
+const names = ['firstName', 'lastName', 'wow'];
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => {
@@ -120,7 +158,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-export const Simple: FC = () => {
+export const Dynamic: FC = () => {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values: Record<string, any>): Promise<Record<string, any>> => {
@@ -128,22 +166,8 @@ export const Simple: FC = () => {
 
     await delay(1000);
 
-    const errors: Record<string, any> = {};
-
-    if (!values.firstName) {
-      errors.firstName = ['This field is required'];
-    }
-
-    if (!values.lastName) {
-      errors.lastName = ['This field is required'];
-    }
-
-    if (Object.keys(errors).length === 0) {
-      setSubmittedValues(values);
-      return null;
-    }
-
-    return errors;
+    setSubmittedValues(values);
+    return null;
   };
 
   return (
@@ -162,6 +186,7 @@ export const Simple: FC = () => {
           <form onSubmit={handleSubmit}>
             {renderField('firstName')}
             {renderField('lastName')}
+            {renderField('wow')}
 
             <hr />
 

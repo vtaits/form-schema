@@ -1,5 +1,9 @@
 ## 0.2.3
 
+### New features
+
+- Added `dynamic` field
+
 ### Improvement
 
 - Use default values in generics
