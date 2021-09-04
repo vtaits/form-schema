@@ -1,8 +1,11 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "ts",
     "emitDeclarationOnly": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "composite": true,
+    "lib": ["ES2021", "DOM"]
   },
   "include": [
     "src/**/*"

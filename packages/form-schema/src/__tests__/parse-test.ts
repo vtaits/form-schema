@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parse } from '../parse';
-import {
+import type {
   CreateGetFieldSchema,
   FieldType,
   GetFieldSchema,

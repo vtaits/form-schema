@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { validateBeforeSubmit } from '../validateBeforeSubmit';
-import {
+import type {
   CreateGetFieldSchema,
   GetFieldType,
   GetFieldSchema,

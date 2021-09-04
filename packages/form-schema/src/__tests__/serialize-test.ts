@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { serialize } from '../serialize';
-import {
+import type {
   CreateGetFieldSchema,
   GetFieldType,
   GetFieldSchema,
