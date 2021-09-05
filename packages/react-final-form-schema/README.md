@@ -128,3 +128,7 @@ Parameters:
   1. `values` - object of values of form, depends from 2nd argument;
 
   2. `phase` - current phase (`'parse'`, `'serialize'`, `'render'`). If phase is `'parse'`, 1st argument is initial values before parsing, otherwise it is current values of form.
+
+  3. `getFieldSchema` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
+
+  4. `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);

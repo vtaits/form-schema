@@ -5,6 +5,7 @@ import {
 
 describe('createGetFieldSchema', () => {
   const getFieldSchema = jest.fn();
+  const defaultGetFieldType = () => ({});
 
   test('should provide correct arguments to `getSchema`', () => {
     const getSchema = jest.fn();
@@ -16,7 +17,7 @@ describe('createGetFieldSchema', () => {
     createGetFieldSchema(
       { getSchema },
       getFieldSchema,
-      () => ({}),
+      defaultGetFieldType,
       values,
       'render',
     );
@@ -25,6 +26,8 @@ describe('createGetFieldSchema', () => {
     expect(getSchema).toHaveBeenCalledWith(
       values,
       'render',
+      getFieldSchema,
+      defaultGetFieldType,
     );
   });
 
@@ -34,7 +37,7 @@ describe('createGetFieldSchema', () => {
     const result = createGetFieldSchema(
       { getSchema },
       getFieldSchema,
-      () => ({}),
+      defaultGetFieldType,
       {},
       'render',
     );
@@ -48,7 +51,7 @@ describe('createGetFieldSchema', () => {
         getSchema: () => ({}),
       },
       getFieldSchema,
-      () => ({}),
+      defaultGetFieldType,
       {},
       'render',
     );
@@ -118,7 +121,12 @@ describe('serializer', () => {
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
-    expect(getSchema).toHaveBeenCalledWith(values, 'serialize');
+    expect(getSchema).toHaveBeenCalledWith(
+      values,
+      'serialize',
+      getFieldSchema,
+      defaultGetFieldType,
+    );
   });
 
   test('should return empty object if `getSchema` returns falsy value', () => {
@@ -244,7 +252,12 @@ describe('parser', () => {
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
-    expect(getSchema).toHaveBeenCalledWith(values, 'parse');
+    expect(getSchema).toHaveBeenCalledWith(
+      values,
+      'parse',
+      getFieldSchema,
+      defaultGetFieldType,
+    );
   });
 
   test('should return empty object if `getSchema` returns falsy value', () => {
@@ -370,7 +383,12 @@ describe('validatorBeforeSubmit', () => {
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
-    expect(getSchema).toHaveBeenCalledWith(values, 'serialize');
+    expect(getSchema).toHaveBeenCalledWith(
+      values,
+      'serialize',
+      getFieldSchema,
+      defaultGetFieldType,
+    );
   });
 
   test('should return empty object if `getSchema` returns falsy value', () => {
@@ -504,7 +522,12 @@ describe('errorsMapper', () => {
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
-    expect(getSchema).toHaveBeenCalledWith(rawValues, 'serialize');
+    expect(getSchema).toHaveBeenCalledWith(
+      rawValues,
+      'serialize',
+      getFieldSchema,
+      defaultGetFieldType,
+    );
   });
 
   test('should return empty object if `getSchema` returns falsy value', () => {

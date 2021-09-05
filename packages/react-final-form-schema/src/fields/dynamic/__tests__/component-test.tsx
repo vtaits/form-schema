@@ -20,6 +20,8 @@ const fieldType: FieldType<any> = {
 
 test('should provide form values to `getSchema`', () => {
   const getSchema = jest.fn();
+  const getFieldSchema = () => null;
+  const getFieldType = () => fieldType;
 
   const values: Record<string, any> = {
     field1: 'value1',
@@ -31,8 +33,8 @@ test('should provide form values to `getSchema`', () => {
         getSchema,
       }}
       name="test"
-      getFieldSchema={() => null}
-      getFieldType={() => fieldType}
+      getFieldSchema={getFieldSchema}
+      getFieldType={getFieldType}
       renderField={() => null}
       useFormState={(() => ({
         values,
@@ -41,7 +43,12 @@ test('should provide form values to `getSchema`', () => {
   );
 
   expect(getSchema).toHaveBeenCalledTimes(1);
-  expect(getSchema).toHaveBeenCalledWith(values, 'render');
+  expect(getSchema).toHaveBeenCalledWith(
+    values,
+    'render',
+    getFieldSchema,
+    getFieldType,
+  );
 });
 
 test('should not render anything if `getSchema` returns falsy value', () => {

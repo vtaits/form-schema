@@ -21,17 +21,15 @@ SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 Payload,
 > =
-  & Omit<FieldComponentProps<
+  & FieldComponentProps<
   FieldSchema,
   Values,
   RawValues,
   SerializedValues,
   Errors,
   Payload
-  >, 'fieldSchema'>
+  >
   & {
-    fieldSchema: DynamicSchema<FieldSchema, Values, RawValues>;
-
     /**
      * For tests only
      */
@@ -46,10 +44,9 @@ SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 Payload,
 >({
-  fieldSchema: {
-    getSchema,
-  },
+  fieldSchema,
 
+  getFieldSchema,
   getFieldType,
 
   useFormState = defaultUseFormState,
@@ -67,7 +64,17 @@ Payload
     values,
   } = useFormState<Values, Values>();
 
-  const schema = getSchema(values, 'render');
+  const {
+    getSchema,
+  } = fieldSchema as unknown as DynamicSchema<
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors
+  >;
+
+  const schema = getSchema(values, 'render', getFieldSchema, getFieldType);
 
   if (!schema) {
     return null;
@@ -83,6 +90,7 @@ Payload
     <FieldComponent
       {...rest}
       fieldSchema={schema}
+      getFieldSchema={getFieldSchema}
       getFieldType={getFieldType}
     />
   );

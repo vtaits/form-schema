@@ -30,13 +30,13 @@ RawValues extends Record<string, any>,
 SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 >(
-    { getSchema }: DynamicSchema<FieldSchema, Values, RawValues>,
+    { getSchema }: DynamicSchema<FieldSchema, Values, RawValues, SerializedValues, Errors>,
     getFieldSchema: GetFieldSchema<FieldSchema>,
     getFieldType: GetFieldType<FieldSchema, Values, RawValues, SerializedValues, Errors>,
     values: Values | RawValues,
     phase: PhaseType,
   ): GetFieldSchema<FieldSchema> => {
-  const schema = getSchema(values, phase);
+  const schema = getSchema(values, phase, getFieldSchema, getFieldType);
 
   if (!schema) {
     return getFieldSchema;
@@ -67,7 +67,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
       getSchema,
     } = fieldSchema;
 
-    const schema = getSchema(values, 'serialize');
+    const schema = getSchema(values, 'serialize', getFieldSchema, getFieldType);
 
     if (!schema) {
       return {};
@@ -93,7 +93,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
       getSchema,
     } = fieldSchema;
 
-    const schema = getSchema(values, 'parse');
+    const schema = getSchema(values, 'parse', getFieldSchema, getFieldType);
 
     if (!schema) {
       return {};
@@ -119,7 +119,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
       getSchema,
     } = fieldSchema as DynamicSchema<any>;
 
-    const schema = getSchema(values, 'serialize');
+    const schema = getSchema(values, 'serialize', getFieldSchema, getFieldType);
 
     if (!schema) {
       return {};
@@ -153,7 +153,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
       getSchema,
     } = fieldSchema;
 
-    const schema = getSchema(rawValues, 'serialize');
+    const schema = getSchema(rawValues, 'serialize', getFieldSchema, getFieldType);
 
     if (!schema) {
       return {};
