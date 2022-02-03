@@ -12,10 +12,12 @@ import type {
 
 import { DynamicField } from '../component';
 
-const TestComponent: FC<FieldComponentProps<any>> = () => null;
+function TestComponent() {
+  return null;
+}
 
 const fieldType: FieldType<any> = {
-  component: TestComponent,
+  component: TestComponent as FC<FieldComponentProps<any>>,
 };
 
 test('should provide form values to `getSchema`', () => {

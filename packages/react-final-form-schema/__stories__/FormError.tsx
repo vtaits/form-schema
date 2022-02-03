@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FORM_ERROR } from 'final-form';
 import type {
-  FC,
+  ReactElement,
   ReactNode,
 } from 'react';
 import type {
@@ -14,7 +14,9 @@ import type {
   MapErrors,
 } from '@vtaits/react-final-form-schema';
 
-const EmptyComponent: FC = () => <div />;
+function EmptyComponent(): ReactElement {
+  return <div />;
+}
 
 const getFieldType: GetFieldType<unknown> = () => ({
   component: EmptyComponent,
@@ -46,7 +48,7 @@ const mapErrors: MapErrors = (rawErrors) => {
   return rawErrors;
 };
 
-export const FormError: FC = () => {
+export function FormError(): ReactElement {
   const onSubmit = async (): Promise<Record<string, any>> => {
     await delay(1000);
 
@@ -91,4 +93,4 @@ export const FormError: FC = () => {
       )}
     </Form>
   );
-};
+}

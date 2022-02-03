@@ -2,7 +2,7 @@
 import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
-  FC,
+  ReactElement,
   ReactNode,
 } from 'react';
 
@@ -28,14 +28,14 @@ type InputProps = {
   fieldSchema: InputSchema;
 };
 
-const InputComponent: FC<InputProps> = ({
+function InputComponent({
   name,
 
   fieldSchema: {
     label,
     placeholder,
   },
-}) => {
+}: InputProps): ReactElement {
   const {
     input: {
       value,
@@ -86,7 +86,7 @@ const InputComponent: FC<InputProps> = ({
       }
     </div>
   );
-};
+}
 
 const fieldTypes: Record<string, FieldType<InputSchema>> = {
   input: {
@@ -120,7 +120,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-export const Simple: FC = () => {
+export function Simple(): ReactElement {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values: Record<string, any>): Promise<Record<string, any>> => {
@@ -192,4 +192,4 @@ export const Simple: FC = () => {
       }
     </>
   );
-};
+}

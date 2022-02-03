@@ -8,6 +8,7 @@ import type {
 } from 'enzyme';
 import type {
   FC,
+  ReactElement,
 } from 'react';
 
 import type {
@@ -21,17 +22,19 @@ import {
 } from '../types';
 
 test('should render field', () => {
-  const FieldComponent: FC<FieldComponentProps<
-  any,
-  any,
-  any,
-  any,
-  any,
-  any
-  >> = () => <div />;
+  function FieldComponent(): ReactElement {
+    return <div />;
+  }
 
   const fieldType = {
-    component: FieldComponent,
+    component: FieldComponent as FC<FieldComponentProps<
+    any,
+    any,
+    any,
+    any,
+    any,
+    any
+    >>,
   };
 
   const fieldSchema = Symbol('field schema');
@@ -71,22 +74,13 @@ test('should render field', () => {
 });
 
 test('should render field with redefined getFieldSchema for children', () => {
-  const WrapperComponent: FC<FieldComponentProps<
-  any,
-  any,
-  any,
-  any,
-  any,
-  any
-  >> = () => <div />;
-  const ChildComponent: FC<FieldComponentProps<
-  any,
-  any,
-  any,
-  any,
-  any,
-  any
-  >> = () => <div />;
+  function WrapperComponent(): ReactElement {
+    return <div />;
+  }
+
+  function ChildComponent(): ReactElement {
+    return <div />;
+  }
 
   const wrapperSchema = {
     type: 'wrapper',
@@ -110,11 +104,25 @@ test('should render field with redefined getFieldSchema for children', () => {
   const fieldTypes = {
     wrapper: {
       createGetFieldSchema,
-      component: WrapperComponent,
+      component: WrapperComponent as FC<FieldComponentProps<
+      any,
+      any,
+      any,
+      any,
+      any,
+      any
+      >>,
     },
 
     child: {
-      component: ChildComponent,
+      component: ChildComponent as FC<FieldComponentProps<
+      any,
+      any,
+      any,
+      any,
+      any,
+      any
+      >>,
     },
   };
 
@@ -140,7 +148,14 @@ test('should render field with redefined getFieldSchema for children', () => {
     </div>,
   );
 
-  const wrapperNode = fieldWrapper.find(WrapperComponent);
+  const wrapperNode = fieldWrapper.find(WrapperComponent as FC<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >>);
 
   expect(wrapperNode.prop('name')).toBe('wrapperField');
   expect(wrapperNode.prop('fieldSchema')).toBe(wrapperSchema);

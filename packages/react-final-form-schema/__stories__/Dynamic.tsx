@@ -3,6 +3,7 @@ import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
   FC,
+  ReactElement,
   ReactNode,
 } from 'react';
 
@@ -30,7 +31,7 @@ type InputProps = {
   fieldSchema: InputSchema;
 };
 
-const InputComponent: FC<InputProps> = ({
+function InputComponent({
   name,
 
   fieldSchema: {
@@ -38,7 +39,7 @@ const InputComponent: FC<InputProps> = ({
     placeholder,
     disabled,
   },
-}) => {
+}: InputProps): ReactElement {
   const {
     input: {
       value,
@@ -90,7 +91,7 @@ const InputComponent: FC<InputProps> = ({
       }
     </div>
   );
-};
+}
 
 const fieldTypes: Record<string, FieldType<any>> = {
   input: {
@@ -155,7 +156,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-export const Dynamic: FC = () => {
+export function Dynamic(): ReactElement {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values: Record<string, any>): Promise<Record<string, any>> => {
@@ -214,4 +215,4 @@ export const Dynamic: FC = () => {
       }
     </>
   );
-};
+}

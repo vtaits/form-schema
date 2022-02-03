@@ -5,7 +5,7 @@ import { useField } from 'react-final-form';
 import { ARRAY_ERROR } from 'final-form';
 import { Fragment, useState } from 'react';
 import type {
-  FC,
+  ReactElement,
   ReactNode,
 } from 'react';
 // eslint-disable-next-line import/order
@@ -41,13 +41,13 @@ type ArrayProps = {
   renderField: RenderField<string>;
 };
 
-const ArrayComponent: FC<ArrayProps> = ({
+function ArrayComponent({
   name,
 
   fieldSchema,
 
   renderField,
-}) => {
+}: ArrayProps): ReactElement {
   const {
     label,
     names,
@@ -130,7 +130,7 @@ const ArrayComponent: FC<ArrayProps> = ({
       }
     </>
   );
-};
+}
 
 type InputSchema = {
   type: 'input';
@@ -144,13 +144,13 @@ type InputProps = {
   payload?: string;
 };
 
-const InputComponent: FC<InputProps> = ({
+function InputComponent({
   name: nameProp,
 
   fieldSchema,
 
   payload,
-}) => {
+}: InputProps): ReactElement {
   const {
     label,
     placeholder,
@@ -210,7 +210,7 @@ const InputComponent: FC<InputProps> = ({
       }
     </div>
   );
-};
+}
 
 InputComponent.defaultProps = {
   payload: null,
@@ -397,7 +397,7 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
   }, ms);
 });
 
-export const FieldArray: FC = () => {
+export function FieldArray(): ReactElement {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values): Promise<Errors> => {
@@ -494,4 +494,4 @@ export const FieldArray: FC = () => {
       }
     </>
   );
-};
+}

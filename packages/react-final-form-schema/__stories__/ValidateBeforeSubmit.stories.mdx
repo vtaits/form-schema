@@ -1,0 +1,20 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Form } from '../src/core';
+
+import { ValidateBeforeSubmit } from './ValidateBeforeSubmit';
+
+<Meta
+  title="react-final-form-schema/ValidateBeforeSubmit"
+  component={Form}
+/>
+
+export const Template = (props) => {
+  return <ValidateBeforeSubmit {...props} />;
+}
+
+# Validate before submit
+
+<Story name="ValidateBeforeSubmit">
+  {Template.bind({})}
+</Story>

@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
-  FC,
+  ReactElement,
   ReactNode,
 } from 'react';
 import type {
@@ -34,14 +34,14 @@ type SelectProps = {
   fieldSchema: SelectSchema;
 };
 
-const SelectComponent: FC<SelectProps> = ({
+function SelectComponent({
   name,
 
   fieldSchema: {
     label,
     options,
   },
-}) => {
+}: SelectProps): ReactElement {
   const {
     input: {
       value,
@@ -91,7 +91,7 @@ const SelectComponent: FC<SelectProps> = ({
       }
     </div>
   );
-};
+}
 
 const fieldTypes: Record<string, FieldType<SelectSchema>> = {
   select: {
@@ -168,7 +168,7 @@ const initialValues = {
   animal: 2,
 };
 
-export const SerializerAndParser: FC = () => {
+export function SerializerAndParser(): ReactElement {
   const [submittedValues, setSubmittedValues] = useState(null);
 
   const onSubmit = async (values: Record<string, any>): Promise<void> => {
@@ -223,4 +223,4 @@ export const SerializerAndParser: FC = () => {
       }
     </>
   );
-};
+}
