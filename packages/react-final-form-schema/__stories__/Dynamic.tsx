@@ -2,7 +2,6 @@
 import { useField } from 'react-final-form';
 import { useState } from 'react';
 import type {
-  FC,
   ReactElement,
   ReactNode,
 } from 'react';
