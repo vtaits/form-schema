@@ -3,7 +3,7 @@
     "outDir": "ts",
     "esModuleInterop": true,
     "noEmit": true,
-    "composite": true,
+    "incremental": false,
     "lib": ["ES2021", "DOM"]
   },
   "include": [

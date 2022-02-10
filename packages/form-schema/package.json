@@ -32,7 +32,9 @@
     "prepare": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.16.7"
+    "@babel/runtime": "^7.16.7",
+    "@types/is-promise": "^2.2.0",
+    "is-promise": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",

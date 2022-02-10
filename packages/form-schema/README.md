@@ -61,7 +61,7 @@ Type declaration is an object with next params:
   4. `getFieldSchema` - see above;
   5. `getFieldType` - see above.
 
-  Should return **OBJECT** of values. By default returns
+  Should return **OBJECT** of values or `Promise` with object of values (can be `async`). By default returns
 
   ```
   {

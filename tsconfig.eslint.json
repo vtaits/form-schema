@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "ts",
+    "incremental": false,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

@@ -42,7 +42,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.7",
-    "@vtaits/form-schema": "^0.2.4"
+    "@vtaits/form-schema": "^0.2.4",
+    "is-promise": "^4.0.0",
+    "react-async-hook": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",

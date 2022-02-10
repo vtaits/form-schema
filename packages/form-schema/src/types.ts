@@ -75,7 +75,7 @@ Errors extends Record<string, any> = Record<string, any>,
   SerializedValues,
   Errors
   >,
-) => Values;
+) => Values | Promise<Values>;
 
 export type ValidatorBeforeSubmit<
 FieldSchema,

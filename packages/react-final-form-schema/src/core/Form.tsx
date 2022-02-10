@@ -2,9 +2,12 @@
 /* eslint-disable import/order */
 
 import {
-  useMemo,
   useCallback,
+  useMemo,
 } from 'react';
+import {
+  useAsync as defaultUseAsync,
+} from 'react-async-hook';
 import type {
   ReactElement,
   ReactNode,
@@ -15,6 +18,7 @@ import {
 import type {
   FormProps as FinalFormProps,
 } from 'react-final-form';
+import isPromise from 'is-promise';
 
 import {
   serialize as formSchemaSerialize,
@@ -69,12 +73,14 @@ Payload,
 
     mapErrors,
 
+    useAsync,
+
     children,
 
     ...rest
   } = props;
 
-  const initialValues = useMemo(() => parse(
+  const initialValuesResult = useMemo(() => parse(
     initialValuesProp || {},
     names,
     getFieldSchema,
@@ -85,6 +91,13 @@ Payload,
     getFieldSchema,
     getFieldType,
   ]);
+
+  const {
+    result: initialValues,
+  } = useAsync(
+    () => Promise.resolve(initialValuesResult),
+    [initialValuesResult],
+  );
 
   const onSubmit = useCallback<FinalFormProps<Values, Values>['onSubmit']>(async (values) => {
     const validationErrors = validateBeforeSubmit(values, names, getFieldSchema, getFieldType);
@@ -152,7 +165,11 @@ Payload,
     <FinalForm
       {...rest}
       onSubmit={onSubmit}
-      initialValues={initialValues}
+      initialValues={(
+        isPromise(initialValuesResult)
+          ? initialValues
+          : initialValuesResult
+      )}
     >
       {renderForm}
     </FinalForm>
@@ -170,4 +187,6 @@ Form.defaultProps = {
   formSchemaMapFieldErrors,
 
   mapErrors: defaultMapErrors,
+
+  useAsync: defaultUseAsync,
 };

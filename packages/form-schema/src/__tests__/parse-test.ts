@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import isPromise from 'is-promise';
 
 import { parse } from '../parse';
 import type {
@@ -24,6 +25,10 @@ const fieldSchemas = {
 
   value2: {
     type: 'testType2',
+  },
+
+  value3: {
+    type: 'testType3',
   },
 };
 
@@ -147,6 +152,49 @@ test('should call multiple parsers', () => {
       value2: 'test2test2',
     },
   );
+});
+
+test('should work with async parser', async () => {
+  const fields = {
+    testType1: {},
+
+    testType2: {
+      parser: (values: Values, name: string): Values => ({
+        [name]: values[name] + values[name],
+      }),
+    },
+
+    testType3: {
+      parser: async (values: Values, name: string): Promise<Values> => ({
+        [name]: values[name] + values[name],
+      }),
+    },
+  };
+
+  const parseResult = parse(
+    {
+      value1: 'test1',
+      value2: 'test2',
+      value3: 'test3',
+    },
+    [
+      'value1',
+      'value2',
+      'value3',
+    ],
+    defaultGetFieldSchema,
+    ({ type }) => fields[type],
+  );
+
+  expect(isPromise(parseResult)).toBe(true);
+
+  const result = await parseResult;
+
+  expect(result).toEqual({
+    value1: 'test1',
+    value2: 'test2test2',
+    value3: 'test3test3',
+  });
 });
 
 test('should redefine getFieldSchema', () => {

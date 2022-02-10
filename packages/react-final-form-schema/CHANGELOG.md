@@ -1,3 +1,9 @@
+## 0.2.4 (10 feb 2022)
+
+### New features
+
+- Allow asynchronous parsers
+
 ## 0.2.3 (19 may 2021)
 
 ### New features

@@ -1,3 +1,10 @@
+## 0.2.5 (10 feb 2022)
+
+### New features
+
+- Allow asynchronous parsers
+- `parse` returns `Promise` if one of parsers is asynchronous
+
 ## 0.2.4 (19 may 2021)
 
 ### New features

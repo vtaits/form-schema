@@ -105,7 +105,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
       };
     },
 
-    parser: (values, name, { options }) => {
+    parser: async (values, name, { options }) => {
       const value = values[name];
 
       return {

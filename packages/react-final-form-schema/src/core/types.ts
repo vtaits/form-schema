@@ -18,6 +18,7 @@ import type {
   ComponentType,
   ReactNode,
 } from 'react';
+import { useAsync } from 'react-async-hook';
 
 export type GetFieldType<
 FieldSchema,
@@ -168,6 +169,8 @@ Payload = any,
     SerializedValues,
     Errors
     >;
+
+    useAsync?: typeof useAsync;
 
     onSubmit: (
       serializedValues: SerializedValues,

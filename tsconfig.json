@@ -1,10 +1,7 @@
 {
-  "references": [
-    { "path": "./packages/form-schema" },
-    { "path": "./packages/react-final-form-schema" }
-  ],
   "compilerOptions": {
     "outDir": "ts",
+    "incremental": false,
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

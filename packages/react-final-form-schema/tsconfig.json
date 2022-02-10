@@ -1,7 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "ts",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "emitDeclarationOnly": true,
+    "incremental": false,
     "lib": ["ES2021", "DOM"]
   },
   "include": [
@@ -11,10 +14,5 @@
     "node_modules",
     "src/**/__tests__",
     "src/**/__stories__"
-  ],
-  "references": [
-    {
-      "path": "../form-schema"
-    }
   ]
 }

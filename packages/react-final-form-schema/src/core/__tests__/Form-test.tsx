@@ -97,6 +97,98 @@ test('should provide parsed initial values', () => {
   );
 });
 
+test('should not provide initial values during asynchronous parse', () => {
+  const getFieldSchema = jest.fn();
+  const getFieldType = jest.fn();
+  const names = ['test'];
+
+  const initialValues = {
+    test1: 'value1',
+  };
+
+  const parsedValues = {
+    test2: 'value2',
+  };
+
+  const parse = jest.fn()
+    .mockResolvedValue(parsedValues);
+
+  const useAsync = jest.fn()
+    .mockReturnValue({
+      result: undefined,
+    });
+
+  const page = setup({
+    initialValues,
+    getFieldSchema,
+    getFieldType,
+    names,
+
+    formSchemaParse: parse,
+    useAsync,
+  });
+
+  const formNode = page.getFinalFormNode();
+
+  expect(formNode.prop('initialValues')).toBe(undefined);
+
+  expect(parse).toHaveBeenCalledTimes(1);
+  expect(parse).toHaveBeenCalledWith(
+    initialValues,
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
+});
+
+test('should provide initial values after asynchronous parse', () => {
+  const getFieldSchema = jest.fn();
+  const getFieldType = jest.fn();
+  const names = ['test'];
+
+  const initialValues = {
+    test1: 'value1',
+  };
+
+  const parsedValues = {
+    test2: 'value2',
+  };
+
+  const asyncParsedValues = {
+    test3: 'value3',
+  };
+
+  const parse = jest.fn()
+    .mockResolvedValue(parsedValues);
+
+  const useAsync = jest.fn()
+    .mockReturnValue({
+      result: asyncParsedValues,
+    });
+
+  const page = setup({
+    initialValues,
+    getFieldSchema,
+    getFieldType,
+    names,
+
+    formSchemaParse: parse,
+    useAsync,
+  });
+
+  const formNode = page.getFinalFormNode();
+
+  expect(formNode.prop('initialValues')).toBe(asyncParsedValues);
+
+  expect(parse).toHaveBeenCalledTimes(1);
+  expect(parse).toHaveBeenCalledWith(
+    initialValues,
+    names,
+    getFieldSchema,
+    getFieldType,
+  );
+});
+
 test('should provide empty object to parser if initial values not defined', () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
