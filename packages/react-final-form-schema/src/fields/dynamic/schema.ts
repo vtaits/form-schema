@@ -12,6 +12,19 @@ RawValues extends Record<string, any> = Record<string, any>,
 SerializedValues extends Record<string, any> = Record<string, any>,
 Errors extends Record<string, any> = Record<string, any>,
 > = {
+  getSchemaAsync?: (
+    values: Values | RawValues,
+    phase: PhaseType,
+    getFieldSchema: GetFieldSchema<FieldSchema>,
+    getFieldType: GetFieldType<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors
+    >,
+  ) => Promise<FieldSchema>;
+
   getSchema: (
     values: Values | RawValues,
     phase: PhaseType,

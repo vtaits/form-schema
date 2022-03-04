@@ -236,129 +236,293 @@ describe('parser', () => {
   const getFieldSchema = jest.fn();
   const defaultGetFieldType = jest.fn();
 
-  test('should provide all values to `getSchema`', () => {
-    const getSchema = jest.fn();
+  describe('getSchema', () => {
+    test('should provide all values to `getSchema`', () => {
+      const getSchema = jest.fn();
 
-    const values = {
-      field1: 'value1',
-    };
+      const values = {
+        field1: 'value1',
+      };
 
-    dynamic.parser(
-      values,
-      'test',
-      { getSchema },
-      getFieldSchema,
-      defaultGetFieldType,
-    );
+      dynamic.parser(
+        values,
+        'test',
+        { getSchema },
+        getFieldSchema,
+        defaultGetFieldType,
+      );
 
-    expect(getSchema).toHaveBeenCalledTimes(1);
-    expect(getSchema).toHaveBeenCalledWith(
-      values,
-      'parse',
-      getFieldSchema,
-      defaultGetFieldType,
-    );
-  });
+      expect(getSchema).toHaveBeenCalledTimes(1);
+      expect(getSchema).toHaveBeenCalledWith(
+        values,
+        'parse',
+        getFieldSchema,
+        defaultGetFieldType,
+      );
+    });
 
-  test('should return empty object if `getSchema` returns falsy value', () => {
-    const values = {
-      field1: 'value1',
-    };
+    test('should return empty object if `getSchema` returns falsy value', () => {
+      const values = {
+        field1: 'value1',
+      };
 
-    const result = dynamic.parser(
-      values,
-      'test',
-      {
-        getSchema: () => null,
-      },
-      getFieldSchema,
-      defaultGetFieldType,
-    );
+      const result = dynamic.parser(
+        values,
+        'test',
+        {
+          getSchema: () => null,
+        },
+        getFieldSchema,
+        defaultGetFieldType,
+      );
 
-    expect(result).toEqual({});
-  });
+      expect(result).toEqual({});
+    });
 
-  test('should call `getFieldType` with correct argument', () => {
-    const getFieldType = jest.fn()
-      .mockReturnValue({});
+    test('should call `getFieldType` with correct argument', () => {
+      const getFieldType = jest.fn()
+        .mockReturnValue({});
 
-    const values = {
-      field1: 'value1',
-    };
+      const values = {
+        field1: 'value1',
+      };
 
-    dynamic.parser(
-      values,
-      'test',
-      {
-        getSchema: () => 'testSchema',
-      },
-      getFieldSchema,
-      getFieldType,
-    );
+      dynamic.parser(
+        values,
+        'test',
+        {
+          getSchema: () => 'testSchema',
+        },
+        getFieldSchema,
+        getFieldType,
+      );
 
-    expect(getFieldType).toHaveBeenCalledTimes(1);
-    expect(getFieldType).toHaveBeenCalledWith('testSchema');
-  });
+      expect(getFieldType).toHaveBeenCalledTimes(1);
+      expect(getFieldType).toHaveBeenCalledWith('testSchema');
+    });
 
-  test('should call parser of computed field type if defined', () => {
-    const parser = jest.fn()
-      .mockReturnValue({
+    test('should call parser of computed field type if defined', () => {
+      const parser = jest.fn()
+        .mockReturnValue({
+          field1: 'parsed1',
+        });
+
+      const getFieldType = jest.fn()
+        .mockReturnValue({
+          parser,
+        });
+
+      const values = {
+        field1: 'value1',
+      };
+
+      const result = dynamic.parser(
+        values,
+        'test',
+        {
+          getSchema: () => 'testSchema',
+        },
+        getFieldSchema,
+        getFieldType,
+      );
+
+      expect(result).toEqual({
         field1: 'parsed1',
       });
 
-    const getFieldType = jest.fn()
-      .mockReturnValue({
-        parser,
-      });
-
-    const values = {
-      field1: 'value1',
-    };
-
-    const result = dynamic.parser(
-      values,
-      'test',
-      {
-        getSchema: () => 'testSchema',
-      },
-      getFieldSchema,
-      getFieldType,
-    );
-
-    expect(result).toEqual({
-      field1: 'parsed1',
+      expect(parser).toHaveBeenCalledWith(
+        values,
+        'test',
+        'testSchema',
+        getFieldSchema,
+        getFieldType,
+      );
     });
 
-    expect(parser).toHaveBeenCalledWith(
-      values,
-      'test',
-      'testSchema',
-      getFieldSchema,
-      getFieldType,
-    );
+    test('should call default parser for computed field', () => {
+      const getFieldType = jest.fn()
+        .mockReturnValue({});
+
+      const values = {
+        field1: 'value1',
+        field2: 'value2',
+      };
+
+      const result = dynamic.parser(
+        values,
+        'field1',
+        {
+          getSchema: () => 'testSchema',
+        },
+        getFieldSchema,
+        getFieldType,
+      );
+
+      expect(result).toEqual({
+        field1: 'value1',
+      });
+    });
   });
 
-  test('should call default parser for computed field', () => {
-    const getFieldType = jest.fn()
-      .mockReturnValue({});
+  describe('getSchemaAsync', () => {
+    test('should provide all values to `getSchemaAsync`', async () => {
+      const getSchema = jest.fn();
+      const getSchemaAsync = jest.fn()
+        .mockResolvedValue(null);
 
-    const values = {
-      field1: 'value1',
-      field2: 'value2',
-    };
+      const values = {
+        field1: 'value1',
+      };
 
-    const result = dynamic.parser(
-      values,
-      'field1',
-      {
-        getSchema: () => 'testSchema',
-      },
-      getFieldSchema,
-      getFieldType,
-    );
+      await dynamic.parser(
+        values,
+        'test',
+        {
+          getSchemaAsync,
+          getSchema,
+        },
+        getFieldSchema,
+        defaultGetFieldType,
+      );
 
-    expect(result).toEqual({
-      field1: 'value1',
+      expect(getSchemaAsync).toHaveBeenCalledTimes(1);
+      expect(getSchemaAsync).toHaveBeenCalledWith(
+        values,
+        'parse',
+        getFieldSchema,
+        defaultGetFieldType,
+      );
+
+      expect(getSchema).toHaveBeenCalledTimes(0);
+    });
+
+    test('should return empty object if `getSchemaAsync` returns falsy value', async () => {
+      const getSchema = jest.fn()
+        .mockReturnValue('testSchemaSync');
+      const getSchemaAsync = jest.fn()
+        .mockResolvedValue(null);
+
+      const values = {
+        field1: 'value1',
+      };
+
+      const result = await dynamic.parser(
+        values,
+        'test',
+        {
+          getSchemaAsync,
+          getSchema,
+        },
+        getFieldSchema,
+        defaultGetFieldType,
+      );
+
+      expect(result).toEqual({});
+    });
+
+    test('should call `getFieldType` with correct argument', async () => {
+      const getSchema = jest.fn()
+        .mockReturnValue('testSchemaSync');
+      const getSchemaAsync = jest.fn()
+        .mockResolvedValue('testSchema');
+
+      const getFieldType = jest.fn()
+        .mockReturnValue({});
+
+      const values = {
+        field1: 'value1',
+      };
+
+      await dynamic.parser(
+        values,
+        'test',
+        {
+          getSchemaAsync,
+          getSchema,
+        },
+        getFieldSchema,
+        getFieldType,
+      );
+
+      expect(getFieldType).toHaveBeenCalledTimes(1);
+      expect(getFieldType).toHaveBeenCalledWith('testSchema');
+    });
+
+    test('should call parser of computed field type if defined', async () => {
+      const getSchema = jest.fn()
+        .mockReturnValue('testSchemaSync');
+      const getSchemaAsync = jest.fn()
+        .mockResolvedValue('testSchema');
+
+      const parser = jest.fn()
+        .mockReturnValue({
+          field1: 'parsed1',
+        });
+
+      const getFieldType = jest.fn()
+        .mockReturnValue({
+          parser,
+        });
+
+      const values = {
+        field1: 'value1',
+      };
+
+      const result = await dynamic.parser(
+        values,
+        'test',
+        {
+          getSchemaAsync,
+          getSchema,
+        },
+        getFieldSchema,
+        getFieldType,
+      );
+
+      expect(result).toEqual({
+        field1: 'parsed1',
+      });
+
+      expect(parser).toHaveBeenCalledWith(
+        values,
+        'test',
+        'testSchema',
+        getFieldSchema,
+        getFieldType,
+      );
+    });
+
+    test('should call default parser for computed field', async () => {
+      const getSchema = jest.fn()
+        .mockReturnValue('testSchemaSync');
+      const getSchemaAsync = jest.fn()
+        .mockResolvedValue('testSchema');
+
+      const getFieldType = jest.fn()
+        .mockReturnValue({});
+
+      const values = {
+        field1: 'value1',
+        field2: 'value2',
+      };
+
+      const result = await dynamic.parser(
+        values,
+        'field1',
+        {
+          getSchemaAsync,
+          getSchema,
+        },
+        getFieldSchema,
+        getFieldType,
+      );
+
+      expect(getFieldType).toHaveBeenCalledTimes(1);
+      expect(getFieldType).toHaveBeenCalledWith('testSchema');
+
+      expect(result).toEqual({
+        field1: 'value1',
+      });
     });
   });
 });

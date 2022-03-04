@@ -1,3 +1,9 @@
+## 0.2.5
+
+### New features
+
+- Support asyncronous parsing in `dynamic` field with `getSchemaAsync` property.
+
 ## 0.2.4 (10 feb 2022)
 
 ### New features

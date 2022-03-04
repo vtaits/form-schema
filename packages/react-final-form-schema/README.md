@@ -132,3 +132,5 @@ Parameters:
   3. `getFieldSchema` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
   4. `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
+
+- `getSchemaAsync` - not required, function. Can be used for asynchronous parsing. Similar to `getSchema` but should return `Promise` with result schema.

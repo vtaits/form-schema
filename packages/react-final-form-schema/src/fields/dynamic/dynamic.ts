@@ -91,7 +91,31 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
   parser: (values, name, fieldSchema, getFieldSchema, getFieldType) => {
     const {
       getSchema,
+      getSchemaAsync,
     } = fieldSchema;
+
+    if (getSchemaAsync) {
+      return getSchemaAsync(values, 'parse', getFieldSchema, getFieldType)
+        .then((schema) => {
+          if (!schema) {
+            return {};
+          }
+
+          const fieldType = getFieldType(schema);
+
+          if (fieldType.parser) {
+            return fieldType.parser(
+              values,
+              name,
+              schema,
+              getFieldSchema,
+              getFieldType,
+            );
+          }
+
+          return defaultParser(values, name, fieldSchema, getFieldSchema, getFieldType);
+        });
+    }
 
     const schema = getSchema(values, 'parse', getFieldSchema, getFieldType);
 
