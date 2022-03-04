@@ -35,6 +35,7 @@ import type {
   FormProps,
 } from './types';
 
+import { FormSchemaStateContext } from './FormSchemaStateContext';
 import { renderFieldBySchema } from './renderFieldBySchema';
 
 export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) => fieldSchema;
@@ -161,18 +162,34 @@ Payload,
     ): ReactNode => renderField(formRenderProps.values, name, payload),
   }), [children, renderField]);
 
+  const isValuesReady = useMemo(() => {
+    if (isPromise(initialValuesResult)) {
+      return Boolean(initialValues);
+    }
+
+    return true;
+  }, [initialValuesResult, initialValues]);
+
+  const formSchemaState = useMemo(() => ({
+    isValuesReady,
+  }), [isValuesReady]);
+
   return (
-    <FinalForm
-      {...rest}
-      onSubmit={onSubmit}
-      initialValues={(
-        isPromise(initialValuesResult)
-          ? initialValues
-          : initialValuesResult
-      )}
+    <FormSchemaStateContext.Provider
+      value={formSchemaState}
     >
-      {renderForm}
-    </FinalForm>
+      <FinalForm
+        {...rest}
+        onSubmit={onSubmit}
+        initialValues={(
+          isPromise(initialValuesResult)
+            ? initialValues
+            : initialValuesResult
+        )}
+      >
+        {renderForm}
+      </FinalForm>
+    </FormSchemaStateContext.Provider>
   );
 }
 

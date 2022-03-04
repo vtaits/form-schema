@@ -179,3 +179,11 @@ Payload = any,
 
     children: (renderProps: FormRenderProps<Values, Payload>) => ReactNode;
   };
+
+export type FormSchemaStateContextType = {
+  /**
+   * If parsing if asynchronous it returns true only after end of parsing
+   * If parsing if synchronous it always returns true
+   */
+  isValuesReady: boolean;
+};

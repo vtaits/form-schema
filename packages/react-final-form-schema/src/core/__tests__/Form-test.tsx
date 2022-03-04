@@ -13,9 +13,11 @@ import type {
   ReactNode,
 } from 'react';
 
+import { FormSchemaStateContext } from '../FormSchemaStateContext';
 import { Form } from '../Form';
 import type {
   FormProps,
+  FormSchemaStateContextType,
   RenderFieldBySchema,
 } from '../types';
 
@@ -32,6 +34,9 @@ const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
 
 type PageObject = {
   getFinalFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
+  getProviderNode: () => ShallowWrapper<{
+    value: FormSchemaStateContextType;
+  }>;
 };
 
 const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any>>): PageObject => {
@@ -50,8 +55,11 @@ const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any
   Errors,
   any>> => wrapper.find(FinalForm);
 
+  const getProviderNode = () => wrapper.find(FormSchemaStateContext.Provider);
+
   return {
     getFinalFormNode,
+    getProviderNode,
   };
 };
 
@@ -128,6 +136,8 @@ test('should not provide initial values during asynchronous parse', () => {
     useAsync,
   });
 
+  expect(page.getProviderNode().prop('value').isValuesReady).toBe(false);
+
   const formNode = page.getFinalFormNode();
 
   expect(formNode.prop('initialValues')).toBe(undefined);
@@ -175,6 +185,8 @@ test('should provide initial values after asynchronous parse', () => {
     formSchemaParse: parse,
     useAsync,
   });
+
+  expect(page.getProviderNode().prop('value').isValuesReady).toBe(true);
 
   const formNode = page.getFinalFormNode();
 

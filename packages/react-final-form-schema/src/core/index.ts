@@ -1,4 +1,5 @@
 export { Form } from './Form';
+export { useFormSchemaState } from './useFormSchemaState';
 
 export type {
   GetFieldType,
@@ -9,4 +10,5 @@ export type {
   RenderFieldBySchema,
   FormRenderProps,
   FormProps,
+  FormSchemaStateContextType,
 } from './types';

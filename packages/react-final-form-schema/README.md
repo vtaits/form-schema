@@ -134,3 +134,15 @@ Parameters:
   4. `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
 - `getSchemaAsync` - not required, function. Can be used for asynchronous parsing. Similar to `getSchema` but should return `Promise` with result schema.
+
+## Utils
+
+### useFormSchemaState
+
+Hook that returns state for wrapper above `react-final-form`. This is object with next values:
+
+- `isValuesReady` - boolean
+
+  If parsing if asynchronous it returns `true` only after end of parsing;
+
+  If parsing if synchronous it always returns `true`.
