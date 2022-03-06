@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-final-form-schema",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Integration of react-final-form and @vtaits/form-schema",
   "main": "lib/core/index.js",
   "module": "es/core/index.js",
