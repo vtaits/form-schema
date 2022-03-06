@@ -38,7 +38,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
-    "@jest/globals": "^27.5.1",
     "@types/jest": "^27.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.10.0",

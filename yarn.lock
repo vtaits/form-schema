@@ -3766,7 +3766,6 @@ __metadata:
   dependencies:
     "@babel/cli": ^7.17.6
     "@babel/runtime": ^7.17.2
-    "@jest/globals": ^27.5.1
     "@types/is-promise": ^2.2.0
     "@types/jest": ^27.4.1
     cross-env: ^7.0.3
@@ -3793,7 +3792,6 @@ __metadata:
   dependencies:
     "@babel/cli": ^7.17.6
     "@babel/runtime": ^7.17.2
-    "@jest/globals": ^27.5.1
     "@mdx-js/react": ^1.6.22
     "@storybook/addon-docs": ^6.4.19
     "@storybook/react": ^6.4.19
