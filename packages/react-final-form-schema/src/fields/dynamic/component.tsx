@@ -63,11 +63,11 @@ Payload,
   getFieldSchema,
   getFieldType,
 
-  useForm = defaultUseForm,
-  useFormState = defaultUseFormState,
-  useFormSchemaState = defaultUseFormSchemaState,
-  useEffect = defaultUseEffect,
-  useRef = defaultUseRef,
+  useForm,
+  useFormState,
+  useFormSchemaState,
+  useEffect,
+  useRef,
 
   ...rest
 }: DynamicFieldProps<
@@ -148,3 +148,11 @@ Payload
     />
   );
 }
+
+DynamicField.defaultProps = {
+  useForm: defaultUseForm,
+  useFormState: defaultUseFormState,
+  useFormSchemaState: defaultUseFormSchemaState,
+  useEffect: defaultUseEffect,
+  useRef: defaultUseRef,
+} as DynamicFieldProps<any, any, any, any, any, any>;
