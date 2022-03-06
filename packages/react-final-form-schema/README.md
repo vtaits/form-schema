@@ -133,7 +133,29 @@ Parameters:
 
   4. `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
-- `getSchemaAsync` - not required, function. Can be used for asynchronous parsing. Similar to `getSchema` but should return `Promise` with result schema.
+- `getSchemaAsync` - not required, function. Can be used for asynchronous parsing. Similar to `getSchema` but should return `Promise` with result schema;
+
+- `onShow` - not required, callback that called when field has shown. Arguments:
+
+  1. `form` - instance of `final-form`;
+
+  2. `name` - name of field;
+
+  3. `schema` - result schema of subfield;
+
+  4. `getFieldSchema` - current `getFieldSchema`;
+
+  5. `getFieldType` - global `getFieldType`;
+
+- `onHide` - not required, callback that called when field has hidden. Arguments:
+
+  1. `form` - instance of `final-form`;
+
+  2. `name` - name of field;
+
+  3. `getFieldSchema` - current `getFieldSchema`;
+
+  4. `getFieldType` - global `getFieldType`.
 
 ## Utils
 

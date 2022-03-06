@@ -2,8 +2,9 @@
 
 ### New features
 
-- Support asyncronous parsing in `dynamic` field with `getSchemaAsync` property
 - Added `useFormSchemaState` hook
+- Support asyncronous parsing in `dynamic` field with `getSchemaAsync` property
+- Support `onShow` and `onHide` callbacks in schema of `dynamic` field
 
 ## 0.2.4 (10 feb 2022)
 

@@ -142,6 +142,14 @@ const fullSchema = {
         placeholder: 'WOW',
       };
     },
+
+    onShow: (...args) => {
+      console.log('onShow', args);
+    },
+
+    onHide: (...args) => {
+      console.log('onHide', args);
+    },
   },
 };
 
