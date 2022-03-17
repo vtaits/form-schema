@@ -4,6 +4,7 @@ import type {
   GetFieldSchema,
   GetFieldType,
   ErrorsMapper,
+  ParentType,
 } from './types';
 
 export const defaultFieldErrorsMapper: ErrorsMapper<any, any, any, any, any> = (
@@ -38,6 +39,7 @@ Errors extends Record<string, any>,
     >,
     values: SerializedValues,
     rawValues: Values,
+    parents: ParentType<Values>[],
   ): Errors => {
   const res = {
     ...errors,
@@ -55,6 +57,7 @@ Errors extends Record<string, any>,
         getFieldType,
         rawValues,
         'serialize',
+        parents,
       )
       : getFieldSchema;
 
@@ -68,6 +71,7 @@ Errors extends Record<string, any>,
         getFieldType,
         values,
         rawValues,
+        parents,
       ),
     );
   });

@@ -3,6 +3,7 @@
 import type {
   GetFieldSchema,
   GetFieldType,
+  ParentType,
   ValidatorBeforeSubmit,
 } from './types';
 
@@ -26,6 +27,7 @@ Errors extends Record<string, any>,
     SerializedValues,
     Errors
     >,
+    parents: ParentType<Values>[],
   ): Errors => {
   const res = {} as Errors;
 
@@ -41,6 +43,7 @@ Errors extends Record<string, any>,
         getFieldType,
         values,
         'serialize',
+        parents,
       )
       : getFieldSchema;
 
@@ -50,6 +53,7 @@ Errors extends Record<string, any>,
       fieldSchema,
       computedGetFieldSchema,
       getFieldType,
+      parents,
     ));
   });
 

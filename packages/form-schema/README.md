@@ -43,7 +43,8 @@ Type declaration is an object with next params:
   2. `name` - name of current field;
   3. `fieldSchema` - full schema of field;
   4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above.
+  5. `getFieldType` - see above;
+  6. `parents` - stack of parent fields above current field with runtime values.
 
   Should return **OBJECT** of values. By default returns
 
@@ -59,7 +60,8 @@ Type declaration is an object with next params:
   2. `name` - name of current field;
   3. `fieldSchema` - full schema of field;
   4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above.
+  5. `getFieldType` - see above;
+  6. `parents` - stack of parent fields above current field with raw values.
 
   Should return **OBJECT** of values or `Promise` with object of values (can be `async`). By default returns
 
@@ -75,7 +77,8 @@ Type declaration is an object with next params:
   2. `name` - name of current field;
   3. `fieldSchema` - full schema of field;
   4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above.
+  5. `getFieldType` - see above;
+  6. `parents` - stack of parent fields above current field with runtime values.
 
   Should return **OBJECT** of values. By default returns empty object. Example:
 
@@ -101,7 +104,8 @@ Type declaration is an object with next params:
   4. `getFieldSchema` - see above;
   5. `getFieldType` - see above;
   6. `values` - serialized values of form using `serializer` functions of field;
-  7. `rawValues` - all values of form without processing.
+  7. `rawValues` - all values of form without processing;
+  8. `parents` - stack of parent fields above current field with runtime values.
 
   Should return **OBJECT** of values. By default returns
 
@@ -118,6 +122,7 @@ Type declaration is an object with next params:
   3. `getFieldType` - see above;
   4. `values` - current values (values of form during render and serialization or raw values during parsing);
   5. `phase` - one of next values: `'parse'`, `'serialize'`, `'render'`;
+  6. `parents` - stack of parent fields above current field, raw values for phase 'parse' and runtime values otherwise.
 
 ## Usage
 

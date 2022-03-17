@@ -4,6 +4,7 @@ import type {
   GetFieldSchema,
   GetFieldType,
   Serializer,
+  ParentType,
 } from './types';
 
 export const defaultSerializer: Serializer<any, any, any, any, any> = (
@@ -36,6 +37,7 @@ Errors extends Record<string, any>,
     SerializedValues,
     Errors
     >,
+    parents: ParentType<Values>[],
   ): SerializedValues => {
   const res = {} as SerializedValues;
 
@@ -51,6 +53,7 @@ Errors extends Record<string, any>,
         getFieldType,
         values,
         'serialize',
+        parents,
       )
       : getFieldSchema;
 
@@ -60,6 +63,7 @@ Errors extends Record<string, any>,
       fieldSchema,
       computedGetFieldSchema,
       getFieldType,
+      parents,
     ));
   });
 
