@@ -8,6 +8,7 @@ import {
 import type {
   GetFieldSchema,
   GetFieldType,
+  ParentType,
   PhaseType,
 } from '@vtaits/form-schema';
 
@@ -35,8 +36,15 @@ Errors extends Record<string, any>,
     getFieldType: GetFieldType<FieldSchema, Values, RawValues, SerializedValues, Errors>,
     values: Values | RawValues,
     phase: PhaseType,
+    parents: ParentType<Values>[],
   ): GetFieldSchema<FieldSchema> => {
-  const schema = getSchema(values, phase, getFieldSchema, getFieldType);
+  const schema = getSchema(
+    values,
+    phase,
+    getFieldSchema,
+    getFieldType,
+    parents,
+  );
 
   if (!schema) {
     return getFieldSchema;
@@ -51,6 +59,7 @@ Errors extends Record<string, any>,
       getFieldType,
       values,
       phase,
+      parents,
     );
   }
 
@@ -62,12 +71,12 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
 
   createGetFieldSchema,
 
-  serializer: (values, name, fieldSchema, getFieldSchema, getFieldType) => {
+  serializer: (values, name, fieldSchema, getFieldSchema, getFieldType, parents) => {
     const {
       getSchema,
     } = fieldSchema;
 
-    const schema = getSchema(values, 'serialize', getFieldSchema, getFieldType);
+    const schema = getSchema(values, 'serialize', getFieldSchema, getFieldType, parents);
 
     if (!schema) {
       return {};
@@ -82,20 +91,21 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
         schema,
         getFieldSchema,
         getFieldType,
+        parents,
       );
     }
 
-    return defaultSerializer(values, name, fieldSchema, getFieldSchema, getFieldType);
+    return defaultSerializer(values, name, fieldSchema, getFieldSchema, getFieldType, parents);
   },
 
-  parser: (values, name, fieldSchema, getFieldSchema, getFieldType) => {
+  parser: (values, name, fieldSchema, getFieldSchema, getFieldType, parents) => {
     const {
       getSchema,
       getSchemaAsync,
     } = fieldSchema;
 
     if (getSchemaAsync) {
-      return getSchemaAsync(values, 'parse', getFieldSchema, getFieldType)
+      return getSchemaAsync(values, 'parse', getFieldSchema, getFieldType, parents)
         .then((schema) => {
           if (!schema) {
             return {};
@@ -110,14 +120,15 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
               schema,
               getFieldSchema,
               getFieldType,
+              parents,
             );
           }
 
-          return defaultParser(values, name, fieldSchema, getFieldSchema, getFieldType);
+          return defaultParser(values, name, fieldSchema, getFieldSchema, getFieldType, parents);
         });
     }
 
-    const schema = getSchema(values, 'parse', getFieldSchema, getFieldType);
+    const schema = getSchema(values, 'parse', getFieldSchema, getFieldType, parents);
 
     if (!schema) {
       return {};
@@ -132,18 +143,19 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
         schema,
         getFieldSchema,
         getFieldType,
+        parents,
       );
     }
 
-    return defaultParser(values, name, fieldSchema, getFieldSchema, getFieldType);
+    return defaultParser(values, name, fieldSchema, getFieldSchema, getFieldType, parents);
   },
 
-  validatorBeforeSubmit: (values, name, fieldSchema, getFieldSchema, getFieldType) => {
+  validatorBeforeSubmit: (values, name, fieldSchema, getFieldSchema, getFieldType, parents) => {
     const {
       getSchema,
     } = fieldSchema as DynamicSchema<any>;
 
-    const schema = getSchema(values, 'serialize', getFieldSchema, getFieldType);
+    const schema = getSchema(values, 'serialize', getFieldSchema, getFieldType, parents);
 
     if (!schema) {
       return {};
@@ -158,6 +170,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
         schema,
         getFieldSchema,
         getFieldType,
+        parents,
       );
     }
 
@@ -172,12 +185,13 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
     getFieldType,
     values,
     rawValues,
+    parents,
   ) => {
     const {
       getSchema,
     } = fieldSchema;
 
-    const schema = getSchema(rawValues, 'serialize', getFieldSchema, getFieldType);
+    const schema = getSchema(rawValues, 'serialize', getFieldSchema, getFieldType, parents);
 
     if (!schema) {
       return {};
@@ -194,6 +208,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
         getFieldType,
         values,
         rawValues,
+        parents,
       );
     }
 
@@ -205,6 +220,7 @@ export const dynamic: FieldType<DynamicSchema<any>> = {
       getFieldType,
       values,
       rawValues,
+      parents,
     );
   },
 };

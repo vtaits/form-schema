@@ -9,6 +9,7 @@ export type {
   PhaseType,
   CreateGetFieldSchema,
   Serializer,
+  ParentType,
   Parser,
   ValidatorBeforeSubmit,
   ErrorsMapper,

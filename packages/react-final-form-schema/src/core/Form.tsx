@@ -28,6 +28,7 @@ import {
 } from '@vtaits/form-schema';
 import type {
   GetFieldSchema,
+  ParentType,
 } from '@vtaits/form-schema';
 
 import type {
@@ -81,12 +82,21 @@ Payload,
     ...rest
   } = props;
 
-  const initialValuesResult = useMemo(() => parse(
-    initialValuesProp || {},
-    names,
-    getFieldSchema,
-    getFieldType,
-  ), [
+  const initialValuesResult = useMemo(() => {
+    const rawInitialValues = initialValuesProp || {};
+
+    return parse(
+      rawInitialValues,
+      names,
+      getFieldSchema,
+      getFieldType,
+      [
+        {
+          values: rawInitialValues,
+        },
+      ],
+    );
+  }, [
     initialValuesProp,
     names,
     getFieldSchema,
@@ -101,13 +111,33 @@ Payload,
   );
 
   const onSubmit = useCallback<FinalFormProps<Values, Values>['onSubmit']>(async (values) => {
-    const validationErrors = validateBeforeSubmit(values, names, getFieldSchema, getFieldType);
+    const validationErrors = validateBeforeSubmit(
+      values,
+      names,
+      getFieldSchema,
+      getFieldType,
+      [
+        {
+          values,
+        },
+      ],
+    );
 
     if (Object.keys(validationErrors).length > 0) {
       return validationErrors;
     }
 
-    const valuesForSubmit = serialize(values, names, getFieldSchema, getFieldType);
+    const valuesForSubmit = serialize(
+      values,
+      names,
+      getFieldSchema,
+      getFieldType,
+      [
+        {
+          values,
+        },
+      ],
+    );
 
     const rawErrors = await onSubmitProp(valuesForSubmit, values);
 
@@ -128,6 +158,11 @@ Payload,
       getFieldType,
       valuesForSubmit,
       values,
+      [
+        {
+          values,
+        },
+      ],
     );
 
     return mappedErrors;
@@ -142,13 +177,16 @@ Payload,
   const renderField = useCallback((
     values: Values,
     name: string,
-    payload: Payload,
+    payload?: Payload,
+    parents?: ParentType<Values>[],
   ): ReactNode => renderFieldBySchemaProp(
-    values,
     getFieldSchema,
     getFieldType,
     name,
     payload,
+    parents || [{
+      values,
+    }],
   ), [
     getFieldSchema,
     getFieldType,
@@ -158,8 +196,14 @@ Payload,
     ...formRenderProps,
     renderField: (
       name: string,
-      payload: Payload,
-    ): ReactNode => renderField(formRenderProps.values, name, payload),
+      payload?: Payload,
+      parents?: ParentType<Values>[],
+    ): ReactNode => renderField(
+      formRenderProps.values,
+      name,
+      payload,
+      parents,
+    ),
   }), [children, renderField]);
 
   const isValuesReady = useMemo(() => {

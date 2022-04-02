@@ -38,7 +38,7 @@ type ArrayProps = {
 
   fieldSchema: FieldSchema;
 
-  renderField: RenderField<string>;
+  renderField: RenderField<Record<string, any>, string>;
 };
 
 function ArrayComponent({

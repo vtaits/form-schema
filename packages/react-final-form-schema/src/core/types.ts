@@ -9,6 +9,7 @@ import {
 import type {
   GetFieldSchema,
   FieldType as FieldTypeBase,
+  ParentType,
 } from '@vtaits/form-schema';
 import type {
   FormProps as FinalFormProps,
@@ -36,9 +37,13 @@ Errors,
 Payload
 >;
 
-export type RenderField<Payload = any> = (
+export type RenderField<
+Values extends Record<string, any> = Record<string, any>,
+Payload = any,
+> = (
   name: string,
   payload?: Payload,
+  parents?: ParentType<Values>[],
 ) => ReactNode;
 
 export type FieldComponentProps<
@@ -61,7 +66,8 @@ Payload = any,
   Errors,
   Payload
   >;
-  renderField: RenderField<Payload>;
+  renderField: RenderField<Values, Payload>;
+  parents: ParentType<Values>[],
 };
 
 export type MapErrors<
@@ -108,7 +114,6 @@ SerializedValues extends Record<string, any> = Record<string, any>,
 Errors extends Record<string, any> = Record<string, any>,
 Payload = any,
 > = (
-  values: Values,
   getFieldSchema: GetFieldSchema<FieldSchema>,
   getFieldType: GetFieldType<
   FieldSchema,
@@ -119,7 +124,8 @@ Payload = any,
   Payload
   >,
   name: string,
-  payload?: Payload,
+  payload: Payload | undefined,
+  parents: ParentType<Values>[],
 ) => ReactNode;
 
 export type FormRenderProps<
@@ -128,7 +134,7 @@ Payload = any,
 > =
   & FinalFormRenderProps<Values>
   & {
-    renderField: RenderField<Payload>;
+    renderField: RenderField<Values, Payload>;
   };
 
 export type FormProps<
