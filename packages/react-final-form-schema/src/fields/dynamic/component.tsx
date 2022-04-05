@@ -63,6 +63,8 @@ Payload,
   getFieldSchema,
   getFieldType,
 
+  parents,
+
   useForm,
   useFormState,
   useFormSchemaState,
@@ -100,7 +102,13 @@ Payload
   Errors
   >;
 
-  const schema = getSchema(values, 'render', getFieldSchema, getFieldType);
+  const schema = getSchema(
+    values,
+    'render',
+    getFieldSchema,
+    getFieldType,
+    parents,
+  );
 
   const isFirstRenderRef = useRef(true);
 
@@ -113,14 +121,28 @@ Payload
 
       if (schema) {
         if (onShow) {
-          onShow(form, name, schema, getFieldSchema, getFieldType);
+          onShow(
+            form,
+            name,
+            schema,
+            getFieldSchema,
+            getFieldType,
+            parents,
+          );
         }
 
         return;
       }
 
       if (onHide) {
-        onHide(form, name, getFieldSchema, getFieldType);
+        onHide(
+          form,
+          name,
+          getFieldSchema,
+          getFieldType,
+          parents,
+        );
+
         return;
       }
 
@@ -145,6 +167,7 @@ Payload
       fieldSchema={schema}
       getFieldSchema={getFieldSchema}
       getFieldType={getFieldType}
+      parents={parents}
     />
   );
 }

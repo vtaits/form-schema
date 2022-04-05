@@ -12,6 +12,12 @@ type Values = Record<string, any>;
 
 type ValidatorBeforeSubmitArgs = Parameters<ValidatorBeforeSubmit<any, any, any, any, any>>;
 
+const parents = [
+  {
+    values: {},
+  },
+];
+
 test('should call default validatorBeforeSubmit', () => {
   expect(
     validateBeforeSubmit(
@@ -30,6 +36,8 @@ test('should call default validatorBeforeSubmit', () => {
       }),
 
       () => ({}),
+
+      parents,
     ),
   ).toEqual(
     {},
@@ -69,6 +77,7 @@ test('should call redefined validatorBeforeSubmit', () => {
 
       getFieldSchema,
       getFieldType,
+      parents,
     ),
   ).toEqual(
     {
@@ -83,6 +92,7 @@ test('should call redefined validatorBeforeSubmit', () => {
     fieldSchema,
     getFieldSchema,
     getFieldType,
+    parents,
   );
 });
 
@@ -127,6 +137,8 @@ test('should call multiple validators', () => {
       }),
 
       ({ type }: { type: string }): FieldType<any, any, any, any, any> => fieldTypes[type],
+
+      parents,
     ),
   ).toEqual(
     {
@@ -168,8 +180,8 @@ test('should redefine getFieldSchema', () => {
     ],
 
     parentGetFieldSchema,
-
     getFieldType,
+    parents,
   );
 
   expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
@@ -187,5 +199,6 @@ test('should redefine getFieldSchema', () => {
       value: 'test',
     },
     'serialize',
+    parents,
   );
 });

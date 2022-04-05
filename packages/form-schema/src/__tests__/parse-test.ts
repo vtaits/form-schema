@@ -32,6 +32,12 @@ const fieldSchemas = {
   },
 };
 
+const parents = [
+  {
+    values: {},
+  },
+];
+
 const defaultGetFieldSchema: GetFieldSchema<any> = (name: string) => fieldSchemas[name];
 
 test('should return null for falsy values object', () => {
@@ -43,6 +49,7 @@ test('should return null for falsy values object', () => {
       ],
       defaultGetFieldSchema,
       (): FieldType<any, any, any, any, any> => ({}),
+      parents,
     ),
   ).toEqual(null);
 });
@@ -59,6 +66,7 @@ test('should call default parser', () => {
       ],
       defaultGetFieldSchema,
       (): FieldType<any, any, any, any, any> => ({}),
+      parents,
     ),
   ).toEqual(
     {
@@ -78,6 +86,7 @@ test('should call default parser for empty value', () => {
       ],
       defaultGetFieldSchema,
       () => ({}),
+      parents,
     ),
   ).toEqual(
     {
@@ -108,6 +117,7 @@ test('should call redefined parser', () => {
       ],
       defaultGetFieldSchema,
       getFieldType,
+      parents,
     ),
   ).toEqual(
     {
@@ -115,12 +125,15 @@ test('should call redefined parser', () => {
     },
   );
 
-  expect(parser.mock.calls.length).toBe(1);
-  expect(parser.mock.calls[0][0]).toBe(rawValues);
-  expect(parser.mock.calls[0][1]).toBe('value');
-  expect(parser.mock.calls[0][2]).toBe(fieldSchemas.value);
-  expect(parser.mock.calls[0][3]).toBe(defaultGetFieldSchema);
-  expect(parser.mock.calls[0][4]).toBe(getFieldType);
+  expect(parser).toHaveBeenCalledTimes(1);
+  expect(parser).toHaveBeenCalledWith(
+    rawValues,
+    'value',
+    fieldSchemas.value,
+    defaultGetFieldSchema,
+    getFieldType,
+    parents,
+  );
 });
 
 test('should call multiple parsers', () => {
@@ -145,6 +158,7 @@ test('should call multiple parsers', () => {
       ],
       defaultGetFieldSchema,
       ({ type }) => fields[type],
+      parents,
     ),
   ).toEqual(
     {
@@ -184,6 +198,7 @@ test('should work with async parser', async () => {
     ],
     defaultGetFieldSchema,
     ({ type }) => fields[type],
+    parents,
   );
 
   expect(isPromise(parseResult)).toBe(true);
@@ -229,6 +244,7 @@ test('should redefine getFieldSchema', () => {
 
     parentGetFieldSchema,
     getFieldType,
+    parents,
   );
 
   expect(parser).toHaveBeenCalledTimes(1);
@@ -247,5 +263,6 @@ test('should redefine getFieldSchema', () => {
       value: 'test',
     },
     'parse',
+    parents,
   );
 });

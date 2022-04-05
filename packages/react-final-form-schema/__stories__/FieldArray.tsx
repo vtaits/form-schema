@@ -22,6 +22,7 @@ import { Form } from '@vtaits/react-final-form-schema';
 import type {
   RenderField,
   FieldType,
+  FieldComponentProps,
   GetFieldType,
 } from '@vtaits/react-final-form-schema';
 
@@ -33,13 +34,7 @@ type FieldArraySchema = {
   names: string[];
 };
 
-type ArrayProps = {
-  name: string;
-
-  fieldSchema: FieldSchema;
-
-  renderField: RenderField<string>;
-};
+type ArrayProps = FieldComponentProps<FieldSchema>;
 
 function ArrayComponent({
   name,
@@ -47,6 +42,8 @@ function ArrayComponent({
   fieldSchema,
 
   renderField,
+
+  parents,
 }: ArrayProps): ReactElement {
   const {
     label,
@@ -74,32 +71,45 @@ function ArrayComponent({
       }
 
       {
-        fields.map((namePrefix, index) => (
-          <div
-            key={namePrefix}
-          >
-            {
-              names.map((fieldName) => (
-                <Fragment
-                  key={fieldName}
-                >
-                  {renderField(fieldName, namePrefix)}
-                </Fragment>
-              ))
-            }
-
-            <button
-              type="button"
-              onClick={(): void => {
-                fields.remove(index);
-              }}
+        fields.map((namePrefix, index) => {
+          const currrentValues = (fields.value || [])[index] || {};
+          return (
+            <div
+              key={namePrefix}
             >
-              Remove
-            </button>
+              {
+                names.map((fieldName) => (
+                  <Fragment
+                    key={fieldName}
+                  >
+                    {renderField(
+                      fieldName,
+                      namePrefix,
+                      [
+                        ...parents,
+                        {
+                          name: index,
+                          values: currrentValues,
+                        },
+                      ],
+                    )}
+                  </Fragment>
+                ))
+              }
 
-            <hr />
-          </div>
-        ))
+              <button
+                type="button"
+                onClick={(): void => {
+                  fields.remove(index);
+                }}
+              >
+                Remove
+              </button>
+
+              <hr />
+            </div>
+          );
+        })
       }
 
       <button
@@ -246,6 +256,7 @@ string
       schema,
       getFieldSchema,
       getFieldType,
+      parents,
     ) => {
       const {
         names,
@@ -261,11 +272,18 @@ string
 
       return {
         [name]: (arrayValues as Values[]).map(
-          (arrayValue) => serialize(
+          (arrayValue, index) => serialize(
             arrayValue || {},
             names,
             getFieldSchema,
             getFieldType,
+            [
+              ...parents,
+              {
+                name: index,
+                values: arrayValue || {},
+              },
+            ],
           ),
         ),
       };
@@ -277,6 +295,7 @@ string
       schema,
       getFieldSchema,
       getFieldType,
+      parents,
     ) => {
       const {
         names,
@@ -286,17 +305,38 @@ string
 
       if (!arrayValues || arrayValues.length === 0) {
         return {
-          [name]: [parse({}, names, getFieldSchema, getFieldType)],
+          [name]: [
+            parse(
+              {},
+              names,
+              getFieldSchema,
+              getFieldType,
+              [
+                ...parents,
+                {
+                  name: 0,
+                  values: {},
+                },
+              ],
+            ),
+          ],
         };
       }
 
       return {
         [name]: (arrayValues as Values[]).map(
-          (arrayValue) => parse(
+          (arrayValue, index) => parse(
             arrayValue || {},
             names,
             getFieldSchema,
             getFieldType,
+            [
+              ...parents,
+              {
+                name: index,
+                values: arrayValue || {},
+              },
+            ],
           ),
         ),
       };
@@ -310,6 +350,7 @@ string
       getFieldType,
       values,
       rawValues,
+      parents,
     ) => {
       const {
         names,
@@ -331,13 +372,20 @@ string
 
       return {
         [name]: (arrayErrors as Errors[]).map(
-          (arrayError) => mapFieldErrors(
+          (arrayError, index) => mapFieldErrors(
             arrayError || {},
             names,
             getFieldSchema,
             getFieldType,
             values,
             rawValues,
+            [
+              ...parents,
+              {
+                name: index,
+                values: rawValues,
+              },
+            ],
           ),
         ),
       };

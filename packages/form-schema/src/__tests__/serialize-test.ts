@@ -12,6 +12,12 @@ type Values = Record<string, any>;
 
 type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
 
+const parents = [
+  {
+    values: {},
+  },
+];
+
 test('should call default serializer', () => {
   expect(
     serialize(
@@ -30,6 +36,8 @@ test('should call default serializer', () => {
       }),
 
       () => ({}),
+
+      parents,
     ),
   ).toEqual(
     {
@@ -69,6 +77,7 @@ test('should call redefined serializer', () => {
 
       getFieldSchema,
       getFieldType,
+      parents,
     ),
   ).toEqual(
     {
@@ -76,12 +85,15 @@ test('should call redefined serializer', () => {
     },
   );
 
-  expect(serializer.mock.calls.length).toBe(1);
-  expect(serializer.mock.calls[0][0]).toBe(rawValues);
-  expect(serializer.mock.calls[0][1]).toBe('value');
-  expect(serializer.mock.calls[0][2]).toBe(fieldSchema);
-  expect(serializer.mock.calls[0][3]).toBe(getFieldSchema);
-  expect(serializer.mock.calls[0][4]).toBe(getFieldType);
+  expect(serializer).toHaveBeenCalledTimes(1);
+  expect(serializer).toHaveBeenCalledWith(
+    rawValues,
+    'value',
+    fieldSchema,
+    getFieldSchema,
+    getFieldType,
+    parents,
+  );
 });
 
 test('should call multiple serializers', () => {
@@ -121,6 +133,8 @@ test('should call multiple serializers', () => {
       }),
 
       ({ type }: { type: string }): FieldType<any, any, any, any, any> => fieldTypes[type],
+
+      parents,
     ),
   ).toEqual(
     {
@@ -162,8 +176,8 @@ test('should redefine getFieldSchema', () => {
     ],
 
     parentGetFieldSchema,
-
     getFieldType,
+    parents,
   );
 
   expect(serializer).toHaveBeenCalledTimes(1);
@@ -181,5 +195,6 @@ test('should redefine getFieldSchema', () => {
       value: 'test',
     },
     'serialize',
+    parents,
   );
 });

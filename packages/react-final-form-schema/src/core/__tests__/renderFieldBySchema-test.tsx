@@ -12,6 +12,7 @@ import type {
 
 import type {
   CreateGetFieldSchema,
+  ParentType,
 } from '@vtaits/form-schema';
 
 import { renderFieldBySchema } from '../renderFieldBySchema';
@@ -43,12 +44,18 @@ test('should render field', () => {
   ]>(() => fieldSchema);
   const getFieldType = jest.fn<any, [any]>(() => fieldType);
 
+  const parents: ParentType[] = [
+    {
+      values: {},
+    },
+  ];
+
   const renderedField = renderFieldBySchema(
-    {},
     getFieldSchema,
     getFieldType,
     'testField',
     'testPayload',
+    parents,
   );
 
   const fieldWrapper = shallow(
@@ -64,6 +71,7 @@ test('should render field', () => {
   expect(fieldNode.prop('payload')).toBe('testPayload');
   expect(fieldNode.prop('getFieldSchema')).toBe(getFieldSchema);
   expect(fieldNode.prop('getFieldType')).toBe(getFieldType);
+  expect(fieldNode.prop('parents')).toBe(parents);
 
   expect(getFieldSchema.mock.calls.length).toBe(1);
   expect(getFieldSchema.mock.calls[0][0]).toBe('testField');
@@ -131,14 +139,20 @@ test('should render field with redefined getFieldSchema for children', () => {
     .mockReturnValue(wrapperSchema);
   const getFieldType = jest.fn(({ type }) => fieldTypes[type]);
 
-  const renderedField = renderFieldBySchema(
+  const parents: ParentType[] = [
     {
-      fieldName: 'value',
+      values: {
+        fieldName: 'value',
+      },
     },
+  ];
+
+  const renderedField = renderFieldBySchema(
     getFieldSchema,
     getFieldType,
     'wrapperField',
     'testPayload1',
+    parents,
   );
 
   const fieldWrapper = shallow(
@@ -161,6 +175,7 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(wrapperNode.prop('payload')).toBe('testPayload1');
   expect(wrapperNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
   expect(wrapperNode.prop('getFieldType')).toBe(getFieldType);
+  expect(wrapperNode.prop('parents')).toBe(parents);
 
   expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
   expect(createGetFieldSchema).toHaveBeenCalledWith(
@@ -171,6 +186,7 @@ test('should render field with redefined getFieldSchema for children', () => {
       fieldName: 'value',
     },
     'render',
+    parents,
   );
 
   expect(getFieldSchema.mock.calls.length).toBe(1);
@@ -196,6 +212,163 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(childNode.prop('payload')).toBe('testPayload2');
   expect(childNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
   expect(childNode.prop('getFieldType')).toBe(getFieldType);
+  expect(childNode.prop('parents')).toBe(parents);
+
+  expect(nextGetFieldSchema.mock.calls.length).toBe(1);
+  expect(nextGetFieldSchema.mock.calls[0][0]).toBe('childField');
+
+  expect(getFieldType.mock.calls.length).toBe(2);
+  expect(getFieldType.mock.calls[1][0]).toBe(childSchema);
+});
+
+test('should redefine parents in rendered field', () => {
+  function WrapperComponent(): ReactElement {
+    return <div />;
+  }
+
+  function ChildComponent(): ReactElement {
+    return <div />;
+  }
+
+  const wrapperSchema = {
+    type: 'wrapper',
+  };
+
+  const childSchema = {
+    type: 'child',
+  };
+
+  const nextGetFieldSchema = jest.fn<any, [
+    string,
+  ]>()
+    .mockReturnValue(childSchema);
+
+  const createGetFieldSchema = jest.fn<
+  any,
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
+  >()
+    .mockReturnValue(nextGetFieldSchema);
+
+  const fieldTypes = {
+    wrapper: {
+      createGetFieldSchema,
+      component: WrapperComponent as FC<FieldComponentProps<
+      any,
+      any,
+      any,
+      any,
+      any,
+      any
+      >>,
+    },
+
+    child: {
+      component: ChildComponent as FC<FieldComponentProps<
+      any,
+      any,
+      any,
+      any,
+      any,
+      any
+      >>,
+    },
+  };
+
+  const getFieldSchema = jest.fn<any, [
+    string,
+  ]>()
+    .mockReturnValue(wrapperSchema);
+  const getFieldType = jest.fn(({ type }) => fieldTypes[type]);
+
+  const parents: ParentType[] = [
+    {
+      values: {
+        fieldName: 'value',
+      },
+    },
+  ];
+
+  const renderedField = renderFieldBySchema(
+    getFieldSchema,
+    getFieldType,
+    'wrapperField',
+    'testPayload1',
+    parents,
+  );
+
+  const fieldWrapper = shallow(
+    <div>
+      {renderedField}
+    </div>,
+  );
+
+  const wrapperNode = fieldWrapper.find(WrapperComponent as FC<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >>);
+
+  expect(wrapperNode.prop('name')).toBe('wrapperField');
+  expect(wrapperNode.prop('fieldSchema')).toBe(wrapperSchema);
+  expect(wrapperNode.prop('payload')).toBe('testPayload1');
+  expect(wrapperNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
+  expect(wrapperNode.prop('getFieldType')).toBe(getFieldType);
+  expect(wrapperNode.prop('parents')).toBe(parents);
+
+  expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
+  expect(createGetFieldSchema).toHaveBeenCalledWith(
+    wrapperSchema,
+    getFieldSchema,
+    getFieldType,
+    {
+      fieldName: 'value',
+    },
+    'render',
+    parents,
+  );
+
+  expect(getFieldSchema.mock.calls.length).toBe(1);
+  expect(getFieldSchema.mock.calls[0][0]).toBe('wrapperField');
+
+  expect(getFieldType.mock.calls.length).toBe(1);
+  expect(getFieldType.mock.calls[0][0]).toBe(wrapperSchema);
+
+  const renderField = wrapperNode.prop('renderField');
+
+  const childParents: ParentType[] = [
+    {
+      values: {},
+    },
+
+    {
+      name: 'child',
+      values: {},
+    },
+  ];
+
+  const renderedChild = renderField(
+    'childField',
+    'testPayload2',
+    childParents,
+  );
+
+  const childWrapper = shallow(
+    <div>
+      {renderedChild}
+    </div>,
+  );
+
+  const childNode: ShallowWrapper = childWrapper.find(ChildComponent);
+
+  expect(childNode.prop('name')).toBe('childField');
+  expect(childNode.prop('fieldSchema')).toBe(childSchema);
+  expect(childNode.prop('payload')).toBe('testPayload2');
+  expect(childNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
+  expect(childNode.prop('getFieldType')).toBe(getFieldType);
+  expect(childNode.prop('parents')).toBe(childParents);
 
   expect(nextGetFieldSchema.mock.calls.length).toBe(1);
   expect(nextGetFieldSchema.mock.calls[0][0]).toBe('childField');

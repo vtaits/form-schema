@@ -5,6 +5,7 @@ import type {
   GetFieldSchema,
   GetFieldType,
   Parser,
+  ParentType,
 } from './types';
 
 export const defaultParser: Parser<any, any, any, any, any> = (
@@ -39,6 +40,7 @@ Errors extends Record<string, any>,
     SerializedValues,
     Errors
     >,
+    parents: ParentType<RawValues>[],
   ): Values | Promise<Values> => {
   if (!values) {
     return null;
@@ -61,6 +63,7 @@ Errors extends Record<string, any>,
         getFieldType,
         values,
         'parse',
+        parents,
       )
       : getFieldSchema;
 
@@ -70,6 +73,7 @@ Errors extends Record<string, any>,
       fieldSchema,
       computedGetFieldSchema,
       getFieldType,
+      parents,
     );
 
     if (isPromise(parserResult)) {

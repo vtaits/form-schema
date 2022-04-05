@@ -101,6 +101,11 @@ test('should provide parsed initial values', () => {
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values: initialValues,
+      },
+    ],
   );
 });
 
@@ -147,6 +152,11 @@ test('should not provide initial values during asynchronous parse', () => {
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values: initialValues,
+      },
+    ],
   );
 });
 
@@ -197,6 +207,11 @@ test('should provide initial values after asynchronous parse', () => {
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values: initialValues,
+      },
+    ],
   );
 });
 
@@ -230,6 +245,11 @@ test('should provide empty object to parser if initial values not defined', () =
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values: {},
+      },
+    ],
   );
 });
 
@@ -280,6 +300,11 @@ test('should validate before submit', async () => {
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values,
+      },
+    ],
   );
 
   expect(serialize).toHaveBeenCalledTimes(0);
@@ -333,6 +358,11 @@ test('should submit successfully', async () => {
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values,
+      },
+    ],
   );
 
   expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -410,6 +440,11 @@ test('should submit with error', async () => {
     names,
     getFieldSchema,
     getFieldType,
+    [
+      {
+        values,
+      },
+    ],
   );
 
   expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -433,6 +468,11 @@ test('should submit with error', async () => {
     getFieldType,
     serializedValues,
     values,
+    [
+      {
+        values,
+      },
+    ],
   );
 });
 
@@ -502,12 +542,16 @@ test('should render field', () => {
 
   expect(renderFieldBySchema).toHaveBeenCalledTimes(1);
   expect(renderFieldBySchema).toHaveBeenCalledWith(
-    {
-      fieldName: 'value',
-    },
     getFieldSchema,
     getFieldType,
     'testField',
     'testPayload',
+    [
+      {
+        values: {
+          fieldName: 'value',
+        },
+      },
+    ],
   );
 });

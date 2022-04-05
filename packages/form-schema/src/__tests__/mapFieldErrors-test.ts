@@ -14,6 +14,12 @@ type Values = Record<string, any>;
 
 type ErrorsMapperArgs = Parameters<ErrorsMapper<any, any, any, any, any>>;
 
+const parents = [
+  {
+    values: {},
+  },
+];
+
 test('should call default errors mapper', () => {
   expect(
     mapFieldErrors(
@@ -31,6 +37,7 @@ test('should call default errors mapper', () => {
       (): FieldType<any, any, any, any, any> => ({}),
       {},
       {},
+      parents,
     ),
   ).toEqual(
     {
@@ -61,6 +68,7 @@ test('should call redefined errors mapper', () => {
       }),
       {},
       {},
+      parents,
     ),
   ).toEqual(
     {
@@ -110,6 +118,7 @@ test('should call multiple errors mappers', () => {
       ({ type }: { type: string }): FieldType<any, any, any, any, any> => fieldTypes[type],
       {},
       {},
+      parents,
     ),
   ).toEqual(
     {
@@ -175,6 +184,7 @@ test('should call multiple nested errors mappers', () => {
         getFieldType,
         {},
         {},
+        parents,
       ),
     },
 
@@ -214,6 +224,7 @@ test('should call multiple nested errors mappers', () => {
 
       {},
       {},
+      parents,
     ),
   ).toEqual(
     {
@@ -258,21 +269,25 @@ test('should provide correct arguments to errorsMapper', () => {
     getFieldType,
     values,
     valuesRaw,
+    parents,
   );
 
-  expect(errorsMapper.mock.calls.length).toBe(1);
-  expect(errorsMapper.mock.calls[0][0]).toEqual({
-    value: 'test',
-  });
-  expect(errorsMapper.mock.calls[0][1]).toBe('value');
-  expect(errorsMapper.mock.calls[0][2]).toEqual({
-    type: 'testType',
-    name: 'value',
-  });
-  expect(errorsMapper.mock.calls[0][3]).toBe(getFieldSchema);
-  expect(errorsMapper.mock.calls[0][4]).toBe(getFieldType);
-  expect(errorsMapper.mock.calls[0][5]).toBe(values);
-  expect(errorsMapper.mock.calls[0][6]).toBe(valuesRaw);
+  expect(errorsMapper).toHaveBeenCalledTimes(1);
+  expect(errorsMapper).toHaveBeenCalledWith(
+    {
+      value: 'test',
+    },
+    'value',
+    {
+      type: 'testType',
+      name: 'value',
+    },
+    getFieldSchema,
+    getFieldType,
+    values,
+    valuesRaw,
+    parents,
+  );
 });
 
 test('should redefine getFieldSchema', () => {
@@ -314,6 +329,8 @@ test('should redefine getFieldSchema', () => {
     {
       value: 'test',
     },
+
+    parents,
   );
 
   expect(errorsMapper.mock.calls.length).toBe(1);
@@ -331,5 +348,6 @@ test('should redefine getFieldSchema', () => {
       value: 'test',
     },
     'serialize',
+    parents,
   );
 });

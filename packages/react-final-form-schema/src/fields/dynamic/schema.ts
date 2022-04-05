@@ -6,6 +6,7 @@ import type {
 import type {
   GetFieldSchema,
   GetFieldType,
+  ParentType,
   PhaseType,
 } from '@vtaits/form-schema';
 
@@ -42,6 +43,10 @@ Errors extends Record<string, any> = Record<string, any>,
     SerializedValues,
     Errors
     >,
+    /**
+     * stack of parent fields above current field with runtime values
+     */
+    parents: ParentType<Values>[],
   ) => FieldSchema;
 
   /**
@@ -70,6 +75,10 @@ Errors extends Record<string, any> = Record<string, any>,
     SerializedValues,
     Errors
     >,
+    /**
+     * stack of parent fields above current field with runtime values
+     */
+    parents: ParentType<Values>[],
   ) => Promise<FieldSchema>;
 
   /**
@@ -102,6 +111,10 @@ Errors extends Record<string, any> = Record<string, any>,
     SerializedValues,
     Errors
     >,
+    /**
+     * stack of parent fields above current field with runtime values
+     */
+    parents: ParentType<Values>[],
   ) => void;
 
   /**
@@ -130,5 +143,9 @@ Errors extends Record<string, any> = Record<string, any>,
     SerializedValues,
     Errors
     >,
+    /**
+     * stack of parent fields above current field with runtime values
+     */
+    parents: ParentType<Values>[],
   ) => void;
 };

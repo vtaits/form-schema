@@ -1,3 +1,9 @@
+## 0.3.0-alpha.0 (06 apr 2022)
+
+### New features
+
+- Support `parents` in components
+
 ## 0.2.5 (06 mar 2022)
 
 ### New features

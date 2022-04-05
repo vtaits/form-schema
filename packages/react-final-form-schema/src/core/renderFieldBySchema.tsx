@@ -5,6 +5,7 @@ import type {
 } from 'react';
 import type {
   GetFieldSchema,
+  ParentType,
 } from '@vtaits/form-schema';
 
 import type {
@@ -21,7 +22,6 @@ SerializedValues extends Record<string, any>,
 Errors extends Record<string, any>,
 Payload,
 >(
-  values: Values,
   getFieldSchema: GetFieldSchema<FieldSchema>,
   getFieldType: GetFieldType<
   FieldSchema,
@@ -32,8 +32,13 @@ Payload,
   Payload
   >,
   name: string,
-  payload?: Payload,
+  payload: Payload | undefined,
+  parents: ParentType<Values>[],
 ): ReactNode {
+  const {
+    values,
+  } = parents[parents.length - 1];
+
   const fieldSchema = getFieldSchema(name);
   const fieldType: FieldType<
   FieldSchema,
@@ -50,18 +55,26 @@ Payload,
   } = fieldType;
 
   const computedGetFieldSchema: GetFieldSchema<FieldSchema> = createGetFieldSchema
-    ? createGetFieldSchema(fieldSchema, getFieldSchema, getFieldType, values, 'render')
+    ? createGetFieldSchema(
+      fieldSchema,
+      getFieldSchema,
+      getFieldType,
+      values,
+      'render',
+      parents,
+    )
     : getFieldSchema;
 
-  const renderField: RenderField<Payload> = (
+  const renderField: RenderField<Values, Payload> = (
     childName,
     childPayload,
+    nextParents,
   ) => renderFieldBySchema(
-    values,
     computedGetFieldSchema,
     getFieldType,
     childName,
     childPayload,
+    nextParents || parents,
   );
 
   return (
@@ -72,6 +85,7 @@ Payload,
       getFieldSchema={computedGetFieldSchema}
       getFieldType={getFieldType}
       renderField={renderField}
+      parents={parents}
     />
   );
 }
