@@ -67,6 +67,9 @@ Payload = any,
   Payload
   >;
   renderField: RenderField<Values, Payload>;
+  /**
+   * stack of parent fields above current field with runtime values
+   */
   parents: ParentType<Values>[],
 };
 

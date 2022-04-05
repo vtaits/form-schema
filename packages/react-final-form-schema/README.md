@@ -89,7 +89,15 @@ Type declaration is similar with [@vtaits/form-schema](https://github.com/vtaits
 
   - `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
-  - `renderField` - function, can be helpful for render nested fields.
+  - `parents` - stack of parent fields above current field with runtime values;
+
+  - `renderField` - function, can be helpful for render nested fields. Arguments:
+
+    1. `fieldName` - required, string, name of field for render;
+
+    2. `payload` - not required, payload prop of nested field;
+
+    3. `parents` - not required, stack of parent fields for child field.
 
 ## Built-in field types
 
@@ -133,6 +141,8 @@ Parameters:
 
   4. `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
+  5. `parents` - stack of parent fields above current field with runtime values;
+
 - `getSchemaAsync` - not required, function. Can be used for asynchronous parsing. Similar to `getSchema` but should return `Promise` with result schema;
 
 - `onShow` - not required, callback that called when field has shown. Arguments:
@@ -147,6 +157,8 @@ Parameters:
 
   5. `getFieldType` - global `getFieldType`;
 
+  6. `parents` - stack of parent fields above current field with runtime values;
+
 - `onHide` - not required, callback that called when field has hidden. Arguments:
 
   1. `form` - instance of `final-form`;
@@ -155,7 +167,9 @@ Parameters:
 
   3. `getFieldSchema` - current `getFieldSchema`;
 
-  4. `getFieldType` - global `getFieldType`.
+  4. `getFieldType` - global `getFieldType`;
+
+  5. `parents` - stack of parent fields above current field with runtime values.
 
 ## Utils
 

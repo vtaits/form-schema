@@ -6,6 +6,10 @@ import { shallow } from 'enzyme';
 import type { FC } from 'react';
 
 import type {
+  ParentType,
+} from '@vtaits/form-schema';
+
+import type {
   FieldType,
   FieldComponentProps,
 } from '../../../core';
@@ -14,6 +18,12 @@ import { DynamicField } from '../component';
 import type {
   DynamicFieldProps,
 } from '../component';
+
+const parents: ParentType[] = [
+  {
+    values: {},
+  },
+];
 
 function TestComponent() {
   return null;
@@ -48,6 +58,7 @@ any
   getFieldSchema: jest.fn(),
   getFieldType: jest.fn().mockReturnValue(fieldType),
   renderField: jest.fn(),
+  parents,
   useForm: defaultUseForm,
   useFormState: defaultUseFormState,
   useFormSchemaState: defaultUseFormSchemaState,
@@ -107,6 +118,7 @@ describe('getSchema', () => {
       'render',
       getFieldSchema,
       getFieldType,
+      parents,
     );
   });
 
@@ -183,6 +195,7 @@ describe('render', () => {
     expect(allProps.getFieldSchema).toBe(getFieldSchema);
     expect(allProps.getFieldType).toBe(getFieldType);
     expect(allProps.renderField).toBe(renderField);
+    expect(allProps.parents).toBe(parents);
   });
 });
 
@@ -342,6 +355,7 @@ describe('callbacks', () => {
       'schema',
       defaultProps.getFieldSchema,
       defaultProps.getFieldType,
+      parents,
     );
 
     expect(onHide).toHaveBeenCalledTimes(0);
@@ -377,6 +391,7 @@ describe('callbacks', () => {
       'testName',
       defaultProps.getFieldSchema,
       defaultProps.getFieldType,
+      parents,
     );
 
     expect(isFirstRender).toBe(false);

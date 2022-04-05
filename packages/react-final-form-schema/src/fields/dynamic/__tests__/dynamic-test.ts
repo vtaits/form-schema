@@ -1,7 +1,17 @@
+import type {
+  ParentType,
+} from '@vtaits/form-schema';
+
 import {
   createGetFieldSchema,
   dynamic,
 } from '../dynamic';
+
+const parents: ParentType[] = [
+  {
+    values: {},
+  },
+];
 
 describe('createGetFieldSchema', () => {
   const getFieldSchema = jest.fn();
@@ -20,6 +30,7 @@ describe('createGetFieldSchema', () => {
       defaultGetFieldType,
       values,
       'render',
+      parents,
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
@@ -28,6 +39,7 @@ describe('createGetFieldSchema', () => {
       'render',
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
   });
 
@@ -40,6 +52,7 @@ describe('createGetFieldSchema', () => {
       defaultGetFieldType,
       {},
       'render',
+      parents,
     );
 
     expect(result).toBe(getFieldSchema);
@@ -54,6 +67,7 @@ describe('createGetFieldSchema', () => {
       defaultGetFieldType,
       {},
       'render',
+      parents,
     );
 
     expect(result).toBe(getFieldSchema);
@@ -86,6 +100,7 @@ describe('createGetFieldSchema', () => {
       getFeldType,
       values,
       'render',
+      parents,
     );
 
     expect(result).toBe(childGetFieldSchema);
@@ -97,6 +112,7 @@ describe('createGetFieldSchema', () => {
       getFeldType,
       values,
       'render',
+      parents,
     );
   });
 });
@@ -118,6 +134,7 @@ describe('serializer', () => {
       { getSchema },
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
@@ -126,6 +143,7 @@ describe('serializer', () => {
       'serialize',
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
   });
 
@@ -142,6 +160,7 @@ describe('serializer', () => {
       },
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
 
     expect(result).toEqual({});
@@ -163,6 +182,7 @@ describe('serializer', () => {
       },
       getFieldSchema,
       getFieldType,
+      parents,
     );
 
     expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -192,6 +212,7 @@ describe('serializer', () => {
       },
       getFieldSchema,
       getFieldType,
+      parents,
     );
 
     expect(result).toEqual({
@@ -204,6 +225,7 @@ describe('serializer', () => {
       'testSchema',
       getFieldSchema,
       getFieldType,
+      parents,
     );
   });
 
@@ -224,6 +246,7 @@ describe('serializer', () => {
       },
       getFieldSchema,
       getFieldType,
+      parents,
     );
 
     expect(result).toEqual({
@@ -250,6 +273,7 @@ describe('parser', () => {
         { getSchema },
         getFieldSchema,
         defaultGetFieldType,
+        parents,
       );
 
       expect(getSchema).toHaveBeenCalledTimes(1);
@@ -258,6 +282,7 @@ describe('parser', () => {
         'parse',
         getFieldSchema,
         defaultGetFieldType,
+        parents,
       );
     });
 
@@ -274,6 +299,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         defaultGetFieldType,
+        parents,
       );
 
       expect(result).toEqual({});
@@ -295,6 +321,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         getFieldType,
+        parents,
       );
 
       expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -324,6 +351,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         getFieldType,
+        parents,
       );
 
       expect(result).toEqual({
@@ -336,6 +364,7 @@ describe('parser', () => {
         'testSchema',
         getFieldSchema,
         getFieldType,
+        parents,
       );
     });
 
@@ -356,6 +385,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         getFieldType,
+        parents,
       );
 
       expect(result).toEqual({
@@ -383,6 +413,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         defaultGetFieldType,
+        parents,
       );
 
       expect(getSchemaAsync).toHaveBeenCalledTimes(1);
@@ -391,6 +422,7 @@ describe('parser', () => {
         'parse',
         getFieldSchema,
         defaultGetFieldType,
+        parents,
       );
 
       expect(getSchema).toHaveBeenCalledTimes(0);
@@ -415,6 +447,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         defaultGetFieldType,
+        parents,
       );
 
       expect(result).toEqual({});
@@ -442,6 +475,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         getFieldType,
+        parents,
       );
 
       expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -477,6 +511,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         getFieldType,
+        parents,
       );
 
       expect(result).toEqual({
@@ -489,6 +524,7 @@ describe('parser', () => {
         'testSchema',
         getFieldSchema,
         getFieldType,
+        parents,
       );
     });
 
@@ -515,6 +551,7 @@ describe('parser', () => {
         },
         getFieldSchema,
         getFieldType,
+        parents,
       );
 
       expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -544,6 +581,7 @@ describe('validatorBeforeSubmit', () => {
       { getSchema },
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
@@ -552,6 +590,7 @@ describe('validatorBeforeSubmit', () => {
       'serialize',
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
   });
 
@@ -568,6 +607,7 @@ describe('validatorBeforeSubmit', () => {
       },
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
 
     expect(result).toEqual({});
@@ -589,6 +629,7 @@ describe('validatorBeforeSubmit', () => {
       },
       getFieldSchema,
       getFieldType,
+      parents,
     );
 
     expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -618,6 +659,7 @@ describe('validatorBeforeSubmit', () => {
       },
       getFieldSchema,
       getFieldType,
+      parents,
     );
 
     expect(result).toEqual({
@@ -630,6 +672,7 @@ describe('validatorBeforeSubmit', () => {
       'testSchema',
       getFieldSchema,
       getFieldType,
+      parents,
     );
   });
 
@@ -650,6 +693,7 @@ describe('validatorBeforeSubmit', () => {
       },
       getFieldSchema,
       getFieldType,
+      parents,
     );
 
     expect(result).toEqual({});
@@ -683,6 +727,7 @@ describe('errorsMapper', () => {
       defaultGetFieldType,
       values,
       rawValues,
+      parents,
     );
 
     expect(getSchema).toHaveBeenCalledTimes(1);
@@ -691,6 +736,7 @@ describe('errorsMapper', () => {
       'serialize',
       getFieldSchema,
       defaultGetFieldType,
+      parents,
     );
   });
 
@@ -709,6 +755,7 @@ describe('errorsMapper', () => {
       defaultGetFieldType,
       values,
       rawValues,
+      parents,
     );
 
     expect(result).toEqual({});
@@ -732,6 +779,7 @@ describe('errorsMapper', () => {
       getFieldType,
       values,
       rawValues,
+      parents,
     );
 
     expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -763,6 +811,7 @@ describe('errorsMapper', () => {
       getFieldType,
       values,
       rawValues,
+      parents,
     );
 
     expect(result).toEqual({
@@ -777,6 +826,7 @@ describe('errorsMapper', () => {
       getFieldType,
       values,
       rawValues,
+      parents,
     );
   });
 
@@ -799,6 +849,7 @@ describe('errorsMapper', () => {
       getFieldType,
       values,
       rawValues,
+      parents,
     );
 
     expect(result).toEqual({
