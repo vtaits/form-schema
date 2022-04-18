@@ -1,3 +1,9 @@
+## 0.3.0-alpha.1 (18 apr 2022)
+
+### New features
+
+- Added `initialValuesPlaceholder` prop
+
 ## 0.3.0-alpha.0 (06 apr 2022)
 
 ### New features

@@ -71,7 +71,9 @@ It similar to `react-final-form` but there is some differences:
 
 - `mapErrors` (not required) can map submission errors of form to format of `final-form`;
 
-- new render prop `renderField` can optimize boilerplate of imports.
+- new render prop `renderField` can optimize boilerplate of imports;
+
+- `initialValuesPlaceholder` - new prop, initial runtime values of form during asynchronous initialization.
 
 ### Type declaration
 

@@ -64,6 +64,7 @@ Payload,
     getFieldSchema,
     getFieldType,
     initialValues: initialValuesProp,
+    initialValuesPlaceholder,
 
     onSubmit: onSubmitProp,
 
@@ -227,7 +228,7 @@ Payload,
         onSubmit={onSubmit}
         initialValues={(
           isPromise(initialValuesResult)
-            ? initialValues
+            ? (initialValues || initialValuesPlaceholder)
             : initialValuesResult
         )}
       >
@@ -239,6 +240,7 @@ Payload,
 
 Form.defaultProps = {
   initialValues: null,
+  initialValuesPlaceholder: undefined,
   getFieldSchema: defaultGetFieldSchema,
 
   renderFieldBySchema,

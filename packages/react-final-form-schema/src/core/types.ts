@@ -150,6 +150,11 @@ Payload = any,
 > =
   & FinalFormProps<Values, Values>
   & {
+    /**
+     * placeholder runtime values of form during asynchronous initialization
+     */
+    initialValuesPlaceholder?: Values;
+
     names: string[];
     getFieldSchema?: GetFieldSchema<FieldSchema>;
     getFieldType?: GetFieldType<

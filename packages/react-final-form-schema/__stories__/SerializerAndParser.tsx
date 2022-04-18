@@ -108,6 +108,12 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
     parser: async (values, name, { options }) => {
       const value = values[name];
 
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(undefined);
+        }, 1000);
+      });
+
       return {
         [name]: value
           ? options.find((option) => {
@@ -168,6 +174,13 @@ const initialValues = {
   animal: 2,
 };
 
+const initialValuesPlaceholder = {
+  animal: {
+    value: null,
+    label: 'Placeholder animal',
+  },
+};
+
 export function SerializerAndParser(): ReactElement {
   const [submittedValues, setSubmittedValues] = useState(null);
 
@@ -181,6 +194,7 @@ export function SerializerAndParser(): ReactElement {
     <>
       <Form
         initialValues={initialValues}
+        initialValuesPlaceholder={initialValuesPlaceholder}
         getFieldSchema={getFieldSchema}
         getFieldType={getFieldType}
         names={names}

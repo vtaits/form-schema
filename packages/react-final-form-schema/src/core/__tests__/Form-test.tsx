@@ -160,6 +160,64 @@ test('should not provide initial values during asynchronous parse', () => {
   );
 });
 
+test('should not provide initial values with `initialValuesPlaceholder` during asynchronous parse', () => {
+  const getFieldSchema = jest.fn();
+  const getFieldType = jest.fn();
+  const names = ['test'];
+
+  const initialValues = {
+    test1: 'value1',
+  };
+
+  const parsedValues = {
+    test2: 'value2',
+  };
+
+  const parse = jest.fn()
+    .mockResolvedValue(parsedValues);
+
+  const useAsync = jest.fn()
+    .mockReturnValue({
+      result: undefined,
+    });
+
+  const page = setup({
+    initialValues,
+
+    initialValuesPlaceholder: {
+      test: 'placeholderValue',
+    },
+
+    getFieldSchema,
+    getFieldType,
+    names,
+
+    formSchemaParse: parse,
+    useAsync,
+  });
+
+  expect(page.getProviderNode().prop('value').isValuesReady).toBe(false);
+
+  const formNode = page.getFinalFormNode();
+
+  expect(formNode.prop('initialValues')).toEqual({
+    test: 'placeholderValue',
+  });
+
+  expect(parse).toHaveBeenCalledTimes(1);
+  expect(parse).toHaveBeenCalledWith(
+    initialValues,
+    names,
+    getFieldSchema,
+    getFieldType,
+    [
+      {
+        values: initialValues,
+      },
+    ],
+  );
+});
+
 test('should provide initial values after asynchronous parse', () => {
   const getFieldSchema = jest.fn();
   const getFieldType = jest.fn();
