@@ -1,3 +1,10 @@
+## 0.3.0-aplha.2 (20 apr 2022)
+
+### New features
+
+- Added `checkValuesReady` util
+- Added `useValuesReady` hook
+
 ## 0.3.0-alpha.1 (18 apr 2022)
 
 ### New features

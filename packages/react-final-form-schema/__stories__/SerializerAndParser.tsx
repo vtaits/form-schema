@@ -10,7 +10,10 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '@vtaits/react-final-form-schema';
+import {
+  Form,
+  useValuesReady,
+} from '@vtaits/react-final-form-schema';
 import type {
   FieldType,
   GetFieldType,
@@ -54,6 +57,8 @@ function SelectComponent({
     },
   } = useField(name);
 
+  const isValuesReady = useValuesReady();
+
   return (
     <div>
       {
@@ -66,6 +71,7 @@ function SelectComponent({
 
       <Select
         isClearable
+        isLoading={!isValuesReady}
         name={name}
         value={value || null}
         options={options}

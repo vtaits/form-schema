@@ -36,8 +36,11 @@ import type {
   FormProps,
 } from './types';
 
-import { FormSchemaStateContext } from './FormSchemaStateContext';
 import { renderFieldBySchema } from './renderFieldBySchema';
+
+import {
+  IS_VALUES_READY_NAME,
+} from './constants';
 
 export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) => fieldSchema;
 export const defaultMapErrors: MapErrors<any, any, any> = (errors) => errors;
@@ -207,34 +210,36 @@ Payload,
     ),
   }), [children, renderField]);
 
-  const isValuesReady = useMemo(() => {
-    if (isPromise(initialValuesResult)) {
-      return Boolean(initialValues);
+  const providedInitialValues = useMemo(() => {
+    const initialValuesClean = isPromise(initialValuesResult)
+      ? initialValues
+      : initialValuesResult;
+
+    if (initialValuesClean) {
+      return {
+        ...initialValuesClean,
+        [IS_VALUES_READY_NAME]: true,
+      };
     }
 
-    return true;
-  }, [initialValuesResult, initialValues]);
-
-  const formSchemaState = useMemo(() => ({
-    isValuesReady,
-  }), [isValuesReady]);
+    return {
+      ...initialValuesPlaceholder,
+      [IS_VALUES_READY_NAME]: false,
+    };
+  }, [
+    initialValuesResult,
+    initialValues,
+    initialValuesPlaceholder,
+  ]);
 
   return (
-    <FormSchemaStateContext.Provider
-      value={formSchemaState}
+    <FinalForm
+      {...rest}
+      onSubmit={onSubmit}
+      initialValues={providedInitialValues}
     >
-      <FinalForm
-        {...rest}
-        onSubmit={onSubmit}
-        initialValues={(
-          isPromise(initialValuesResult)
-            ? (initialValues || initialValuesPlaceholder)
-            : initialValuesResult
-        )}
-      >
-        {renderForm}
-      </FinalForm>
-    </FormSchemaStateContext.Provider>
+      {renderForm}
+    </FinalForm>
   );
 }
 

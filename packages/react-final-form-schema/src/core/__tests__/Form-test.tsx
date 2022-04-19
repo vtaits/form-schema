@@ -12,11 +12,13 @@ import type {
   ReactNode,
 } from 'react';
 
-import { FormSchemaStateContext } from '../FormSchemaStateContext';
 import { Form } from '../Form';
+import {
+  IS_VALUES_READY_NAME,
+} from '../constants';
+
 import type {
   FormProps,
-  FormSchemaStateContextType,
   RenderFieldBySchema,
 } from '../types';
 
@@ -33,9 +35,6 @@ const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
 
 type PageObject = {
   getFinalFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
-  getProviderNode: () => ShallowWrapper<{
-    value: FormSchemaStateContextType;
-  }>;
 };
 
 const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any>>): PageObject => {
@@ -54,11 +53,8 @@ const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any
   Errors,
   any>> => wrapper.find(FinalForm);
 
-  const getProviderNode = () => wrapper.find(FormSchemaStateContext.Provider);
-
   return {
     getFinalFormNode,
-    getProviderNode,
   };
 };
 
@@ -93,7 +89,10 @@ test('should provide parsed initial values', () => {
 
   const formNode = page.getFinalFormNode();
 
-  expect(formNode.prop('initialValues')).toBe(parsedValues);
+  expect(formNode.prop('initialValues')).toEqual({
+    ...parsedValues,
+    [IS_VALUES_READY_NAME]: true,
+  });
 
   expect(parse).toHaveBeenCalledTimes(1);
   expect(parse).toHaveBeenCalledWith(
@@ -140,11 +139,11 @@ test('should not provide initial values during asynchronous parse', () => {
     useAsync,
   });
 
-  expect(page.getProviderNode().prop('value').isValuesReady).toBe(false);
-
   const formNode = page.getFinalFormNode();
 
-  expect(formNode.prop('initialValues')).toBe(undefined);
+  expect(formNode.prop('initialValues')).toEqual({
+    [IS_VALUES_READY_NAME]: false,
+  });
 
   expect(parse).toHaveBeenCalledTimes(1);
   expect(parse).toHaveBeenCalledWith(
@@ -196,11 +195,10 @@ test('should not provide initial values with `initialValuesPlaceholder` during a
     useAsync,
   });
 
-  expect(page.getProviderNode().prop('value').isValuesReady).toBe(false);
-
   const formNode = page.getFinalFormNode();
 
   expect(formNode.prop('initialValues')).toEqual({
+    [IS_VALUES_READY_NAME]: false,
     test: 'placeholderValue',
   });
 
@@ -253,11 +251,12 @@ test('should provide initial values after asynchronous parse', () => {
     useAsync,
   });
 
-  expect(page.getProviderNode().prop('value').isValuesReady).toBe(true);
-
   const formNode = page.getFinalFormNode();
 
-  expect(formNode.prop('initialValues')).toBe(asyncParsedValues);
+  expect(formNode.prop('initialValues')).toEqual({
+    ...asyncParsedValues,
+    [IS_VALUES_READY_NAME]: true,
+  });
 
   expect(parse).toHaveBeenCalledTimes(1);
   expect(parse).toHaveBeenCalledWith(
@@ -295,7 +294,10 @@ test('should provide empty object to parser if initial values not defined', () =
 
   const formNode = page.getFinalFormNode();
 
-  expect(formNode.prop('initialValues')).toBe(parsedValues);
+  expect(formNode.prop('initialValues')).toEqual({
+    ...parsedValues,
+    [IS_VALUES_READY_NAME]: true,
+  });
 
   expect(parse).toHaveBeenCalledTimes(1);
   expect(parse).toHaveBeenCalledWith(

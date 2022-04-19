@@ -175,12 +175,39 @@ Parameters:
 
 ## Utils
 
+### checkValuesReady
+
+```typescript
+import { useFormState } from 'react-final-form';
+import { checkValuesReady } from '@vtaits/react-final-form-schema';
+
+// ...
+
+const {
+  values,
+} = useFormState();
+
+const isValuesReady: boolean = checkValuesReady(values);
+```
+
+If parsing if asynchronous it returns `true` only after end of parsing;
+
+If parsing if synchronous it always returns `true`.
+
+### useValuesReady
+
+```typescript
+import { useValuesReady } from '@vtaits/react-final-form-schema';
+
+// ...
+
+const isValuesReady: boolean = useValuesReady();
+```
+
+Hook that encapsulates receiving state of form and checking ready state.
+
 ### useFormSchemaState
 
 Hook that returns state for wrapper above `react-final-form`. This is object with next values:
 
-- `isValuesReady` - boolean
-
-  If parsing if asynchronous it returns `true` only after end of parsing;
-
-  If parsing if synchronous it always returns `true`.
+- `isValuesReady` - boolean, result of `useValuesReady`.

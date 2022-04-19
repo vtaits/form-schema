@@ -1,13 +1,13 @@
-import { useContext } from 'react';
+import { useValuesReady } from './useValuesReady';
 
-import { FormSchemaStateContext } from './FormSchemaStateContext';
+import type {
+  FormSchemaStateContextType,
+} from './types';
 
-export const useFormSchemaState = () => {
-  const formSchemaContext = useContext(FormSchemaStateContext);
+export const useFormSchemaState = (): FormSchemaStateContextType => {
+  const isValuesReady = useValuesReady();
 
-  if (!formSchemaContext) {
-    throw new Error('[useFormSchemaState] can be used only inside `Form`');
-  }
-
-  return formSchemaContext;
+  return {
+    isValuesReady,
+  };
 };
