@@ -1,10 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  shallow,
-} from 'enzyme';
-import type {
-  ShallowWrapper,
-} from 'enzyme';
 import type {
   FC,
   ReactElement,
@@ -39,10 +33,10 @@ test('should render field', () => {
 
   const fieldSchema = Symbol('field schema');
 
-  const getFieldSchema = jest.fn<any, [
-    string,
-  ]>(() => fieldSchema);
-  const getFieldType = jest.fn<any, [any]>(() => fieldType);
+  const getFieldSchema = jest.fn<any, [string]>()
+    .mockReturnValue(fieldSchema);
+  const getFieldType = jest.fn()
+    .mockReturnValue(fieldType);
 
   const parents: ParentType[] = [
     {
@@ -50,34 +44,37 @@ test('should render field', () => {
     },
   ];
 
-  const renderedField = renderFieldBySchema(
+  const fieldNode = renderFieldBySchema(
     getFieldSchema,
     getFieldType,
     'testField',
     'testPayload',
     parents,
-  );
+  ) as ReactElement<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >, FC>;
 
-  const fieldWrapper = shallow(
-    <div>
-      {renderedField}
-    </div>,
-  );
+  const {
+    props: fieldProps,
+  } = fieldNode;
 
-  const fieldNode = fieldWrapper.find(FieldComponent);
+  expect(fieldProps.name).toBe('testField');
+  expect(fieldProps.fieldSchema).toBe(fieldSchema);
+  expect(fieldProps.payload).toBe('testPayload');
+  expect(fieldProps.getFieldSchema).toBe(getFieldSchema);
+  expect(fieldProps.getFieldType).toBe(getFieldType);
+  expect(fieldProps.parents).toBe(parents);
 
-  expect(fieldNode.prop('name')).toBe('testField');
-  expect(fieldNode.prop('fieldSchema')).toBe(fieldSchema);
-  expect(fieldNode.prop('payload')).toBe('testPayload');
-  expect(fieldNode.prop('getFieldSchema')).toBe(getFieldSchema);
-  expect(fieldNode.prop('getFieldType')).toBe(getFieldType);
-  expect(fieldNode.prop('parents')).toBe(parents);
+  expect(getFieldSchema).toHaveBeenCalledTimes(1);
+  expect(getFieldSchema).toHaveBeenCalledWith('testField');
 
-  expect(getFieldSchema.mock.calls.length).toBe(1);
-  expect(getFieldSchema.mock.calls[0][0]).toBe('testField');
-
-  expect(getFieldType.mock.calls.length).toBe(1);
-  expect(getFieldType.mock.calls[0][0]).toBe(fieldSchema);
+  expect(getFieldType).toHaveBeenCalledTimes(1);
+  expect(getFieldType).toHaveBeenCalledWith(fieldSchema);
 });
 
 test('should render field with redefined getFieldSchema for children', () => {
@@ -147,35 +144,31 @@ test('should render field with redefined getFieldSchema for children', () => {
     },
   ];
 
-  const renderedField = renderFieldBySchema(
+  const wrapperNode = renderFieldBySchema(
     getFieldSchema,
     getFieldType,
     'wrapperField',
     'testPayload1',
     parents,
-  );
-
-  const fieldWrapper = shallow(
-    <div>
-      {renderedField}
-    </div>,
-  );
-
-  const wrapperNode = fieldWrapper.find(WrapperComponent as FC<FieldComponentProps<
+  ) as ReactElement<FieldComponentProps<
   any,
   any,
   any,
   any,
   any,
   any
-  >>);
+  >, FC>;
 
-  expect(wrapperNode.prop('name')).toBe('wrapperField');
-  expect(wrapperNode.prop('fieldSchema')).toBe(wrapperSchema);
-  expect(wrapperNode.prop('payload')).toBe('testPayload1');
-  expect(wrapperNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
-  expect(wrapperNode.prop('getFieldType')).toBe(getFieldType);
-  expect(wrapperNode.prop('parents')).toBe(parents);
+  const {
+    props: wrapperProps,
+  } = wrapperNode;
+
+  expect(wrapperProps.name).toBe('wrapperField');
+  expect(wrapperProps.fieldSchema).toBe(wrapperSchema);
+  expect(wrapperProps.payload).toBe('testPayload1');
+  expect(wrapperProps.getFieldSchema).toBe(nextGetFieldSchema);
+  expect(wrapperProps.getFieldType).toBe(getFieldType);
+  expect(wrapperProps.parents).toBe(parents);
 
   expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
   expect(createGetFieldSchema).toHaveBeenCalledWith(
@@ -195,30 +188,35 @@ test('should render field with redefined getFieldSchema for children', () => {
   expect(getFieldType.mock.calls.length).toBe(1);
   expect(getFieldType.mock.calls[0][0]).toBe(wrapperSchema);
 
-  const renderField = wrapperNode.prop('renderField');
+  const {
+    renderField,
+  } = wrapperProps;
 
-  const renderedChild = renderField('childField', 'testPayload2');
+  const childNode = renderField('childField', 'testPayload2') as ReactElement<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >, FC>;
 
-  const childWrapper = shallow(
-    <div>
-      {renderedChild}
-    </div>,
-  );
+  const {
+    props: childProps,
+  } = childNode;
 
-  const childNode: ShallowWrapper = childWrapper.find(ChildComponent);
+  expect(childProps.name).toBe('childField');
+  expect(childProps.fieldSchema).toBe(childSchema);
+  expect(childProps.payload).toBe('testPayload2');
+  expect(childProps.getFieldSchema).toBe(nextGetFieldSchema);
+  expect(childProps.getFieldType).toBe(getFieldType);
+  expect(childProps.parents).toBe(parents);
 
-  expect(childNode.prop('name')).toBe('childField');
-  expect(childNode.prop('fieldSchema')).toBe(childSchema);
-  expect(childNode.prop('payload')).toBe('testPayload2');
-  expect(childNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
-  expect(childNode.prop('getFieldType')).toBe(getFieldType);
-  expect(childNode.prop('parents')).toBe(parents);
+  expect(nextGetFieldSchema).toHaveBeenCalledTimes(1);
+  expect(nextGetFieldSchema).toHaveBeenCalledWith('childField');
 
-  expect(nextGetFieldSchema.mock.calls.length).toBe(1);
-  expect(nextGetFieldSchema.mock.calls[0][0]).toBe('childField');
-
-  expect(getFieldType.mock.calls.length).toBe(2);
-  expect(getFieldType.mock.calls[1][0]).toBe(childSchema);
+  expect(getFieldType).toHaveBeenCalledTimes(2);
+  expect(getFieldType).toHaveBeenLastCalledWith(childSchema);
 });
 
 test('should redefine parents in rendered field', () => {
@@ -288,35 +286,31 @@ test('should redefine parents in rendered field', () => {
     },
   ];
 
-  const renderedField = renderFieldBySchema(
+  const wrapperNode = renderFieldBySchema(
     getFieldSchema,
     getFieldType,
     'wrapperField',
     'testPayload1',
     parents,
-  );
-
-  const fieldWrapper = shallow(
-    <div>
-      {renderedField}
-    </div>,
-  );
-
-  const wrapperNode = fieldWrapper.find(WrapperComponent as FC<FieldComponentProps<
+  ) as ReactElement<FieldComponentProps<
   any,
   any,
   any,
   any,
   any,
   any
-  >>);
+  >, FC>;
 
-  expect(wrapperNode.prop('name')).toBe('wrapperField');
-  expect(wrapperNode.prop('fieldSchema')).toBe(wrapperSchema);
-  expect(wrapperNode.prop('payload')).toBe('testPayload1');
-  expect(wrapperNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
-  expect(wrapperNode.prop('getFieldType')).toBe(getFieldType);
-  expect(wrapperNode.prop('parents')).toBe(parents);
+  const {
+    props: wrapperProps,
+  } = wrapperNode;
+
+  expect(wrapperProps.name).toBe('wrapperField');
+  expect(wrapperProps.fieldSchema).toBe(wrapperSchema);
+  expect(wrapperProps.payload).toBe('testPayload1');
+  expect(wrapperProps.getFieldSchema).toBe(nextGetFieldSchema);
+  expect(wrapperProps.getFieldType).toBe(getFieldType);
+  expect(wrapperProps.parents).toBe(parents);
 
   expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
   expect(createGetFieldSchema).toHaveBeenCalledWith(
@@ -330,13 +324,15 @@ test('should redefine parents in rendered field', () => {
     parents,
   );
 
-  expect(getFieldSchema.mock.calls.length).toBe(1);
-  expect(getFieldSchema.mock.calls[0][0]).toBe('wrapperField');
+  expect(getFieldSchema).toHaveBeenCalledTimes(1);
+  expect(getFieldSchema).toHaveBeenCalledWith('wrapperField');
 
-  expect(getFieldType.mock.calls.length).toBe(1);
-  expect(getFieldType.mock.calls[0][0]).toBe(wrapperSchema);
+  expect(getFieldType).toHaveBeenCalledTimes(1);
+  expect(getFieldType).toHaveBeenCalledWith(wrapperSchema);
 
-  const renderField = wrapperNode.prop('renderField');
+  const {
+    renderField,
+  } = wrapperProps;
 
   const childParents: ParentType[] = [
     {
@@ -349,30 +345,33 @@ test('should redefine parents in rendered field', () => {
     },
   ];
 
-  const renderedChild = renderField(
+  const childNode = renderField(
     'childField',
     'testPayload2',
     childParents,
-  );
+  ) as ReactElement<FieldComponentProps<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+  >, FC>;
 
-  const childWrapper = shallow(
-    <div>
-      {renderedChild}
-    </div>,
-  );
+  const {
+    props: childProps,
+  } = childNode;
 
-  const childNode: ShallowWrapper = childWrapper.find(ChildComponent);
+  expect(childProps.name).toBe('childField');
+  expect(childProps.fieldSchema).toBe(childSchema);
+  expect(childProps.payload).toBe('testPayload2');
+  expect(childProps.getFieldSchema).toBe(nextGetFieldSchema);
+  expect(childProps.getFieldType).toBe(getFieldType);
+  expect(childProps.parents).toBe(childParents);
 
-  expect(childNode.prop('name')).toBe('childField');
-  expect(childNode.prop('fieldSchema')).toBe(childSchema);
-  expect(childNode.prop('payload')).toBe('testPayload2');
-  expect(childNode.prop('getFieldSchema')).toBe(nextGetFieldSchema);
-  expect(childNode.prop('getFieldType')).toBe(getFieldType);
-  expect(childNode.prop('parents')).toBe(childParents);
+  expect(nextGetFieldSchema).toHaveBeenCalledTimes(1);
+  expect(nextGetFieldSchema).toHaveBeenCalledWith('childField');
 
-  expect(nextGetFieldSchema.mock.calls.length).toBe(1);
-  expect(nextGetFieldSchema.mock.calls[0][0]).toBe('childField');
-
-  expect(getFieldType.mock.calls.length).toBe(2);
-  expect(getFieldType.mock.calls[1][0]).toBe(childSchema);
+  expect(getFieldType).toHaveBeenCalledTimes(2);
+  expect(getFieldType).toHaveBeenLastCalledWith(childSchema);
 });

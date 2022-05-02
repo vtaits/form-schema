@@ -2,8 +2,13 @@
 import {
   useFormState,
 } from 'react-final-form';
-import { shallow } from 'enzyme';
-import type { FC } from 'react';
+
+import { createRenderer } from 'react-test-renderer/shallow';
+
+import type {
+  FC,
+  ReactElement,
+} from 'react';
 
 import type {
   ParentType,
@@ -25,7 +30,7 @@ const parents: ParentType[] = [
   },
 ];
 
-function TestComponent() {
+function TestComponent(): ReactElement {
   return null;
 }
 
@@ -81,12 +86,21 @@ SerializedValues,
 Errors,
 Payload
 >>) {
-  return shallow(
+  const renderer = createRenderer();
+
+  renderer.render(
     <DynamicField
       {...defaultProps}
       {...props}
     />,
   );
+
+  const result = renderer.getRenderOutput() as ReactElement<
+  FieldComponentProps<any>,
+  FC | null
+  >;
+
+  return result;
 }
 
 describe('getSchema', () => {
@@ -133,7 +147,7 @@ describe('getSchema', () => {
       renderField: () => null,
     });
 
-    expect(wrapper.find(TestComponent).length).toBe(0);
+    expect(wrapper).toBe(null);
   });
 
   test('should render component if `getSchema` returns truthy value', () => {
@@ -147,7 +161,7 @@ describe('getSchema', () => {
       renderField: () => null,
     });
 
-    expect(wrapper.find(TestComponent).length).toBe(1);
+    expect(wrapper.type).toBe(TestComponent);
   });
 });
 
@@ -188,7 +202,7 @@ describe('render', () => {
       renderField,
     });
 
-    const allProps = wrapper.find(TestComponent).props();
+    const allProps = wrapper.props;
 
     expect(allProps.fieldSchema).toBe('test');
     expect(allProps.name).toBe('testName');

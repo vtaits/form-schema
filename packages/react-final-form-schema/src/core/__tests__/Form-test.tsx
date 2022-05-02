@@ -2,13 +2,11 @@
 import {
   Form as FinalForm,
 } from 'react-final-form';
-import {
-  shallow,
-} from 'enzyme';
+
+import { createRenderer } from 'react-test-renderer/shallow';
+
 import type {
-  ShallowWrapper,
-} from 'enzyme';
-import type {
+  ReactElement,
   ReactNode,
 } from 'react';
 
@@ -34,27 +32,28 @@ const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
 };
 
 type PageObject = {
-  getFinalFormNode: () => ShallowWrapper<FormProps<any, Values, Values, Values, Errors, any>>;
+  getFinalFormProps: () => FormProps<any, Values, Values, Values, Errors, any>;
 };
 
 const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any>>): PageObject => {
-  const wrapper = shallow(
+  const renderer = createRenderer();
+
+  renderer.render(
     <Form
       {...defaultProps}
       {...props}
     />,
   );
 
-  const getFinalFormNode = (): ShallowWrapper<FormProps<
-  any,
-  Values,
-  Values,
-  Values,
-  Errors,
-  any>> => wrapper.find(FinalForm);
+  const result = renderer.getRenderOutput() as ReactElement<
+  FormProps<any, Values, Values, Values, Errors, any>,
+  typeof FinalForm
+  >;
+
+  const getFinalFormProps = () => result.props;
 
   return {
-    getFinalFormNode,
+    getFinalFormProps,
   };
 };
 
@@ -87,9 +86,9 @@ test('should provide parsed initial values', () => {
     formSchemaParse: parse,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  expect(formNode.prop('initialValues')).toEqual({
+  expect(formProps.initialValues).toEqual({
     ...parsedValues,
     [IS_VALUES_READY_NAME]: true,
   });
@@ -139,9 +138,9 @@ test('should not provide initial values during asynchronous parse', () => {
     useAsync,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  expect(formNode.prop('initialValues')).toEqual({
+  expect(formProps.initialValues).toEqual({
     [IS_VALUES_READY_NAME]: false,
   });
 
@@ -195,9 +194,9 @@ test('should not provide initial values with `initialValuesPlaceholder` during a
     useAsync,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  expect(formNode.prop('initialValues')).toEqual({
+  expect(formProps.initialValues).toEqual({
     [IS_VALUES_READY_NAME]: false,
     test: 'placeholderValue',
   });
@@ -251,9 +250,9 @@ test('should provide initial values after asynchronous parse', () => {
     useAsync,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  expect(formNode.prop('initialValues')).toEqual({
+  expect(formProps.initialValues).toEqual({
     ...asyncParsedValues,
     [IS_VALUES_READY_NAME]: true,
   });
@@ -292,9 +291,9 @@ test('should provide empty object to parser if initial values not defined', () =
     formSchemaParse: parse,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  expect(formNode.prop('initialValues')).toEqual({
+  expect(formProps.initialValues).toEqual({
     ...parsedValues,
     [IS_VALUES_READY_NAME]: true,
   });
@@ -348,9 +347,9 @@ test('should validate before submit', async () => {
     formSchemaMapFieldErrors: mapFieldErrors,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  const result = await formNode.prop('onSubmit')(values, {});
+  const result = await formProps.onSubmit(values, {});
 
   expect(result).toBe(clientErrors);
 
@@ -406,9 +405,9 @@ test('should submit successfully', async () => {
     formSchemaMapFieldErrors: mapFieldErrors,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  const result = await formNode.prop('onSubmit')(values, {});
+  const result = await formProps.onSubmit(values, {});
 
   expect(result).toBeFalsy();
 
@@ -488,9 +487,9 @@ test('should submit with error', async () => {
     formSchemaMapFieldErrors: mapFieldErrors,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  const result = await formNode.prop('onSubmit')(values, {});
+  const result = await formProps.onSubmit(values, {});
 
   expect(result).toBe(errors);
 
@@ -549,9 +548,9 @@ test('should provide form render props to children', () => {
     children,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  formNode.prop('children')({
+  formProps.children({
     testProp: 'testValue',
   } as any);
 
@@ -584,9 +583,9 @@ test('should render field', () => {
     renderFieldBySchema,
   });
 
-  const formNode = page.getFinalFormNode();
+  const formProps = page.getFinalFormProps();
 
-  formNode.prop('children')({
+  formProps.children({
     values: {
       fieldName: 'value',
     },
