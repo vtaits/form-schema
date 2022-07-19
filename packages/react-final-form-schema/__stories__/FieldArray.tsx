@@ -446,9 +446,9 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
 });
 
 export function FieldArray(): ReactElement {
-  const [submittedValues, setSubmittedValues] = useState(null);
+  const [submittedValues, setSubmittedValues] = useState<Record<string, any> | null>(null);
 
-  const onSubmit = async (values): Promise<Errors> => {
+  const onSubmit = async (values: Record<string, any>): Promise<Errors | null> => {
     setSubmittedValues(null);
 
     await delay(1000);
@@ -459,7 +459,7 @@ export function FieldArray(): ReactElement {
       errors.users = ['This field is required'];
     } else {
       let hasError = false;
-      const usersErrors = [];
+      const usersErrors: Array<Record<string, any>> = [];
 
       values.users.forEach(({
         firstName,

@@ -5,26 +5,27 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import {
-  useAsync as defaultUseAsync,
-} from 'react-async-hook';
 import type {
   ReactElement,
   ReactNode,
 } from 'react';
+
+import { useAsync } from 'react-async-hook';
+
 import {
   Form as FinalForm,
 } from 'react-final-form';
 import type {
   FormProps as FinalFormProps,
 } from 'react-final-form';
+
 import isPromise from 'is-promise';
 
 import {
-  serialize as formSchemaSerialize,
-  parse as formSchemaParse,
-  validateBeforeSubmit as formSchemaValidateBeforeSubmit,
-  mapFieldErrors as formSchemaMapFieldErrors,
+  serialize,
+  parse,
+  validateBeforeSubmit,
+  mapFieldErrors,
 } from '@vtaits/form-schema';
 import type {
   GetFieldSchema,
@@ -71,15 +72,7 @@ Payload,
 
     onSubmit: onSubmitProp,
 
-    renderFieldBySchema: renderFieldBySchemaProp,
-    formSchemaSerialize: serialize,
-    formSchemaParse: parse,
-    formSchemaValidateBeforeSubmit: validateBeforeSubmit,
-    formSchemaMapFieldErrors: mapFieldErrors,
-
     mapErrors,
-
-    useAsync,
 
     children,
 
@@ -183,7 +176,7 @@ Payload,
     name: string,
     payload?: Payload,
     parents?: ParentType<Values>[],
-  ): ReactNode => renderFieldBySchemaProp(
+  ): ReactNode => renderFieldBySchema(
     getFieldSchema,
     getFieldType,
     name,
@@ -247,14 +240,5 @@ Form.defaultProps = {
   initialValues: null,
   initialValuesPlaceholder: undefined,
   getFieldSchema: defaultGetFieldSchema,
-
-  renderFieldBySchema,
-  formSchemaSerialize,
-  formSchemaParse,
-  formSchemaValidateBeforeSubmit,
-  formSchemaMapFieldErrors,
-
   mapErrors: defaultMapErrors,
-
-  useAsync: defaultUseAsync,
 };

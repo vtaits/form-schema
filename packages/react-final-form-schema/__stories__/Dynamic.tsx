@@ -164,14 +164,15 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
 });
 
 export function Dynamic(): ReactElement {
-  const [submittedValues, setSubmittedValues] = useState(null);
+  const [submittedValues, setSubmittedValues] = useState<Record<string, any> | null>(null);
 
-  const onSubmit = async (values: Record<string, any>): Promise<Record<string, any>> => {
+  const onSubmit = async (values: Record<string, any>): Promise<Record<string, any> | null> => {
     setSubmittedValues(null);
 
     await delay(1000);
 
     setSubmittedValues(values);
+
     return null;
   };
 

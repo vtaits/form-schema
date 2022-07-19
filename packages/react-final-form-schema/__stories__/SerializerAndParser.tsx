@@ -188,7 +188,7 @@ const initialValuesPlaceholder = {
 };
 
 export function SerializerAndParser(): ReactElement {
-  const [submittedValues, setSubmittedValues] = useState(null);
+  const [submittedValues, setSubmittedValues] = useState<Record<string, any> | null>(null);
 
   const onSubmit = async (values: Record<string, any>): Promise<void> => {
     await delay(1000);

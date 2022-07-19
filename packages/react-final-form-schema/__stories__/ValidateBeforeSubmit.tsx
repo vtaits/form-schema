@@ -207,9 +207,9 @@ const delay = (ms: number): Promise<void> => new Promise((resolve) => {
 });
 
 export function ValidateBeforeSubmit(): ReactElement {
-  const [submittedValues, setSubmittedValues] = useState(null);
+  const [submittedValues, setSubmittedValues] = useState<Record<string, any> | null>(null);
 
-  const onSubmit = async (values): Promise<void> => {
+  const onSubmit = async (values: Record<string, any>): Promise<void> => {
     await delay(1000);
 
     setSubmittedValues(values);

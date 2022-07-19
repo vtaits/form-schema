@@ -1,11 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import {
-  serialize as formSchemaSerialize,
-  parse as formSchemaParse,
-  validateBeforeSubmit as formSchemaValidateBeforeSubmit,
-  mapFieldErrors as formSchemaMapFieldErrors,
-} from '@vtaits/form-schema';
 import type {
   GetFieldSchema,
   FieldType as FieldTypeBase,
@@ -19,8 +11,21 @@ import type {
   ComponentType,
   ReactNode,
 } from 'react';
-import { useAsync } from 'react-async-hook';
 
+// https://github.com/microsoft/TypeScript/issues/31153#issuecomment-487894895
+/* eslint-disable */
+type KnownKeys<T> = {
+  [K in keyof T]: string extends K ? never : number extends K ? never : K
+} extends { [_ in keyof T]: infer U } ? ({} extends U ? never : U) : never; // I don't know why not just U work here, but ({} extends U ? never : U) work
+type OmitFromKnownKeys<T, K extends keyof T> = KnownKeys<T> extends infer U ?
+  [U] extends [keyof T] ? Pick<T, Exclude<U, K>> :
+  never : never;
+type Omit<T, K extends keyof T> = OmitFromKnownKeys<T, K>
+  & (string extends K ? {} : (string extends keyof T ? { [n: string]: T[Exclude<keyof T, number>] } : {})) // support number property
+  & (number extends K ? {} : (number extends keyof T ? { [n: number]: T[Exclude<keyof T, string>] } : {})) // support number property
+/* eslint-enable */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type GetFieldType<
 FieldSchema,
 Values extends Record<string, any> = Record<string, any>,
@@ -148,12 +153,13 @@ SerializedValues extends Record<string, any> = Record<string, any>,
 Errors extends Record<string, any> = Record<string, any>,
 Payload = any,
 > =
-  & FinalFormProps<Values, Values>
+  & Omit<FinalFormProps<Values, Values>, 'onSubmit' | 'children' | 'initialValues'>
   & {
     /**
      * placeholder runtime values of form during asynchronous initialization
      */
     initialValuesPlaceholder?: Values;
+    initialValues?: RawValues;
 
     names: string[];
     getFieldSchema?: GetFieldSchema<FieldSchema>;
@@ -166,25 +172,11 @@ Payload = any,
     Payload
     >;
 
-    renderFieldBySchema?: RenderFieldBySchema<
-    FieldSchema,
-    Values,
-    RawValues,
-    SerializedValues,
-    Errors,
-    Payload
-    >;
-    formSchemaSerialize?: typeof formSchemaSerialize;
-    formSchemaParse?: typeof formSchemaParse;
-    formSchemaValidateBeforeSubmit?: typeof formSchemaValidateBeforeSubmit;
-    formSchemaMapFieldErrors?: typeof formSchemaMapFieldErrors;
     mapErrors?: MapErrors<
     Values,
     SerializedValues,
     Errors
     >;
-
-    useAsync?: typeof useAsync;
 
     onSubmit: (
       serializedValues: SerializedValues,
