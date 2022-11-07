@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import isPromise from 'is-promise';
 
 import type {
@@ -41,7 +40,7 @@ Errors extends Record<string, any>,
     Errors
     >,
     parents: ParentType<RawValues>[],
-  ): Values | Promise<Values> => {
+  ): Values | Promise<Values> | null => {
   if (!values) {
     return null;
   }
@@ -94,7 +93,7 @@ Errors extends Record<string, any>,
       });
   }
 
-  preparsedValues.forEach((parsedValue: Values) => {
+  (preparsedValues as Values[]).forEach((parsedValue) => {
     Object.assign(res, parsedValue);
   });
 

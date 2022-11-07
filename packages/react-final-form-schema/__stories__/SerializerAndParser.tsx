@@ -12,6 +12,7 @@ import type {
 
 import {
   Form,
+  FormField,
   useValuesReady,
 } from '@vtaits/react-final-form-schema';
 import type {
@@ -209,10 +210,9 @@ export function SerializerAndParser(): ReactElement {
         {({
           handleSubmit,
           submitting,
-          renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('animal')}
+            <FormField name="animal" />
 
             <hr />
 

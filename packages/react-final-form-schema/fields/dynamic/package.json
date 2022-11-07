@@ -1,5 +1,11 @@
 {
-  "main": "../../lib/fields/dynamic/index.js",
-  "module": "../../es/fields/dynamic/index.js",
-  "typings": "../../ts/fields/dynamic/index.d.ts"
+  "main": "../../dist/fields_dynamic.js",
+  "module": "../../dist/fields_dynamic.mjs",
+  "exports": {
+    ".": {
+      "import": "./../../dist/fields_dynamic.mjs",
+      "require": "./../../dist/fields_dynamic.js"
+    }
+  },
+  "typings": "../../dist/fields_dynamic.d.ts"
 }

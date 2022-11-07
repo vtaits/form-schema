@@ -10,7 +10,6 @@ import type {
 } from 'final-form';
 import type {
   FormProps as FinalFormProps,
-  FormRenderProps as FinalFormRenderProps,
   RenderableProps,
 } from 'react-final-form';
 
@@ -64,7 +63,6 @@ Payload = any,
   Errors,
   Payload
   >;
-  renderField: RenderField<Values, Payload>;
   /**
    * stack of parent fields above current field with runtime values
    */
@@ -107,37 +105,6 @@ Payload = any,
     >>;
   };
 
-export type RenderFieldBySchema<
-FieldSchema,
-Values extends Record<string, any> = Record<string, any>,
-RawValues extends Record<string, any> = Record<string, any>,
-SerializedValues extends Record<string, any> = Record<string, any>,
-Errors extends Record<string, any> = Record<string, any>,
-Payload = any,
-> = (
-  getFieldSchema: GetFieldSchema<FieldSchema>,
-  getFieldType: GetFieldType<
-  FieldSchema,
-  Values,
-  RawValues,
-  SerializedValues,
-  Errors,
-  Payload
-  >,
-  name: string,
-  payload: Payload | undefined,
-  parents: ParentType<Values>[],
-) => ReactNode;
-
-export type FormRenderProps<
-Values extends Record<string, any> = Record<string, any>,
-Payload = any,
-> =
-  & FinalFormRenderProps<Values>
-  & {
-    renderField: RenderField<Values, Payload>;
-  };
-
 /**
  * Remove [otherProp: string]: any
  */
@@ -161,7 +128,7 @@ SerializedValues extends Record<string, any> = Record<string, any>,
 Errors extends Record<string, any> = Record<string, any>,
 Payload = any,
 > =
-  & Omit<FinalFormPropsPure<Values, Values>, 'onSubmit' | 'children' | 'initialValues'>
+  & Omit<FinalFormPropsPure<Values, Values>, 'onSubmit' | 'initialValues'>
   & {
     /**
      * placeholder runtime values of form during asynchronous initialization
@@ -171,7 +138,7 @@ Payload = any,
 
     names: string[];
     getFieldSchema?: GetFieldSchema<FieldSchema>;
-    getFieldType?: GetFieldType<
+    getFieldType: GetFieldType<
     FieldSchema,
     Values,
     RawValues,
@@ -190,8 +157,6 @@ Payload = any,
       serializedValues: SerializedValues,
       rawValues: Values,
     ) => ReturnType<FinalFormPropsPure<Values, Values>['onSubmit']>;
-
-    children: (renderProps: FormRenderProps<Values, Payload>) => ReactNode;
   };
 
 export type FormSchemaStateContextType = {
@@ -200,4 +165,29 @@ export type FormSchemaStateContextType = {
    * If parsing if synchronous it always returns true
    */
   isValuesReady: boolean;
+};
+
+export type FormSchemaContextType<
+FieldSchema,
+Values extends Record<string, any> = Record<string, any>,
+RawValues extends Record<string, any> = Record<string, any>,
+SerializedValues extends Record<string, any> = Record<string, any>,
+Errors extends Record<string, any> = Record<string, any>,
+Payload = any,
+> = {
+  getFieldSchema: GetFieldSchema<FieldSchema>;
+  getFieldType: GetFieldType<
+    FieldSchema,
+    Values,
+    RawValues,
+    SerializedValues,
+    Errors,
+    Payload
+  >;
+};
+
+export type FormFieldContextType<
+FieldSchema,
+> = {
+  getFieldSchema: GetFieldSchema<FieldSchema>;
 };

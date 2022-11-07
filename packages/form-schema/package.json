@@ -2,14 +2,18 @@
   "name": "@vtaits/form-schema",
   "version": "0.3.0-alpha.0",
   "description": "Serialization and parsing form values by schema",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "typings": "ts/index.d.ts",
   "files": [
-    "/es",
-    "/lib",
-    "/ts"
+    "dist"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "typings": "dist/index.d.ts",
   "keywords": [
     "form",
     "schama",
@@ -20,11 +24,7 @@
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf es lib ts",
-    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel --root-mode upward --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\"",
-    "build:es": "cross-env BABEL_ENV=es babel --root-mode upward --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\"",
-    "build:ts": "tsc --declaration",
+    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts",
     "test:ts": "tsc -p ./tsconfig.eslint.json",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
     "test:unit": "jest",
@@ -52,6 +52,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^28.1.3",
     "ts-jest": "^28.0.7",
+    "tsup": "^6.4.0",
     "typescript": "4.3.5"
   }
 }

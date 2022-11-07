@@ -18,9 +18,11 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '@vtaits/react-final-form-schema';
+import {
+  Form,
+  FormField,
+} from '@vtaits/react-final-form-schema';
 import type {
-  RenderField,
   FieldType,
   FieldComponentProps,
   GetFieldType,
@@ -40,8 +42,6 @@ function ArrayComponent({
   name,
 
   fieldSchema,
-
-  renderField,
 
   parents,
 }: ArrayProps): ReactElement {
@@ -82,17 +82,17 @@ function ArrayComponent({
                   <Fragment
                     key={fieldName}
                   >
-                    {renderField(
-                      fieldName,
-                      namePrefix,
-                      [
+                    <FormField
+                      name={fieldName}
+                      payload={namePrefix}
+                      parents={[
                         ...parents,
                         {
                           name: index,
                           values: currrentValues,
                         },
-                      ],
-                    )}
+                      ]}
+                    />
                   </Fragment>
                 ))
               }
@@ -508,10 +508,9 @@ export function FieldArray(): ReactElement {
         {({
           handleSubmit,
           submitting,
-          renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('users')}
+            <FormField name="users" />
 
             <hr />
 

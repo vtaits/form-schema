@@ -65,11 +65,11 @@ Payload,
 
   parents,
 
-  useForm,
-  useFormState,
-  useFormSchemaState,
-  useEffect,
-  useRef,
+  useForm = defaultUseForm,
+  useFormState = defaultUseFormState,
+  useFormSchemaState = defaultUseFormSchemaState,
+  useEffect = defaultUseEffect,
+  useRef = defaultUseRef,
 
   ...rest
 }: DynamicFieldProps<
@@ -79,7 +79,7 @@ RawValues,
 SerializedValues,
 Errors,
 Payload
->): ReactElement {
+>): ReactElement | null {
   const form = useForm<Values>();
 
   const {
@@ -171,11 +171,3 @@ Payload
     />
   );
 }
-
-DynamicField.defaultProps = {
-  useForm: defaultUseForm,
-  useFormState: defaultUseFormState,
-  useFormSchemaState: defaultUseFormSchemaState,
-  useEffect: defaultUseEffect,
-  useRef: defaultUseRef,
-} as DynamicFieldProps<any, any, any, any, any, any>;

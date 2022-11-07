@@ -7,7 +7,6 @@ import {
 } from 'react';
 import type {
   ReactElement,
-  ReactNode,
 } from 'react';
 
 import { useAsync } from 'react-async-hook';
@@ -29,22 +28,22 @@ import {
 } from '@vtaits/form-schema';
 import type {
   GetFieldSchema,
-  ParentType,
 } from '@vtaits/form-schema';
 
-import type {
-  MapErrors,
-  FormProps,
-} from './types';
+import { FormSchemaContext } from './FormSchemaContext';
 
-import { renderFieldBySchema } from './renderFieldBySchema';
+import type {
+  FormProps,
+  FormSchemaContextType,
+  MapErrors,
+} from './types';
 
 import {
   IS_VALUES_READY_NAME,
 } from './constants';
 
 export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) => fieldSchema;
-export const defaultMapErrors: MapErrors<any, any, any> = (errors) => errors;
+export const defaultMapErrors: MapErrors = (errors) => errors;
 
 export function Form<
 FieldSchema,
@@ -65,14 +64,14 @@ Payload,
 ): ReactElement {
   const {
     names,
-    getFieldSchema,
+    getFieldSchema = (defaultGetFieldSchema as GetFieldSchema<FieldSchema>),
     getFieldType,
     initialValues: initialValuesProp,
     initialValuesPlaceholder,
 
     onSubmit: onSubmitProp,
 
-    mapErrors,
+    mapErrors = (defaultMapErrors as MapErrors<Values, SerializedValues, Errors>),
 
     children,
 
@@ -83,13 +82,13 @@ Payload,
     const rawInitialValues = initialValuesProp || {};
 
     return parse(
-      rawInitialValues,
+      rawInitialValues as RawValues,
       names,
       getFieldSchema,
       getFieldType,
       [
         {
-          values: rawInitialValues,
+          values: rawInitialValues as RawValues,
         },
       ],
     );
@@ -171,38 +170,6 @@ Payload,
     mapErrors,
   ]);
 
-  const renderField = useCallback((
-    values: Values,
-    name: string,
-    payload?: Payload,
-    parents?: ParentType<Values>[],
-  ): ReactNode => renderFieldBySchema(
-    getFieldSchema,
-    getFieldType,
-    name,
-    payload,
-    parents || [{
-      values,
-    }],
-  ), [
-    getFieldSchema,
-    getFieldType,
-  ]);
-
-  const renderForm = useCallback<FinalFormProps<Values, Values>['render']>((formRenderProps) => children({
-    ...formRenderProps,
-    renderField: (
-      name: string,
-      payload?: Payload,
-      parents?: ParentType<Values>[],
-    ): ReactNode => renderField(
-      formRenderProps.values,
-      name,
-      payload,
-      parents,
-    ),
-  }), [children, renderField]);
-
   const providedInitialValues = useMemo(() => {
     const initialValuesClean = isPromise(initialValuesResult)
       ? initialValues
@@ -225,14 +192,26 @@ Payload,
     initialValuesPlaceholder,
   ]);
 
+  const providerValue = useMemo(() => ({
+    getFieldSchema,
+    getFieldType,
+  }) as FormSchemaContextType<unknown>, [
+    getFieldSchema,
+    getFieldType,
+  ]);
+
   return (
-    <FinalForm
-      {...rest}
-      onSubmit={onSubmit}
-      initialValues={providedInitialValues}
+    <FormSchemaContext.Provider
+      value={providerValue}
     >
-      {renderForm}
-    </FinalForm>
+      <FinalForm
+        {...rest}
+        onSubmit={onSubmit}
+        initialValues={providedInitialValues as unknown as Values}
+      >
+        {children}
+      </FinalForm>
+      </FormSchemaContext.Provider>
   );
 }
 

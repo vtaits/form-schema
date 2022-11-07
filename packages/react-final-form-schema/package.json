@@ -2,15 +2,18 @@
   "name": "@vtaits/react-final-form-schema",
   "version": "0.3.0-alpha.3",
   "description": "Integration of react-final-form and @vtaits/form-schema",
-  "main": "lib/core/index.js",
-  "module": "es/core/index.js",
-  "typings": "ts/core/index.d.ts",
   "files": [
-    "/es",
-    "/fields",
-    "/lib",
-    "/ts"
+    "dist"
   ],
+  "main": "./dist/core.js",
+  "module": "./dist/core.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/core.mjs",
+      "require": "./dist/core.js"
+    }
+  },
+  "typings": "dist/core.d.ts",
   "keywords": [
     "react",
     "final-form",
@@ -24,11 +27,7 @@
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf es lib ts",
-    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel --root-mode upward --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\"",
-    "build:es": "cross-env BABEL_ENV=es babel --root-mode upward --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\"",
-    "build:ts": "tsc --declaration",
+    "build": "tsup --entry.core src/core/index.ts --entry.fields_dynamic src/fields/dynamic/index.ts --sourcemap --format esm,cjs --dts",
     "test:ts": "tsc -p ./tsconfig.eslint.json",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
     "test:unit": "jest",
@@ -43,6 +42,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.9",
     "@vtaits/form-schema": "^0.3.0-alpha.0",
+    "@vtaits/react-required-context": "^1.0.0",
     "is-promise": "^4.0.0",
     "react-async-hook": "^4.0.0"
   },
@@ -74,6 +74,7 @@
     "react-select": "^5.4.0",
     "react-test-renderer": "^18.2.0",
     "ts-jest": "^28.0.7",
+    "tsup": "^6.4.0",
     "typescript": "4.3.5"
   }
 }
