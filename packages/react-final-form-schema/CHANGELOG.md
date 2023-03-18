@@ -1,3 +1,9 @@
+## 0.3.0-alpha.4
+
+### Improvement
+
+- Added `exports` field to `package.json`
+
 ## 0.3.0-aplha.2 (20 apr 2022)
 
 ### New features

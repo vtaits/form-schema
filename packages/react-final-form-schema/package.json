@@ -11,6 +11,18 @@
     "/lib",
     "/ts"
   ],
+  "exports": {
+    ".": {
+      "import": "./es/core/index.js",
+      "require": "./lib/core/index.js",
+      "types": "./ts/core/index.d.ts"
+    },
+    "./fields/dynamic": {
+      "main": "./lib/fields/dynamic/index.js",
+      "module": "./es/fields/dynamic/index.js",
+      "types": "./ts/fields/dynamic/index.d.ts"
+    }
+  },
   "keywords": [
     "react",
     "final-form",
