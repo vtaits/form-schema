@@ -18,8 +18,8 @@
       "types": "./ts/core/index.d.ts"
     },
     "./fields/dynamic": {
-      "main": "./lib/fields/dynamic/index.js",
-      "module": "./es/fields/dynamic/index.js",
+      "require": "./lib/fields/dynamic/index.js",
+      "import": "./es/fields/dynamic/index.js",
       "types": "./ts/fields/dynamic/index.d.ts"
     }
   },
@@ -37,7 +37,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf es lib ts",
-    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
+    "build": "yarn build:cjs && yarn build:es && yarn build:ts && exports-fallback -gf",
     "build:cjs": "cross-env BABEL_ENV=cjs babel --root-mode upward --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\"",
     "build:es": "cross-env BABEL_ENV=es babel --root-mode upward --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\"",
     "build:ts": "tsc --declaration",
@@ -77,6 +77,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "exports-fallback": "^1.0.0",
     "final-form": "^4.20.9",
     "final-form-arrays": "^3.1.0",
     "jest": "^29.5.0",
