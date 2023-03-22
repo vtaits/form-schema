@@ -5,7 +5,8 @@
     "esModuleInterop": true,
     "emitDeclarationOnly": true,
     "incremental": false,
-    "lib": ["ES2021", "DOM"]
+    "lib": ["ES2021", "DOM"],
+    "moduleResolution": "Node"
   },
   "include": [
     "src/**/*"

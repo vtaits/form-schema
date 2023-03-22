@@ -2,14 +2,19 @@
   "name": "@vtaits/form-schema",
   "version": "0.3.0-alpha.0",
   "description": "Serialization and parsing form values by schema",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "typings": "ts/index.d.ts",
   "files": [
-    "/es",
-    "/lib",
-    "/ts"
+    "dist"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "keywords": [
     "form",
     "schama",
@@ -20,11 +25,8 @@
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf es lib ts",
-    "build": "yarn build:cjs && yarn build:es && yarn build:ts",
-    "build:cjs": "cross-env BABEL_ENV=cjs babel --root-mode upward --extensions '.ts,.tsx' src --out-dir lib --ignore \"src/**/__tests__\"",
-    "build:es": "cross-env BABEL_ENV=es babel --root-mode upward --extensions '.ts,.tsx' src --out-dir es --ignore \"src/**/__tests__\"",
-    "build:ts": "tsc --declaration",
+    "clean": "rimraf dist",
+    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
     "test:ts": "tsc -p ./tsconfig.eslint.json",
     "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
     "test:unit": "jest",
@@ -32,14 +34,11 @@
     "prepare": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.21.0",
     "@types/is-promise": "^2.2.0",
     "is-promise": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
     "@types/jest": "^29.5.0",
-    "cross-env": "^7.0.3",
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -52,6 +51,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^29.5.0",
     "ts-jest": "^28.0.8",
+    "tsup": "^6.7.0",
     "typescript": "4.9.5"
   }
 }
