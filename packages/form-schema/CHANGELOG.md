@@ -1,3 +1,9 @@
+## 0.3.0-alpha.1 (22 mar 2023)
+
+### Improvement
+
+- Migrate to `tsup`
+
 ## 0.3.0-alpha.0 (06 apr 2022)
 
 ### New features

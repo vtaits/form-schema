@@ -1,3 +1,15 @@
+## 0.3.0-alpha.5 (22 mar 2023)
+
+### Improvement
+
+- Migrate to `tsup`
+
+## 0.3.0-alpha.4 (18 mar 2023)
+
+### Improvement
+
+- Added `exports` field to `package.json`
+
 ## 0.3.0-aplha.2 (20 apr 2022)
 
 ### New features

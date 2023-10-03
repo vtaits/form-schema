@@ -3,7 +3,8 @@
     "target": "ES2021",
     "useDefineForClassFields": true,
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "allowJs": false,
     "skipLibCheck": true,

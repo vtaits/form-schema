@@ -73,7 +73,7 @@ Payload
   const {
     getFieldSchema: getFieldSchemaParam,
     getFieldType: getFieldTypeParam,
-  } = useRequiredContext(FormSchemaContext as any);
+  } = useRequiredContext(FormSchemaContext);
 
   const getFieldType = getFieldTypeParam as GetFieldType<
   FieldSchema,
