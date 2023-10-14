@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from 'vitest';
 import type {
   ParentType,
 } from '@vtaits/form-schema';
@@ -5,7 +6,7 @@ import type {
 import {
   createGetFieldSchema,
   dynamic,
-} from '../dynamic';
+} from './dynamic';
 
 const parents: ParentType[] = [
   {
@@ -14,11 +15,11 @@ const parents: ParentType[] = [
 ];
 
 describe('createGetFieldSchema', () => {
-  const getFieldSchema = jest.fn();
+  const getFieldSchema = vi.fn();
   const defaultGetFieldType = () => ({});
 
   test('should provide correct arguments to `getSchema`', () => {
-    const getSchema = jest.fn();
+    const getSchema = vi.fn();
 
     const values = {
       field1: 'value1',
@@ -44,7 +45,7 @@ describe('createGetFieldSchema', () => {
   });
 
   test('should return parent `getFieldSchema` if `getSchema` returns falsy value', () => {
-    const getSchema = jest.fn();
+    const getSchema = vi.fn();
 
     const result = createGetFieldSchema(
       { getSchema },
@@ -74,12 +75,12 @@ describe('createGetFieldSchema', () => {
   });
 
   test('should return parent `getFieldSchema` if type of field not contains `createGetFieldSchema`', () => {
-    const childGetFieldSchema = jest.fn();
+    const childGetFieldSchema = vi.fn();
 
-    const childCreateGetFieldSchema = jest.fn()
+    const childCreateGetFieldSchema = vi.fn()
       .mockReturnValue(childGetFieldSchema);
 
-    const getFeldType = jest.fn()
+    const getFeldType = vi.fn()
       .mockReturnValue({
         createGetFieldSchema: childCreateGetFieldSchema,
       });
@@ -118,17 +119,25 @@ describe('createGetFieldSchema', () => {
 });
 
 describe('serializer', () => {
-  const getFieldSchema = jest.fn();
-  const defaultGetFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const defaultGetFieldType = vi.fn();
+
+  const {
+    serializer,
+  } = dynamic;
+
+  if (!serializer) {
+    throw new Error('`serializer` is not defined');
+  }
 
   test('should provide all values to `getSchema`', () => {
-    const getSchema = jest.fn();
+    const getSchema = vi.fn();
 
     const values = {
       field1: 'value1',
     };
 
-    dynamic.serializer(
+    serializer(
       values,
       'test',
       { getSchema },
@@ -152,7 +161,7 @@ describe('serializer', () => {
       field1: 'value1',
     };
 
-    const result = dynamic.serializer(
+    const result = serializer(
       values,
       'test',
       {
@@ -167,14 +176,14 @@ describe('serializer', () => {
   });
 
   test('should call `getFieldType` with correct argument', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({});
 
     const values = {
       field1: 'value1',
     };
 
-    dynamic.serializer(
+    serializer(
       values,
       'test',
       {
@@ -190,21 +199,21 @@ describe('serializer', () => {
   });
 
   test('should call serializer of computed field type if defined', () => {
-    const serializer = jest.fn()
+    const fieldSerializer = vi.fn()
       .mockReturnValue({
         field1: 'serialized1',
       });
 
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({
-        serializer,
+        serializer: fieldSerializer,
       });
 
     const values = {
       field1: 'value1',
     };
 
-    const result = dynamic.serializer(
+    const result = serializer(
       values,
       'test',
       {
@@ -219,7 +228,7 @@ describe('serializer', () => {
       field1: 'serialized1',
     });
 
-    expect(serializer).toHaveBeenCalledWith(
+    expect(fieldSerializer).toHaveBeenCalledWith(
       values,
       'test',
       'testSchema',
@@ -230,7 +239,7 @@ describe('serializer', () => {
   });
 
   test('should call default serializer for computed field', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({});
 
     const values = {
@@ -238,7 +247,7 @@ describe('serializer', () => {
       field2: 'value2',
     };
 
-    const result = dynamic.serializer(
+    const result = serializer(
       values,
       'field1',
       {
@@ -256,18 +265,26 @@ describe('serializer', () => {
 });
 
 describe('parser', () => {
-  const getFieldSchema = jest.fn();
-  const defaultGetFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const defaultGetFieldType = vi.fn();
+
+  const {
+    parser,
+  } = dynamic;
+
+  if (!parser) {
+    throw new Error('`parser` is not defined');
+  }
 
   describe('getSchema', () => {
     test('should provide all values to `getSchema`', () => {
-      const getSchema = jest.fn();
+      const getSchema = vi.fn();
 
       const values = {
         field1: 'value1',
       };
 
-      dynamic.parser(
+      parser(
         values,
         'test',
         { getSchema },
@@ -291,7 +308,7 @@ describe('parser', () => {
         field1: 'value1',
       };
 
-      const result = dynamic.parser(
+      const result = parser(
         values,
         'test',
         {
@@ -306,14 +323,14 @@ describe('parser', () => {
     });
 
     test('should call `getFieldType` with correct argument', () => {
-      const getFieldType = jest.fn()
+      const getFieldType = vi.fn()
         .mockReturnValue({});
 
       const values = {
         field1: 'value1',
       };
 
-      dynamic.parser(
+      parser(
         values,
         'test',
         {
@@ -329,21 +346,21 @@ describe('parser', () => {
     });
 
     test('should call parser of computed field type if defined', () => {
-      const parser = jest.fn()
+      const fieldParser = vi.fn()
         .mockReturnValue({
           field1: 'parsed1',
         });
 
-      const getFieldType = jest.fn()
+      const getFieldType = vi.fn()
         .mockReturnValue({
-          parser,
+          parser: fieldParser,
         });
 
       const values = {
         field1: 'value1',
       };
 
-      const result = dynamic.parser(
+      const result = parser(
         values,
         'test',
         {
@@ -358,7 +375,7 @@ describe('parser', () => {
         field1: 'parsed1',
       });
 
-      expect(parser).toHaveBeenCalledWith(
+      expect(fieldParser).toHaveBeenCalledWith(
         values,
         'test',
         'testSchema',
@@ -369,7 +386,7 @@ describe('parser', () => {
     });
 
     test('should call default parser for computed field', () => {
-      const getFieldType = jest.fn()
+      const getFieldType = vi.fn()
         .mockReturnValue({});
 
       const values = {
@@ -377,7 +394,7 @@ describe('parser', () => {
         field2: 'value2',
       };
 
-      const result = dynamic.parser(
+      const result = parser(
         values,
         'field1',
         {
@@ -396,15 +413,15 @@ describe('parser', () => {
 
   describe('getSchemaAsync', () => {
     test('should provide all values to `getSchemaAsync`', async () => {
-      const getSchema = jest.fn();
-      const getSchemaAsync = jest.fn()
+      const getSchema = vi.fn();
+      const getSchemaAsync = vi.fn()
         .mockResolvedValue(null);
 
       const values = {
         field1: 'value1',
       };
 
-      await dynamic.parser(
+      await parser(
         values,
         'test',
         {
@@ -429,16 +446,16 @@ describe('parser', () => {
     });
 
     test('should return empty object if `getSchemaAsync` returns falsy value', async () => {
-      const getSchema = jest.fn()
+      const getSchema = vi.fn()
         .mockReturnValue('testSchemaSync');
-      const getSchemaAsync = jest.fn()
+      const getSchemaAsync = vi.fn()
         .mockResolvedValue(null);
 
       const values = {
         field1: 'value1',
       };
 
-      const result = await dynamic.parser(
+      const result = await parser(
         values,
         'test',
         {
@@ -454,19 +471,19 @@ describe('parser', () => {
     });
 
     test('should call `getFieldType` with correct argument', async () => {
-      const getSchema = jest.fn()
+      const getSchema = vi.fn()
         .mockReturnValue('testSchemaSync');
-      const getSchemaAsync = jest.fn()
+      const getSchemaAsync = vi.fn()
         .mockResolvedValue('testSchema');
 
-      const getFieldType = jest.fn()
+      const getFieldType = vi.fn()
         .mockReturnValue({});
 
       const values = {
         field1: 'value1',
       };
 
-      await dynamic.parser(
+      await parser(
         values,
         'test',
         {
@@ -483,26 +500,26 @@ describe('parser', () => {
     });
 
     test('should call parser of computed field type if defined', async () => {
-      const getSchema = jest.fn()
+      const getSchema = vi.fn()
         .mockReturnValue('testSchemaSync');
-      const getSchemaAsync = jest.fn()
+      const getSchemaAsync = vi.fn()
         .mockResolvedValue('testSchema');
 
-      const parser = jest.fn()
+      const fieldParser = vi.fn()
         .mockReturnValue({
           field1: 'parsed1',
         });
 
-      const getFieldType = jest.fn()
+      const getFieldType = vi.fn()
         .mockReturnValue({
-          parser,
+          parser: fieldParser,
         });
 
       const values = {
         field1: 'value1',
       };
 
-      const result = await dynamic.parser(
+      const result = await parser(
         values,
         'test',
         {
@@ -518,7 +535,7 @@ describe('parser', () => {
         field1: 'parsed1',
       });
 
-      expect(parser).toHaveBeenCalledWith(
+      expect(fieldParser).toHaveBeenCalledWith(
         values,
         'test',
         'testSchema',
@@ -529,12 +546,12 @@ describe('parser', () => {
     });
 
     test('should call default parser for computed field', async () => {
-      const getSchema = jest.fn()
+      const getSchema = vi.fn()
         .mockReturnValue('testSchemaSync');
-      const getSchemaAsync = jest.fn()
+      const getSchemaAsync = vi.fn()
         .mockResolvedValue('testSchema');
 
-      const getFieldType = jest.fn()
+      const getFieldType = vi.fn()
         .mockReturnValue({});
 
       const values = {
@@ -542,7 +559,7 @@ describe('parser', () => {
         field2: 'value2',
       };
 
-      const result = await dynamic.parser(
+      const result = await parser(
         values,
         'field1',
         {
@@ -565,17 +582,25 @@ describe('parser', () => {
 });
 
 describe('validatorBeforeSubmit', () => {
-  const getFieldSchema = jest.fn();
-  const defaultGetFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const defaultGetFieldType = vi.fn();
+
+  const {
+    validatorBeforeSubmit,
+  } = dynamic;
+
+  if (!validatorBeforeSubmit) {
+    throw new Error('`validatorBeforeSubmit` is not defined');
+  }
 
   test('should provide all values to `getSchema`', () => {
-    const getSchema = jest.fn();
+    const getSchema = vi.fn();
 
     const values = {
       field1: 'value1',
     };
 
-    dynamic.validatorBeforeSubmit(
+    validatorBeforeSubmit(
       values,
       'test',
       { getSchema },
@@ -599,7 +624,7 @@ describe('validatorBeforeSubmit', () => {
       field1: 'value1',
     };
 
-    const result = dynamic.validatorBeforeSubmit(
+    const result = validatorBeforeSubmit(
       values,
       'test',
       {
@@ -614,14 +639,14 @@ describe('validatorBeforeSubmit', () => {
   });
 
   test('should call `getFieldType` with correct argument', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({});
 
     const values = {
       field1: 'value1',
     };
 
-    dynamic.validatorBeforeSubmit(
+    validatorBeforeSubmit(
       values,
       'test',
       {
@@ -637,21 +662,21 @@ describe('validatorBeforeSubmit', () => {
   });
 
   test('should call validatorBeforeSubmit of computed field type if defined', () => {
-    const validatorBeforeSubmit = jest.fn()
+    const fieldValidatorBeforeSubmit = vi.fn()
       .mockReturnValue({
         field1: 'serialized1',
       });
 
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({
-        validatorBeforeSubmit,
+        validatorBeforeSubmit: fieldValidatorBeforeSubmit,
       });
 
     const values = {
       field1: 'value1',
     };
 
-    const result = dynamic.validatorBeforeSubmit(
+    const result = validatorBeforeSubmit(
       values,
       'test',
       {
@@ -666,7 +691,7 @@ describe('validatorBeforeSubmit', () => {
       field1: 'serialized1',
     });
 
-    expect(validatorBeforeSubmit).toHaveBeenCalledWith(
+    expect(fieldValidatorBeforeSubmit).toHaveBeenCalledWith(
       values,
       'test',
       'testSchema',
@@ -677,7 +702,7 @@ describe('validatorBeforeSubmit', () => {
   });
 
   test('should return empty object if validatorBeforeSubmit for computed field is not defined', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({});
 
     const values = {
@@ -685,7 +710,7 @@ describe('validatorBeforeSubmit', () => {
       field2: 'value2',
     };
 
-    const result = dynamic.validatorBeforeSubmit(
+    const result = validatorBeforeSubmit(
       values,
       'field1',
       {
@@ -701,8 +726,8 @@ describe('validatorBeforeSubmit', () => {
 });
 
 describe('errorsMapper', () => {
-  const getFieldSchema = jest.fn();
-  const defaultGetFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const defaultGetFieldType = vi.fn();
 
   const values = {
     field1: 'value1',
@@ -712,14 +737,22 @@ describe('errorsMapper', () => {
     field1: 'rawValue1',
   };
 
+  const {
+    errorsMapper,
+  } = dynamic;
+
+  if (!errorsMapper) {
+    throw new Error('`errorsMapper` is not defined');
+  }
+
   test('should provide all errors to `getSchema`', () => {
-    const getSchema = jest.fn();
+    const getSchema = vi.fn();
 
     const errors = {
       field1: 'error1',
     };
 
-    dynamic.errorsMapper(
+    errorsMapper(
       errors,
       'test',
       { getSchema },
@@ -745,7 +778,7 @@ describe('errorsMapper', () => {
       field1: 'error1',
     };
 
-    const result = dynamic.errorsMapper(
+    const result = errorsMapper(
       errors,
       'test',
       {
@@ -762,14 +795,14 @@ describe('errorsMapper', () => {
   });
 
   test('should call `getFieldType` with correct argument', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({});
 
     const errors = {
       field1: 'error1',
     };
 
-    dynamic.errorsMapper(
+    errorsMapper(
       errors,
       'test',
       {
@@ -787,21 +820,21 @@ describe('errorsMapper', () => {
   });
 
   test('should call errorsMapper of computed field type if defined', () => {
-    const errorsMapper = jest.fn()
+    const fieldErrorsMapper = vi.fn()
       .mockReturnValue({
         field1: 'processed1',
       });
 
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({
-        errorsMapper,
+        errorsMapper: fieldErrorsMapper,
       });
 
     const errors = {
       field1: 'error1',
     };
 
-    const result = dynamic.errorsMapper(
+    const result = errorsMapper(
       errors,
       'test',
       {
@@ -818,7 +851,7 @@ describe('errorsMapper', () => {
       field1: 'processed1',
     });
 
-    expect(errorsMapper).toHaveBeenCalledWith(
+    expect(fieldErrorsMapper).toHaveBeenCalledWith(
       errors,
       'test',
       'testSchema',
@@ -831,7 +864,7 @@ describe('errorsMapper', () => {
   });
 
   test('should call default errorsMapper for computed field', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue({});
 
     const errors = {
@@ -839,7 +872,7 @@ describe('errorsMapper', () => {
       field2: 'error2',
     };
 
-    const result = dynamic.errorsMapper(
+    const result = errorsMapper(
       errors,
       'field1',
       {

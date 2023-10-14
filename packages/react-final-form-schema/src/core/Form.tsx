@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable import/order */
-
 import {
   useCallback,
   useMemo,
@@ -66,8 +63,8 @@ Payload,
     names,
     getFieldSchema = (defaultGetFieldSchema as GetFieldSchema<FieldSchema>),
     getFieldType,
-    initialValues: initialValuesProp,
-    initialValuesPlaceholder,
+    initialValues: initialValuesProp = null,
+    initialValuesPlaceholder = undefined,
 
     onSubmit: onSubmitProp,
 
@@ -211,13 +208,6 @@ Payload,
       >
         {children}
       </FinalForm>
-      </FormSchemaContext.Provider>
+    </FormSchemaContext.Provider>
   );
 }
-
-Form.defaultProps = {
-  initialValues: null,
-  initialValuesPlaceholder: undefined,
-  getFieldSchema: defaultGetFieldSchema,
-  mapErrors: defaultMapErrors,
-};

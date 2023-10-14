@@ -2,7 +2,6 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
-    'jest/globals': true,
   },
   extends: [
     'eslint:recommended',
@@ -14,13 +13,8 @@ module.exports = {
 
   plugins: [
     'react',
-    'jest',
     '@typescript-eslint',
   ],
-
-  parserOptions: {
-    project: './tsconfig.eslint.json',
-  },
 
   settings: {
     'import/resolver': {
@@ -63,5 +57,14 @@ module.exports = {
 
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+
+    'react/require-default-props': [
+      'error',
+      {
+        functions: 'defaultArguments',
+      },
+    ],
+
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 };

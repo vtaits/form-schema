@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { validateBeforeSubmit } from '../validateBeforeSubmit';
+import { expect, test, vi } from 'vitest';
+
+import { validateBeforeSubmit } from './validateBeforeSubmit';
 import type {
   CreateGetFieldSchema,
   GetFieldType,
   GetFieldSchema,
   FieldType,
   ValidatorBeforeSubmit,
-} from '../types';
+} from './types';
 
 type Values = Record<string, any>;
 
@@ -50,7 +51,7 @@ test('should call redefined validatorBeforeSubmit', () => {
     value2: 'test2',
   };
 
-  const validatorBeforeSubmit = jest.fn<any, ValidatorBeforeSubmitArgs>(
+  const validatorBeforeSubmit = vi.fn<ValidatorBeforeSubmitArgs, any>(
     (values: Values, name: string): Values => ({
       [name]: values[name] + values[name],
     }),
@@ -97,7 +98,9 @@ test('should call redefined validatorBeforeSubmit', () => {
 });
 
 test('should call multiple validators', () => {
-  const fields = {
+  const fields: Record<string, {
+    type: string;
+  }> = {
     value1: {
       type: 'testType1',
     },
@@ -106,7 +109,7 @@ test('should call multiple validators', () => {
     },
   };
 
-  const fieldTypes = {
+  const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
     testType1: {
       validatorBeforeSubmit: (values: Values, name: string): Values => ({
         [name]: values[name],
@@ -149,22 +152,22 @@ test('should call multiple validators', () => {
 });
 
 test('should redefine getFieldSchema', () => {
-  const validatorBeforeSubmit = jest.fn<any, ValidatorBeforeSubmitArgs>(() => ({}));
+  const validatorBeforeSubmit = vi.fn<ValidatorBeforeSubmitArgs, any>(() => ({}));
 
-  const parentGetFieldSchema = jest.fn(() => ({
+  const parentGetFieldSchema = vi.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
 
-  const getFieldSchema = jest.fn();
+  const getFieldSchema = vi.fn();
 
-  const createGetFieldSchema = jest.fn<
-  any,
-  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
+  const createGetFieldSchema = vi.fn<
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>,
+  any
   >()
     .mockReturnValue(getFieldSchema);
 
-  const getFieldType = jest.fn()
+  const getFieldType = vi.fn()
     .mockReturnValue({
       validatorBeforeSubmit,
       createGetFieldSchema,

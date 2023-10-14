@@ -1,5 +1,4 @@
 import {
-  useCallback,
   useContext,
   useMemo,
 } from 'react';
@@ -46,8 +45,8 @@ Errors extends Record<string, any>,
 Payload,
 >({
   name,
-  payload,
-  parents: parentsProp,
+  payload = undefined,
+  parents: parentsProp = undefined,
 }: FormFieldProps<
 Values,
 Payload
@@ -149,8 +148,3 @@ Payload
     </FormFieldContext.Provider>
   );
 }
-
-FormField.defaultProps = {
-  payload: undefined,
-  parents: undefined,
-};

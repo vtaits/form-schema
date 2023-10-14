@@ -1,9 +1,10 @@
-import * as lib from '../index';
+import { test, expect } from 'vitest';
 
-import { checkValuesReady } from '../checkValuesReady';
-import { Form } from '../Form';
-import { useFormSchemaState } from '../useFormSchemaState';
-import { useValuesReady } from '../useValuesReady';
+import * as lib from './index';
+import { checkValuesReady } from './checkValuesReady';
+import { Form } from './Form';
+import { useFormSchemaState } from './useFormSchemaState';
+import { useValuesReady } from './useValuesReady';
 
 test('should export needed modules', () => {
   expect(lib.checkValuesReady).toBe(checkValuesReady);

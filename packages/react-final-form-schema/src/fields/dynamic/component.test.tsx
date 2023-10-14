@@ -1,28 +1,43 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterEach, describe, expect, test, vi } from 'vitest';
+import type { FormApi, FormState } from 'final-form';
 import {
+  useForm,
   useFormState,
 } from 'react-final-form';
-
-import { createRenderer } from 'react-test-renderer/shallow';
-
-import type {
-  FC,
-  ReactElement,
+import { create } from 'react-test-engine';
+import {
+  type FC,
+  type ReactElement,
+  useDebugValue,
+  useEffect,
+  useRef,
 } from 'react';
-
 import type {
   ParentType,
 } from '@vtaits/form-schema';
 
-import type {
-  FieldType,
-  FieldComponentProps,
-} from '../../../core';
+import {
+  useFormSchemaState,
+  type FieldType,
+  type FieldComponentProps,
+} from '../../core';
 
-import { DynamicField } from '../component';
+import { DynamicField } from './component';
 import type {
   DynamicFieldProps,
-} from '../component';
+} from './component';
+
+vi.mock('react', async () => {
+  const actual = await vi.importActual('react') as Record<string, unknown>;
+
+  return {
+    ...actual,
+    useEffect: vi.fn(),
+    useRef: vi.fn(),
+  };
+});
+vi.mock('react-final-form');
+vi.mock('../../core');
 
 const parents: ParentType[] = [
   {
@@ -30,23 +45,15 @@ const parents: ParentType[] = [
   },
 ];
 
-function TestComponent(): ReactElement {
+function TestComponent(props: FieldComponentProps<any>): ReactElement | null {
+  useDebugValue(props);
+
   return null;
 }
 
 const fieldType: FieldType<any> = {
   component: TestComponent as FC<FieldComponentProps<any>>,
 };
-
-const defaultUseForm = jest.fn();
-const defaultUseFormState = jest.fn()
-  .mockReturnValue({});
-const defaultUseFormSchemaState = jest.fn()
-  .mockReturnValue({
-    isValuesReady: false,
-  });
-const defaultUseEffect = jest.fn();
-const defaultUseRef = jest.fn();
 
 const defaultProps: DynamicFieldProps<
 any,
@@ -60,52 +67,67 @@ any
     getSchema: () => 'test',
   },
   name: 'testName',
-  getFieldSchema: jest.fn(),
-  getFieldType: jest.fn().mockReturnValue(fieldType),
-  renderField: jest.fn(),
+  getFieldSchema: vi.fn(),
+  getFieldType: vi.fn().mockReturnValue(fieldType),
   parents,
-  useForm: defaultUseForm,
-  useFormState: defaultUseFormState,
-  useFormSchemaState: defaultUseFormSchemaState,
-  useEffect: defaultUseEffect,
-  useRef: defaultUseRef,
 };
 
-function setup<
-FieldSchema,
-Values extends Record<string, any>,
-RawValues extends Record<string, any>,
-SerializedValues extends Record<string, any>,
-Errors extends Record<string, any>,
-Payload,
->(props: Partial<DynamicFieldProps<
-FieldSchema,
-Values,
-RawValues,
-SerializedValues,
-Errors,
-Payload
->>) {
-  const renderer = createRenderer();
+const form = {
+  TYPE: "FORM",
+} as unknown as FormApi;
 
-  renderer.render(
-    <DynamicField
-      {...defaultProps}
-      {...props}
-    />,
-  );
+const render = create(DynamicField, defaultProps, {
+  queries: {
+    field: {
+      component: TestComponent,
+    },
+  },
 
-  const result = renderer.getRenderOutput() as ReactElement<
-  FieldComponentProps<any>,
-  FC | null
-  >;
+  hooks: {
+    useEffect,
+    useForm,
+    useFormState,
+    useFormSchemaState,
+    useRef,
+  },
 
-  return result;
-}
+  hookOrder: [
+    'useForm',
+    'useFormState',
+    'useFormSchemaState',
+    'useRef',
+    'useEffect',
+  ],
+
+  hookDefaultValues: {
+    useForm: form,
+    useFormState: {
+      values: {},
+    } as FormState<Record<string, any>>,
+    useFormSchemaState: {
+      isValuesReady: false,
+    },
+    useRef: {
+      current: true,
+    },
+  },
+
+  mockFunctionValue: (hook, value) => {
+    vi.mocked(hook).mockReturnValueOnce(value);
+  },
+
+  getMockArguments: (hook, callIndex) => {
+    return vi.mocked(hook).mock.calls[callIndex];
+  },
+});
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 describe('getSchema', () => {
   test('should provide form values to `getSchema`', () => {
-    const getSchema = jest.fn();
+    const getSchema = vi.fn();
     const getFieldSchema = () => null;
     const getFieldType = () => fieldType;
 
@@ -113,17 +135,17 @@ describe('getSchema', () => {
       field1: 'value1',
     };
 
-    setup({
+    render({
       fieldSchema: {
         getSchema,
       },
       name: 'test',
       getFieldSchema,
       getFieldType,
-      renderField: () => null,
-      useFormState: (() => ({
+    }, {
+      useFormState: {
         values,
-      })) as unknown as typeof useFormState,
+      } as FormState<Record<string, any>>,
     });
 
     expect(getSchema).toHaveBeenCalledTimes(1);
@@ -136,48 +158,35 @@ describe('getSchema', () => {
     );
   });
 
-  test('should not render anything if `getSchema` returns falsy value', () => {
-    const wrapper = setup({
+  test.each([
+    ['test', true],
+    [null, false],
+  ])('result of `getSchema` = %s, rendered = %s', (schema, isRendered) => {
+    const engine = render({
       fieldSchema: {
-        getSchema: () => null,
+        getSchema: () => schema,
       },
       name: 'test',
       getFieldSchema: () => null,
       getFieldType: () => fieldType,
-      renderField: () => null,
     });
 
-    expect(wrapper).toBe(null);
-  });
-
-  test('should render component if `getSchema` returns truthy value', () => {
-    const wrapper = setup({
-      fieldSchema: {
-        getSchema: () => 'test',
-      },
-      name: 'test',
-      getFieldSchema: () => null,
-      getFieldType: () => fieldType,
-      renderField: () => null,
-    });
-
-    expect(wrapper.type).toBe(TestComponent);
+    expect(engine.checkIsRendered()).toBe(isRendered);
   });
 });
 
 describe('getFieldType', () => {
   test('should call `getFieldType` with correct argument', () => {
-    const getFieldType = jest.fn()
+    const getFieldType = vi.fn()
       .mockReturnValue(fieldType);
 
-    setup({
+    render({
       fieldSchema: {
         getSchema: () => 'test',
       },
       name: 'test',
       getFieldSchema: () => null,
       getFieldType,
-      renderField: () => null,
     });
 
     expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -187,28 +196,25 @@ describe('getFieldType', () => {
 
 describe('render', () => {
   test('should provide correct props to rendered component', () => {
-    const getFieldSchema = jest.fn();
-    const renderField = jest.fn();
-    const getFieldType = jest.fn()
+    const getFieldSchema = vi.fn();
+    const getFieldType = vi.fn()
       .mockReturnValue(fieldType);
 
-    const wrapper = setup({
+    const wrapper = render({
       fieldSchema: {
         getSchema: () => 'test',
       },
       name: 'testName',
       getFieldSchema,
       getFieldType,
-      renderField,
     });
 
-    const allProps = wrapper.props;
+    const allProps = wrapper.accessors.field.getProps();
 
     expect(allProps.fieldSchema).toBe('test');
     expect(allProps.name).toBe('testName');
     expect(allProps.getFieldSchema).toBe(getFieldSchema);
     expect(allProps.getFieldType).toBe(getFieldType);
-    expect(allProps.renderField).toBe(renderField);
     expect(allProps.parents).toBe(parents);
   });
 });
@@ -225,37 +231,27 @@ describe('callbacks', () => {
     isValuesReady: boolean,
     isFirstRender: boolean,
     props: Partial<DynamicFieldProps<
-    FieldSchema,
-    Values,
-    RawValues,
-    SerializedValues,
-    Errors,
-    Payload
+    unknown,
+    Record<string, any>,
+    Record<string, any>,
+    Record<string, any>,
+    Record<string, any>,
+    unknown
     >>,
   ) {
-    const useEffect = jest.fn<void, [() => void, readonly any[]]>();
-
-    const useFormSchemaState = jest.fn()
-      .mockReturnValue({
-        isValuesReady,
-      });
-
     const refValue = {
       current: isFirstRender,
     };
 
-    const useRef = jest.fn()
-      .mockReturnValue(refValue);
-
-    setup({
-      ...props,
-      useEffect,
-      useRef,
-      useFormSchemaState,
+    const engine = render(props, {
+      useFormSchemaState: {
+        isValuesReady,
+      },
+      useRef: refValue,
     });
 
     expect(useEffect).toBeCalledTimes(1);
-    const effect = useEffect.mock.calls[0][0];
+    const effect = engine.getHookArguments('useEffect')[0];
 
     effect();
 
@@ -263,8 +259,8 @@ describe('callbacks', () => {
   }
 
   test('should not call `onShow` if values are not ready and not change `isFirstRender`', () => {
-    const onShow = jest.fn();
-    const onHide = jest.fn();
+    const onShow = vi.fn();
+    const onHide = vi.fn();
 
     const [{
       current: isFirstRender,
@@ -283,8 +279,8 @@ describe('callbacks', () => {
   });
 
   test('should not call `onHide` if values are not ready and not change `isFirstRender`', () => {
-    const onShow = jest.fn();
-    const onHide = jest.fn();
+    const onShow = vi.fn();
+    const onHide = vi.fn();
 
     const [{
       current: isFirstRender,
@@ -303,8 +299,8 @@ describe('callbacks', () => {
   });
 
   test('should not call `onShow` in first render and change `isFirstRender`', () => {
-    const onShow = jest.fn();
-    const onHide = jest.fn();
+    const onShow = vi.fn();
+    const onHide = vi.fn();
 
     const [{
       current: isFirstRender,
@@ -323,8 +319,8 @@ describe('callbacks', () => {
   });
 
   test('should not call `onHide` in first render and change `isFirstRender`', () => {
-    const onShow = jest.fn();
-    const onHide = jest.fn();
+    const onShow = vi.fn();
+    const onHide = vi.fn();
 
     const [{
       current: isFirstRender,
@@ -343,12 +339,8 @@ describe('callbacks', () => {
   });
 
   test('should call `onShow` and not change `isFirstRender`', () => {
-    const form = Symbol('form');
-    const useForm = jest.fn()
-      .mockReturnValue(form);
-
-    const onShow = jest.fn();
-    const onHide = jest.fn();
+    const onShow = vi.fn();
+    const onHide = vi.fn();
 
     const [{
       current: isFirstRender,
@@ -358,8 +350,6 @@ describe('callbacks', () => {
         onShow,
         onHide,
       },
-
-      useForm,
     });
 
     expect(onShow).toHaveBeenCalledTimes(1);
@@ -378,12 +368,8 @@ describe('callbacks', () => {
   });
 
   test('should call `onHide` and not change `isFirstRender`', () => {
-    const form = Symbol('form');
-    const useForm = jest.fn()
-      .mockReturnValue(form);
-
-    const onShow = jest.fn();
-    const onHide = jest.fn();
+    const onShow = vi.fn();
+    const onHide = vi.fn();
 
     const [{
       current: isFirstRender,
@@ -393,8 +379,6 @@ describe('callbacks', () => {
         onShow,
         onHide,
       },
-
-      useForm,
     });
 
     expect(onShow).toHaveBeenCalledTimes(0);

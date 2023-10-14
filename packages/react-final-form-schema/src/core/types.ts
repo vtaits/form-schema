@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   GetFieldSchema,
   FieldType as FieldTypeBase,
@@ -177,12 +176,12 @@ Payload = any,
 > = {
   getFieldSchema: GetFieldSchema<FieldSchema>;
   getFieldType: GetFieldType<
-    FieldSchema,
-    Values,
-    RawValues,
-    SerializedValues,
-    Errors,
-    Payload
+  FieldSchema,
+  Values,
+  RawValues,
+  SerializedValues,
+  Errors,
+  Payload
   >;
 };
 

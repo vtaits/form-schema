@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   IS_VALUES_READY_NAME,
 } from './constants';
@@ -12,7 +11,7 @@ import {
  */
 export const checkValuesReady = <
 Values extends Record<string, any>,
->(formValues: Values): boolean => {
+>(formValues: Values | null): boolean => {
   if (!formValues) {
     return false;
   }

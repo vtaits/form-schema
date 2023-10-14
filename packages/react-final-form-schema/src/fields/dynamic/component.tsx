@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
-  useForm as defaultUseForm,
-  useFormState as defaultUseFormState,
+  useForm,
+  useFormState,
 } from 'react-final-form';
 import {
-  useEffect as defaultUseEffect,
-  useRef as defaultUseRef,
+  useEffect,
+  useRef,
 } from 'react';
 import type { ReactElement } from 'react';
 
-import {
-  useFormSchemaState as defaultUseFormSchemaState,
-} from '../../core';
+import { useFormSchemaState } from '../../core';
 
 import type {
   FieldComponentProps,
@@ -37,17 +33,7 @@ Payload,
   SerializedValues,
   Errors,
   Payload
-  >
-  & {
-    /**
-     * For tests only
-     */
-    useForm?: typeof defaultUseForm;
-    useFormState?: typeof defaultUseFormState;
-    useFormSchemaState?: typeof defaultUseFormSchemaState;
-    useEffect?: typeof defaultUseEffect;
-    useRef?: typeof defaultUseRef;
-  };
+  >;
 
 export function DynamicField<
 FieldSchema,
@@ -59,18 +45,9 @@ Payload,
 >({
   name,
   fieldSchema,
-
   getFieldSchema,
   getFieldType,
-
   parents,
-
-  useForm = defaultUseForm,
-  useFormState = defaultUseFormState,
-  useFormSchemaState = defaultUseFormSchemaState,
-  useEffect = defaultUseEffect,
-  useRef = defaultUseRef,
-
   ...rest
 }: DynamicFieldProps<
 FieldSchema,

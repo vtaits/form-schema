@@ -1,20 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { expect, test, vi } from 'vitest';
 import isPromise from 'is-promise';
 
-import { parse } from '../parse';
+import { parse } from './parse';
 import type {
   CreateGetFieldSchema,
   FieldType,
   GetFieldSchema,
   GetFieldType,
   Parser,
-} from '../types';
+} from './types';
 
 type Values = Record<string, any>;
 
 type ParserArgs = Parameters<Parser<any, any, any, any, any>>;
 
-const fieldSchemas = {
+const fieldSchemas: Record<string, unknown> = {
   value: {
     type: 'testType',
   },
@@ -101,7 +101,7 @@ test('should call redefined parser', () => {
     value2: 'test2',
   };
 
-  const parser = jest.fn<any, ParserArgs>((values: Values, name: string): Values => ({
+  const parser = vi.fn<ParserArgs, any>((values: Values, name: string): Values => ({
     [name]: values[name] + values[name],
   }));
 
@@ -137,7 +137,7 @@ test('should call redefined parser', () => {
 });
 
 test('should call multiple parsers', () => {
-  const fields = {
+  const fields: Record<string, FieldType<any, any, any, any, any>> = {
     testType1: {},
     testType2: {
       parser: (values: Values, name: string): Values => ({
@@ -169,7 +169,7 @@ test('should call multiple parsers', () => {
 });
 
 test('should work with async parser', async () => {
-  const fields = {
+  const fields: Record<string, FieldType<any, any, any, any, any>> = {
     testType1: {},
 
     testType2: {
@@ -213,21 +213,21 @@ test('should work with async parser', async () => {
 });
 
 test('should redefine getFieldSchema', () => {
-  const parser = jest.fn<any, ParserArgs>(() => ({}));
+  const parser = vi.fn<ParserArgs, any>(() => ({}));
 
-  const parentGetFieldSchema = jest.fn(() => ({
+  const parentGetFieldSchema = vi.fn(() => ({
     type: 'testType',
     name: 'value',
   }));
 
-  const getFieldSchema = jest.fn();
+  const getFieldSchema = vi.fn();
 
-  const createGetFieldSchema = jest.fn<
-  any,
-  Parameters<CreateGetFieldSchema<any, any, any, any, any>>
+  const createGetFieldSchema = vi.fn<
+  Parameters<CreateGetFieldSchema<any, any, any, any, any>>,
+  any
   >(() => getFieldSchema);
 
-  const getFieldType = jest.fn()
+  const getFieldType = vi.fn()
     .mockReturnValue({
       parser,
       createGetFieldSchema,

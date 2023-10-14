@@ -1,9 +1,10 @@
-import * as formSchamaLib from '../index';
+import { expect, test } from 'vitest';
 
-import { serialize, defaultSerializer } from '../serialize';
-import { parse, defaultParser } from '../parse';
-import { mapFieldErrors, defaultFieldErrorsMapper } from '../mapFieldErrors';
-import { validateBeforeSubmit } from '../validateBeforeSubmit';
+import * as formSchamaLib from './index';
+import { serialize, defaultSerializer } from './serialize';
+import { parse, defaultParser } from './parse';
+import { mapFieldErrors, defaultFieldErrorsMapper } from './mapFieldErrors';
+import { validateBeforeSubmit } from './validateBeforeSubmit';
 
 test('should export needed modules', () => {
   expect(formSchamaLib.serialize).toBe(serialize);

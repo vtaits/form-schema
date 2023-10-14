@@ -1,37 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterEach, test, expect, vi } from 'vitest';
 import {
   Form as FinalForm,
 } from 'react-final-form';
-
-import { createRenderer } from 'react-test-renderer/shallow';
-
+import type { FormApi } from 'final-form';
+import { create } from 'react-test-engine';
 import type {
-  ReactElement,
   ReactNode,
 } from 'react';
-
 import * as reactAsyncHookMocks from 'react-async-hook';
-
 import * as formSchema from '@vtaits/form-schema';
 
-import { Form } from '../Form';
+import { Form } from './Form';
 import {
   IS_VALUES_READY_NAME,
-} from '../constants';
-
-import * as renderFieldBySchemaMock from '../renderFieldBySchema';
-
+} from './constants';
+import { FormSchemaContext } from './FormSchemaContext';
 import type {
   FormProps,
-} from '../types';
+} from './types';
 
-jest.mock('react-async-hook');
-jest.mock('@vtaits/form-schema');
-jest.mock('../renderFieldBySchema');
-
-afterEach(() => {
-  jest.clearAllMocks();
-});
+vi.mock('react-async-hook');
+vi.mock('@vtaits/form-schema');
 
 type Values = Record<string, any>;
 type Errors = Record<string, any>;
@@ -39,42 +28,33 @@ type Errors = Record<string, any>;
 const defaultProps: FormProps<any, Values, Values, Values, Errors, any> = {
   names: [],
   children: (): ReactNode => null,
+  getFieldType: vi.fn(),
   onSubmit: (): void => {},
 };
 
-type PageObject = {
-  getFinalFormProps: () => FormProps<any, Values, Values, Values, Errors, any>;
-};
+const render = create(Form, defaultProps, {
+  queries: {
+    formSchemaContext: {
+      component: FormSchemaContext.Provider,
+    },
 
-const setup = (props: Partial<FormProps<any, Values, Values, Values, Errors, any>>): PageObject => {
-  const renderer = createRenderer();
+    finalForm: {
+      component: FinalForm,
+    },
+  },
 
-  renderer.render(
-    <Form
-      {...defaultProps}
-      {...props}
-    />,
-  );
-
-  const result = renderer.getRenderOutput() as ReactElement<
-  FormProps<any, Values, Values, Values, Errors, any>,
-  typeof FinalForm
-  >;
-
-  const getFinalFormProps = () => result.props;
-
-  return {
-    getFinalFormProps,
-  };
-};
+  properties: {
+    contextValue: ['formSchemaContext', 'value'],
+  },
+});
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 test('should provide parsed initial values', () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const initialValues = {
@@ -85,20 +65,20 @@ test('should provide parsed initial values', () => {
     test2: 'value2',
   };
 
-  (formSchema.parse as jest.Mock).mockReturnValue(parsedValues);
+  vi.mocked(formSchema.parse).mockReturnValue(parsedValues);
 
-  (reactAsyncHookMocks.useAsync as jest.Mock).mockReturnValue({
+  vi.mocked(reactAsyncHookMocks.useAsync).mockReturnValue({
     result: undefined,
-  });
+  } as unknown as ReturnType<typeof reactAsyncHookMocks.useAsync>);
 
-  const page = setup({
+  const engine = render({
     initialValues,
     getFieldSchema,
     getFieldType,
     names,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
   expect(formProps.initialValues).toEqual({
     ...parsedValues,
@@ -120,8 +100,8 @@ test('should provide parsed initial values', () => {
 });
 
 test('should not provide initial values during asynchronous parse', () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const initialValues = {
@@ -132,20 +112,20 @@ test('should not provide initial values during asynchronous parse', () => {
     test2: 'value2',
   };
 
-  (formSchema.parse as jest.Mock).mockResolvedValue(parsedValues);
+  vi.mocked(formSchema.parse).mockResolvedValue(parsedValues);
 
-  (reactAsyncHookMocks.useAsync as jest.Mock).mockReturnValue({
+  vi.mocked(reactAsyncHookMocks.useAsync).mockReturnValue({
     result: undefined,
-  });
+  } as unknown as ReturnType<typeof reactAsyncHookMocks.useAsync>);
 
-  const page = setup({
+  const engine = render({
     initialValues,
     getFieldSchema,
     getFieldType,
     names,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
   expect(formProps.initialValues).toEqual({
     [IS_VALUES_READY_NAME]: false,
@@ -166,8 +146,8 @@ test('should not provide initial values during asynchronous parse', () => {
 });
 
 test('should not provide initial values with `initialValuesPlaceholder` during asynchronous parse', () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const initialValues = {
@@ -178,13 +158,13 @@ test('should not provide initial values with `initialValuesPlaceholder` during a
     test2: 'value2',
   };
 
-  (formSchema.parse as jest.Mock).mockResolvedValue(parsedValues);
+  vi.mocked(formSchema.parse).mockResolvedValue(parsedValues);
 
-  (reactAsyncHookMocks.useAsync as jest.Mock).mockReturnValue({
+  vi.mocked(reactAsyncHookMocks.useAsync).mockReturnValue({
     result: undefined,
-  });
+  } as unknown as ReturnType<typeof reactAsyncHookMocks.useAsync>);
 
-  const page = setup({
+  const engine = render({
     initialValues,
 
     initialValuesPlaceholder: {
@@ -196,7 +176,7 @@ test('should not provide initial values with `initialValuesPlaceholder` during a
     names,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
   expect(formProps.initialValues).toEqual({
     [IS_VALUES_READY_NAME]: false,
@@ -218,8 +198,8 @@ test('should not provide initial values with `initialValuesPlaceholder` during a
 });
 
 test('should provide initial values after asynchronous parse', () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const initialValues = {
@@ -234,20 +214,20 @@ test('should provide initial values after asynchronous parse', () => {
     test3: 'value3',
   };
 
-  (formSchema.parse as jest.Mock).mockResolvedValue(parsedValues);
+  vi.mocked(formSchema.parse).mockResolvedValue(parsedValues);
 
-  (reactAsyncHookMocks.useAsync as jest.Mock).mockReturnValue({
+  vi.mocked(reactAsyncHookMocks.useAsync).mockReturnValue({
     result: asyncParsedValues,
-  });
+  } as unknown as ReturnType<typeof reactAsyncHookMocks.useAsync>);
 
-  const page = setup({
+  const engine = render({
     initialValues,
     getFieldSchema,
     getFieldType,
     names,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
   expect(formProps.initialValues).toEqual({
     ...asyncParsedValues,
@@ -269,23 +249,23 @@ test('should provide initial values after asynchronous parse', () => {
 });
 
 test('should provide empty object to parser if initial values not defined', () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const parsedValues = {
     test2: 'value2',
   };
 
-  (formSchema.parse as jest.Mock).mockReturnValue(parsedValues);
+  vi.mocked(formSchema.parse).mockReturnValue(parsedValues);
 
-  const page = setup({
+  const engine = render({
     getFieldSchema,
     getFieldType,
     names,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
   expect(formProps.initialValues).toEqual({
     ...parsedValues,
@@ -307,8 +287,8 @@ test('should provide empty object to parser if initial values not defined', () =
 });
 
 test('should validate before submit', async () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const values = {
@@ -319,12 +299,12 @@ test('should validate before submit', async () => {
     test2: 'error2',
   };
 
-  (formSchema.validateBeforeSubmit as jest.Mock).mockReturnValue(clientErrors);
+  vi.mocked(formSchema.validateBeforeSubmit).mockReturnValue(clientErrors);
 
-  const onSubmit = jest.fn();
-  const mapErrors = jest.fn();
+  const onSubmit = vi.fn();
+  const mapErrors = vi.fn();
 
-  const page = setup({
+  const engine = render({
     getFieldSchema,
     getFieldType,
     names,
@@ -334,9 +314,9 @@ test('should validate before submit', async () => {
     onSubmit,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
-  const result = await formProps.onSubmit(values, {});
+  const result = await formProps.onSubmit(values, {} as FormApi<unknown, unknown>);
 
   expect(result).toBe(clientErrors);
 
@@ -360,8 +340,8 @@ test('should validate before submit', async () => {
 });
 
 test('should submit successfully', async () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const values = {
@@ -372,13 +352,13 @@ test('should submit successfully', async () => {
     test2: 'value2',
   };
 
-  (formSchema.serialize as jest.Mock).mockReturnValue(serializedValues);
-  (formSchema.validateBeforeSubmit as jest.Mock).mockReturnValue({});
+  vi.mocked(formSchema.serialize).mockReturnValue(serializedValues);
+  vi.mocked(formSchema.validateBeforeSubmit).mockReturnValue({});
 
-  const onSubmit = jest.fn();
-  const mapErrors = jest.fn();
+  const onSubmit = vi.fn();
+  const mapErrors = vi.fn();
 
-  const page = setup({
+  const engine = render({
     getFieldSchema,
     getFieldType,
     names,
@@ -388,9 +368,9 @@ test('should submit successfully', async () => {
     onSubmit,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
-  const result = await formProps.onSubmit(values, {});
+  const result = await formProps.onSubmit(values, {} as FormApi<unknown, unknown>);
 
   expect(result).toBeFalsy();
 
@@ -418,8 +398,8 @@ test('should submit successfully', async () => {
 });
 
 test('should submit with error', async () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
   const names = ['test'];
 
   const values = {
@@ -442,21 +422,21 @@ test('should submit with error', async () => {
     test3: 'error3',
   };
 
-  (formSchema.serialize as jest.Mock).mockReturnValue(serializedValues);
+  vi.mocked(formSchema.serialize).mockReturnValue(serializedValues);
 
-  const onSubmit = jest.fn<any, [
+  const onSubmit = vi.fn<[
     Values,
     Values,
-  ]>(() => rawErrors);
-  const mapErrors = jest.fn<any, [
+  ], any>(() => rawErrors);
+  const mapErrors = vi.fn<[
     Errors,
     Values,
     Values,
-  ]>(() => preparedErrors);
+  ], any>(() => preparedErrors);
 
-  (formSchema.mapFieldErrors as jest.Mock).mockReturnValue(errors);
+  vi.mocked(formSchema.mapFieldErrors).mockReturnValue(errors);
 
-  const page = setup({
+  const engine = render({
     getFieldSchema,
     getFieldType,
     names,
@@ -466,9 +446,9 @@ test('should submit with error', async () => {
     onSubmit,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
-  const result = await formProps.onSubmit(values, {});
+  const result = await formProps.onSubmit(values, {} as FormApi<unknown, unknown>);
 
   expect(result).toBe(errors);
 
@@ -515,71 +495,34 @@ test('should submit with error', async () => {
 });
 
 test('should provide form render props to children', () => {
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
 
-  const children = jest.fn();
+  const children = vi.fn();
 
-  const page = setup({
+  const engine = render({
     getFieldSchema,
     getFieldType,
 
     children,
   });
 
-  const formProps = page.getFinalFormProps();
+  const formProps = engine.accessors.finalForm.getProps();
 
-  formProps.children({
-    testProp: 'testValue',
-  } as any);
-
-  expect(children).toHaveBeenCalledTimes(1);
-  expect(children.mock.calls[0][0].testProp).toBe('testValue');
+  expect(formProps.children).toBe(children);
 });
 
-test('should render field', () => {
-  (renderFieldBySchemaMock.renderFieldBySchema as jest.Mock).mockReturnValue('test field');
+test('provide correct value to `FormSchemaContext.Provider`', () => {
+  const getFieldSchema = vi.fn();
+  const getFieldType = vi.fn();
 
-  const getFieldSchema = jest.fn();
-  const getFieldType = jest.fn();
-
-  const children = jest.fn();
-
-  const page = setup({
+  const engine = render({
     getFieldSchema,
     getFieldType,
-
-    children,
   });
 
-  const formProps = page.getFinalFormProps();
-
-  formProps.children({
-    values: {
-      fieldName: 'value',
-    },
-  } as any);
-
-  const {
-    renderField,
-  } = children.mock.calls[0][0];
-
-  const renderedField = renderField('testField', 'testPayload');
-
-  expect(renderedField).toBe('test field');
-
-  expect(renderFieldBySchemaMock.renderFieldBySchema).toHaveBeenCalledTimes(1);
-  expect(renderFieldBySchemaMock.renderFieldBySchema).toHaveBeenCalledWith(
+  expect(engine.getProperty('contextValue')).toEqual({
     getFieldSchema,
     getFieldType,
-    'testField',
-    'testPayload',
-    [
-      {
-        values: {
-          fieldName: 'value',
-        },
-      },
-    ],
-  );
+  });
 });

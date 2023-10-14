@@ -1,8 +1,10 @@
+import { test, expect } from 'vitest';
+
 import {
   IS_VALUES_READY_NAME,
-} from '../constants';
+} from './constants';
 
-import { checkValuesReady } from '../checkValuesReady';
+import { checkValuesReady } from './checkValuesReady';
 
 test('should return `false` for falsy values', () => {
   expect(checkValuesReady(null)).toBe(false);
