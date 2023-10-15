@@ -85,11 +85,13 @@ Payload
 
   const parentFieldContext = useContext(FormFieldContext);
 
-  const getFieldSchema = (
-    parentFieldContext
-      ? parentFieldContext.getFieldSchema
-      : getFieldSchemaParam
-  ) as GetFieldSchema<FieldSchema>;
+  const getFieldSchema = useMemo(() => {
+    if (parentFieldContext) {
+      return parentFieldContext.getFieldSchema as GetFieldSchema<FieldSchema>;
+    }
+
+    return getFieldSchemaParam as GetFieldSchema<FieldSchema>;
+  }, [parentFieldContext, getFieldSchemaParam]);
 
   const fieldSchema = useMemo(
     () => getFieldSchema(name),
