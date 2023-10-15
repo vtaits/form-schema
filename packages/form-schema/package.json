@@ -28,7 +28,9 @@
     "clean": "rimraf dist",
     "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
     "test:ts": "tsc",
-    "lint": "eslint src --ext .ts,.tsx --ignore-path ../../.gitignore",
+    "lint": "biome check src",
+    "lint:fix": "biome check src --apply-unsafe",
+    "format": "biome format src --write",
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
     "test": "yarn test:unit",
@@ -39,16 +41,8 @@
     "is-promise": "^4.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.2.2",
     "@vitest/coverage-v8": "^0.34.6",
-    "eslint": "^8.40.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-import-resolver-typescript": "^3.5.5",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "tsup": "^6.7.0",
     "typescript": "5.0.4",
     "vitest": "^0.34.6"

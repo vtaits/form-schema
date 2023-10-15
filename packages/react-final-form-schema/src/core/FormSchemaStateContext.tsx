@@ -1,7 +1,6 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
-import type {
-  FormSchemaStateContextType,
-} from './types';
+import type { FormSchemaStateContextType } from "./types";
 
-export const FormSchemaStateContext = createContext<FormSchemaStateContextType | null>(null);
+export const FormSchemaStateContext =
+	createContext<FormSchemaStateContextType | null>(null);

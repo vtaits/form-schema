@@ -1,9 +1,8 @@
-import { expect, test } from 'vitest';
+import { expect, test } from "vitest";
 
-import * as lib from './index';
-import { dynamic } from './dynamic';
+import { dynamic } from "./dynamic";
+import * as lib from "./index";
 
-test('correct exports', () => {
-  expect(lib.dynamic).toBe(dynamic);
+test("correct exports", () => {
+	expect(lib.dynamic).toBe(dynamic);
 });
-

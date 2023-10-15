@@ -1,17 +1,14 @@
-import { expect, test, vi } from 'vitest';
+import { expect, test, vi } from "vitest";
 
-import { useFormSchemaState } from './useFormSchemaState';
-import { useValuesReady } from './useValuesReady';
+import { useFormSchemaState } from "./useFormSchemaState";
+import { useValuesReady } from "./useValuesReady";
 
-vi.mock('./useValuesReady');
+vi.mock("./useValuesReady");
 
-test.each([
-  [true],
-  [false],
-])('values ready = %s', (isValuesReady) => {
-  vi.mocked(useValuesReady).mockReturnValue(isValuesReady);
+test.each([[true], [false]])("values ready = %s", (isValuesReady) => {
+	vi.mocked(useValuesReady).mockReturnValue(isValuesReady);
 
-  expect(useFormSchemaState()).toEqual({
-    isValuesReady,
-  });
+	expect(useFormSchemaState()).toEqual({
+		isValuesReady,
+	});
 });

@@ -1,6 +1,6 @@
-import { useFormState } from 'react-final-form';
+import { useFormState } from "react-final-form";
 
-import { checkValuesReady } from './checkValuesReady';
+import { checkValuesReady } from "./checkValuesReady";
 
 /**
  * If parsing if asynchronous it returns true only after end of parsing
@@ -8,9 +8,7 @@ import { checkValuesReady } from './checkValuesReady';
  * If parsing if synchronous it always returns true
  */
 export const useValuesReady = (): boolean => {
-  const {
-    values,
-  } = useFormState();
+	const { values } = useFormState();
 
-  return checkValuesReady(values);
+	return checkValuesReady(values);
 };
