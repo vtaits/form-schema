@@ -6048,6 +6048,7 @@ __metadata:
     react-is: ^18.2.0
     react-select: ^5.7.3
     react-test-engine: ^1.1.0
+    react-test-engine-vitest: ^1.0.0
     react-test-renderer: ^18.2.0
     tsup: ^6.7.0
     typescript: 5.0.4
@@ -15284,6 +15285,19 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 7ee8ef3aab74c7ae1d70ff34a27643d11ba1a8d62d072c767827d9ff9a520905223e567002e0bf6c772929d8ea1c781a3ba0cc4a563e92b1e3dc2eaa817ecbe8
+  languageName: node
+  linkType: hard
+
+"react-test-engine-vitest@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "react-test-engine-vitest@npm:1.0.0"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-is: ^17.0.0 || ^18.0.0
+    react-test-engine: ^1.0.0
+    react-test-renderer: ^17.0.0 || ^18.0.0
+    vitest: ^0.34.0
+  checksum: fe39def8fd4ed5519a0f4d8171ea0486fe712924429c3fee6a0b76b628c728f579f3473b1bd461ea411f469b506b0ddcb2d28740c0f0540d33246ed72cbba80d
   languageName: node
   linkType: hard
 

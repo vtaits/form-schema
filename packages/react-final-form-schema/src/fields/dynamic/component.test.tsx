@@ -8,7 +8,7 @@ import {
 	useRef,
 } from "react";
 import { useForm, useFormState } from "react-final-form";
-import { create } from "react-test-engine";
+import { create } from "react-test-engine-vitest";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import {
@@ -96,14 +96,6 @@ const render = create(DynamicField, defaultProps, {
 		useRef: {
 			current: true,
 		},
-	},
-
-	mockFunctionValue: (hook, value) => {
-		vi.mocked(hook).mockReturnValueOnce(value);
-	},
-
-	getMockArguments: (hook, callIndex) => {
-		return vi.mocked(hook).mock.calls[callIndex];
 	},
 });
 

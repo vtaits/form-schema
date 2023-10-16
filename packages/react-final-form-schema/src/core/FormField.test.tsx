@@ -2,7 +2,7 @@ import type { ParentType } from "@vtaits/form-schema";
 import type { FormApi, FormState } from "final-form";
 import { type ReactElement, useContext, useDebugValue, useMemo } from "react";
 import { useForm, useFormState } from "react-final-form";
-import { create } from "react-test-engine";
+import { create } from "react-test-engine-vitest";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { useContext as useRequiredContext } from "@vtaits/react-required-context";
@@ -125,14 +125,6 @@ const render = create(
 			parentFieldContext: null,
 			getChildFieldSchema,
 			fieldContextValue,
-		},
-
-		mockFunctionValue: (hook, value) => {
-			vi.mocked(hook).mockReturnValueOnce(value);
-		},
-
-		getMockArguments: (hook, callIndex) => {
-			return vi.mocked(hook).mock.calls[callIndex];
 		},
 	},
 );

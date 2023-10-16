@@ -74,6 +74,7 @@
     "react-is": "^18.2.0",
     "react-select": "^5.7.3",
     "react-test-engine": "^1.1.0",
+    "react-test-engine-vitest": "^1.0.0",
     "react-test-renderer": "^18.2.0",
     "tsup": "^6.7.0",
     "typescript": "5.0.4",
