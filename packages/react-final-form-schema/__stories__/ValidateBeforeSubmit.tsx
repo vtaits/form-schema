@@ -10,7 +10,10 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '@vtaits/react-final-form-schema';
+import {
+  Form,
+  FormField,
+} from '@vtaits/react-final-form-schema';
 import type {
   FieldType,
   GetFieldType,
@@ -226,11 +229,10 @@ export function ValidateBeforeSubmit(): ReactElement {
         {({
           handleSubmit,
           submitting,
-          renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('animalRequired')}
-            {renderField('animalNotRequired')}
+            <FormField name="animalRequired" />
+            <FormField name="animalNotRequired" />
 
             <hr />
 

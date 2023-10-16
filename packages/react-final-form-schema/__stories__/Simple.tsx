@@ -10,7 +10,10 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '@vtaits/react-final-form-schema';
+import {
+  Form,
+  FormField,
+} from '@vtaits/react-final-form-schema';
 import type {
   GetFieldType,
   FieldType,
@@ -157,11 +160,10 @@ export function Simple(): ReactElement {
         {({
           handleSubmit,
           submitting,
-          renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('firstName')}
-            {renderField('lastName')}
+            <FormField name="firstName" />
+            <FormField name="lastName" />
 
             <hr />
 

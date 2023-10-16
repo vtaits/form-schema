@@ -10,7 +10,10 @@ import type {
   GetFieldSchema,
 } from '@vtaits/form-schema';
 
-import { Form } from '@vtaits/react-final-form-schema';
+import {
+  Form,
+  FormField,
+} from '@vtaits/react-final-form-schema';
 import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
 import type {
   GetFieldType,
@@ -187,12 +190,11 @@ export function Dynamic(): ReactElement {
         {({
           handleSubmit,
           submitting,
-          renderField,
         }): ReactNode => (
           <form onSubmit={handleSubmit}>
-            {renderField('firstName')}
-            {renderField('lastName')}
-            {renderField('wow')}
+            <FormField name="firstName" />
+            <FormField name="lastName" />
+            <FormField name="wow" />
 
             <hr />
 
