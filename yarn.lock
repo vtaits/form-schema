@@ -4463,7 +4463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vtaits/form-schema@^0.3.0-alpha.0, @vtaits/form-schema@workspace:packages/form-schema":
+"@vtaits/form-schema@^1.0.0, @vtaits/form-schema@workspace:packages/form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
   dependencies:
@@ -4486,7 +4486,7 @@ __metadata:
     "@storybook/react": ^7.4.6
     "@types/react": ^18.2.28
     "@vitest/coverage-v8": ^0.34.6
-    "@vtaits/form-schema": ^0.3.0-alpha.0
+    "@vtaits/form-schema": ^1.0.0
     "@vtaits/react-required-context": ^1.0.1
     exports-fallback: ^1.0.1
     final-form: ^4.20.10

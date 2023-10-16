@@ -1,3 +1,9 @@
+## 1.0.0 (16 oct 2023)
+
+### New features
+
+- Added `parents` argument to helpers
+
 ## 0.3.0-alpha.1 (22 mar 2023)
 
 ### Improvement
