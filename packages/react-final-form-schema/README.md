@@ -1,7 +1,5 @@
 [![NPM](https://img.shields.io/npm/v/@vtaits/react-final-form-schema.svg)](https://www.npmjs.com/package/@vtaits/react-final-form-schema)
-[![dependencies status](https://david-dm.org/vtaits/form-schema/status.svg?path=packages/react-final-form-schema)](https://david-dm.org/vtaits/form-schema?path=packages/react-final-form-schema)
-[![devDependencies status](https://david-dm.org/vtaits/form-schema/dev-status.svg?path=packages/react-final-form-schema)](https://david-dm.org/vtaits/form-schema?path=packages/react-final-form-schema&type=dev)
-[![Types](https://img.shields.io/npm/types/@vtaits/react-final-form-schema.svg)](https://www.npmjs.com/package/@vtaits/react-final-form-schema)
+![dependencies status](https://img.shields.io/librariesio/release/npm/@vtaits/react-final-form-schema)
 
 # @vtaits/react-final-form-schema
 

@@ -29,13 +29,13 @@
     "@storybook/react": "^7.4.6",
     "@storybook/react-vite": "^7.4.6",
     "@storybook/testing-library": "^0.2.2",
-    "@vitejs/plugin-react-swc": "^3.3.1",
+    "@vitejs/plugin-react-swc": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.5",
     "storybook": "^7.4.6",
-    "typescript": "5.0.4",
-    "vite": "^4.3.9"
+    "typescript": "5.2.2",
+    "vite": "^4.4.11"
   },
   "packageManager": "yarn@3.6.4"
 }

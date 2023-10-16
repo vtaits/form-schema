@@ -86,6 +86,7 @@ const render = create(DynamicField, defaultProps, {
 	],
 
 	hookDefaultValues: {
+		useEffect: undefined,
 		useForm: form,
 		useFormState: {
 			values: {},
