@@ -1,3 +1,74 @@
+## 1.0.0
+
+### New features
+
+- Export `FormField` component to replace `renderField` function
+
+### Breaking changes
+
+- Replace `renderField` with `FormField`
+
+  Before:
+
+  ```tsx
+  <Form
+    {...formProps}
+  >
+    {({
+      renderField,
+    }) => (
+      <form>
+        {renderField('name1')}
+        {renderField('name2', 'payload')}
+        {renderField('name3', 'payload', [
+          {
+            name: 'parent',
+            values: {
+              foo: 'bar',
+            },
+          },
+        ])}
+      </form>
+    )}
+  </Form>
+  ```
+
+  After:
+
+  ```tsx
+  <Form
+    {...formProps}
+  >
+    {({
+      renderField,
+    }) => (
+      <form>
+        <FormField
+          name="name1"
+        />
+
+        <FormField
+          name="name2"
+          payload="payload"
+        />
+
+        <FormField
+          name="name3"
+          payload="payload"
+          parents={[
+            {
+              name: 'parent',
+              values: {
+                foo: 'bar',
+              },
+            },
+          ]}
+        />
+      </form>
+    )}
+  </Form>
+  ```
+
 ## 0.3.0-alpha.5 (22 mar 2023)
 
 ### Improvement

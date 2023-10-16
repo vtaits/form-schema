@@ -26,7 +26,7 @@ npm install final-form react-final-form @vtaits/react-final-form-schema --save
 
 ## Usage
 
-```javascript
+```tsx
 import { Form } from '@vtaits/react-final-form-schema';
 
 <Form
@@ -42,20 +42,17 @@ import { Form } from '@vtaits/react-final-form-schema';
   {...reactFinalFormProps}
 >
   {
-    ({
-      renderField,
-      ...reactFinalFormRenderProps
-    }) => {
+    (reactFinalFormRenderProps) => {
       // render logic, e.g.
 
       return (
         <>
-          {renderField('field1')}
-          {renderField('field2')}
+          <FormField name="field1" />
+          <FormField name="field2" />
 
           <hr />
 
-          {renderField('field3', 'payload')}
+          <FormField name="field3" payload="payload" />
         </>
       );
     }
@@ -71,35 +68,35 @@ It similar to `react-final-form` but there is some differences:
 
 - `mapErrors` (not required) can map submission errors of form to format of `final-form`;
 
-- new render prop `renderField` can optimize boilerplate of imports;
-
 - `initialValuesPlaceholder` - new prop, initial runtime values of form during asynchronous initialization.
+
+### FormField
+
+A component for rendering field by name according to its schema
+
+#### Props
+
+- `name` - required, string, name of field for render;
+- `payload` - not required, payload prop of nested field;
+- `parents` - not required, stack of parent fields for child field.
 
 ### Type declaration
 
 Type declaration is similar with [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema) but there is new prop:
 
-- `component` - react component that will be rendered with `renderField`. Receives next props:
+- `component` - react component that will be rendered with `FormField`. Receives next props:
 
   - `name` - string, name of field;
 
   - `fieldSchema` - any, result of `getFieldSchema` by name of field;
 
-  - `payload` - any, 2nd argument of `renderField`, can be helpful for arrays of repeating fields;
+  - `payload` - any, prop of `FormField`, can be helpful for arrays of repeating fields;
 
   - `getFieldSchema` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
   - `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
-  - `parents` - stack of parent fields above current field with runtime values;
-
-  - `renderField` - function, can be helpful for render nested fields. Arguments:
-
-    1. `fieldName` - required, string, name of field for render;
-
-    2. `payload` - not required, payload prop of nested field;
-
-    3. `parents` - not required, stack of parent fields for child field.
+  - `parents` - prop of `FormField`, stack of parent fields above current field with runtime values.
 
 ## Built-in field types
 
@@ -107,7 +104,7 @@ Type declaration is similar with [@vtaits/form-schema](https://github.com/vtaits
 
 Field depends from other fields. Example:
 
-```javascript
+```tsx
 import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
 
 const schema = {
@@ -127,7 +124,7 @@ const getFieldType = (fieldSchema) => {
     return dynamic;
   }
 
-  ...
+  // ...
 }
 ```
 
