@@ -21,7 +21,10 @@
     "serialization",
     "parsing"
   ],
-  "repository": "git@github.com:vtaits/form-schema.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vtaits/form-schema.git"
+  },
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
