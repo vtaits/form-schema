@@ -115,7 +115,6 @@ export function Simple(): ReactElement {
       isSubmitting,
     },
     handleSubmit,
-    register,
     renderField,
   } = useFormSchema({
     getFieldSchema,
