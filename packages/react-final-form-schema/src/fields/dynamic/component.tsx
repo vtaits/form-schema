@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import { useForm, useFormState } from "react-final-form";
+import useLatest from "use-latest";
 
 import { useFormSchemaState } from "../../core";
 
@@ -60,6 +61,9 @@ export function DynamicField<
 		Errors
 	>;
 
+	const onShowRef = useLatest(onShow);
+	const onHideRef = useLatest(onHide);
+
 	const schema = getSchema(
 		values,
 		"render",
@@ -68,7 +72,11 @@ export function DynamicField<
 		parents,
 	);
 
+	const schemaRef = useLatest(schema);
+
 	const isFirstRenderRef = useRef(true);
+
+	const hasSchema = Boolean(schema);
 
 	useEffect(() => {
 		if (isValuesReady) {
@@ -77,23 +85,41 @@ export function DynamicField<
 				return;
 			}
 
-			if (schema) {
-				if (onShow) {
-					onShow(form, name, schema, getFieldSchema, getFieldType, parents);
+			if (hasSchema) {
+				if (onShowRef.current) {
+					onShowRef.current(
+						form,
+						name,
+						schemaRef.current,
+						getFieldSchema,
+						getFieldType,
+						parents,
+					);
 				}
 
 				return;
 			}
 
-			if (onHide) {
-				onHide(form, name, getFieldSchema, getFieldType, parents);
+			if (onHideRef.current) {
+				onHideRef.current(form, name, getFieldSchema, getFieldType, parents);
 
 				return;
 			}
 
 			isFirstRenderRef.current = true;
 		}
-	}, [Boolean(schema)]);
+	}, [
+		form,
+		getFieldSchema,
+		getFieldType,
+		hasSchema,
+		isValuesReady,
+		name,
+		onHideRef,
+		onShowRef,
+		parents,
+		schemaRef,
+	]);
 
 	if (!schema) {
 		return null;

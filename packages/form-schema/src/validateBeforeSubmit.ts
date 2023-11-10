@@ -29,7 +29,7 @@ export const validateBeforeSubmit = <
 ): Errors => {
 	const res = {} as Errors;
 
-	names.forEach((name) => {
+	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
@@ -57,7 +57,7 @@ export const validateBeforeSubmit = <
 				parents,
 			),
 		);
-	});
+	}
 
 	return res;
 };

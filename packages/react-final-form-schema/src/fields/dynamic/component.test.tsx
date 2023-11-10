@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useForm, useFormState } from "react-final-form";
 import { create } from "react-test-engine-vitest";
+import useLatest from "use-latest";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import {
@@ -30,6 +31,7 @@ vi.mock("react", async () => {
 	};
 });
 vi.mock("react-final-form");
+vi.mock("use-latest");
 vi.mock("../../core");
 
 const parents: ParentType[] = [
@@ -70,6 +72,9 @@ const render = create(DynamicField, defaultProps, {
 	},
 
 	hooks: {
+		onShowRef: useLatest,
+		onHideRef: useLatest,
+		schemaRef: useLatest,
 		useEffect,
 		useForm,
 		useFormState,
@@ -81,11 +86,23 @@ const render = create(DynamicField, defaultProps, {
 		"useForm",
 		"useFormState",
 		"useFormSchemaState",
+		"onShowRef",
+		"onHideRef",
+		"schemaRef",
 		"useRef",
 		"useEffect",
 	],
 
 	hookDefaultValues: {
+		onShowRef: {
+			current: undefined,
+		},
+		onHideRef: {
+			current: undefined,
+		},
+		schemaRef: {
+			current: null,
+		},
 		useEffect: undefined,
 		useForm: form,
 		useFormState: {
@@ -200,129 +217,147 @@ describe("render", () => {
 });
 
 describe("callbacks", () => {
-	function setupForCallbacks<
-		FieldSchema,
-		Values extends Record<string, any>,
-		RawValues extends Record<string, any>,
-		SerializedValues extends Record<string, any>,
-		Errors extends Record<string, any>,
-		Payload,
-	>(
-		isValuesReady: boolean,
-		isFirstRender: boolean,
-		props: Partial<
-			DynamicFieldProps<
-				unknown,
-				Record<string, any>,
-				Record<string, any>,
-				Record<string, any>,
-				Record<string, any>,
-				unknown
-			>
-		>,
-	) {
-		const refValue = {
-			current: isFirstRender,
-		};
-
-		const engine = render(props, {
-			useFormSchemaState: {
-				isValuesReady,
-			},
-			useRef: refValue,
-		});
+	function setupForCallbacks(...args: Parameters<typeof render>) {
+		const engine = render(...args);
 
 		expect(useEffect).toBeCalledTimes(1);
 		const effect = engine.getHookArguments("useEffect")[0];
 
 		effect();
-
-		return [refValue];
 	}
 
-	test("should not call `onShow` if values are not ready and not change `isFirstRender`", () => {
+	test("should not call `onShow` and `onHide` if values are not ready and not change `isFirstRender`", () => {
 		const onShow = vi.fn();
 		const onHide = vi.fn();
 
-		const [{ current: isFirstRender }] = setupForCallbacks(false, false, {
-			fieldSchema: {
-				getSchema: () => "schema",
-				onShow,
-				onHide,
+		const refValue = { current: false };
+
+		setupForCallbacks(
+			{
+				fieldSchema: {
+					getSchema: () => "schema",
+					onShow,
+					onHide,
+				},
 			},
-		});
+			{
+				useFormSchemaState: {
+					isValuesReady: false,
+				},
+				useRef: refValue,
+				onShowRef: {
+					current: onShow,
+				},
+				onHideRef: {
+					current: onHide,
+				},
+			},
+		);
 
 		expect(onShow).toHaveBeenCalledTimes(0);
 		expect(onHide).toHaveBeenCalledTimes(0);
 
-		expect(isFirstRender).toBe(false);
-	});
-
-	test("should not call `onHide` if values are not ready and not change `isFirstRender`", () => {
-		const onShow = vi.fn();
-		const onHide = vi.fn();
-
-		const [{ current: isFirstRender }] = setupForCallbacks(false, false, {
-			fieldSchema: {
-				getSchema: () => null,
-				onShow,
-				onHide,
-			},
-		});
-
-		expect(onShow).toHaveBeenCalledTimes(0);
-		expect(onHide).toHaveBeenCalledTimes(0);
-
-		expect(isFirstRender).toBe(false);
+		expect(refValue.current).toBe(false);
 	});
 
 	test("should not call `onShow` in first render and change `isFirstRender`", () => {
 		const onShow = vi.fn();
 		const onHide = vi.fn();
 
-		const [{ current: isFirstRender }] = setupForCallbacks(true, true, {
-			fieldSchema: {
-				getSchema: () => "schema",
-				onShow,
-				onHide,
+		const refValue = { current: true };
+
+		setupForCallbacks(
+			{
+				fieldSchema: {
+					getSchema: () => "schema",
+					onShow,
+					onHide,
+				},
 			},
-		});
+			{
+				useFormSchemaState: {
+					isValuesReady: true,
+				},
+				useRef: refValue,
+				onShowRef: {
+					current: onShow,
+				},
+				onHideRef: {
+					current: onHide,
+				},
+			},
+		);
 
 		expect(onShow).toHaveBeenCalledTimes(0);
 		expect(onHide).toHaveBeenCalledTimes(0);
 
-		expect(isFirstRender).toBe(false);
+		expect(refValue.current).toBe(false);
 	});
 
 	test("should not call `onHide` in first render and change `isFirstRender`", () => {
 		const onShow = vi.fn();
 		const onHide = vi.fn();
 
-		const [{ current: isFirstRender }] = setupForCallbacks(true, true, {
-			fieldSchema: {
-				getSchema: () => null,
-				onShow,
-				onHide,
+		const refValue = { current: true };
+
+		setupForCallbacks(
+			{
+				fieldSchema: {
+					getSchema: () => null,
+					onShow,
+					onHide,
+				},
 			},
-		});
+			{
+				useFormSchemaState: {
+					isValuesReady: true,
+				},
+				useRef: refValue,
+				onShowRef: {
+					current: onShow,
+				},
+				onHideRef: {
+					current: onHide,
+				},
+			},
+		);
 
 		expect(onShow).toHaveBeenCalledTimes(0);
 		expect(onHide).toHaveBeenCalledTimes(0);
 
-		expect(isFirstRender).toBe(false);
+		expect(refValue.current).toBe(false);
 	});
 
 	test("should call `onShow` and not change `isFirstRender`", () => {
 		const onShow = vi.fn();
 		const onHide = vi.fn();
 
-		const [{ current: isFirstRender }] = setupForCallbacks(true, false, {
-			fieldSchema: {
-				getSchema: () => "schema",
-				onShow,
-				onHide,
+		const refValue = { current: false };
+
+		setupForCallbacks(
+			{
+				fieldSchema: {
+					getSchema: () => "schema",
+					onShow,
+					onHide,
+				},
 			},
-		});
+			{
+				useFormSchemaState: {
+					isValuesReady: true,
+				},
+				useRef: refValue,
+				onShowRef: {
+					current: onShow,
+				},
+				onHideRef: {
+					current: onHide,
+				},
+				schemaRef: {
+					current: "schema",
+				},
+			},
+		);
 
 		expect(onShow).toHaveBeenCalledTimes(1);
 		expect(onShow).toHaveBeenCalledWith(
@@ -336,20 +371,36 @@ describe("callbacks", () => {
 
 		expect(onHide).toHaveBeenCalledTimes(0);
 
-		expect(isFirstRender).toBe(false);
+		expect(refValue.current).toBe(false);
 	});
 
 	test("should call `onHide` and not change `isFirstRender`", () => {
 		const onShow = vi.fn();
 		const onHide = vi.fn();
 
-		const [{ current: isFirstRender }] = setupForCallbacks(true, false, {
-			fieldSchema: {
-				getSchema: () => null,
-				onShow,
-				onHide,
+		const refValue = { current: false };
+
+		setupForCallbacks(
+			{
+				fieldSchema: {
+					getSchema: () => null,
+					onShow,
+					onHide,
+				},
 			},
-		});
+			{
+				useFormSchemaState: {
+					isValuesReady: true,
+				},
+				useRef: refValue,
+				onShowRef: {
+					current: onShow,
+				},
+				onHideRef: {
+					current: onHide,
+				},
+			},
+		);
 
 		expect(onShow).toHaveBeenCalledTimes(0);
 
@@ -362,6 +413,6 @@ describe("callbacks", () => {
 			parents,
 		);
 
-		expect(isFirstRender).toBe(false);
+		expect(refValue.current).toBe(false);
 	});
 });

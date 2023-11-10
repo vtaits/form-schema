@@ -45,7 +45,7 @@ export const parse = <
 	let hasPromise = false;
 	const preparsedValues: Array<Values | Promise<Values>> = [];
 
-	names.forEach((name) => {
+	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
@@ -75,21 +75,21 @@ export const parse = <
 		}
 
 		preparsedValues.push(parserResult);
-	});
+	}
 
 	if (hasPromise) {
 		return Promise.all(preparsedValues).then((parsedValues) => {
-			parsedValues.forEach((parsedValue: Values) => {
+			for (const parsedValue of parsedValues) {
 				Object.assign(res, parsedValue);
-			});
+			}
 
 			return res;
 		});
 	}
 
-	(preparsedValues as Values[]).forEach((parsedValue) => {
+	for (const parsedValue of preparsedValues as Values[]) {
 		Object.assign(res, parsedValue);
-	});
+	}
 
 	return res;
 };

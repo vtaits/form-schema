@@ -39,7 +39,7 @@ export const serialize = <
 ): SerializedValues => {
 	const res = {} as SerializedValues;
 
-	names.forEach((name) => {
+	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
@@ -66,7 +66,7 @@ export const serialize = <
 				parents,
 			),
 		);
-	});
+	}
 
 	return res;
 };
