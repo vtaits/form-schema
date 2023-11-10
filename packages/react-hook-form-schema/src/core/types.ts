@@ -1,0 +1,180 @@
+import type {
+	FieldType as FieldTypeBase,
+	GetFieldSchema,
+	ParentType,
+} from "@vtaits/form-schema";
+import type { ReactNode } from "react";
+import type { BaseSyntheticEvent } from "react";
+import type {
+	FieldValues,
+	SubmitErrorHandler,
+	UseFormProps,
+	UseFormReturn,
+} from "react-hook-form";
+
+export type MapErrors<
+	Values extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+> = (
+	rawErrors: Errors,
+	valuesForSubmit: SerializedValues,
+	values: Values,
+) => Errors;
+
+export type RenderParams<
+	FieldSchema,
+	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+> = Readonly<{
+	name: string;
+	fieldSchema: FieldSchema;
+	payload?: Payload;
+	getFieldSchema: GetFieldSchema<FieldSchema>;
+	getFieldType: GetFieldType<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors,
+		Payload
+	>;
+	/**
+	 * stack of parent fields above current field with runtime values
+	 */
+	parents: readonly ParentType<Values>[];
+}>;
+
+export type FieldType<
+	FieldSchema,
+	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+	TContext = any,
+> = Readonly<
+	FieldTypeBase<FieldSchema, Values, RawValues, SerializedValues, Errors> & {
+		render: (
+			renderParams: RenderParams<
+				FieldSchema,
+				Values,
+				RawValues,
+				SerializedValues,
+				Errors,
+				Payload
+			>,
+			formResult: UseFormReturn<Values, TContext, Values>,
+		) => ReactNode;
+	}
+>;
+
+export type GetFieldType<
+	FieldSchema,
+	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+	TContext = any,
+> = (
+	fieldSchema: FieldSchema,
+) => FieldType<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors,
+	Payload,
+	TContext
+>;
+
+export type FormSchemaParams<
+	FieldSchema,
+	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+	TContext = any,
+> = {
+	names: string[];
+	getFieldSchema?: GetFieldSchema<FieldSchema>;
+	getFieldType: GetFieldType<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors,
+		Payload,
+		TContext
+	>;
+};
+
+export type UseFormSchemaParams<
+	FieldSchema,
+	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+	TContext = any,
+> = Readonly<
+	Omit<UseFormProps<Values, TContext>, "defaultValues"> &
+		FormSchemaParams<
+			FieldSchema,
+			Values,
+			RawValues,
+			SerializedValues,
+			Errors,
+			Payload,
+			TContext
+		> &
+		Pick<UseFormProps<RawValues, TContext>, "defaultValues"> & {
+			mapErrors?: MapErrors<Values, SerializedValues, Errors>;
+		}
+>;
+
+export type OnSubmit<
+	Values extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+> = (
+	serializedValues: SerializedValues,
+	rawValues: Values,
+	event?: BaseSyntheticEvent,
+) => Errors | null | undefined | Promise<Errors | null | undefined>;
+
+export type HandleSubmitBySchema<
+	Values extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+> = (
+	onSubmit: OnSubmit<Values, SerializedValues, Errors>,
+	onError?: SubmitErrorHandler<Values>,
+) => (e?: BaseSyntheticEvent) => Promise<void>;
+
+export type RenderField<
+	Values extends FieldValues = FieldValues,
+	Payload = any,
+> = (
+	name: string,
+	payload?: Payload,
+	parents?: readonly ParentType<Values>[],
+) => ReactNode;
+
+export type UseFormSchemaReturn<
+	Values extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+	TContext = any,
+> = Readonly<
+	Omit<UseFormReturn<Values, TContext, Values>, "handleSubmit"> & {
+		handleSubmit: HandleSubmitBySchema<Values, SerializedValues, Errors>;
+		renderField: RenderField<Values, Payload>;
+	}
+>;

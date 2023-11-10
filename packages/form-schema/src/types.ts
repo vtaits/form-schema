@@ -62,7 +62,7 @@ export type CreateGetFieldSchema<
 	 * stack of parent fields above current field
 	 * raw values for phase 'parse' and runtime values otherwise
 	 */
-	parents: ParentType<Values | RawValues>[],
+	parents: readonly ParentType<Values | RawValues>[],
 ) => GetFieldSchema<FieldSchema>;
 
 export type Serializer<
@@ -101,7 +101,7 @@ export type Serializer<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: ParentType<Values>[],
+	parents: readonly ParentType<Values>[],
 ) => SerializedValues;
 
 export type Parser<
@@ -140,7 +140,7 @@ export type Parser<
 	/**
 	 * stack of parent fields above current field with raw values
 	 */
-	parents: ParentType<RawValues>[],
+	parents: readonly ParentType<RawValues>[],
 ) => Values | Promise<Values>;
 
 export type ValidatorBeforeSubmit<
@@ -179,7 +179,7 @@ export type ValidatorBeforeSubmit<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: ParentType<Values>[],
+	parents: readonly ParentType<Values>[],
 ) => Errors;
 
 export type ErrorsMapper<
@@ -226,7 +226,7 @@ export type ErrorsMapper<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: ParentType<Values>[],
+	parents: readonly ParentType<Values>[],
 ) => Errors;
 
 export type FieldType<

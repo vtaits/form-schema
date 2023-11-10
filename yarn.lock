@@ -4524,6 +4524,37 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema":
+  version: 0.0.0-use.local
+  resolution: "@vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema"
+  dependencies:
+    "@biomejs/biome": ^1.3.3
+    "@storybook/addon-docs": ^7.5.3
+    "@storybook/react": ^7.5.3
+    "@types/react": ^18.2.37
+    "@vitest/coverage-v8": ^0.34.6
+    "@vtaits/form-schema": ^1.0.0
+    "@vtaits/react-required-context": ^1.0.1
+    exports-fallback: ^1.0.1
+    is-promise: ^4.0.0
+    react: ^18.2.0
+    react-async-hook: ^4.0.0
+    react-hook-form: ^7.48.2
+    react-is: ^18.2.0
+    react-select: ^5.8.0
+    react-test-engine: ^1.1.1
+    react-test-engine-vitest: ^1.0.0
+    react-test-renderer: ^18.2.0
+    tsup: ^7.2.0
+    typescript: 5.2.2
+    use-latest: ^1.2.1
+    vitest: ^0.34.6
+  peerDependencies:
+    react: ^16.14.0 || ^17.0.0 || ^18.0.0
+    react-final-form: ^6.0.0
+  languageName: unknown
+  linkType: soft
+
 "@vtaits/react-required-context@npm:^1.0.1":
   version: 1.0.1
   resolution: "@vtaits/react-required-context@npm:1.0.1"
@@ -9197,6 +9228,15 @@ __metadata:
     final-form: ^4.20.4
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 2ab79b1b0230545af1b93b324e2ce61992087beda344f762e1c1306867c177ca6258651e992515fa6681a790f94380a388c18e898ffb20468562e62c83c6b289
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.48.2":
+  version: 7.48.2
+  resolution: "react-hook-form@npm:7.48.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 39652d08f78f16e5234049ceeb794d8bcd4d146772aca99c6db8c5aea8926cd4a230d02098886a441074deefbc24ffcb5ed57bc7cb0009d950115f5b3e627f12
   languageName: node
   linkType: hard
 
