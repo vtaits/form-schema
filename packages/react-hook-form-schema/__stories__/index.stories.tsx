@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FormError } from './FormError';
 import { SerializerAndParser } from './SerializerAndParser';
 import { Simple } from './Simple';
+import { ValidateBeforeSubmit } from './ValidateBeforeSubmit';
 
 const meta: Meta = {
   title: 'react-hook-form-schema',
@@ -28,4 +29,10 @@ export const SerializerAndParserStory: Story = {
   name: 'Serializer and parser',
   args: {},
   render: (props) => <SerializerAndParser {...props} />,
+};
+
+export const ValidateBeforeSubmitStory: Story = {
+  name: 'Validate before submit',
+  args: {},
+  render: (props) => <ValidateBeforeSubmit {...props} />
 };

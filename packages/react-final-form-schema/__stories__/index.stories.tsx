@@ -52,4 +52,4 @@ export const ValidateBeforeSubmitStory: Story = {
   name: 'Validate before submit',
   args: {},
   render: (props) => <ValidateBeforeSubmit {...props} />
-}
+};
