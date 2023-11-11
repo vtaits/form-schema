@@ -6,6 +6,7 @@ import {
 	serialize,
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
+import isPromise from "is-promise";
 import { type BaseSyntheticEvent, useCallback, useMemo } from "react";
 import {
 	type DefaultValues,
@@ -60,15 +61,31 @@ export function useFormSchema<
 			return () =>
 				defaultValues().then(
 					(rawInitialValues) =>
-						parse(rawInitialValues, names, getFieldSchema, getFieldType, [
+						(parse(rawInitialValues, names, getFieldSchema, getFieldType, [
 							{
 								values: rawInitialValues,
 							},
-						]) as Values,
+						]) || {}) as Values,
 				);
 		}
 
 		const rawInitialValues = defaultValues || {};
+
+		const parseResult = parse(
+			rawInitialValues as RawValues,
+			names,
+			getFieldSchema,
+			getFieldType,
+			[
+				{
+					values: rawInitialValues as RawValues,
+				},
+			],
+		);
+
+		if (isPromise(parseResult)) {
+			return () => parseResult;
+		}
 
 		return (
 			(parse(
@@ -92,13 +109,13 @@ export function useFormSchema<
 
 	const { handleSubmit, ...restResult } = formResult;
 
-	const { control, getValues, setError } = restResult;
+	const { getValues, setError } = restResult;
 
 	const setErrors = useCallback(
 		(errors: Errors) => {
 			for (const [name, error] of Object.entries(errors)) {
 				setError(name as Path<Values>, {
-					type: 'serverError',
+					type: "serverError",
 					message: error,
 				});
 			}

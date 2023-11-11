@@ -33,6 +33,7 @@ export function FormError(): ReactElement {
       isSubmitting,
     },
     handleSubmit,
+    clearErrors,
   } = useFormSchema({
     getFieldSchema,
     getFieldType,
@@ -43,13 +44,24 @@ export function FormError(): ReactElement {
     <form onSubmit={handleSubmit(onSubmit)}>
       {
         errors.formError && (
-          <p
-            style={{
-              color: 'red',
-            }}
-          >
-            {errors.formError.message}
-          </p>
+          <div>
+            <p
+              style={{
+                color: 'red',
+              }}
+            >
+              {errors.formError.message}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => {
+                clearErrors();
+              }}
+            >
+              Clean error
+            </button>
+          </div>
         )
       }
 

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FormError } from './FormError';
+import { SerializerAndParser } from './SerializerAndParser';
 import { Simple } from './Simple';
 
 const meta: Meta = {
@@ -11,14 +12,20 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+export const SimpleStory: Story = {
+  name: 'Simple',
+  args: {},
+  render: (props) => <Simple {...props} />,
+};
+
 export const FormErrorStory: Story = {
   name: 'Form error',
   args: {},
   render: (props) => <FormError {...props} />,
 };
 
-export const SimpleStory: Story = {
-  name: 'Simple',
+export const SerializerAndParserStory: Story = {
+  name: 'Serializer and parser',
   args: {},
-  render: (props) => <Simple {...props} />,
+  render: (props) => <SerializerAndParser {...props} />,
 };
