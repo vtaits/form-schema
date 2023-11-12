@@ -1,5 +1,5 @@
 import type { DynamicSchema as DynamicSchemaBase } from "@vtaits/form-schema/fields/dynamic";
-import type { FormApi } from "final-form";
+import type { UseFormReturn } from "react-hook-form";
 
 export type DynamicSchema<
 	FieldSchema,
@@ -8,7 +8,7 @@ export type DynamicSchema<
 	SerializedValues extends Record<string, any> = Record<string, any>,
 	Errors extends Record<string, any> = Record<string, any>,
 > = DynamicSchemaBase<
-	FormApi<Values>,
+	UseFormReturn<Values, any, Values>,
 	FieldSchema,
 	Values,
 	RawValues,

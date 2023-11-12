@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Dynamic } from './Dynamic';
 import { FormError } from './FormError';
 import { SerializerAndParser } from './SerializerAndParser';
 import { Simple } from './Simple';
@@ -12,6 +13,12 @@ const meta: Meta = {
 
 export default meta;
 type Story = StoryObj;
+
+export const DynamicStory: Story = {
+  name: 'Dynamic fields',
+  args: {},
+  render: (props) => <Dynamic {...props} />,
+};
 
 export const SimpleStory: Story = {
   name: 'Simple',

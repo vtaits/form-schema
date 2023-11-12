@@ -109,15 +109,11 @@ export function DynamicField<
 			isFirstRenderRef.current = true;
 		}
 	}, [
-		form,
-		getFieldSchema,
-		getFieldType,
 		hasSchema,
-		isValuesReady,
 		name,
+		isValuesReady,
 		onHideRef,
 		onShowRef,
-		parents,
 		schemaRef,
 	]);
 

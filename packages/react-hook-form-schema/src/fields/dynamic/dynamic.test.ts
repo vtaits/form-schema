@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { DynamicField } from "./component";
+import { DynamicField } from "./DynamicField";
 import { dynamic } from "./dynamic";
 
 test("provide correct component", () => {

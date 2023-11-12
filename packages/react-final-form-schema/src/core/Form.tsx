@@ -9,12 +9,12 @@ import type { FormProps as FinalFormProps } from "react-final-form";
 import isPromise from "is-promise";
 
 import {
+	type GetFieldSchema,
 	mapFieldErrors,
 	parse,
 	serialize,
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
-import type { GetFieldSchema } from "@vtaits/form-schema";
 
 import { FormSchemaContext } from "./FormSchemaContext";
 
