@@ -1,12 +1,12 @@
 import {
-	defaultFieldErrorsMapper,
-	defaultParser,
-	defaultSerializer,
 	type FieldType,
 	type GetFieldSchema,
 	type GetFieldType,
 	type ParentType,
 	type PhaseType,
+	defaultFieldErrorsSetter,
+	defaultParser,
+	defaultSerializer,
 } from "../../core";
 import type { DynamicSchema } from "./schema";
 
@@ -20,7 +20,14 @@ export const createGetFieldSchema = <
 >(
 	{
 		getSchema,
-	}: DynamicSchema<FormApi, FieldSchema, Values, RawValues, SerializedValues, Errors>,
+	}: DynamicSchema<
+		FormApi,
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
 	getFieldSchema: GetFieldSchema<FieldSchema>,
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -191,6 +198,7 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 	},
 
 	validatorBeforeSubmit: (
+		setError,
 		values,
 		name,
 		fieldSchema,
@@ -216,6 +224,7 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 
 		if (fieldType.validatorBeforeSubmit) {
 			return fieldType.validatorBeforeSubmit(
+				setError,
 				values,
 				name,
 				schema,
@@ -228,7 +237,8 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		return {};
 	},
 
-	errorsMapper: (
+	errorsSetter: (
+		setError,
 		errors,
 		name,
 		fieldSchema,
@@ -254,8 +264,9 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 
 		const fieldType = getFieldType(schema);
 
-		if (fieldType.errorsMapper) {
-			return fieldType.errorsMapper(
+		if (fieldType.errorsSetter) {
+			return fieldType.errorsSetter(
+				setError,
 				errors,
 				name,
 				schema,
@@ -267,7 +278,8 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 			);
 		}
 
-		return defaultFieldErrorsMapper(
+		return defaultFieldErrorsSetter(
+			setError,
 			errors,
 			name,
 			fieldSchema,

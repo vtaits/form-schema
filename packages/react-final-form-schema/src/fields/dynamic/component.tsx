@@ -108,14 +108,7 @@ export function DynamicField<
 
 			isFirstRenderRef.current = true;
 		}
-	}, [
-		hasSchema,
-		name,
-		isValuesReady,
-		onHideRef,
-		onShowRef,
-		schemaRef,
-	]);
+	}, [hasSchema, name, isValuesReady, onHideRef, onShowRef, schemaRef]);
 
 	if (!schema) {
 		return null;

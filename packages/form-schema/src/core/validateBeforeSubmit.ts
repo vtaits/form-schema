@@ -2,11 +2,8 @@ import type {
 	GetFieldSchema,
 	GetFieldType,
 	ParentType,
-	ValidatorBeforeSubmit,
+	SetError,
 } from "./types";
-
-const defaultValidator: ValidatorBeforeSubmit<any, any, any, any, any> =
-	() => ({});
 
 export const validateBeforeSubmit = <
 	FieldSchema,
@@ -15,8 +12,9 @@ export const validateBeforeSubmit = <
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
 >(
+	setError: SetError<Values>,
 	values: Values,
-	names: string[],
+	names: readonly string[],
 	getFieldSchema: GetFieldSchema<FieldSchema>,
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -26,38 +24,34 @@ export const validateBeforeSubmit = <
 		Errors
 	>,
 	parents: ParentType<Values>[],
-): Errors => {
-	const res = {} as Errors;
-
+) => {
 	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const validatorBeforeSubmit =
-			fieldType.validatorBeforeSubmit || defaultValidator;
-		const computedGetFieldSchema = fieldType.createGetFieldSchema
-			? fieldType.createGetFieldSchema(
-					fieldSchema,
-					getFieldSchema,
-					getFieldType,
-					values,
-					"serialize",
-					parents,
-			  )
-			: getFieldSchema;
+		const validatorBeforeSubmit = fieldType.validatorBeforeSubmit;
 
-		Object.assign(
-			res,
+		if (validatorBeforeSubmit) {
+			const computedGetFieldSchema = fieldType.createGetFieldSchema
+				? fieldType.createGetFieldSchema(
+						fieldSchema,
+						getFieldSchema,
+						getFieldType,
+						values,
+						"serialize",
+						parents,
+				  )
+				: getFieldSchema;
+
 			validatorBeforeSubmit(
+				setError,
 				values,
 				name,
 				fieldSchema,
 				computedGetFieldSchema,
 				getFieldType,
 				parents,
-			),
-		);
+			);
+		}
 	}
-
-	return res;
 };

@@ -11,6 +11,12 @@ export type GetFieldType<
 
 export type PhaseType = "parse" | "serialize" | "render";
 
+export type SetError<Values extends Record<string, unknown>> = (
+	name: string,
+	parents: readonly ParentType<Values>[] | undefined,
+	error: unknown,
+) => void;
+
 export type ParentType<
 	Values extends Record<string, unknown> = Record<string, unknown>,
 > = {
@@ -151,6 +157,10 @@ export type ValidatorBeforeSubmit<
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	/**
+	 * Function for setting errors
+	 */
+	setError: SetError<Values>,
+	/**
 	 * current runtime values
 	 */
 	values: Values,
@@ -180,9 +190,9 @@ export type ValidatorBeforeSubmit<
 	 * stack of parent fields above current field with runtime values
 	 */
 	parents: readonly ParentType<Values>[],
-) => Errors;
+) => void;
 
-export type ErrorsMapper<
+export type ErrorsSetter<
 	FieldSchema,
 	Values extends Record<string, unknown> = Record<string, unknown>,
 	RawValues extends Record<string, unknown> = Record<string, unknown>,
@@ -190,9 +200,13 @@ export type ErrorsMapper<
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	/**
-	 * collected errors
+	 * Function for setting errors
 	 */
-	res: Errors,
+	setError: SetError<Values>,
+	/**
+	 * errors
+	 */
+	errors: Errors,
 	/**
 	 * name of current field
 	 */
@@ -227,7 +241,7 @@ export type ErrorsMapper<
 	 * stack of parent fields above current field with runtime values
 	 */
 	parents: readonly ParentType<Values>[],
-) => Errors;
+) => void;
 
 export type FieldType<
 	FieldSchema,
@@ -258,7 +272,7 @@ export type FieldType<
 		SerializedValues,
 		Errors
 	>;
-	errorsMapper?: ErrorsMapper<
+	errorsSetter?: ErrorsSetter<
 		FieldSchema,
 		Values,
 		RawValues,

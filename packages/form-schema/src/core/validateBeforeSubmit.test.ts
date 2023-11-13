@@ -1,5 +1,4 @@
-import { expect, test, vi } from "vitest";
-
+import { afterEach, expect, test, vi } from "vitest";
 import type {
 	CreateGetFieldSchema,
 	FieldType,
@@ -15,32 +14,39 @@ type ValidatorBeforeSubmitArgs = Parameters<
 	ValidatorBeforeSubmit<any, any, any, any, any>
 >;
 
+const setError = vi.fn();
+
 const parents = [
 	{
 		values: {},
 	},
 ];
 
+afterEach(() => {
+	vi.clearAllMocks();
+});
+
 test("should call default validatorBeforeSubmit", () => {
-	expect(
-		validateBeforeSubmit(
-			{
-				value: "test",
-				value2: "test2",
-			},
+	validateBeforeSubmit(
+		setError,
+		{
+			value: "test",
+			value2: "test2",
+		},
 
-			["value"],
+		["value"],
 
-			(): any => ({
-				type: "testType",
-				name: "value",
-			}),
+		(): any => ({
+			type: "testType",
+			name: "value",
+		}),
 
-			() => ({}),
+		() => ({}),
 
-			parents,
-		),
-	).toEqual({});
+		parents,
+	);
+
+	expect(setError).toHaveBeenCalledTimes(0);
 });
 
 test("should call redefined validatorBeforeSubmit", () => {
@@ -50,9 +56,17 @@ test("should call redefined validatorBeforeSubmit", () => {
 	};
 
 	const validatorBeforeSubmit = vi.fn<ValidatorBeforeSubmitArgs, any>(
-		(values: Values, name: string): Values => ({
-			[name]: values[name] + values[name],
-		}),
+		(
+			setError,
+			values,
+			name,
+			fieldSchema,
+			computedGetFieldSchema,
+			getFieldType,
+			parents,
+		) => {
+			setError(name, parents, values[name] + values[name]);
+		},
 	);
 
 	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
@@ -66,22 +80,20 @@ test("should call redefined validatorBeforeSubmit", () => {
 
 	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-	expect(
-		validateBeforeSubmit(
-			rawValues,
+	validateBeforeSubmit(
+		setError,
+		rawValues,
 
-			["value"],
+		["value"],
 
-			getFieldSchema,
-			getFieldType,
-			parents,
-		),
-	).toEqual({
-		value: "testtest",
-	});
+		getFieldSchema,
+		getFieldType,
+		parents,
+	);
 
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
 	expect(validatorBeforeSubmit).toHaveBeenCalledWith(
+		setError,
 		rawValues,
 		"value",
 		fieldSchema,
@@ -89,6 +101,9 @@ test("should call redefined validatorBeforeSubmit", () => {
 		getFieldType,
 		parents,
 	);
+
+	expect(setError).toHaveBeenCalledTimes(1);
+	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
 });
 
 test("should call multiple validators", () => {
@@ -108,40 +123,56 @@ test("should call multiple validators", () => {
 
 	const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 		testType1: {
-			validatorBeforeSubmit: (values: Values, name: string): Values => ({
-				[name]: values[name],
-			}),
+			validatorBeforeSubmit: (
+				setError,
+				errors,
+				name,
+				fieldSchema,
+				computedGetFieldSchema,
+				getFieldType,
+				parents,
+			) => {
+				setError(name, parents, errors[name]);
+			},
 		},
 		testType2: {
-			validatorBeforeSubmit: (values: Values, name: string): Values => ({
-				[name]: values[name] + values[name],
-			}),
+			validatorBeforeSubmit: (
+				setError,
+				values,
+				name,
+				fieldSchema,
+				computedGetFieldSchema,
+				getFieldType,
+				parents,
+			) => {
+				setError(name, parents, values[name] + values[name]);
+			},
 		},
 	};
 
-	expect(
-		validateBeforeSubmit(
-			{
-				value1: "test1",
-				value2: "test2",
-			},
+	validateBeforeSubmit(
+		setError,
+		{
+			value1: "test1",
+			value2: "test2",
+		},
 
-			["value1", "value2"],
+		["value1", "value2"],
 
-			(name): any => ({
-				...fields[name],
-				name,
-			}),
+		(name): any => ({
+			...fields[name],
+			name,
+		}),
 
-			({ type }: { type: string }): FieldType<any, any, any, any, any> =>
-				fieldTypes[type],
+		({ type }: { type: string }): FieldType<any, any, any, any, any> =>
+			fieldTypes[type],
 
-			parents,
-		),
-	).toEqual({
-		value1: "test1",
-		value2: "test2test2",
-	});
+		parents,
+	);
+
+	expect(setError).toHaveBeenCalledTimes(2);
+	expect(setError).toHaveBeenNthCalledWith(1, "value1", parents, "test1");
+	expect(setError).toHaveBeenNthCalledWith(2, "value2", parents, "test2test2");
 });
 
 test("should redefine getFieldSchema", () => {
@@ -166,6 +197,7 @@ test("should redefine getFieldSchema", () => {
 	});
 
 	validateBeforeSubmit(
+		setError,
 		{
 			value: "test",
 		},
@@ -178,7 +210,7 @@ test("should redefine getFieldSchema", () => {
 	);
 
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
-	expect(validatorBeforeSubmit.mock.calls[0][3]).toBe(getFieldSchema);
+	expect(validatorBeforeSubmit.mock.calls[0][4]).toBe(getFieldSchema);
 
 	expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
 	expect(createGetFieldSchema).toHaveBeenCalledWith(

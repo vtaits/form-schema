@@ -25,7 +25,7 @@ export const parse = <
 	Errors extends Record<string, any>,
 >(
 	values: RawValues | null,
-	names: string[],
+	names: readonly string[],
 	getFieldSchema: GetFieldSchema<FieldSchema>,
 	getFieldType: GetFieldType<
 		FieldSchema,

@@ -26,7 +26,7 @@ export const serialize = <
 	Errors extends Record<string, any>,
 >(
 	values: Values,
-	names: string[],
+	names: readonly string[],
 	getFieldSchema: GetFieldSchema<FieldSchema>,
 	getFieldType: GetFieldType<
 		FieldSchema,

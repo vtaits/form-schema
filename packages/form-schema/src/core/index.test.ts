@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
 
 import * as formSchamaLib from "./index";
-import { defaultFieldErrorsMapper, mapFieldErrors } from "./mapFieldErrors";
 import { defaultParser, parse } from "./parse";
 import { defaultSerializer, serialize } from "./serialize";
+import { defaultFieldErrorsSetter, setFieldErrors } from "./setFieldErrors";
 import { validateBeforeSubmit } from "./validateBeforeSubmit";
 
 test("should export needed modules", () => {
@@ -22,9 +22,9 @@ test("should export needed modules", () => {
 	expect(formSchamaLib.validateBeforeSubmit).toBe(validateBeforeSubmit);
 	expect(formSchamaLib.validateBeforeSubmit).toBeTruthy();
 
-	expect(formSchamaLib.mapFieldErrors).toBe(mapFieldErrors);
-	expect(formSchamaLib.mapFieldErrors).toBeTruthy();
+	expect(formSchamaLib.setFieldErrors).toBe(setFieldErrors);
+	expect(formSchamaLib.setFieldErrors).toBeTruthy();
 
-	expect(formSchamaLib.defaultFieldErrorsMapper).toBe(defaultFieldErrorsMapper);
-	expect(formSchamaLib.defaultFieldErrorsMapper).toBeTruthy();
+	expect(formSchamaLib.defaultFieldErrorsSetter).toBe(defaultFieldErrorsSetter);
+	expect(formSchamaLib.defaultFieldErrorsSetter).toBeTruthy();
 });

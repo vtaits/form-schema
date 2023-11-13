@@ -43,7 +43,7 @@ export type DynamicSchema<
 		 * stack of parent fields above current field with runtime values
 		 */
 		parents: readonly ParentType<Values>[],
-	) => FieldSchema;
+	) => FieldSchema | null;
 
 	/**
 	 * Async callback that can be used instead of `getSchema` on parsing phase

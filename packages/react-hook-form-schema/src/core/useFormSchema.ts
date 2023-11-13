@@ -17,6 +17,7 @@ import {
 	useForm,
 } from "react-hook-form";
 
+import { renderBySchema } from "./renderBySchema";
 import type {
 	MapErrors,
 	OnSubmit,
@@ -212,45 +213,16 @@ export function useFormSchema<
 			name: string,
 			payload?: Payload,
 			parents?: readonly ParentType<Values>[],
-		) => {
-			const fieldSchema = getFieldSchema(name);
-			const fieldType = getFieldType(fieldSchema);
-
-			const { render, createGetFieldSchema } = fieldType;
-
-			const values = getValues();
-
-			const providedParents = parents || [
-				{
-					values,
-				},
-			];
-
-			const childGetFieldSchema: GetFieldSchema<FieldSchema> =
-				createGetFieldSchema
-					? createGetFieldSchema(
-							fieldSchema,
-							getFieldSchema,
-							getFieldType,
-							values,
-							"render",
-							providedParents,
-					  )
-					: getFieldSchema;
-
-			return render(
-				{
-					name,
-					payload,
-					parents: providedParents,
-					getFieldSchema: childGetFieldSchema,
-					getFieldType,
-					fieldSchema,
-				},
-				formResult,
-			);
-		},
-		[getFieldSchema, getFieldType, getValues],
+		) => renderBySchema(
+			formResult,
+			getFieldSchema,
+			getFieldType,
+			getValues,
+			name,
+			payload,
+			parents,
+		),
+		[formResult, getFieldSchema, getFieldType, getValues],
 	);
 
 	return {

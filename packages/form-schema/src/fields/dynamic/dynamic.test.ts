@@ -554,6 +554,7 @@ describe("parser", () => {
 describe("validatorBeforeSubmit", () => {
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
+	const setError = vi.fn();
 
 	const { validatorBeforeSubmit } = dynamic;
 
@@ -569,6 +570,7 @@ describe("validatorBeforeSubmit", () => {
 		};
 
 		validatorBeforeSubmit(
+			setError,
 			values,
 			"test",
 			{ getSchema },
@@ -593,6 +595,7 @@ describe("validatorBeforeSubmit", () => {
 		};
 
 		const result = validatorBeforeSubmit(
+			setError,
 			values,
 			"test",
 			{
@@ -614,6 +617,7 @@ describe("validatorBeforeSubmit", () => {
 		};
 
 		validatorBeforeSubmit(
+			setError,
 			values,
 			"test",
 			{
@@ -642,6 +646,7 @@ describe("validatorBeforeSubmit", () => {
 		};
 
 		const result = validatorBeforeSubmit(
+			setError,
 			values,
 			"test",
 			{
@@ -657,6 +662,7 @@ describe("validatorBeforeSubmit", () => {
 		});
 
 		expect(fieldValidatorBeforeSubmit).toHaveBeenCalledWith(
+			setError,
 			values,
 			"test",
 			"testSchema",
@@ -675,6 +681,7 @@ describe("validatorBeforeSubmit", () => {
 		};
 
 		const result = validatorBeforeSubmit(
+			setError,
 			values,
 			"field1",
 			{
@@ -689,9 +696,10 @@ describe("validatorBeforeSubmit", () => {
 	});
 });
 
-describe("errorsMapper", () => {
+describe("errorsSetter", () => {
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
+	const setError = vi.fn();
 
 	const values = {
 		field1: "value1",
@@ -701,10 +709,10 @@ describe("errorsMapper", () => {
 		field1: "rawValue1",
 	};
 
-	const { errorsMapper } = dynamic;
+	const { errorsSetter } = dynamic;
 
-	if (!errorsMapper) {
-		throw new Error("`errorsMapper` is not defined");
+	if (!errorsSetter) {
+		throw new Error("`errorsSetter` is not defined");
 	}
 
 	test("should provide all errors to `getSchema`", () => {
@@ -714,7 +722,8 @@ describe("errorsMapper", () => {
 			field1: "error1",
 		};
 
-		errorsMapper(
+		errorsSetter(
+			setError,
 			errors,
 			"test",
 			{ getSchema },
@@ -740,7 +749,8 @@ describe("errorsMapper", () => {
 			field1: "error1",
 		};
 
-		const result = errorsMapper(
+		const result = errorsSetter(
+			setError,
 			errors,
 			"test",
 			{
@@ -763,7 +773,8 @@ describe("errorsMapper", () => {
 			field1: "error1",
 		};
 
-		errorsMapper(
+		errorsSetter(
+			setError,
 			errors,
 			"test",
 			{
@@ -780,20 +791,21 @@ describe("errorsMapper", () => {
 		expect(getFieldType).toHaveBeenCalledWith("testSchema");
 	});
 
-	test("should call errorsMapper of computed field type if defined", () => {
-		const fieldErrorsMapper = vi.fn().mockReturnValue({
+	test("should call errorsSetter of computed field type if defined", () => {
+		const fieldErrorsSetter = vi.fn().mockReturnValue({
 			field1: "processed1",
 		});
 
 		const getFieldType = vi.fn().mockReturnValue({
-			errorsMapper: fieldErrorsMapper,
+			errorsSetter: fieldErrorsSetter,
 		});
 
 		const errors = {
 			field1: "error1",
 		};
 
-		const result = errorsMapper(
+		const result = errorsSetter(
+			setError,
 			errors,
 			"test",
 			{
@@ -810,7 +822,8 @@ describe("errorsMapper", () => {
 			field1: "processed1",
 		});
 
-		expect(fieldErrorsMapper).toHaveBeenCalledWith(
+		expect(fieldErrorsSetter).toHaveBeenCalledWith(
+			setError,
 			errors,
 			"test",
 			"testSchema",
@@ -822,7 +835,7 @@ describe("errorsMapper", () => {
 		);
 	});
 
-	test("should call default errorsMapper for computed field", () => {
+	test("should call default errorsSetter for computed field", () => {
 		const getFieldType = vi.fn().mockReturnValue({});
 
 		const errors = {
@@ -830,7 +843,8 @@ describe("errorsMapper", () => {
 			field2: "error2",
 		};
 
-		const result = errorsMapper(
+		errorsSetter(
+			setError,
 			errors,
 			"field1",
 			{
@@ -843,8 +857,7 @@ describe("errorsMapper", () => {
 			parents,
 		);
 
-		expect(result).toEqual({
-			field1: "error1",
-		});
+		expect(setError).toHaveBeenCalledTimes(1);
+		expect(setError).toHaveBeenCalledWith("field1", parents, "error1");
 	});
 });

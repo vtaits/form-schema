@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Form } from '../src/core';
 
-import { Dynamic } from './Dynamic';
-import { FieldArray } from './FieldArray';
-import { FormError } from './FormError';
-import { SerializerAndParser } from './SerializerAndParser';
-import { Simple } from './Simple';
-import { ValidateBeforeSubmit } from './ValidateBeforeSubmit';
+import { Dynamic } from '../src/examples/Dynamic';
+import { FieldArray } from '../src/examples/FieldArray';
+import { FormError } from '../src/examples/FormError';
+import { SerializerAndParser } from '../src/examples/SerializerAndParser';
+import { Simple } from '../src/examples/Simple';
+import { ValidateBeforeSubmit } from '../src/examples/ValidateBeforeSubmit';
 
 const meta: Meta<typeof Form> = {
   title: 'react-final-form-schema',

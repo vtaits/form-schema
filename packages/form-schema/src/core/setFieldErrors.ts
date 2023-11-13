@@ -1,32 +1,37 @@
 import type {
-	ErrorsMapper,
+	ErrorsSetter,
 	GetFieldSchema,
 	GetFieldType,
 	ParentType,
+	SetError,
 } from "./types";
 
-export const defaultFieldErrorsMapper: ErrorsMapper<any, any, any, any, any> = (
+export const defaultFieldErrorsSetter: ErrorsSetter<any, any, any, any, any> = (
+	setError,
 	errors,
 	name,
+	fieldSchema,
+	computedGetFieldSchema,
+	getFieldType,
+	values,
+	rawValues,
+	parents,
 ) => {
 	if (typeof errors[name] !== "undefined") {
-		return {
-			[name]: errors[name],
-		};
+		setError(name, parents, errors[name]);
 	}
-
-	return {};
 };
 
-export const mapFieldErrors = <
+export const setFieldErrors = <
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
 >(
+	setError: SetError<Values>,
 	errors: Errors,
-	names: string[],
+	names: readonly string[],
 	getFieldSchema: GetFieldSchema<FieldSchema>,
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -38,16 +43,12 @@ export const mapFieldErrors = <
 	values: SerializedValues,
 	rawValues: Values,
 	parents: ParentType<Values>[],
-): Errors => {
-	const res = {
-		...errors,
-	};
-
+): void => {
 	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const errorsMapper = fieldType.errorsMapper || defaultFieldErrorsMapper;
+		const errorsSetter = fieldType.errorsSetter || defaultFieldErrorsSetter;
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
 			? fieldType.createGetFieldSchema(
 					fieldSchema,
@@ -59,20 +60,16 @@ export const mapFieldErrors = <
 			  )
 			: getFieldSchema;
 
-		Object.assign(
-			res,
-			errorsMapper(
-				res,
-				name,
-				fieldSchema,
-				computedGetFieldSchema,
-				getFieldType,
-				values,
-				rawValues,
-				parents,
-			),
+		errorsSetter(
+			setError,
+			errors,
+			name,
+			fieldSchema,
+			computedGetFieldSchema,
+			getFieldType,
+			values,
+			rawValues,
+			parents,
 		);
 	}
-
-	return res;
 };

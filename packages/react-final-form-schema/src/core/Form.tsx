@@ -1,20 +1,17 @@
-import { useCallback, useMemo } from "react";
-import type { ReactElement } from "react";
-
-import { useAsync } from "react-async-hook";
-
-import { Form as FinalForm } from "react-final-form";
-import type { FormProps as FinalFormProps } from "react-final-form";
-
-import isPromise from "is-promise";
-
 import {
 	type GetFieldSchema,
-	mapFieldErrors,
 	parse,
 	serialize,
+	setFieldErrors,
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
+import isPromise from "is-promise";
+import set from "lodash/set";
+import { useCallback, useMemo } from "react";
+import type { ReactElement } from "react";
+import { useAsync } from "react-async-hook";
+import { Form as FinalForm } from "react-final-form";
+import type { FormProps as FinalFormProps } from "react-final-form";
 
 import { FormSchemaContext } from "./FormSchemaContext";
 
@@ -82,7 +79,25 @@ export function Form<
 
 	const onSubmit = useCallback<FinalFormProps<Values, Values>["onSubmit"]>(
 		async (values) => {
-			const validationErrors = validateBeforeSubmit(
+			const validationErrors = {} as Errors;
+
+			validateBeforeSubmit(
+				(fieldName, parents, error) => {
+					if (parents) {
+						set(
+							validationErrors,
+							[
+								...parents
+									.filter((parent) => parent.name)
+									.map((parent) => parent.name as string),
+								fieldName,
+							],
+							error,
+						);
+					} else {
+						set(validationErrors, fieldName, error);
+					}
+				},
 				values,
 				names,
 				getFieldSchema,
@@ -122,7 +137,25 @@ export function Form<
 				values,
 			);
 
-			const mappedErrors = mapFieldErrors(
+			const mappedErrors = {} as Errors;
+
+			setFieldErrors(
+				(fieldName, parents, error) => {
+					if (parents) {
+						set(
+							mappedErrors,
+							[
+								...parents
+									.filter((parent) => parent.name)
+									.map((parent) => parent.name as string),
+								fieldName,
+							],
+							error,
+						);
+					} else {
+						set(mappedErrors, fieldName, error);
+					}
+				},
 				preparedErrors,
 				names,
 				getFieldSchema,

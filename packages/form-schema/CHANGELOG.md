@@ -1,3 +1,10 @@
+## 2.0.0
+
+### Breaking changes
+
+- Remove `mapFieldErrors` in favor of `setFieldErrors`
+- `validateBeforeSubmit` takes `setError` argument and returns nothing
+
 ## 1.0.0 (16 oct 2023)
 
 ### New features
