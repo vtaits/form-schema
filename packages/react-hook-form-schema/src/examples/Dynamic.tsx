@@ -1,11 +1,14 @@
-import { type ReactElement, useState } from "react";
 import type { GetFieldSchema } from "@vtaits/form-schema";
 import {
 	type FieldType,
 	type GetFieldType,
 	useFormSchema,
 } from "@vtaits/react-hook-form-schema";
-import { dynamic, type DynamicSchema } from "@vtaits/react-hook-form-schema/fields/dynamic";
+import {
+	type DynamicSchema,
+	dynamic,
+} from "@vtaits/react-hook-form-schema/fields/dynamic";
+import { type ReactElement, useState } from "react";
 
 type InputSchema = {
 	type: "input";
@@ -14,40 +17,39 @@ type InputSchema = {
 	disabled?: boolean;
 };
 
-type FieldSchema = InputSchema | DynamicSchema<InputSchema> & {
-  type: "dynamic";
-};
+type FieldSchema =
+	| InputSchema
+	| (DynamicSchema<InputSchema> & {
+			type: "dynamic";
+	  });
 
 const fieldTypes: Record<string, FieldType<any>> = {
 	input: {
-		render: (
-			{ name, fieldSchema },
-			{ formState: { errors }, register },
-		) => {
-      const { label, placeholder } = fieldSchema as InputSchema;
+		render: ({ name, fieldSchema }, { formState: { errors }, register }) => {
+			const { label, placeholder } = fieldSchema as InputSchema;
 
-      return (
-        <div>
-          {label && <p>{label}</p>}
+			return (
+				<div>
+					{label && <p>{label}</p>}
 
-          <p>
-            <input placeholder={placeholder || ""} {...register(name)} />
-          </p>
+					<p>
+						<input placeholder={placeholder || ""} {...register(name)} />
+					</p>
 
-          {errors[name] && (
-            <ul
-              style={{
-                color: "red",
-              }}
-            >
-              {errors[name].message.map((message, index) => (
-                <li key={index}>{message}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-      );
-    },
+					{errors[name] && (
+						<ul
+							style={{
+								color: "red",
+							}}
+						>
+							{errors[name].message.map((message, index) => (
+								<li key={index}>{message}</li>
+							))}
+						</ul>
+					)}
+				</div>
+			);
+		},
 	},
 
 	dynamic,

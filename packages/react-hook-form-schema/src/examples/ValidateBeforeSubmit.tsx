@@ -1,12 +1,12 @@
-import { type ReactElement, useState } from "react";
-import { Controller } from "react-hook-form";
-import Select from "react-select";
 import type { GetFieldSchema } from "@vtaits/form-schema";
 import {
 	type FieldType,
 	type GetFieldType,
 	useFormSchema,
 } from "@vtaits/react-hook-form-schema";
+import { type ReactElement, useState } from "react";
+import { Controller } from "react-hook-form";
+import Select from "react-select";
 
 type Option = {
 	value: number;
@@ -83,14 +83,18 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		validatorBeforeSubmit: (values, name, { required }) => {
+		validatorBeforeSubmit: (
+			setError,
+			values,
+			name,
+			{ required },
+			getFieldSchema,
+			getFieldType,
+			parents,
+		) => {
 			if (required && !values[name]) {
-				return {
-					[name]: ["This field is required."],
-				};
+				setError(name, parents, ["This field is required."]);
 			}
-
-			return {};
 		},
 	},
 };

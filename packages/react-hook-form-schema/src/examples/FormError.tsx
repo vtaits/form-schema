@@ -1,9 +1,9 @@
-import type { ReactElement } from "react";
 import type { GetFieldSchema } from "@vtaits/form-schema";
 import {
 	type GetFieldType,
 	useFormSchema,
 } from "@vtaits/react-hook-form-schema";
+import type { ReactElement } from "react";
 
 const getFieldType: GetFieldType<unknown> = () => ({
 	render: () => null,
@@ -19,44 +19,36 @@ const delay = (ms: number): Promise<void> =>
 	});
 
 export function FormError(): ReactElement {
-	const onSubmit = async (): Promise<Record<string, any>> => {
-		await delay(1000);
-
-		return {
-			formError: "Error",
-		};
-	};
-
 	const {
 		formState: { errors, isSubmitting },
 		handleSubmit,
-		clearErrors,
+		setError,
 	} = useFormSchema({
 		getFieldSchema,
 		getFieldType,
 		names: [],
 	});
 
+	const onSubmit = async (): Promise<void> => {
+		await delay(1000);
+
+		setError("root", {
+			type: "serverError",
+			message: "Error",
+		});
+	};
+
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			{errors.formError && (
+			{errors.root && (
 				<div>
 					<p
 						style={{
 							color: "red",
 						}}
 					>
-						{errors.formError.message}
+						{errors.root.message}
 					</p>
-
-					<button
-						type="button"
-						onClick={() => {
-							clearErrors();
-						}}
-					>
-						Clean error
-					</button>
 				</div>
 			)}
 

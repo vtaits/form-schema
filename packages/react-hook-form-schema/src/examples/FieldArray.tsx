@@ -1,21 +1,27 @@
-import { Fragment, useState, type ReactElement, type ReactNode } from "react";
 import {
 	type GetFieldSchema,
-	serialize,
 	parse,
-	mapFieldErrors,
+	serialize,
+	setFieldErrors,
 } from "@vtaits/form-schema";
 import {
 	type FieldType,
 	type GetFieldType,
+	type RenderParams,
 	renderBySchema,
 	useFormSchema,
-	type RenderParams,
 } from "@vtaits/react-hook-form-schema";
-import { useFieldArray, type FieldValues, type UseFormReturn, type ArrayPath, type FieldArray } from "react-hook-form";
-import get from 'lodash/get';
+import get from "lodash/get";
+import { Fragment, type ReactElement, type ReactNode, useState } from "react";
+import {
+	type ArrayPath,
+	type FieldArray,
+	type FieldValues,
+	type UseFormReturn,
+	useFieldArray,
+} from "react-hook-form";
 
-const ARRAY_ERROR = 'ARRAY_ERROR';
+const ARRAY_ERROR = "ARRAY_ERROR";
 
 type FieldArraySchema = {
 	type: "array";
@@ -46,40 +52,34 @@ export type ArrayComponentProps<
 };
 
 function ArrayComponent<
-FieldSchema,
-Values extends FieldValues,
-RawValues extends FieldValues,
-SerializedValues extends FieldValues,
-Errors extends Record<string, any>,
-Payload,
-TContext,
+	FieldSchema,
+	Values extends FieldValues,
+	RawValues extends FieldValues,
+	SerializedValues extends FieldValues,
+	Errors extends Record<string, any>,
+	Payload,
+	TContext,
 >({
-	renderParams: {
-		getFieldSchema,
-		getFieldType,
-		name,
-		fieldSchema,
-		parents,
-	},
+	renderParams: { getFieldSchema, getFieldType, name, fieldSchema, parents },
 	formResult,
 }: ArrayComponentProps<
-FieldSchema,
-Values,
-RawValues,
-SerializedValues,
-Errors,
-Payload,
-TContext>): ReactElement {
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors,
+	Payload,
+	TContext
+>): ReactElement {
 	const { label, names, initialValues } = fieldSchema as FieldArraySchema;
 
-	const errors = formResult.formState.errors[name]?.message as Record<string, unknown> | null;
+	const errors = formResult.formState.errors[name]?.message as Record<
+		string,
+		unknown
+	> | null;
 	const arrayError = errors ? errors[ARRAY_ERROR] : null;
 
-	const {
-		append,
-		fields,
-		remove,
-	} = useFieldArray({
+	const { append, fields, remove } = useFieldArray({
 		control: formResult.control,
 		name: name as ArrayPath<Values>,
 	});
@@ -134,7 +134,9 @@ TContext>): ReactElement {
 			<button
 				type="button"
 				onClick={(): void => {
-					append((initialValues || {}) as FieldArray<Values, ArrayPath<Values>>[]);
+					append(
+						(initialValues || {}) as FieldArray<Values, ArrayPath<Values>>[],
+					);
 				}}
 			>
 				Add
@@ -245,7 +247,8 @@ const fieldTypes: Record<
 			};
 		},
 
-		errorsMapper: (
+		errorsSetter: (
+			setError,
 			errors,
 			name,
 			schema,
@@ -263,33 +266,33 @@ const fieldTypes: Record<
 				return {};
 			}
 
-			if (arrayErrors instanceof Array && typeof arrayErrors[0] === "string") {
-				return {
-					[name]: {
-						[ARRAY_ERROR]: arrayErrors,
-					},
-				};
+			if (Array.isArray(arrayErrors) && typeof arrayErrors[0] === "string") {
+				setError(name, parents, arrayErrors);
+				return;
 			}
 
-			return {
-				[name]: (arrayErrors as Errors[]).map((arrayError, index) =>
-					mapFieldErrors(
-						arrayError || {},
-						names,
-						getFieldSchema,
-						getFieldType,
-						values,
-						rawValues,
-						[
-							...parents,
-							{
-								name: index,
-								values: rawValues,
-							},
-						],
-					),
-				),
-			};
+			(arrayErrors as Errors[]).forEach((arrayError, index) => {
+				setFieldErrors(
+					setError,
+					arrayError || {},
+					names,
+					getFieldSchema,
+					getFieldType,
+					values,
+					rawValues,
+					[
+						...parents,
+						{
+							name,
+							values: rawValues[name],
+						},
+						{
+							name: index,
+							values: rawValues[name][index],
+						},
+					],
+				);
+			});
 		},
 	},
 
@@ -302,9 +305,11 @@ const fieldTypes: Record<
 
 			const name = payload ? `${payload}.${nameProp}` : nameProp;
 
-			const fieldErrors = get(errors, name) as {
-				message: string[];
-			} | undefined;
+			const fieldErrors = get(errors, name) as
+				| {
+						message: string[];
+				  }
+				| undefined;
 
 			return (
 				<div>
@@ -408,11 +413,7 @@ export function FieldArray(): ReactElement {
 					const errorObj: Record<string, any> = {};
 
 					if (!firstName) {
-						setError(`root.users.${index}.firstName`, {
-							type: 'custom',
-							message: ["This field is required"],
-						})
-						// errorObj.firstName = ["This field is required"];
+						errorObj.firstName = ["This field is required"];
 					}
 
 					if (!lastName) {
@@ -440,14 +441,11 @@ export function FieldArray(): ReactElement {
 		formState: { isSubmitting, errors },
 		handleSubmit,
 		renderField,
-		setError,
 	} = useFormSchema({
 		getFieldSchema,
 		getFieldType,
 		names,
 	});
-
-	console.log(errors);
 
 	return (
 		<>

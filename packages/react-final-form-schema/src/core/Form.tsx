@@ -14,10 +14,9 @@ import { Form as FinalForm } from "react-final-form";
 import type { FormProps as FinalFormProps } from "react-final-form";
 
 import { FormSchemaContext } from "./FormSchemaContext";
-
-import type { FormProps, FormSchemaContextType, MapErrors } from "./types";
-
 import { IS_VALUES_READY_NAME } from "./constants";
+import { makeSetErrors } from "./makeSetErrors";
+import type { FormProps, FormSchemaContextType, MapErrors } from "./types";
 
 export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) =>
 	fieldSchema;
@@ -82,22 +81,7 @@ export function Form<
 			const validationErrors = {} as Errors;
 
 			validateBeforeSubmit(
-				(fieldName, parents, error) => {
-					if (parents) {
-						set(
-							validationErrors,
-							[
-								...parents
-									.filter((parent) => parent.name)
-									.map((parent) => parent.name as string),
-								fieldName,
-							],
-							error,
-						);
-					} else {
-						set(validationErrors, fieldName, error);
-					}
-				},
+				makeSetErrors(validationErrors),
 				values,
 				names,
 				getFieldSchema,
@@ -140,22 +124,7 @@ export function Form<
 			const mappedErrors = {} as Errors;
 
 			setFieldErrors(
-				(fieldName, parents, error) => {
-					if (parents) {
-						set(
-							mappedErrors,
-							[
-								...parents
-									.filter((parent) => parent.name)
-									.map((parent) => parent.name as string),
-								fieldName,
-							],
-							error,
-						);
-					} else {
-						set(mappedErrors, fieldName, error);
-					}
-				},
+				makeSetErrors(mappedErrors),
 				preparedErrors,
 				names,
 				getFieldSchema,

@@ -1,9 +1,9 @@
 import {
 	type GetFieldSchema,
 	type ParentType,
-	mapFieldErrors,
 	parse,
 	serialize,
+	setFieldErrors,
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
 import isPromise from "is-promise";
@@ -17,6 +17,7 @@ import {
 	useForm,
 } from "react-hook-form";
 
+import { makeSetErrors } from "./makeSetErrors";
 import { renderBySchema } from "./renderBySchema";
 import type {
 	MapErrors,
@@ -112,25 +113,18 @@ export function useFormSchema<
 
 	const { getValues, setError } = restResult;
 
-	const setErrors = useCallback(
-		(errors: Errors) => {
-			for (const [name, error] of Object.entries(errors)) {
-				setError(name as Path<Values>, {
-					type: "serverError",
-					message: error,
-				});
-			}
-		},
-		[setError],
-	);
-
 	const onSubmitBySchema = useCallback(
 		async (
 			onSubmit: OnSubmit<Values, SerializedValues, Errors>,
 			values: Values,
 			event?: BaseSyntheticEvent,
 		) => {
-			const validationErrors = validateBeforeSubmit(
+			let hasCleintError = false;
+
+			validateBeforeSubmit(
+				makeSetErrors(setError, "clientError", () => {
+					hasCleintError = true;
+				}),
 				values,
 				names,
 				getFieldSchema,
@@ -142,8 +136,7 @@ export function useFormSchema<
 				],
 			);
 
-			if (Object.keys(validationErrors).length > 0) {
-				setErrors(validationErrors);
+			if (hasCleintError) {
 				return;
 			}
 
@@ -171,7 +164,8 @@ export function useFormSchema<
 				values,
 			);
 
-			const mappedErrors = mapFieldErrors(
+			setFieldErrors(
+				makeSetErrors(setError, "serverError", () => {}),
 				preparedErrors,
 				names,
 				getFieldSchema,
@@ -184,10 +178,8 @@ export function useFormSchema<
 					},
 				],
 			);
-
-			setErrors(mappedErrors);
 		},
-		[names, getFieldSchema, getFieldType, mapErrors, setErrors],
+		[names, getFieldSchema, getFieldType, mapErrors, setError],
 	);
 
 	const handleSubmitBySchema = useCallback(
@@ -213,15 +205,16 @@ export function useFormSchema<
 			name: string,
 			payload?: Payload,
 			parents?: readonly ParentType<Values>[],
-		) => renderBySchema(
-			formResult,
-			getFieldSchema,
-			getFieldType,
-			getValues,
-			name,
-			payload,
-			parents,
-		),
+		) =>
+			renderBySchema(
+				formResult,
+				getFieldSchema,
+				getFieldType,
+				getValues,
+				name,
+				payload,
+				parents,
+			),
 		[formResult, getFieldSchema, getFieldType, getValues],
 	);
 

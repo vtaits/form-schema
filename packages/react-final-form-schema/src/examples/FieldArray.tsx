@@ -247,7 +247,7 @@ const fieldTypes: Record<
 			};
 		},
 
-		errorsMapper: (
+		errorsSetter: (
 			setError,
 			errors,
 			name,
@@ -267,11 +267,8 @@ const fieldTypes: Record<
 			}
 
 			if (Array.isArray(arrayErrors) && typeof arrayErrors[0] === "string") {
-				return {
-					[name]: {
-						[ARRAY_ERROR]: arrayErrors,
-					},
-				};
+				setError(name, parents, arrayErrors);
+				return;
 			}
 
 			(arrayErrors as Errors[]).forEach((arrayError, index) => {
@@ -286,8 +283,12 @@ const fieldTypes: Record<
 					[
 						...parents,
 						{
+							name,
+							values: rawValues[name],
+						},
+						{
 							name: index,
-							values: rawValues,
+							values: rawValues[name][index],
 						},
 					],
 				);
