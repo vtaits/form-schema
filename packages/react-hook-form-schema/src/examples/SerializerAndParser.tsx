@@ -50,15 +50,13 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 							color: "red",
 						}}
 					>
-						{errors[name].message.map((message, index) => (
-							<li key={index}>{message}</li>
-						))}
+						<li>{errors[name].message}</li>
 					</ul>
 				)}
 			</div>
 		),
 
-		serializer: (values, name) => {
+		serializer: ({ values, name }) => {
 			const value = values[name];
 
 			return {
@@ -66,7 +64,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		parser: async (values, name, { options }) => {
+		parser: async ({ values, name, fieldSchema: { options } }) => {
 			const value = values[name];
 
 			await new Promise((resolve) => {

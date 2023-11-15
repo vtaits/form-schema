@@ -31,9 +31,7 @@ const fieldTypes: Record<string, FieldType<InputSchema>> = {
 							color: "red",
 						}}
 					>
-						{errors[name].message.map((message, index) => (
-							<li key={index}>{message}</li>
-						))}
+						<li>{errors[name].message}</li>
 					</ul>
 				)}
 			</div>

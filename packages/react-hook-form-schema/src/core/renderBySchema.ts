@@ -42,14 +42,14 @@ export function renderBySchema<
 	];
 
 	const childGetFieldSchema: GetFieldSchema<FieldSchema> = createGetFieldSchema
-		? createGetFieldSchema(
+		? createGetFieldSchema({
 				fieldSchema,
 				getFieldSchema,
 				getFieldType,
 				values,
-				"render",
-				providedParents,
-		  )
+				phase: "render",
+				parents: providedParents,
+		  })
 		: getFieldSchema;
 
 	return render(

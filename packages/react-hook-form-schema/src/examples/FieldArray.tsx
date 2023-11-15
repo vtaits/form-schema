@@ -15,7 +15,7 @@ import get from "lodash/get";
 import { Fragment, type ReactElement, type ReactNode, useState } from "react";
 import {
 	type ArrayPath,
-	type FieldArray,
+	type FieldArray as FieldArrayType,
 	type FieldValues,
 	type UseFormReturn,
 	useFieldArray,
@@ -135,7 +135,10 @@ function ArrayComponent<
 				type="button"
 				onClick={(): void => {
 					append(
-						(initialValues || {}) as FieldArray<Values, ArrayPath<Values>>[],
+						(initialValues || {}) as FieldArrayType<
+							Values,
+							ArrayPath<Values>
+						>[],
 					);
 				}}
 			>
@@ -148,9 +151,7 @@ function ArrayComponent<
 						color: "red",
 					}}
 				>
-					{arrayError.map((message, index) => (
-						<li key={index}>{message}</li>
-					))}
+					<li>{arrayError}</li>
 				</ul>
 			)}
 		</>
@@ -176,23 +177,23 @@ const fieldTypes: Record<
 			<ArrayComponent renderParams={renderParams} formResult={formResult} />
 		),
 
-		createGetFieldSchema: (schema) => {
-			const { fields } = schema as FieldArraySchema;
+		createGetFieldSchema: ({ fieldSchema }) => {
+			const { fields } = fieldSchema as FieldArraySchema;
 			const getChildFieldSchema: GetFieldSchema<FieldSchema> = (name: string) =>
 				fields[name];
 
 			return getChildFieldSchema;
 		},
 
-		serializer: (
+		serializer: ({
 			values,
 			name,
-			schema,
+			fieldSchema,
 			getFieldSchema,
 			getFieldType,
 			parents,
-		) => {
-			const { names } = schema as FieldArraySchema;
+		}) => {
+			const { names } = fieldSchema as FieldArraySchema;
 
 			const arrayValues = values[name];
 
@@ -204,61 +205,86 @@ const fieldTypes: Record<
 
 			return {
 				[name]: (arrayValues as Values[]).map((arrayValue, index) =>
-					serialize(arrayValue || {}, names, getFieldSchema, getFieldType, [
-						...parents,
-						{
-							name: index,
-							values: arrayValue || {},
-						},
-					]),
+					serialize({
+						values: arrayValue || {},
+						names,
+						getFieldSchema,
+						getFieldType,
+						parents: [
+							...parents,
+							{
+								name: index,
+								values: arrayValue || {},
+							},
+						],
+					}),
 				),
 			};
 		},
 
-		parser: (values, name, schema, getFieldSchema, getFieldType, parents) => {
-			const { names } = schema as FieldArraySchema;
+		parser: ({
+			values,
+			name,
+			fieldSchema,
+			getFieldSchema,
+			getFieldType,
+			parents,
+		}) => {
+			const { names } = fieldSchema as FieldArraySchema;
 
 			const arrayValues = values[name];
 
 			if (!arrayValues || arrayValues.length === 0) {
 				return {
 					[name]: [
-						parse({}, names, getFieldSchema, getFieldType, [
-							...parents,
-							{
-								name: 0,
-								values: {},
-							},
-						]),
+						parse({
+							values: {},
+							names,
+							getFieldSchema,
+							getFieldType,
+							parents: [
+								...parents,
+								{
+									name: 0,
+									values: {},
+								},
+							],
+						}),
 					],
 				};
 			}
 
 			return {
 				[name]: (arrayValues as Values[]).map((arrayValue, index) =>
-					parse(arrayValue || {}, names, getFieldSchema, getFieldType, [
-						...parents,
-						{
-							name: index,
-							values: arrayValue || {},
-						},
-					]),
+					parse({
+						values: arrayValue || {},
+						names,
+						getFieldSchema,
+						getFieldType,
+						parents: [
+							...parents,
+							{
+								name: index,
+								values: arrayValue || {},
+							},
+						],
+					}),
 				),
 			};
 		},
 
-		errorsSetter: (
+		errorsSetter: ({
 			setError,
 			errors,
 			name,
-			schema,
+			fieldSchema,
 			getFieldSchema,
 			getFieldType,
 			values,
 			rawValues,
 			parents,
-		) => {
-			const { names } = schema as FieldArraySchema;
+		}) => {
+			const { names } = fieldSchema as FieldArraySchema;
 
 			const arrayErrors = errors[name];
 
@@ -271,28 +297,32 @@ const fieldTypes: Record<
 				return;
 			}
 
-			(arrayErrors as Errors[]).forEach((arrayError, index) => {
-				setFieldErrors(
-					setError,
-					arrayError || {},
-					names,
-					getFieldSchema,
-					getFieldType,
-					values,
-					rawValues,
-					[
-						...parents,
-						{
-							name,
-							values: rawValues[name],
-						},
-						{
-							name: index,
-							values: rawValues[name][index],
-						},
-					],
-				);
-			});
+			if (Array.isArray(arrayErrors)) {
+				for (let index = 0; index < arrayErrors.length; ++index) {
+					const arrayError = arrayErrors[index];
+
+					setFieldErrors({
+						setError,
+						errors: arrayError || {},
+						names,
+						getFieldSchema,
+						getFieldType,
+						values,
+						rawValues,
+						parents: [
+							...parents,
+							{
+								name,
+								values: rawValues[name],
+							},
+							{
+								name: index,
+								values: rawValues[name][index],
+							},
+						],
+					});
+				}
+			}
 		},
 	},
 
@@ -325,9 +355,7 @@ const fieldTypes: Record<
 								color: "red",
 							}}
 						>
-							{fieldErrors.message.map((message, index) => (
-								<li key={index}>{message}</li>
-							))}
+							<li>{fieldErrors.message}</li>
 						</ul>
 					)}
 				</div>
@@ -407,22 +435,29 @@ export function FieldArray(): ReactElement {
 			let hasError = false;
 			const usersErrors: Array<Record<string, any>> = [];
 
-			values.users.forEach(({ firstName, lastName }, index) => {
+			const users = values.users as {
+				firstName?: string;
+				lastName?: string;
+			}[];
+
+			for (let index = 0; index < users.length; ++index) {
+				const { firstName, lastName } = users[index];
+
 				if (!firstName || !lastName) {
 					hasError = true;
 					const errorObj: Record<string, any> = {};
 
 					if (!firstName) {
-						errorObj.firstName = ["This field is required"];
+						errorObj.firstName = "This field is required";
 					}
 
 					if (!lastName) {
-						errorObj.lastName = ["This field is required"];
+						errorObj.lastName = "This field is required";
 					}
 
 					usersErrors[index] = errorObj;
 				}
-			});
+			}
 
 			if (hasError) {
 				errors.users = usersErrors;

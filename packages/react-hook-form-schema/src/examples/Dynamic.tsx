@@ -42,9 +42,7 @@ const fieldTypes: Record<string, FieldType<any>> = {
 								color: "red",
 							}}
 						>
-							{errors[name].message.map((message, index) => (
-								<li key={index}>{message}</li>
-							))}
+							<li>{errors[name].message}</li>
 						</ul>
 					)}
 				</div>

@@ -63,44 +63,50 @@ export function useFormSchema<
 			return () =>
 				defaultValues().then(
 					(rawInitialValues) =>
-						(parse(rawInitialValues, names, getFieldSchema, getFieldType, [
-							{
-								values: rawInitialValues,
-							},
-						]) || {}) as Values,
+						(parse({
+							values: rawInitialValues,
+							names,
+							getFieldSchema,
+							getFieldType,
+							parents: [
+								{
+									values: rawInitialValues,
+								},
+							],
+						}) || {}) as Values,
 				);
 		}
 
 		const rawInitialValues = defaultValues || {};
 
-		const parseResult = parse(
-			rawInitialValues as RawValues,
+		const parseResult = parse({
+			values: rawInitialValues as RawValues,
 			names,
 			getFieldSchema,
 			getFieldType,
-			[
+			parents: [
 				{
 					values: rawInitialValues as RawValues,
 				},
 			],
-		);
+		});
 
 		if (isPromise(parseResult)) {
 			return () => parseResult;
 		}
 
 		return (
-			(parse(
-				rawInitialValues as RawValues,
+			(parse({
+				values: rawInitialValues as RawValues,
 				names,
 				getFieldSchema,
 				getFieldType,
-				[
+				parents: [
 					{
 						values: rawInitialValues as RawValues,
 					},
 				],
-			) as DefaultValues<Values>) || undefined
+			}) as DefaultValues<Values>) || undefined
 		);
 	}, [defaultValues, names, getFieldSchema, getFieldType]);
 
@@ -121,36 +127,36 @@ export function useFormSchema<
 		) => {
 			let hasCleintError = false;
 
-			validateBeforeSubmit(
-				makeSetError(setError, "clientError", () => {
+			validateBeforeSubmit({
+				setError: makeSetError(setError, "clientError", () => {
 					hasCleintError = true;
 				}),
 				values,
 				names,
 				getFieldSchema,
 				getFieldType,
-				[
+				parents: [
 					{
 						values,
 					},
 				],
-			);
+			});
 
 			if (hasCleintError) {
 				return;
 			}
 
-			const valuesForSubmit = serialize(
+			const valuesForSubmit = serialize({
 				values,
 				names,
 				getFieldSchema,
 				getFieldType,
-				[
+				parents: [
 					{
 						values,
 					},
 				],
-			);
+			});
 
 			const rawErrors = await onSubmit(valuesForSubmit, values, event);
 
@@ -164,20 +170,20 @@ export function useFormSchema<
 				values,
 			);
 
-			setFieldErrors(
-				makeSetError(setError, "serverError", () => {}),
-				preparedErrors,
+			setFieldErrors({
+				setError: makeSetError(setError, "serverError", () => {}),
+				errors: preparedErrors,
 				names,
 				getFieldSchema,
 				getFieldType,
-				valuesForSubmit,
-				values,
-				[
+				values: valuesForSubmit,
+				rawValues: values,
+				parents: [
 					{
 						values,
 					},
 				],
-			);
+			});
 		},
 		[names, getFieldSchema, getFieldType, mapErrors, setError],
 	);

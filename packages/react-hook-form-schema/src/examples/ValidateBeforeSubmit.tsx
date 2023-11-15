@@ -51,15 +51,13 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 							color: "red",
 						}}
 					>
-						{errors[name].message.map((message, index) => (
-							<li key={index}>{message}</li>
-						))}
+						<li>{errors[name].message}</li>
 					</ul>
 				)}
 			</div>
 		),
 
-		serializer: (values, name) => {
+		serializer: ({ values, name }) => {
 			const value = values[name];
 
 			return {
@@ -67,7 +65,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		parser: (values, name, { options }) => {
+		parser: ({ values, name, fieldSchema: { options } }) => {
 			const value = values[name];
 
 			return {
@@ -83,15 +81,15 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		validatorBeforeSubmit: (
+		validatorBeforeSubmit: ({
 			setError,
 			values,
 			name,
-			{ required },
+			fieldSchema: { required },
 			getFieldSchema,
 			getFieldType,
 			parents,
-		) => {
+		}) => {
 			if (required && !values[name]) {
 				setError(name, parents, ["This field is required."]);
 			}
