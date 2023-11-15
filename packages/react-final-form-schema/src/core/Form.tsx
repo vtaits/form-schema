@@ -6,7 +6,6 @@ import {
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
 import isPromise from "is-promise";
-import set from "lodash/set";
 import { useCallback, useMemo } from "react";
 import type { ReactElement } from "react";
 import { useAsync } from "react-async-hook";
@@ -15,7 +14,7 @@ import type { FormProps as FinalFormProps } from "react-final-form";
 
 import { FormSchemaContext } from "./FormSchemaContext";
 import { IS_VALUES_READY_NAME } from "./constants";
-import { makeSetErrors } from "./makeSetErrors";
+import { makeSetError } from "./makeSetError";
 import type { FormProps, FormSchemaContextType, MapErrors } from "./types";
 
 export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) =>
@@ -58,17 +57,17 @@ export function Form<
 	const initialValuesResult = useMemo(() => {
 		const rawInitialValues = initialValuesProp || {};
 
-		return parse(
-			rawInitialValues as RawValues,
+		return parse({
+			values: rawInitialValues as RawValues,
 			names,
 			getFieldSchema,
 			getFieldType,
-			[
+			parents: [
 				{
 					values: rawInitialValues as RawValues,
 				},
 			],
-		);
+		});
 	}, [initialValuesProp, names, getFieldSchema, getFieldType]);
 
 	const { result: initialValues } = useAsync(
@@ -80,34 +79,34 @@ export function Form<
 		async (values) => {
 			const validationErrors = {} as Errors;
 
-			validateBeforeSubmit(
-				makeSetErrors(validationErrors),
+			validateBeforeSubmit({
+				setError: makeSetError(validationErrors),
 				values,
 				names,
 				getFieldSchema,
 				getFieldType,
-				[
+				parents: [
 					{
 						values,
 					},
 				],
-			);
+			});
 
 			if (Object.keys(validationErrors).length > 0) {
 				return validationErrors;
 			}
 
-			const valuesForSubmit = serialize(
+			const valuesForSubmit = serialize({
 				values,
 				names,
 				getFieldSchema,
 				getFieldType,
-				[
+				parents: [
 					{
 						values,
 					},
 				],
-			);
+			});
 
 			const rawErrors = await onSubmitProp(valuesForSubmit, values);
 
@@ -123,20 +122,20 @@ export function Form<
 
 			const mappedErrors = {} as Errors;
 
-			setFieldErrors(
-				makeSetErrors(mappedErrors),
-				preparedErrors,
+			setFieldErrors({
+				setError: makeSetError(mappedErrors),
+				errors: preparedErrors,
 				names,
 				getFieldSchema,
 				getFieldType,
-				valuesForSubmit,
-				values,
-				[
+				values: valuesForSubmit,
+				rawValues: values,
+				parents: [
 					{
 						values,
 					},
 				],
-			);
+			});
 
 			return mappedErrors;
 		},

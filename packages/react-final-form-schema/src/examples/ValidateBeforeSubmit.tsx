@@ -57,9 +57,7 @@ function SelectComponent({
 						color: "red",
 					}}
 				>
-					{submitError.map((message, index) => (
-						<li key={index}>{message}</li>
-					))}
+					<li>{submitError}</li>
 				</ul>
 			)}
 		</div>
@@ -70,7 +68,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 	select: {
 		component: SelectComponent,
 
-		serializer: (values, name) => {
+		serializer: ({ values, name }) => {
 			const value = values[name];
 
 			return {
@@ -78,7 +76,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		parser: (values, name, { options }) => {
+		parser: ({ values, name, fieldSchema: { options } }) => {
 			const value = values[name];
 
 			return {
@@ -94,11 +92,15 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		validatorBeforeSubmit: (values, name, { required }) => {
+		validatorBeforeSubmit: ({
+			values,
+			name,
+			parents,
+			fieldSchema: { required },
+			setError,
+		}) => {
 			if (required && !values[name]) {
-				return {
-					[name]: ["This field is required."],
-				};
+				setError(name, parents, "This field is required.");
 			}
 
 			return {};
@@ -108,7 +110,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 
 const getFieldType: GetFieldType<SelectSchema> = ({ type }) => fieldTypes[type];
 
-const fullSchema = {
+const fullSchema: Record<string, SelectSchema> = {
 	animalRequired: {
 		type: "select",
 		label: "Animal (required)",

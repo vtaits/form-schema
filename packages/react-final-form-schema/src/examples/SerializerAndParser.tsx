@@ -60,9 +60,7 @@ function SelectComponent({
 						color: "red",
 					}}
 				>
-					{submitError.map((message, index) => (
-						<li key={index}>{message}</li>
-					))}
+					<li>{submitError}</li>
 				</ul>
 			)}
 		</div>
@@ -73,7 +71,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 	select: {
 		component: SelectComponent,
 
-		serializer: (values, name) => {
+		serializer: ({ values, name }) => {
 			const value = values[name];
 
 			return {
@@ -81,7 +79,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			};
 		},
 
-		parser: async (values, name, { options }) => {
+		parser: async ({ values, name, fieldSchema: { options } }) => {
 			const value = values[name];
 
 			await new Promise((resolve) => {

@@ -17,7 +17,7 @@ import {
 	useForm,
 } from "react-hook-form";
 
-import { makeSetErrors } from "./makeSetErrors";
+import { makeSetError } from "./makeSetError";
 import { renderBySchema } from "./renderBySchema";
 import type {
 	MapErrors,
@@ -122,7 +122,7 @@ export function useFormSchema<
 			let hasCleintError = false;
 
 			validateBeforeSubmit(
-				makeSetErrors(setError, "clientError", () => {
+				makeSetError(setError, "clientError", () => {
 					hasCleintError = true;
 				}),
 				values,
@@ -165,7 +165,7 @@ export function useFormSchema<
 			);
 
 			setFieldErrors(
-				makeSetErrors(setError, "serverError", () => {}),
+				makeSetError(setError, "serverError", () => {}),
 				preparedErrors,
 				names,
 				getFieldSchema,

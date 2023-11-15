@@ -50,9 +50,7 @@ function InputComponent({
 						color: "red",
 					}}
 				>
-					{submitError.map((message, index) => (
-						<li key={index}>{message}</li>
-					))}
+					<li>{submitError}</li>
 				</ul>
 			)}
 		</div>
@@ -109,11 +107,11 @@ export function Simple(): ReactElement {
 		const errors: Record<string, any> = {};
 
 		if (!values.firstName) {
-			errors.firstName = ["This field is required"];
+			errors.firstName = "This field is required";
 		}
 
 		if (!values.lastName) {
-			errors.lastName = ["This field is required"];
+			errors.lastName = "This field is required";
 		}
 
 		if (Object.keys(errors).length === 0) {

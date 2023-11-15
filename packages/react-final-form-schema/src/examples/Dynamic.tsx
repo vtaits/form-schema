@@ -56,9 +56,7 @@ function InputComponent({
 						color: "red",
 					}}
 				>
-					{submitError.map((message, index) => (
-						<li key={index}>{message}</li>
-					))}
+					<li>{submitError}</li>
 				</ul>
 			)}
 		</div>

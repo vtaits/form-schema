@@ -1,7 +1,7 @@
 import type { ParentType } from "@vtaits/form-schema";
 import set from "lodash/set";
 
-export function makeSetErrors<
+export function makeSetError<
 	Values extends Record<string, any>,
 	Errors extends Record<string, any>,
 >(target: Errors) {

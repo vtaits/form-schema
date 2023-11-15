@@ -78,6 +78,7 @@ export function DynamicField<
 
 	const hasSchema = Boolean(schema);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: should only be called on toggle
 	useEffect(() => {
 		if (isValuesReady) {
 			if (isFirstRenderRef.current) {
@@ -86,11 +87,17 @@ export function DynamicField<
 			}
 
 			if (hasSchema) {
+				const currentSchema = schemaRef.current;
+
+				if (!currentSchema) {
+					throw new Error("[react-final-form-schema] schema is not defined");
+				}
+
 				if (onShowRef.current) {
 					onShowRef.current(
 						form,
 						name,
-						schemaRef.current,
+						currentSchema,
 						getFieldSchema,
 						getFieldType,
 						parents,

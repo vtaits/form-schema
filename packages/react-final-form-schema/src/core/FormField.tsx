@@ -84,14 +84,14 @@ export function FormField<
 		const { createGetFieldSchema } = fieldType;
 
 		if (createGetFieldSchema) {
-			return createGetFieldSchema(
+			return createGetFieldSchema({
 				fieldSchema,
 				getFieldSchema,
 				getFieldType,
-				form.getState().values as Values,
-				"render",
+				values: form.getState().values as Values,
+				phase: "render",
 				parents,
-			);
+			});
 		}
 
 		return getFieldSchema;

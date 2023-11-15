@@ -6,13 +6,17 @@ import { Form as FinalForm } from "react-final-form";
 import { create } from "react-test-engine";
 import { afterEach, expect, test, vi } from "vitest";
 
-import { Form } from "./Form";
+import { Form, defaultGetFieldSchema } from "./Form";
 import { FormSchemaContext } from "./FormSchemaContext";
 import { IS_VALUES_READY_NAME } from "./constants";
+import { makeSetError } from "./makeSetError";
 import type { FormProps } from "./types";
 
 vi.mock("react-async-hook");
 vi.mock("@vtaits/form-schema");
+vi.mock("./makeSetError");
+
+const mockedMakeSetError = vi.mocked(makeSetError);
 
 type Values = Record<string, any>;
 type Errors = Record<string, any>;
@@ -42,6 +46,10 @@ const render = create(Form, defaultProps, {
 
 afterEach(() => {
 	vi.clearAllMocks();
+});
+
+test("defaultGetFieldSchema", () => {
+	expect(defaultGetFieldSchema("foo")).toBe("foo");
 });
 
 test("should provide parsed initial values", () => {
@@ -78,17 +86,17 @@ test("should provide parsed initial values", () => {
 	});
 
 	expect(formSchema.parse).toHaveBeenCalledTimes(1);
-	expect(formSchema.parse).toHaveBeenCalledWith(
-		initialValues,
+	expect(formSchema.parse).toHaveBeenCalledWith({
+		values: initialValues,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values: initialValues,
 			},
 		],
-	);
+	});
 });
 
 test("should not provide initial values during asynchronous parse", () => {
@@ -124,17 +132,17 @@ test("should not provide initial values during asynchronous parse", () => {
 	});
 
 	expect(formSchema.parse).toHaveBeenCalledTimes(1);
-	expect(formSchema.parse).toHaveBeenCalledWith(
-		initialValues,
+	expect(formSchema.parse).toHaveBeenCalledWith({
+		values: initialValues,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values: initialValues,
 			},
 		],
-	);
+	});
 });
 
 test("should not provide initial values with `initialValuesPlaceholder` during asynchronous parse", () => {
@@ -176,17 +184,17 @@ test("should not provide initial values with `initialValuesPlaceholder` during a
 	});
 
 	expect(formSchema.parse).toHaveBeenCalledTimes(1);
-	expect(formSchema.parse).toHaveBeenCalledWith(
-		initialValues,
+	expect(formSchema.parse).toHaveBeenCalledWith({
+		values: initialValues,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values: initialValues,
 			},
 		],
-	);
+	});
 });
 
 test("should provide initial values after asynchronous parse", () => {
@@ -227,17 +235,17 @@ test("should provide initial values after asynchronous parse", () => {
 	});
 
 	expect(formSchema.parse).toHaveBeenCalledTimes(1);
-	expect(formSchema.parse).toHaveBeenCalledWith(
-		initialValues,
+	expect(formSchema.parse).toHaveBeenCalledWith({
+		values: initialValues,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values: initialValues,
 			},
 		],
-	);
+	});
 });
 
 test("should provide empty object to parser if initial values not defined", () => {
@@ -265,17 +273,17 @@ test("should provide empty object to parser if initial values not defined", () =
 	});
 
 	expect(formSchema.parse).toHaveBeenCalledTimes(1);
-	expect(formSchema.parse).toHaveBeenCalledWith(
-		{},
+	expect(formSchema.parse).toHaveBeenCalledWith({
+		values: {},
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values: {},
 			},
 		],
-	);
+	});
 });
 
 test("should validate before submit", async () => {
@@ -287,11 +295,12 @@ test("should validate before submit", async () => {
 		test1: "value1",
 	};
 
-	const clientErrors = {
-		test2: "error2",
-	};
+	const setError = vi.fn();
 
-	vi.mocked(formSchema.validateBeforeSubmit).mockReturnValue(clientErrors);
+	mockedMakeSetError.mockImplementation((errors) => {
+		errors.test2 = "error2";
+		return setError;
+	});
 
 	const onSubmit = vi.fn();
 	const mapErrors = vi.fn();
@@ -313,25 +322,30 @@ test("should validate before submit", async () => {
 		{} as FormApi<unknown, unknown>,
 	);
 
-	expect(result).toBe(clientErrors);
+	expect(result).toEqual({
+		test2: "error2",
+	});
+
+	expect(mockedMakeSetError).toHaveBeenCalledTimes(1);
 
 	expect(formSchema.validateBeforeSubmit).toHaveBeenCalledTimes(1);
-	expect(formSchema.validateBeforeSubmit).toHaveBeenCalledWith(
+	expect(formSchema.validateBeforeSubmit).toHaveBeenCalledWith({
+		setError,
 		values,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values,
 			},
 		],
-	);
+	});
 
 	expect(formSchema.serialize).toHaveBeenCalledTimes(0);
 	expect(onSubmit).toHaveBeenCalledTimes(0);
 	expect(mapErrors).toHaveBeenCalledTimes(0);
-	expect(formSchema.mapFieldErrors).toHaveBeenCalledTimes(0);
+	expect(formSchema.setFieldErrors).toHaveBeenCalledTimes(0);
 });
 
 test("should submit successfully", async () => {
@@ -347,8 +361,11 @@ test("should submit successfully", async () => {
 		test2: "value2",
 	};
 
+	const setError = vi.fn();
+
+	mockedMakeSetError.mockReturnValue(setError);
+
 	vi.mocked(formSchema.serialize).mockReturnValue(serializedValues);
-	vi.mocked(formSchema.validateBeforeSubmit).mockReturnValue({});
 
 	const onSubmit = vi.fn();
 	const mapErrors = vi.fn();
@@ -372,24 +389,26 @@ test("should submit successfully", async () => {
 
 	expect(result).toBeFalsy();
 
+	expect(mockedMakeSetError).toHaveBeenCalledTimes(1);
+
 	expect(formSchema.serialize).toHaveBeenCalledTimes(1);
-	expect(formSchema.serialize).toHaveBeenCalledWith(
+	expect(formSchema.serialize).toHaveBeenCalledWith({
 		values,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values,
 			},
 		],
-	);
+	});
 
 	expect(onSubmit).toHaveBeenCalledTimes(1);
 	expect(onSubmit).toHaveBeenCalledWith(serializedValues, values);
 
 	expect(mapErrors).toHaveBeenCalledTimes(0);
-	expect(formSchema.mapFieldErrors).toHaveBeenCalledTimes(0);
+	expect(formSchema.setFieldErrors).toHaveBeenCalledTimes(0);
 });
 
 test("should submit with error", async () => {
@@ -413,16 +432,19 @@ test("should submit with error", async () => {
 		test2: "error2",
 	};
 
-	const errors = {
-		test3: "error3",
-	};
-
 	vi.mocked(formSchema.serialize).mockReturnValue(serializedValues);
 
 	const onSubmit = vi.fn<[Values, Values], any>(() => rawErrors);
 	const mapErrors = vi.fn<[Errors, Values, Values], any>(() => preparedErrors);
 
-	vi.mocked(formSchema.mapFieldErrors).mockReturnValue(errors);
+	const setError = vi.fn();
+
+	mockedMakeSetError
+		.mockImplementationOnce(() => vi.fn())
+		.mockImplementationOnce((target) => {
+			target.test3 = "error3";
+			return setError;
+		});
 
 	const engine = render({
 		getFieldSchema,
@@ -441,20 +463,22 @@ test("should submit with error", async () => {
 		{} as FormApi<unknown, unknown>,
 	);
 
-	expect(result).toBe(errors);
+	expect(result).toEqual({
+		test3: "error3",
+	});
 
 	expect(formSchema.serialize).toHaveBeenCalledTimes(1);
-	expect(formSchema.serialize).toHaveBeenCalledWith(
+	expect(formSchema.serialize).toHaveBeenCalledWith({
 		values,
 		names,
 		getFieldSchema,
 		getFieldType,
-		[
+		parents: [
 			{
 				values,
 			},
 		],
-	);
+	});
 
 	expect(onSubmit).toHaveBeenCalledTimes(1);
 	expect(onSubmit).toHaveBeenCalledWith(serializedValues, values);
@@ -462,20 +486,23 @@ test("should submit with error", async () => {
 	expect(mapErrors).toHaveBeenCalledTimes(1);
 	expect(mapErrors).toHaveBeenCalledWith(rawErrors, serializedValues, values);
 
-	expect(formSchema.mapFieldErrors).toHaveBeenCalledTimes(1);
-	expect(formSchema.mapFieldErrors).toHaveBeenCalledWith(
-		preparedErrors,
+	expect(mockedMakeSetError).toHaveBeenCalledTimes(2);
+
+	expect(formSchema.setFieldErrors).toHaveBeenCalledTimes(1);
+	expect(formSchema.setFieldErrors).toHaveBeenCalledWith({
+		setError,
+		errors: preparedErrors,
 		names,
 		getFieldSchema,
 		getFieldType,
-		serializedValues,
-		values,
-		[
+		values: serializedValues,
+		rawValues: values,
+		parents: [
 			{
 				values,
 			},
 		],
-	);
+	});
 });
 
 test("should provide form render props to children", () => {
