@@ -26,97 +26,97 @@ afterEach(() => {
 
 describe("defaultFieldErrorsSetter", () => {
 	test("set error by name", () => {
-		defaultFieldErrorsSetter(
+		defaultFieldErrorsSetter({
 			setError,
-			{
+			errors: {
 				foo: "error1",
 				bar: "error2",
 			},
-			"foo",
-			null,
-			vi.fn(),
-			vi.fn(),
-			{},
-			{},
+			name: "foo",
+			fieldSchema: null,
+			getFieldSchema: vi.fn(),
+			getFieldType: vi.fn(),
+			values: {},
+			rawValues: {},
 			parents,
-		);
+		});
 
 		expect(setError).toHaveBeenCalledTimes(1);
 		expect(setError).toHaveBeenNthCalledWith(1, "foo", parents, "error1");
 	});
 
 	test("not set error if there is no error by name", () => {
-		defaultFieldErrorsSetter(
+		defaultFieldErrorsSetter({
 			setError,
-			{
+			errors: {
 				bar: "error2",
 			},
-			"foo",
-			null,
-			vi.fn(),
-			vi.fn(),
-			{},
-			{},
+			name: "foo",
+			fieldSchema: null,
+			getFieldSchema: vi.fn(),
+			getFieldType: vi.fn(),
+			values: {},
+			rawValues: {},
 			parents,
-		);
+		});
 		expect(setError).toHaveBeenCalledTimes(0);
 	});
 });
 
 describe("setFieldErrors", () => {
 	test("should call default errors mapper", () => {
-		setFieldErrors(
+		setFieldErrors({
 			setError,
-			{
+			errors: {
 				value: ["test"],
 				value2: ["test2"],
 			},
-			["value"],
-			(): any => ({
+			names: ["value"],
+			getFieldSchema: (): any => ({
 				type: "testType",
 				name: "value",
 			}),
-			(): FieldType<any, any, any, any, any> => ({}),
-			{},
-			{},
+			getFieldType: (): FieldType<any, any, any, any, any> => ({}),
+			values: {},
+			rawValues: {},
 			parents,
-		);
+		});
 
 		expect(setError).toHaveBeenCalledTimes(1);
 		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["test"]);
 	});
 
 	test("should call redefined errors mapper", () => {
-		setFieldErrors(
+		setFieldErrors({
 			setError,
-			{
+			errors: {
 				value: ["test"],
 				value2: ["test2"],
 			} as Record<string, string[]>,
-			["value"],
-			(): any => ({
+			names: ["value"],
+			getFieldSchema: (): any => ({
 				type: "testType",
 				name: "value",
 			}),
-			() => ({
-				errorsSetter: (
-					setErrorCb,
+			getFieldType: () => ({
+				errorsSetter: ({
+					setError: setErrorCb,
 					errors,
 					name,
 					fieldSchema,
-					computedGetFieldSchema,
+					getFieldSchema: computedGetFieldSchema,
 					getFieldType,
 					values,
 					rawValues,
 					parents,
-				) => {
+				}) => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
 				},
 			}),
-			{},
-			{},
+			values: {},
+			rawValues: {},
 			parents,
-		);
+		});
 
 		expect(setError).toHaveBeenCalledTimes(1);
 		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["testtest"]);
@@ -139,56 +139,58 @@ describe("setFieldErrors", () => {
 
 		const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 			testType1: {
-				errorsSetter: (
-					setErrorCb,
+				errorsSetter: ({
+					setError: setErrorCb,
 					errors,
 					name,
 					fieldSchema,
-					computedGetFieldSchema,
+					getFieldSchema: computedGetFieldSchema,
 					getFieldType,
 					values,
 					rawValues,
 					parents,
-				) => {
+				}) => {
 					setErrorCb(name, parents, [
 						errors[name][0] + errors[name][0] + errors[name][0],
 					]);
 				},
 			},
 			testType2: {
-				errorsSetter: (
-					setErrorCb,
+				errorsSetter: ({
+					setError: setErrorCb,
 					errors,
 					name,
 					fieldSchema,
-					computedGetFieldSchema,
+					getFieldSchema: computedGetFieldSchema,
 					getFieldType,
 					values,
 					rawValues,
 					parents,
-				) => {
+				}) => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
 				},
 			},
 		};
 
-		setFieldErrors(
+		setFieldErrors({
 			setError,
-			{
+			errors: {
 				value1: ["test1"],
 				value2: ["test2"],
 			},
-			["value1", "value2"],
-			(name): any => ({
+			names: ["value1", "value2"],
+			getFieldSchema: (name): any => ({
 				...fields[name],
 				name,
 			}),
-			({ type }: { type: string }): FieldType<any, any, any, any, any> =>
+			getFieldType: ({
+				type,
+			}: { type: string }): FieldType<any, any, any, any, any> =>
 				fieldTypes[type],
-			{},
-			{},
+			values: {},
+			rawValues: {},
 			parents,
-		);
+		});
 
 		expect(setError).toHaveBeenCalledTimes(2);
 		expect(setError).toHaveBeenNthCalledWith(1, "value1", parents, [
@@ -242,42 +244,42 @@ describe("setFieldErrors", () => {
 
 		const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 			wrapper: {
-				errorsSetter: (
-					setErrorCb,
+				errorsSetter: ({
+					setError: setErrorCb,
 					errors,
 					name,
-					{ childNames, childs }: any,
+					fieldSchema: { childNames, childs },
 					getFieldSchema,
 					getFieldType,
-				) => {
-					setFieldErrors(
+				}) => {
+					setFieldErrors({
 						setError,
-						errors,
-						childNames,
-						(childName) => ({
+						errors: errors,
+						names: childNames,
+						getFieldSchema: (childName) => ({
 							...childs[childName],
 							name: childName,
 						}),
 						getFieldType,
-						{},
-						{},
+						values: {},
+						rawValues: {},
 						parents,
-					);
+					});
 				},
 			},
 
 			testType1: {
-				errorsSetter: (
-					setErrorCb,
+				errorsSetter: ({
+					setError: setErrorCb,
 					errors,
 					name,
 					fieldSchema,
-					computedGetFieldSchema,
+					getFieldSchema: computedGetFieldSchema,
 					getFieldType,
 					values,
 					rawValues,
 					parents,
-				) => {
+				}) => {
 					setErrorCb(name, parents, [
 						errors[name][0] + errors[name][0] + errors[name][0],
 					]);
@@ -285,45 +287,47 @@ describe("setFieldErrors", () => {
 			},
 
 			testType2: {
-				errorsSetter: (
-					setErrorCb,
+				errorsSetter: ({
+					setError: setErrorCb,
 					errors,
 					name,
 					fieldSchema,
-					computedGetFieldSchema,
+					getFieldSchema: computedGetFieldSchema,
 					getFieldType,
 					values,
 					rawValues,
 					parents,
-				) => {
+				}) => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
 				},
 			},
 		};
 
-		setFieldErrors(
+		setFieldErrors({
 			setError,
-			{
+			errors: {
 				value1: ["test1"],
 				value2: ["test2"],
 				value3: ["test3"],
 				value4: ["test4"],
 			},
 
-			["wrapper1", "wrapper2"],
+			names: ["wrapper1", "wrapper2"],
 
-			(name: string): any => ({
+			getFieldSchema: (name: string): any => ({
 				...fields[name],
 				name,
 			}),
 
-			({ type }: { type: string }): FieldType<any, any, any, any, any> =>
+			getFieldType: ({
+				type,
+			}: { type: string }): FieldType<any, any, any, any, any> =>
 				fieldTypes[type],
 
-			{},
-			{},
+			values: {},
+			rawValues: {},
 			parents,
-		);
+		});
 
 		expect(setError).toHaveBeenCalledTimes(4);
 		expect(setError).toHaveBeenNthCalledWith(1, "value1", parents, [
@@ -347,7 +351,7 @@ describe("setFieldErrors", () => {
 			value: "testValue",
 		};
 
-		const valuesRaw: Values = {
+		const rawValues: Values = {
 			value: "testValueRaw",
 		};
 
@@ -360,36 +364,36 @@ describe("setFieldErrors", () => {
 			errorsSetter,
 		});
 
-		setFieldErrors(
+		setFieldErrors({
 			setError,
-			{
+			errors: {
 				value: "test",
 			},
-			["value"],
+			names: ["value"],
 			getFieldSchema,
 			getFieldType,
 			values,
-			valuesRaw,
+			rawValues,
 			parents,
-		);
+		});
 
 		expect(errorsSetter).toHaveBeenCalledTimes(1);
-		expect(errorsSetter).toHaveBeenCalledWith(
+		expect(errorsSetter).toHaveBeenCalledWith({
 			setError,
-			{
+			errors: {
 				value: "test",
 			},
-			"value",
-			{
+			name: "value",
+			fieldSchema: {
 				type: "testType",
 				name: "value",
 			},
 			getFieldSchema,
 			getFieldType,
 			values,
-			valuesRaw,
+			rawValues,
 			parents,
-		);
+		});
 	});
 
 	test("should redefine getFieldSchema", () => {
@@ -412,43 +416,43 @@ describe("setFieldErrors", () => {
 			createGetFieldSchema,
 		});
 
-		setFieldErrors(
+		setFieldErrors({
 			setError,
-			{
+			errors: {
 				value: "error",
 			},
 
-			["value"],
+			names: ["value"],
 
-			parentGetFieldSchema,
+			getFieldSchema: parentGetFieldSchema,
 
-			getFieldType,
+			getFieldType: getFieldType,
 
-			{},
+			values: {},
 
-			{
+			rawValues: {
 				value: "test",
 			},
 
 			parents,
-		);
+		});
 
 		expect(errorsSetter.mock.calls.length).toBe(1);
-		expect(errorsSetter.mock.calls[0][4]).toBe(getFieldSchema);
+		expect(errorsSetter.mock.calls[0][0].getFieldSchema).toBe(getFieldSchema);
 
 		expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
-		expect(createGetFieldSchema).toHaveBeenCalledWith(
-			{
+		expect(createGetFieldSchema).toHaveBeenCalledWith({
+			fieldSchema: {
 				type: "testType",
 				name: "value",
 			},
-			parentGetFieldSchema,
+			getFieldSchema: parentGetFieldSchema,
 			getFieldType,
-			{
+			values: {
 				value: "test",
 			},
-			"serialize",
+			phase: "serialize",
 			parents,
-		);
+		});
 	});
 });

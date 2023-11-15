@@ -126,42 +126,70 @@ Type declaration is an object with next params:
 
 ### Serialization
 
-```javascript
+```tsx
 import { serialize } from '@vtaits/form-schema';
 
-...
+// ...
 
-serialize(values, names, getFieldSchema, getFieldType);
+serialize({
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+});
 ```
 
 ### Parsing
 
-```javascript
+```tsx
 import { parse } from '@vtaits/form-schema';
 
-...
+// ...
 
-parse(values, names, getFieldSchema, getFieldType);
+parse({
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+});
 ```
 
 ### Validation before submit
 
-```javascript
+```tsx
 import { validateBeforeSubmit } from '@vtaits/form-schema';
 
-...
+// ...
 
-validateBeforeSubmit(values, names, getFieldSchema, getFieldType);
+validateBeforeSubmit({
+	setError,
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+});
 ```
 
 ### Mapping of errors of fields
 
-```javascript
-import { mapFieldErrors } from '@vtaits/form-schema';
+```tsx
+import { setFieldErrors } from '@vtaits/form-schema';
 
-...
+// ...
 
-mapFieldErrors(errors, names, getFieldSchema, getFieldType, values, rawValues);
+setFieldErrors({
+	setError,
+	errors,
+	names,
+	getFieldSchema,
+	getFieldType,
+	values,
+	rawValues,
+	parents,
+});
 ```
 
 - `values` - serialied values of form (result of `serialize`);

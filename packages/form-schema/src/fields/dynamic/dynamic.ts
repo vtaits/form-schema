@@ -1,4 +1,5 @@
 import {
+	type CreateGetFieldSchemaParams,
 	type FieldType,
 	type GetFieldSchema,
 	type GetFieldType,
@@ -17,30 +18,30 @@ export const createGetFieldSchema = <
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
->(
-	{
-		getSchema,
-	}: DynamicSchema<
+>({
+	fieldSchema,
+	getFieldSchema,
+	getFieldType,
+	values,
+	phase,
+	parents,
+}: CreateGetFieldSchemaParams<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors
+>): GetFieldSchema<FieldSchema> => {
+	const { getSchema } = fieldSchema as DynamicSchema<
 		FormApi,
 		FieldSchema,
 		Values,
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
-	getFieldSchema: GetFieldSchema<FieldSchema>,
-	getFieldType: GetFieldType<
-		FieldSchema,
-		Values,
-		RawValues,
-		SerializedValues,
-		Errors
-	>,
-	values: Values | RawValues,
-	phase: PhaseType,
-	parents: readonly ParentType<Values>[],
-): GetFieldSchema<FieldSchema> => {
-	const schema = getSchema(
+	>;
+
+	const resultSchema = getSchema(
 		values,
 		phase,
 		getFieldSchema,
@@ -48,21 +49,21 @@ export const createGetFieldSchema = <
 		parents,
 	);
 
-	if (!schema) {
+	if (!resultSchema) {
 		return getFieldSchema;
 	}
 
-	const fieldType = getFieldType(schema);
+	const fieldType = getFieldType(resultSchema);
 
 	if (fieldType.createGetFieldSchema) {
-		return fieldType.createGetFieldSchema(
-			schema,
+		return fieldType.createGetFieldSchema({
+			fieldSchema: resultSchema,
 			getFieldSchema,
 			getFieldType,
 			values,
 			phase,
 			parents,
-		);
+		});
 	}
 
 	return getFieldSchema;
@@ -71,17 +72,17 @@ export const createGetFieldSchema = <
 export const dynamic: FieldType<DynamicSchema<any, any>> = {
 	createGetFieldSchema,
 
-	serializer: (
+	serializer: ({
 		values,
 		name,
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
 		parents,
-	) => {
+	}) => {
 		const { getSchema } = fieldSchema;
 
-		const schema = getSchema(
+		const resultSchema = getSchema(
 			values,
 			"serialize",
 			getFieldSchema,
@@ -89,41 +90,41 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 			parents,
 		);
 
-		if (!schema) {
+		if (!resultSchema) {
 			return {};
 		}
 
-		const fieldType = getFieldType(schema);
+		const fieldType = getFieldType(resultSchema);
 
 		if (fieldType.serializer) {
-			return fieldType.serializer(
+			return fieldType.serializer({
 				values,
 				name,
-				schema,
+				fieldSchema: resultSchema,
 				getFieldSchema,
 				getFieldType,
 				parents,
-			);
+			});
 		}
 
-		return defaultSerializer(
+		return defaultSerializer({
 			values,
 			name,
-			fieldSchema,
+			fieldSchema: resultSchema,
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 	},
 
-	parser: (
+	parser: ({
 		values,
 		name,
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
 		parents,
-	) => {
+	}) => {
 		const { getSchema, getSchemaAsync } = fieldSchema;
 
 		if (getSchemaAsync) {
@@ -133,36 +134,36 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 				getFieldSchema,
 				getFieldType,
 				parents,
-			).then((schema) => {
-				if (!schema) {
+			).then((resultSchema) => {
+				if (!resultSchema) {
 					return {};
 				}
 
-				const fieldType = getFieldType(schema);
+				const fieldType = getFieldType(resultSchema);
 
 				if (fieldType.parser) {
-					return fieldType.parser(
+					return fieldType.parser({
 						values,
 						name,
-						schema,
+						fieldSchema: resultSchema,
 						getFieldSchema,
 						getFieldType,
 						parents,
-					);
+					});
 				}
 
-				return defaultParser(
+				return defaultParser({
 					values,
 					name,
-					fieldSchema,
+					fieldSchema: resultSchema,
 					getFieldSchema,
 					getFieldType,
 					parents,
-				);
+				});
 			});
 		}
 
-		const schema = getSchema(
+		const resultSchema = getSchema(
 			values,
 			"parse",
 			getFieldSchema,
@@ -170,34 +171,34 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 			parents,
 		);
 
-		if (!schema) {
+		if (!resultSchema) {
 			return {};
 		}
 
-		const fieldType = getFieldType(schema);
+		const fieldType = getFieldType(resultSchema);
 
 		if (fieldType.parser) {
-			return fieldType.parser(
+			return fieldType.parser({
 				values,
 				name,
-				schema,
+				fieldSchema: resultSchema,
 				getFieldSchema,
 				getFieldType,
 				parents,
-			);
+			});
 		}
 
-		return defaultParser(
+		return defaultParser({
 			values,
 			name,
-			fieldSchema,
+			fieldSchema: resultSchema,
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 	},
 
-	validatorBeforeSubmit: (
+	validatorBeforeSubmit: ({
 		setError,
 		values,
 		name,
@@ -205,10 +206,10 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		getFieldSchema,
 		getFieldType,
 		parents,
-	) => {
+	}) => {
 		const { getSchema } = fieldSchema as DynamicSchema<any, any>;
 
-		const schema = getSchema(
+		const resultSchema = getSchema(
 			values,
 			"serialize",
 			getFieldSchema,
@@ -216,28 +217,28 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 			parents,
 		);
 
-		if (!schema) {
+		if (!resultSchema) {
 			return {};
 		}
 
-		const fieldType = getFieldType(schema);
+		const fieldType = getFieldType(resultSchema);
 
 		if (fieldType.validatorBeforeSubmit) {
-			return fieldType.validatorBeforeSubmit(
+			return fieldType.validatorBeforeSubmit({
 				setError,
 				values,
 				name,
-				schema,
+				fieldSchema: resultSchema,
 				getFieldSchema,
 				getFieldType,
 				parents,
-			);
+			});
 		}
 
 		return {};
 	},
 
-	errorsSetter: (
+	errorsSetter: ({
 		setError,
 		errors,
 		name,
@@ -247,10 +248,10 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		values,
 		rawValues,
 		parents,
-	) => {
+	}) => {
 		const { getSchema } = fieldSchema;
 
-		const schema = getSchema(
+		const resultSchema = getSchema(
 			rawValues,
 			"serialize",
 			getFieldSchema,
@@ -258,36 +259,36 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 			parents,
 		);
 
-		if (!schema) {
+		if (!resultSchema) {
 			return {};
 		}
 
-		const fieldType = getFieldType(schema);
+		const fieldType = getFieldType(resultSchema);
 
 		if (fieldType.errorsSetter) {
-			return fieldType.errorsSetter(
+			return fieldType.errorsSetter({
 				setError,
 				errors,
 				name,
-				schema,
+				fieldSchema: resultSchema,
 				getFieldSchema,
 				getFieldType,
 				values,
 				rawValues,
 				parents,
-			);
+			});
 		}
 
-		return defaultFieldErrorsSetter(
+		return defaultFieldErrorsSetter({
 			setError,
 			errors,
 			name,
-			fieldSchema,
+			fieldSchema: resultSchema,
 			getFieldSchema,
 			getFieldType,
 			values,
 			rawValues,
 			parents,
-		);
+		});
 	},
 };

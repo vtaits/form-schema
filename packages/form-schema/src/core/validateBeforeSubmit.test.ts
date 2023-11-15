@@ -27,24 +27,24 @@ afterEach(() => {
 });
 
 test("should call default validatorBeforeSubmit", () => {
-	validateBeforeSubmit(
+	validateBeforeSubmit({
 		setError,
-		{
+		values: {
 			value: "test",
 			value2: "test2",
 		},
 
-		["value"],
+		names: ["value"],
 
-		(): any => ({
+		getFieldSchema: (): any => ({
 			type: "testType",
 			name: "value",
 		}),
 
-		() => ({}),
+		getFieldType: () => ({}),
 
 		parents,
-	);
+	});
 
 	expect(setError).toHaveBeenCalledTimes(0);
 });
@@ -56,15 +56,15 @@ test("should call redefined validatorBeforeSubmit", () => {
 	};
 
 	const validatorBeforeSubmit = vi.fn<ValidatorBeforeSubmitArgs, any>(
-		(
+		({
 			setError,
 			values,
 			name,
 			fieldSchema,
-			computedGetFieldSchema,
+			getFieldSchema: computedGetFieldSchema,
 			getFieldType,
 			parents,
-		) => {
+		}) => {
 			setError(name, parents, values[name] + values[name]);
 		},
 	);
@@ -80,27 +80,27 @@ test("should call redefined validatorBeforeSubmit", () => {
 
 	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-	validateBeforeSubmit(
+	validateBeforeSubmit({
 		setError,
-		rawValues,
+		values: rawValues,
 
-		["value"],
+		names: ["value"],
 
 		getFieldSchema,
 		getFieldType,
 		parents,
-	);
+	});
 
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
-	expect(validatorBeforeSubmit).toHaveBeenCalledWith(
+	expect(validatorBeforeSubmit).toHaveBeenCalledWith({
 		setError,
-		rawValues,
-		"value",
+		values: rawValues,
+		name: "value",
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
 		parents,
-	);
+	});
 
 	expect(setError).toHaveBeenCalledTimes(1);
 	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
@@ -123,52 +123,38 @@ test("should call multiple validators", () => {
 
 	const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 		testType1: {
-			validatorBeforeSubmit: (
-				setError,
-				errors,
-				name,
-				fieldSchema,
-				computedGetFieldSchema,
-				getFieldType,
-				parents,
-			) => {
-				setError(name, parents, errors[name]);
+			validatorBeforeSubmit: ({ setError, values, name, parents }) => {
+				setError(name, parents, values[name]);
 			},
 		},
 		testType2: {
-			validatorBeforeSubmit: (
-				setError,
-				values,
-				name,
-				fieldSchema,
-				computedGetFieldSchema,
-				getFieldType,
-				parents,
-			) => {
+			validatorBeforeSubmit: ({ setError, values, name, parents }) => {
 				setError(name, parents, values[name] + values[name]);
 			},
 		},
 	};
 
-	validateBeforeSubmit(
+	validateBeforeSubmit({
 		setError,
-		{
+		values: {
 			value1: "test1",
 			value2: "test2",
 		},
 
-		["value1", "value2"],
+		names: ["value1", "value2"],
 
-		(name): any => ({
+		getFieldSchema: (name): any => ({
 			...fields[name],
 			name,
 		}),
 
-		({ type }: { type: string }): FieldType<any, any, any, any, any> =>
+		getFieldType: ({
+			type,
+		}: { type: string }): FieldType<any, any, any, any, any> =>
 			fieldTypes[type],
 
 		parents,
-	);
+	});
 
 	expect(setError).toHaveBeenCalledTimes(2);
 	expect(setError).toHaveBeenNthCalledWith(1, "value1", parents, "test1");
@@ -196,34 +182,36 @@ test("should redefine getFieldSchema", () => {
 		createGetFieldSchema,
 	});
 
-	validateBeforeSubmit(
+	validateBeforeSubmit({
 		setError,
-		{
+		values: {
 			value: "test",
 		},
 
-		["value"],
+		names: ["value"],
 
-		parentGetFieldSchema,
+		getFieldSchema: parentGetFieldSchema,
 		getFieldType,
 		parents,
-	);
+	});
 
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
-	expect(validatorBeforeSubmit.mock.calls[0][4]).toBe(getFieldSchema);
+	expect(validatorBeforeSubmit.mock.calls[0][0].getFieldSchema).toBe(
+		getFieldSchema,
+	);
 
 	expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
-	expect(createGetFieldSchema).toHaveBeenCalledWith(
-		{
+	expect(createGetFieldSchema).toHaveBeenCalledWith({
+		fieldSchema: {
 			type: "testType",
 			name: "value",
 		},
-		parentGetFieldSchema,
+		getFieldSchema: parentGetFieldSchema,
 		getFieldType,
-		{
+		values: {
 			value: "test",
 		},
-		"serialize",
+		phase: "serialize",
 		parents,
-	);
+	});
 });

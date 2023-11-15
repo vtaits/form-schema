@@ -5,10 +5,10 @@ import type {
 	Serializer,
 } from "./types";
 
-export const defaultSerializer: Serializer<any, any, any, any, any> = (
+export const defaultSerializer: Serializer<any, any, any, any, any> = ({
 	values,
 	name,
-) => {
+}) => {
 	if (typeof values[name] !== "undefined") {
 		return {
 			[name]: values[name],
@@ -18,25 +18,45 @@ export const defaultSerializer: Serializer<any, any, any, any, any> = (
 	return {};
 };
 
-export const serialize = <
+export type SerializeParams<
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
->(
-	values: Values,
-	names: readonly string[],
-	getFieldSchema: GetFieldSchema<FieldSchema>,
+> = Readonly<{
+	values: Values;
+	names: readonly string[];
+	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
 		Values,
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
-	parents: ParentType<Values>[],
-): SerializedValues => {
+	>;
+	parents: readonly ParentType<Values>[];
+}>;
+
+export const serialize = <
+	FieldSchema,
+	Values extends Record<string, any>,
+	RawValues extends Record<string, any>,
+	SerializedValues extends Record<string, any>,
+	Errors extends Record<string, any>,
+>({
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+}: SerializeParams<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors
+>): SerializedValues => {
 	const res = {} as SerializedValues;
 
 	for (const name of names) {
@@ -45,26 +65,26 @@ export const serialize = <
 
 		const serializer = fieldType.serializer || defaultSerializer;
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
-			? fieldType.createGetFieldSchema(
+			? fieldType.createGetFieldSchema({
 					fieldSchema,
 					getFieldSchema,
 					getFieldType,
 					values,
-					"serialize",
+					phase: "serialize",
 					parents,
-			  )
+			  })
 			: getFieldSchema;
 
 		Object.assign(
 			res,
-			serializer(
+			serializer({
 				values,
 				name,
 				fieldSchema,
-				computedGetFieldSchema,
+				getFieldSchema: computedGetFieldSchema,
 				getFieldType,
 				parents,
-			),
+			}),
 		);
 	}
 

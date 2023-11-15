@@ -27,6 +27,46 @@ export type ParentType<
 	values: Values;
 };
 
+export type CreateGetFieldSchemaParams<
+	FieldSchema,
+	Values extends Record<string, unknown> = Record<string, unknown>,
+	RawValues extends Record<string, unknown> = Record<string, unknown>,
+	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = Readonly<{
+	/**
+	 * schema of current field
+	 */
+	fieldSchema: FieldSchema;
+	/**
+	 * current `getFieldSchema`
+	 */
+	getFieldSchema: GetFieldSchema<FieldSchema>;
+	/**
+	 * global `getFieldType`
+	 */
+	getFieldType: GetFieldType<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>;
+	/**
+	 * current values (values of form during render and serialization or raw values during parsing)
+	 */
+	values: Values | RawValues;
+	/**
+	 * one of next values: 'parse', 'serialize', 'render'
+	 */
+	phase: PhaseType;
+	/**
+	 * stack of parent fields above current field
+	 * raw values for phase 'parse' and runtime values otherwise
+	 */
+	parents: readonly ParentType<Values | RawValues>[];
+}>;
+
 /**
  * function for create `getFieldSchema` for nested fields
  * can be helpful for arrays of repeating fields etc.
@@ -38,14 +78,41 @@ export type CreateGetFieldSchema<
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
+	params: CreateGetFieldSchemaParams<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
+) => GetFieldSchema<FieldSchema>;
+
+/**
+ * Parameters of serializer of the field
+ */
+export type SerializerParams<
+	FieldSchema,
+	Values extends Record<string, unknown> = Record<string, unknown>,
+	RawValues extends Record<string, unknown> = Record<string, unknown>,
+	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = Readonly<{
+	/**
+	 * current runtime values
+	 */
+	values: Values;
+	/**
+	 * name of current field
+	 */
+	name: string;
 	/**
 	 * schema of current field
 	 */
-	fieldSchema: FieldSchema,
+	fieldSchema: FieldSchema;
 	/**
 	 * current `getFieldSchema`
 	 */
-	getFieldSchema: GetFieldSchema<FieldSchema>,
+	getFieldSchema: GetFieldSchema<FieldSchema>;
 	/**
 	 * global `getFieldType`
 	 */
@@ -55,21 +122,12 @@ export type CreateGetFieldSchema<
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
+	>;
 	/**
-	 * current values (values of form during render and serialization or raw values during parsing)
+	 * stack of parent fields above current field with runtime values
 	 */
-	values: Values | RawValues,
-	/**
-	 * one of next values: 'parse', 'serialize', 'render'
-	 */
-	phase: PhaseType,
-	/**
-	 * stack of parent fields above current field
-	 * raw values for phase 'parse' and runtime values otherwise
-	 */
-	parents: readonly ParentType<Values | RawValues>[],
-) => GetFieldSchema<FieldSchema>;
+	parents: readonly ParentType<Values>[];
+}>;
 
 export type Serializer<
 	FieldSchema,
@@ -78,22 +136,41 @@ export type Serializer<
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
+	params: SerializerParams<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
+) => SerializedValues;
+
+/**
+ * Parameters of parser of the field
+ */
+export type ParserParams<
+	FieldSchema,
+	Values extends Record<string, unknown> = Record<string, unknown>,
+	RawValues extends Record<string, unknown> = Record<string, unknown>,
+	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = Readonly<{
 	/**
-	 * current runtime values
+	 * raw values
 	 */
-	values: Values,
+	values: RawValues;
 	/**
 	 * name of current field
 	 */
-	name: string,
+	name: string;
 	/**
 	 * schema of current field
 	 */
-	fieldSchema: FieldSchema,
+	fieldSchema: FieldSchema;
 	/**
 	 * current `getFieldSchema`
 	 */
-	computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+	getFieldSchema: GetFieldSchema<FieldSchema>;
 	/**
 	 * global `getFieldType`
 	 */
@@ -103,12 +180,12 @@ export type Serializer<
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
+	>;
 	/**
-	 * stack of parent fields above current field with runtime values
+	 * stack of parent fields above current field with raw values
 	 */
-	parents: readonly ParentType<Values>[],
-) => SerializedValues;
+	parents: readonly ParentType<RawValues>[];
+}>;
 
 export type Parser<
 	FieldSchema,
@@ -117,22 +194,42 @@ export type Parser<
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
+	params: ParserParams<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
+) => Values | Promise<Values>;
+
+export type ValidatorBeforeSubmitParams<
+	FieldSchema,
+	Values extends Record<string, unknown> = Record<string, unknown>,
+	RawValues extends Record<string, unknown> = Record<string, unknown>,
+	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = Readonly<{
 	/**
-	 * raw values
+	 * Function for setting errors
 	 */
-	values: RawValues,
+	setError: SetError<Values>;
+	/**
+	 * current runtime values
+	 */
+	values: Values;
 	/**
 	 * name of current field
 	 */
-	name: string,
+	name: string;
 	/**
 	 * schema of current field
 	 */
-	fieldSchema: FieldSchema,
+	fieldSchema: FieldSchema;
 	/**
 	 * current `getFieldSchema`
 	 */
-	computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+	getFieldSchema: GetFieldSchema<FieldSchema>;
 	/**
 	 * global `getFieldType`
 	 */
@@ -142,12 +239,12 @@ export type Parser<
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
+	>;
 	/**
-	 * stack of parent fields above current field with raw values
+	 * stack of parent fields above current field with runtime values
 	 */
-	parents: readonly ParentType<RawValues>[],
-) => Values | Promise<Values>;
+	parents: readonly ParentType<Values>[];
+}>;
 
 export type ValidatorBeforeSubmit<
 	FieldSchema,
@@ -156,26 +253,42 @@ export type ValidatorBeforeSubmit<
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
+	params: ValidatorBeforeSubmitParams<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
+) => void;
+
+export type ErrorsSetterParams<
+	FieldSchema,
+	Values extends Record<string, unknown> = Record<string, unknown>,
+	RawValues extends Record<string, unknown> = Record<string, unknown>,
+	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = Readonly<{
 	/**
 	 * Function for setting errors
 	 */
-	setError: SetError<Values>,
+	setError: SetError<Values>;
 	/**
-	 * current runtime values
+	 * errors
 	 */
-	values: Values,
+	errors: Errors;
 	/**
 	 * name of current field
 	 */
-	name: string,
+	name: string;
 	/**
 	 * schema of current field
 	 */
-	fieldSchema: FieldSchema,
+	fieldSchema: FieldSchema;
 	/**
 	 * current `getFieldSchema`
 	 */
-	computedGetFieldSchema: GetFieldSchema<FieldSchema>,
+	getFieldSchema: GetFieldSchema<FieldSchema>;
 	/**
 	 * global `getFieldType`
 	 */
@@ -185,12 +298,20 @@ export type ValidatorBeforeSubmit<
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
+	>;
+	/**
+	 * serialized values
+	 */
+	values: SerializedValues;
+	/**
+	 * current runtime values
+	 */
+	rawValues: Values;
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: readonly ParentType<Values>[],
-) => void;
+	parents: readonly ParentType<Values>[];
+}>;
 
 export type ErrorsSetter<
 	FieldSchema,
@@ -199,48 +320,13 @@ export type ErrorsSetter<
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
-	/**
-	 * Function for setting errors
-	 */
-	setError: SetError<Values>,
-	/**
-	 * errors
-	 */
-	errors: Errors,
-	/**
-	 * name of current field
-	 */
-	name: string,
-	/**
-	 * schema of current field
-	 */
-	fieldSchema: FieldSchema,
-	/**
-	 * current `getFieldSchema`
-	 */
-	computedGetFieldSchema: GetFieldSchema<FieldSchema>,
-	/**
-	 * global `getFieldType`
-	 */
-	getFieldType: GetFieldType<
+	params: ErrorsSetterParams<
 		FieldSchema,
 		Values,
 		RawValues,
 		SerializedValues,
 		Errors
 	>,
-	/**
-	 * serialized values
-	 */
-	values: SerializedValues,
-	/**
-	 * current runtime values
-	 */
-	rawValues: Values,
-	/**
-	 * stack of parent fields above current field with runtime values
-	 */
-	parents: readonly ParentType<Values>[],
 ) => void;
 
 export type FieldType<

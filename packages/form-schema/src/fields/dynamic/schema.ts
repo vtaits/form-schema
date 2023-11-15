@@ -42,7 +42,7 @@ export type DynamicSchema<
 		/**
 		 * stack of parent fields above current field with runtime values
 		 */
-		parents: readonly ParentType<Values>[],
+		parents: readonly ParentType<Values | RawValues>[],
 	) => FieldSchema | null;
 
 	/**
@@ -74,7 +74,7 @@ export type DynamicSchema<
 		/**
 		 * stack of parent fields above current field with runtime values
 		 */
-		parents: readonly ParentType<Values>[],
+		parents: readonly ParentType<Values | RawValues>[],
 	) => Promise<FieldSchema>;
 
 	/**

@@ -22,17 +22,17 @@ const parents = [
 describe("defaultSerializer", () => {
 	test("get value by name", () => {
 		expect(
-			defaultSerializer(
-				{
+			defaultSerializer({
+				values: {
 					foo: "error1",
 					bar: "error2",
 				},
-				"foo",
-				null,
-				vi.fn(),
-				vi.fn(),
-				[],
-			),
+				name: "foo",
+				fieldSchema: null,
+				getFieldSchema: vi.fn(),
+				getFieldType: vi.fn(),
+				parents: [],
+			}),
 		).toEqual({
 			foo: "error1",
 		});
@@ -40,16 +40,16 @@ describe("defaultSerializer", () => {
 
 	test("return an empty object if there is no value by name", () => {
 		expect(
-			defaultSerializer(
-				{
+			defaultSerializer({
+				values: {
 					bar: "error2",
 				},
-				"foo",
-				null,
-				vi.fn(),
-				vi.fn(),
-				[],
-			),
+				name: "foo",
+				fieldSchema: null,
+				getFieldSchema: vi.fn(),
+				getFieldType: vi.fn(),
+				parents: [],
+			}),
 		).toEqual({});
 	});
 });
@@ -57,23 +57,23 @@ describe("defaultSerializer", () => {
 describe("serialize", () => {
 	test("should call default serializer", () => {
 		expect(
-			serialize(
-				{
+			serialize({
+				values: {
 					value: "test",
 					value2: "test2",
 				},
 
-				["value"],
+				names: ["value"],
 
-				(): any => ({
+				getFieldSchema: (): any => ({
 					type: "testType",
 					name: "value",
 				}),
 
-				() => ({}),
+				getFieldType: () => ({}),
 
 				parents,
-			),
+			}),
 		).toEqual({
 			value: "test",
 		});
@@ -85,11 +85,9 @@ describe("serialize", () => {
 			value2: "test2",
 		};
 
-		const serializer = vi.fn<SerializerArgs, any>(
-			(values: Values, name: string): Values => ({
-				[name]: values[name] + values[name],
-			}),
-		);
+		const serializer = vi.fn<SerializerArgs, any>(({ values, name }) => ({
+			[name]: values[name] + values[name],
+		}));
 
 		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
 			serializer,
@@ -103,28 +101,28 @@ describe("serialize", () => {
 		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
 		expect(
-			serialize(
-				rawValues,
+			serialize({
+				values: rawValues,
 
-				["value"],
+				names: ["value"],
 
 				getFieldSchema,
 				getFieldType,
 				parents,
-			),
+			}),
 		).toEqual({
 			value: "testtest",
 		});
 
 		expect(serializer).toHaveBeenCalledTimes(1);
-		expect(serializer).toHaveBeenCalledWith(
-			rawValues,
-			"value",
+		expect(serializer).toHaveBeenCalledWith({
+			values: rawValues,
+			name: "value",
 			fieldSchema,
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 	});
 
 	test("should call multiple serializers", () => {
@@ -145,31 +143,33 @@ describe("serialize", () => {
 		const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 			testType1: {},
 			testType2: {
-				serializer: (values: Values, name: string): Values => ({
+				serializer: ({ values, name }) => ({
 					[name]: values[name] + values[name],
 				}),
 			},
 		};
 
 		expect(
-			serialize(
-				{
+			serialize({
+				values: {
 					value1: "test1",
 					value2: "test2",
 				},
 
-				["value1", "value2"],
+				names: ["value1", "value2"],
 
-				(name): any => ({
+				getFieldSchema: (name): any => ({
 					...fields[name],
 					name,
 				}),
 
-				({ type }: { type: string }): FieldType<any, any, any, any, any> =>
+				getFieldType: ({
+					type,
+				}: { type: string }): FieldType<any, any, any, any, any> =>
 					fieldTypes[type],
 
 				parents,
-			),
+			}),
 		).toEqual({
 			value1: "test1",
 			value2: "test2test2",
@@ -195,34 +195,34 @@ describe("serialize", () => {
 			createGetFieldSchema,
 		});
 
-		serialize(
-			{
+		serialize({
+			values: {
 				value: "test",
 			},
 
-			["value"],
+			names: ["value"],
 
-			parentGetFieldSchema,
+			getFieldSchema: parentGetFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 
 		expect(serializer).toHaveBeenCalledTimes(1);
-		expect(serializer.mock.calls[0][3]).toBe(getFieldSchema);
+		expect(serializer.mock.calls[0][0].getFieldSchema).toBe(getFieldSchema);
 
 		expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
-		expect(createGetFieldSchema).toHaveBeenCalledWith(
-			{
+		expect(createGetFieldSchema).toHaveBeenCalledWith({
+			fieldSchema: {
 				type: "testType",
 				name: "value",
 			},
-			parentGetFieldSchema,
+			getFieldSchema: parentGetFieldSchema,
 			getFieldType,
-			{
+			values: {
 				value: "test",
 			},
-			"serialize",
+			phase: "serialize",
 			parents,
-		);
+		});
 	});
 });

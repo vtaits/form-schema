@@ -2,10 +2,10 @@ import isPromise from "is-promise";
 
 import type { GetFieldSchema, GetFieldType, ParentType, Parser } from "./types";
 
-export const defaultParser: Parser<any, any, any, any, any> = (
+export const defaultParser: Parser<any, any, any, any, any> = ({
 	values,
 	name,
-) => {
+}) => {
 	if (typeof values[name] !== "undefined") {
 		return {
 			[name]: values[name],
@@ -17,25 +17,42 @@ export const defaultParser: Parser<any, any, any, any, any> = (
 	};
 };
 
-export const parse = <
+export type ParseParams<
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
->(
-	values: RawValues | null,
-	names: readonly string[],
-	getFieldSchema: GetFieldSchema<FieldSchema>,
+> = Readonly<{
+	values: RawValues | null;
+	names: readonly string[];
+	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
 		Values,
 		RawValues,
 		SerializedValues,
 		Errors
-	>,
-	parents: ParentType<RawValues>[],
-): Values | Promise<Values> | null => {
+	>;
+	parents: readonly ParentType<RawValues>[];
+}>;
+
+export const parse = <
+	FieldSchema,
+	Values extends Record<string, any>,
+	RawValues extends Record<string, any>,
+	SerializedValues extends Record<string, any>,
+	Errors extends Record<string, any>,
+>({
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+}: ParseParams<FieldSchema, Values, RawValues, SerializedValues, Errors>):
+	| Values
+	| Promise<Values>
+	| null => {
 	if (!values) {
 		return null;
 	}
@@ -51,24 +68,24 @@ export const parse = <
 
 		const parser = fieldType.parser || defaultParser;
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
-			? fieldType.createGetFieldSchema(
+			? fieldType.createGetFieldSchema({
 					fieldSchema,
 					getFieldSchema,
 					getFieldType,
 					values,
-					"parse",
+					phase: "parse",
 					parents,
-			  )
+			  })
 			: getFieldSchema;
 
-		const parserResult = parser(
+		const parserResult = parser({
 			values,
 			name,
 			fieldSchema,
-			computedGetFieldSchema,
+			getFieldSchema: computedGetFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 
 		if (isPromise(parserResult)) {
 			hasPromise = true;
