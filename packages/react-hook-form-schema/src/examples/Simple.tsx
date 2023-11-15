@@ -17,25 +17,29 @@ const fieldTypes: Record<string, FieldType<InputSchema>> = {
 		render: (
 			{ name, fieldSchema: { label, placeholder } },
 			{ formState: { errors }, register },
-		) => (
-			<div>
-				{label && <p>{label}</p>}
+		) => {
+			const error = errors[name];
 
-				<p>
-					<input placeholder={placeholder || ""} {...register(name)} />
-				</p>
+			return (
+				<div>
+					{label && <p>{label}</p>}
 
-				{errors[name] && (
-					<ul
-						style={{
-							color: "red",
-						}}
-					>
-						<li>{errors[name].message}</li>
-					</ul>
-				)}
-			</div>
-		),
+					<p>
+						<input placeholder={placeholder || ""} {...register(name)} />
+					</p>
+
+					{error && (
+						<ul
+							style={{
+								color: "red",
+							}}
+						>
+							<li>{error.message as string}</li>
+						</ul>
+					)}
+				</div>
+			);
+		},
 	},
 };
 

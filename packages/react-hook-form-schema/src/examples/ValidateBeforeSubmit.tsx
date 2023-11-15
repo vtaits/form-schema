@@ -27,35 +27,39 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 		render: (
 			{ fieldSchema: { label, options }, name },
 			{ control, formState: { errors } },
-		) => (
-			<div>
-				{label && <p>{label}</p>}
+		) => {
+			const error = errors[name];
 
-				<Controller
-					control={control}
-					name={name}
-					render={({ field: { value, onChange } }) => (
-						<Select
-							isClearable
-							options={options}
-							name={name}
-							value={value}
-							onChange={onChange}
-						/>
+			return (
+				<div>
+					{label && <p>{label}</p>}
+
+					<Controller
+						control={control}
+						name={name}
+						render={({ field: { value, onChange } }) => (
+							<Select
+								isClearable
+								options={options}
+								name={name}
+								value={value}
+								onChange={onChange}
+							/>
+						)}
+					/>
+
+					{error && (
+						<ul
+							style={{
+								color: "red",
+							}}
+						>
+							<li>{error.message as string}</li>
+						</ul>
 					)}
-				/>
-
-				{errors[name] && (
-					<ul
-						style={{
-							color: "red",
-						}}
-					>
-						<li>{errors[name].message}</li>
-					</ul>
-				)}
-			</div>
-		),
+				</div>
+			);
+		},
 
 		serializer: ({ values, name }) => {
 			const value = values[name];

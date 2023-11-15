@@ -1,5 +1,6 @@
 import {
 	type GetFieldSchema,
+	type ParentType,
 	parse,
 	serialize,
 	setFieldErrors,
@@ -20,8 +21,6 @@ import {
 	type UseFormReturn,
 	useFieldArray,
 } from "react-hook-form";
-
-const ARRAY_ERROR = "ARRAY_ERROR";
 
 type FieldArraySchema = {
 	type: "array";
@@ -73,11 +72,7 @@ function ArrayComponent<
 >): ReactElement {
 	const { label, names, initialValues } = fieldSchema as FieldArraySchema;
 
-	const errors = formResult.formState.errors[name]?.message as Record<
-		string,
-		unknown
-	> | null;
-	const arrayError = errors ? errors[ARRAY_ERROR] : null;
+	const errors = formResult.formState.errors[name];
 
 	const { append, fields, remove } = useFieldArray({
 		control: formResult.control,
@@ -99,7 +94,7 @@ function ArrayComponent<
 						name: index,
 						values: field,
 					},
-				];
+				] as ParentType<Values>[];
 
 				return (
 					<div key={field.id}>
@@ -111,7 +106,7 @@ function ArrayComponent<
 									getFieldType,
 									() => field,
 									fieldName,
-									`${name}.${index}`,
+									`${name}.${index}` as Payload,
 									providedParents,
 								)}
 							</Fragment>
@@ -145,13 +140,13 @@ function ArrayComponent<
 				Add
 			</button>
 
-			{arrayError && (
+			{errors && (
 				<ul
 					style={{
 						color: "red",
 					}}
 				>
-					<li>{arrayError}</li>
+					<li>{errors.message as string}</li>
 				</ul>
 			)}
 		</>
@@ -430,7 +425,7 @@ export function FieldArray(): ReactElement {
 		const errors: Errors = {};
 
 		if (values.users.length === 0) {
-			errors.users = ["This field is required"];
+			errors.users = "This field is required";
 		} else {
 			let hasError = false;
 			const usersErrors: Array<Record<string, any>> = [];

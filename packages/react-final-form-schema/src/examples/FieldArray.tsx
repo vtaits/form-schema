@@ -111,7 +111,7 @@ type InputSchema = {
 type InputProps = {
 	name: string;
 	fieldSchema: FieldSchema;
-	payload?: string | null;
+	payload?: string;
 };
 
 function InputComponent({
@@ -119,7 +119,7 @@ function InputComponent({
 
 	fieldSchema,
 
-	payload,
+	payload = undefined,
 }: InputProps): ReactElement {
 	const { label, placeholder } = fieldSchema as InputSchema;
 
@@ -156,10 +156,6 @@ function InputComponent({
 		</div>
 	);
 }
-
-InputComponent.defaultProps = {
-	payload: null,
-};
 
 type FieldSchema = FieldArraySchema | InputSchema;
 type Values = Record<string, any>;

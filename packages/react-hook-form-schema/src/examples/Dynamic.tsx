@@ -28,6 +28,8 @@ const fieldTypes: Record<string, FieldType<any>> = {
 		render: ({ name, fieldSchema }, { formState: { errors }, register }) => {
 			const { label, placeholder } = fieldSchema as InputSchema;
 
+			const error = errors[name];
+
 			return (
 				<div>
 					{label && <p>{label}</p>}
@@ -36,13 +38,13 @@ const fieldTypes: Record<string, FieldType<any>> = {
 						<input placeholder={placeholder || ""} {...register(name)} />
 					</p>
 
-					{errors[name] && (
+					{error && (
 						<ul
 							style={{
 								color: "red",
 							}}
 						>
-							<li>{errors[name].message}</li>
+							<li>{error.message as string}</li>
 						</ul>
 					)}
 				</div>
