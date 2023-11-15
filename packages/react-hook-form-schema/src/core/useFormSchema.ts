@@ -11,12 +11,12 @@ import { type BaseSyntheticEvent, useCallback, useMemo } from "react";
 import {
 	type DefaultValues,
 	type FieldValues,
-	type Path,
 	type SubmitErrorHandler,
 	type SubmitHandler,
 	useForm,
 } from "react-hook-form";
 
+import { CLIENT_ERROR, SERVER_ERROR } from "./constants";
 import { makeSetError } from "./makeSetError";
 import { renderBySchema } from "./renderBySchema";
 import type {
@@ -95,19 +95,7 @@ export function useFormSchema<
 			return () => parseResult;
 		}
 
-		return (
-			(parse({
-				values: rawInitialValues as RawValues,
-				names,
-				getFieldSchema,
-				getFieldType,
-				parents: [
-					{
-						values: rawInitialValues as RawValues,
-					},
-				],
-			}) as DefaultValues<Values>) || undefined
-		);
+		return (parseResult as DefaultValues<Values>) || undefined;
 	}, [defaultValues, names, getFieldSchema, getFieldType]);
 
 	const formResult = useForm<Values, TContext, Values>({
@@ -128,7 +116,7 @@ export function useFormSchema<
 			let hasCleintError = false;
 
 			validateBeforeSubmit({
-				setError: makeSetError(setError, "clientError", () => {
+				setError: makeSetError(setError, CLIENT_ERROR, () => {
 					hasCleintError = true;
 				}),
 				values,
@@ -171,7 +159,7 @@ export function useFormSchema<
 			);
 
 			setFieldErrors({
-				setError: makeSetError(setError, "serverError", () => {}),
+				setError: makeSetError(setError, SERVER_ERROR, () => {}),
 				errors: preparedErrors,
 				names,
 				getFieldSchema,

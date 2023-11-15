@@ -6,7 +6,7 @@ import * as lib from "./index";
 import { useFormSchemaState } from "./useFormSchemaState";
 import { useValuesReady } from "./useValuesReady";
 
-test("should export needed modules", () => {
+test("export necessary modules", () => {
 	expect(lib.checkValuesReady).toBe(checkValuesReady);
 	expect(lib.checkValuesReady).toBeTruthy();
 

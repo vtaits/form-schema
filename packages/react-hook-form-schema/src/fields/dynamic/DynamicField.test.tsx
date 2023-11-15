@@ -1,23 +1,11 @@
 import type { ParentType } from "@vtaits/form-schema";
-import type { FormApi, FormState } from "final-form";
-import {
-	type FC,
-	type ReactElement,
-	useDebugValue,
-	useEffect,
-	useRef,
-} from "react";
-import { useForm, useFormState } from "react-final-form";
+import { type ReactElement, useDebugValue, useEffect, useRef } from "react";
+import type { UseFormReturn } from "react-hook-form";
 import { create } from "react-test-engine-vitest";
 import useLatest from "use-latest";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import {
-	type FieldComponentProps,
-	type FieldType,
-	useFormSchemaState,
-} from "../../core";
-
+import type { FieldType } from "../../core";
 import { DynamicField } from "./DynamicField";
 import type { DynamicFieldProps } from "./DynamicField";
 
@@ -30,9 +18,14 @@ vi.mock("react", async () => {
 		useRef: vi.fn(),
 	};
 });
-vi.mock("react-final-form");
 vi.mock("use-latest");
 vi.mock("../../core");
+
+const watch = vi.fn();
+
+const formResult = {
+	watch,
+} as unknown as UseFormReturn<any, any, any>;
 
 const parents: ParentType[] = [
 	{
@@ -40,60 +33,64 @@ const parents: ParentType[] = [
 	},
 ];
 
-function TestComponent(props: FieldComponentProps<any>): ReactElement | null {
-	useDebugValue(props);
+const renderResult = <span>RENDER_RESULT</span>;
 
-	return null;
-}
+const renderField = vi.fn();
 
 const fieldType: FieldType<any> = {
-	component: TestComponent as FC<FieldComponentProps<any>>,
+	render: renderField,
 };
 
-const defaultProps: DynamicFieldProps<any, any, any, any, any, any> = {
-	fieldSchema: {
-		getSchema: () => "test",
+const getSchema = vi.fn();
+const getFieldSchema = vi.fn();
+const getFieldType = vi.fn();
+const name = "TEST_NAME";
+const payload = "PAYLOAD";
+
+const defaultProps: DynamicFieldProps<any, any, any, any, any, any, any> = {
+	renderParams: {
+		fieldSchema: {
+			getSchema,
+		},
+		name,
+		getFieldSchema,
+		getFieldType,
+		parents,
+		payload,
 	},
-	name: "testName",
-	getFieldSchema: vi.fn(),
-	getFieldType: vi.fn().mockReturnValue(fieldType),
-	parents,
-};
 
-const form = {
-	TYPE: "FORM",
-} as unknown as FormApi;
+	formResult,
+};
 
 const render = create(DynamicField, defaultProps, {
 	queries: {
 		field: {
-			component: TestComponent,
+			component: "span",
 		},
 	},
 
 	hooks: {
+		formResultRef: useLatest,
 		onShowRef: useLatest,
 		onHideRef: useLatest,
 		schemaRef: useLatest,
 		useEffect,
-		useForm,
-		useFormState,
-		useFormSchemaState,
-		useRef,
+		isFirstRenderRef: useRef,
 	},
 
 	hookOrder: [
-		"useForm",
-		"useFormState",
-		"useFormSchemaState",
+		"formResultRef",
 		"onShowRef",
 		"onHideRef",
 		"schemaRef",
-		"useRef",
+		"isFirstRenderRef",
 		"useEffect",
 	],
 
 	hookDefaultValues: {
+		formResultRef: {
+			current: formResult,
+		},
 		onShowRef: {
 			current: undefined,
 		},
@@ -104,17 +101,14 @@ const render = create(DynamicField, defaultProps, {
 			current: null,
 		},
 		useEffect: undefined,
-		useForm: form,
-		useFormState: {
-			values: {},
-		} as FormState<Record<string, any>>,
-		useFormSchemaState: {
-			isValuesReady: false,
-		},
-		useRef: {
+		isFirstRenderRef: {
 			current: true,
 		},
 	},
+});
+
+beforeEach(() => {
+	renderField.mockReturnValue(renderResult);
 });
 
 afterEach(() => {
@@ -123,29 +117,16 @@ afterEach(() => {
 
 describe("getSchema", () => {
 	test("should provide form values to `getSchema`", () => {
-		const getSchema = vi.fn();
-		const getFieldSchema = () => null;
-		const getFieldType = () => fieldType;
+		getFieldSchema.mockReturnValue(null);
+		getFieldType.mockReturnValue(fieldType);
 
-		const values: Record<string, any> = {
+		const values = {
 			field1: "value1",
 		};
 
-		render(
-			{
-				fieldSchema: {
-					getSchema,
-				},
-				name: "test",
-				getFieldSchema,
-				getFieldType,
-			},
-			{
-				useFormState: {
-					values,
-				} as FormState<Record<string, any>>,
-			},
-		);
+		watch.mockReturnValue(values);
+
+		render({});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
 		expect(getSchema).toHaveBeenCalledWith(
@@ -161,14 +142,10 @@ describe("getSchema", () => {
 		["test", true],
 		[null, false],
 	])("result of `getSchema` = %s, rendered = %s", (schema, isRendered) => {
-		const engine = render({
-			fieldSchema: {
-				getSchema: () => schema,
-			},
-			name: "test",
-			getFieldSchema: () => null,
-			getFieldType: () => fieldType,
-		});
+		getSchema.mockReturnValue(schema);
+		getFieldType.mockReturnValue(fieldType);
+
+		const engine = render({});
 
 		expect(engine.checkIsRendered()).toBe(isRendered);
 	});
@@ -176,16 +153,10 @@ describe("getSchema", () => {
 
 describe("getFieldType", () => {
 	test("should call `getFieldType` with correct argument", () => {
-		const getFieldType = vi.fn().mockReturnValue(fieldType);
+		getSchema.mockReturnValue("test");
+		getFieldType.mockReturnValue(fieldType);
 
-		render({
-			fieldSchema: {
-				getSchema: () => "test",
-			},
-			name: "test",
-			getFieldSchema: () => null,
-			getFieldType,
-		});
+		render({});
 
 		expect(getFieldType).toHaveBeenCalledTimes(1);
 		expect(getFieldType).toHaveBeenCalledWith("test");
@@ -194,25 +165,23 @@ describe("getFieldType", () => {
 
 describe("render", () => {
 	test("should provide correct props to rendered component", () => {
-		const getFieldSchema = vi.fn();
-		const getFieldType = vi.fn().mockReturnValue(fieldType);
+		getSchema.mockReturnValue("test");
+		getFieldType.mockReturnValue(fieldType);
 
-		const wrapper = render({
-			fieldSchema: {
-				getSchema: () => "test",
+		render({});
+
+		expect(renderField).toHaveBeenCalledTimes(1);
+		expect(renderField).toHaveBeenCalledWith(
+			{
+				name,
+				fieldSchema: "test",
+				getFieldSchema,
+				getFieldType,
+				parents,
+				payload,
 			},
-			name: "testName",
-			getFieldSchema,
-			getFieldType,
-		});
-
-		const allProps = wrapper.accessors.field.getProps();
-
-		expect(allProps.fieldSchema).toBe("test");
-		expect(allProps.name).toBe("testName");
-		expect(allProps.getFieldSchema).toBe(getFieldSchema);
-		expect(allProps.getFieldType).toBe(getFieldType);
-		expect(allProps.parents).toBe(parents);
+			formResult,
+		);
 	});
 });
 
@@ -226,40 +195,6 @@ describe("callbacks", () => {
 		effect();
 	}
 
-	test("should not call `onShow` and `onHide` if values are not ready and not change `isFirstRender`", () => {
-		const onShow = vi.fn();
-		const onHide = vi.fn();
-
-		const refValue = { current: false };
-
-		setupForCallbacks(
-			{
-				fieldSchema: {
-					getSchema: () => "schema",
-					onShow,
-					onHide,
-				},
-			},
-			{
-				useFormSchemaState: {
-					isValuesReady: false,
-				},
-				useRef: refValue,
-				onShowRef: {
-					current: onShow,
-				},
-				onHideRef: {
-					current: onHide,
-				},
-			},
-		);
-
-		expect(onShow).toHaveBeenCalledTimes(0);
-		expect(onHide).toHaveBeenCalledTimes(0);
-
-		expect(refValue.current).toBe(false);
-	});
-
 	test("should not call `onShow` in first render and change `isFirstRender`", () => {
 		const onShow = vi.fn();
 		const onHide = vi.fn();
@@ -268,17 +203,17 @@ describe("callbacks", () => {
 
 		setupForCallbacks(
 			{
-				fieldSchema: {
-					getSchema: () => "schema",
-					onShow,
-					onHide,
+				renderParams: {
+					...defaultProps.renderParams,
+					fieldSchema: {
+						...defaultProps.renderParams.fieldSchema,
+						onShow,
+						onHide,
+					},
 				},
 			},
 			{
-				useFormSchemaState: {
-					isValuesReady: true,
-				},
-				useRef: refValue,
+				isFirstRenderRef: refValue,
 				onShowRef: {
 					current: onShow,
 				},
@@ -302,17 +237,17 @@ describe("callbacks", () => {
 
 		setupForCallbacks(
 			{
-				fieldSchema: {
-					getSchema: () => null,
-					onShow,
-					onHide,
+				renderParams: {
+					...defaultProps.renderParams,
+					fieldSchema: {
+						...defaultProps.renderParams.fieldSchema,
+						onShow,
+						onHide,
+					},
 				},
 			},
 			{
-				useFormSchemaState: {
-					isValuesReady: true,
-				},
-				useRef: refValue,
+				isFirstRenderRef: refValue,
 				onShowRef: {
 					current: onShow,
 				},
@@ -336,17 +271,17 @@ describe("callbacks", () => {
 
 		setupForCallbacks(
 			{
-				fieldSchema: {
-					getSchema: () => "schema",
-					onShow,
-					onHide,
+				renderParams: {
+					...defaultProps.renderParams,
+					fieldSchema: {
+						...defaultProps.renderParams.fieldSchema,
+						onShow,
+						onHide,
+					},
 				},
 			},
 			{
-				useFormSchemaState: {
-					isValuesReady: true,
-				},
-				useRef: refValue,
+				isFirstRenderRef: refValue,
 				onShowRef: {
 					current: onShow,
 				},
@@ -361,11 +296,11 @@ describe("callbacks", () => {
 
 		expect(onShow).toHaveBeenCalledTimes(1);
 		expect(onShow).toHaveBeenCalledWith(
-			form,
-			"testName",
+			formResult,
+			name,
 			"schema",
-			defaultProps.getFieldSchema,
-			defaultProps.getFieldType,
+			getFieldSchema,
+			getFieldType,
 			parents,
 		);
 
@@ -380,19 +315,21 @@ describe("callbacks", () => {
 
 		const refValue = { current: false };
 
+		getSchema.mockReturnValue(null);
+
 		setupForCallbacks(
 			{
-				fieldSchema: {
-					getSchema: () => null,
-					onShow,
-					onHide,
+				renderParams: {
+					...defaultProps.renderParams,
+					fieldSchema: {
+						...defaultProps.renderParams.fieldSchema,
+						onShow,
+						onHide,
+					},
 				},
 			},
 			{
-				useFormSchemaState: {
-					isValuesReady: true,
-				},
-				useRef: refValue,
+				isFirstRenderRef: refValue,
 				onShowRef: {
 					current: onShow,
 				},
@@ -406,10 +343,10 @@ describe("callbacks", () => {
 
 		expect(onHide).toHaveBeenCalledTimes(1);
 		expect(onHide).toHaveBeenCalledWith(
-			form,
-			"testName",
-			defaultProps.getFieldSchema,
-			defaultProps.getFieldType,
+			formResult,
+			name,
+			getFieldSchema,
+			getFieldType,
 			parents,
 		);
 
