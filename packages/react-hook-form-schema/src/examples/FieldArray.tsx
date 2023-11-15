@@ -18,6 +18,7 @@ import {
 	type ArrayPath,
 	type FieldArray as FieldArrayType,
 	type FieldValues,
+	type Path,
 	type UseFormReturn,
 	useFieldArray,
 } from "react-hook-form";
@@ -116,6 +117,7 @@ function ArrayComponent<
 							type="button"
 							onClick={() => {
 								remove(index);
+								formResult.clearErrors(name as Path<Values>);
 							}}
 						>
 							Remove
@@ -135,12 +137,13 @@ function ArrayComponent<
 							ArrayPath<Values>
 						>[],
 					);
+					formResult.clearErrors(name as Path<Values>);
 				}}
 			>
 				Add
 			</button>
 
-			{errors && (
+			{errors && !Array.isArray(errors) && (
 				<ul
 					style={{
 						color: "red",
@@ -287,7 +290,7 @@ const fieldTypes: Record<
 				return {};
 			}
 
-			if (Array.isArray(arrayErrors) && typeof arrayErrors[0] === "string") {
+			if (typeof arrayErrors === "string") {
 				setError(name, parents, arrayErrors);
 				return;
 			}
