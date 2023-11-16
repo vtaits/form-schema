@@ -4505,7 +4505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vtaits/form-schema@^1.0.0, @vtaits/form-schema@workspace:packages/form-schema":
+"@vtaits/form-schema@^2.0.0, @vtaits/form-schema@workspace:packages/form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
   dependencies:
@@ -4531,7 +4531,7 @@ __metadata:
     "@types/lodash": ^4.14.201
     "@types/react": ^18.2.37
     "@vitest/coverage-v8": ^0.34.6
-    "@vtaits/form-schema": ^1.0.0
+    "@vtaits/form-schema": ^2.0.0
     "@vtaits/react-required-context": ^1.0.1
     exports-fallback: ^1.0.1
     final-form: ^4.20.10
@@ -4571,7 +4571,7 @@ __metadata:
     "@types/lodash": ^4.14.201
     "@types/react": ^18.2.37
     "@vitest/coverage-v8": ^0.34.6
-    "@vtaits/form-schema": ^1.0.0
+    "@vtaits/form-schema": ^2.0.0
     exports-fallback: ^1.0.1
     happy-dom: ^12.10.3
     is-promise: ^4.0.0

@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-final-form-schema",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Integration of react-final-form and @vtaits/form-schema",
   "files": [
     "dist",
@@ -56,7 +56,7 @@
     "react-final-form": "^6.0.0"
   },
   "dependencies": {
-    "@vtaits/form-schema": "^1.0.0",
+    "@vtaits/form-schema": "^2.0.0",
     "@vtaits/react-required-context": "^1.0.1",
     "is-promise": "^4.0.0",
     "lodash": "^4.17.21",

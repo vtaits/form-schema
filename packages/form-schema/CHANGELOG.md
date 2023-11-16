@@ -1,4 +1,4 @@
-## 2.0.0
+## 2.0.0 (16 nov 2023)
 
 ### Breaking changes
 

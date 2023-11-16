@@ -1,3 +1,9 @@
+## 2.0.0 (16 nov 2023)
+
+### Breaking changes
+
+- Migrate to `@vtaits/form-schema@^2.0.0`
+
 ## 1.0.0 (16 oct 2023)
 
 ### New features
