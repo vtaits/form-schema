@@ -1,10 +1,6 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	type GetFieldType,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
 import { type ReactElement, useState } from "react";
+import { type FieldType, type GetFieldType, useFormSchema } from "../core";
 
 type InputSchema = {
 	type: "input";
@@ -82,16 +78,16 @@ export function Simple(): ReactElement {
 	): Promise<Record<string, any> | null> => {
 		setSubmittedValues(null);
 
-		await delay(1000);
+		await delay(800);
 
 		const errors: Record<string, any> = {};
 
 		if (!values.firstName) {
-			errors.firstName = ["This field is required"];
+			errors.firstName = "This field is required";
 		}
 
 		if (!values.lastName) {
-			errors.lastName = ["This field is required"];
+			errors.lastName = "This field is required";
 		}
 
 		if (Object.keys(errors).length === 0) {

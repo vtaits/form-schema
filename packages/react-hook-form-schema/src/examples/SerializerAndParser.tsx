@@ -146,7 +146,7 @@ export function SerializerAndParser(): ReactElement {
 	> | null>(null);
 
 	const onSubmit = async (values: Record<string, any>): Promise<void> => {
-		await delay(1000);
+		await delay(800);
 
 		setSubmittedValues(values);
 	};

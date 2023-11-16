@@ -5,28 +5,19 @@ import {
 	useFormSchema,
 } from "@vtaits/react-hook-form-schema";
 import { type ReactElement, useState } from "react";
-import { Controller } from "react-hook-form";
-import Select from "react-select";
 
-type Option = {
-	value: number;
-	label: string;
-};
-
-type Options = Option[];
-
-type SelectSchema = {
-	type: "select";
+type InputSchema = {
+	type: "input";
 	label?: string;
-	options: Options;
+	placeholder?: string;
 	required?: boolean;
 };
 
-const fieldTypes: Record<string, FieldType<SelectSchema>> = {
-	select: {
+const fieldTypes: Record<string, FieldType<InputSchema>> = {
+	input: {
 		render: (
-			{ fieldSchema: { label, options }, name },
-			{ control, formState: { errors } },
+			{ name, fieldSchema: { label, placeholder } },
+			{ formState: { errors }, register },
 		) => {
 			const error = errors[name];
 
@@ -34,19 +25,9 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 				<div>
 					{label && <p>{label}</p>}
 
-					<Controller
-						control={control}
-						name={name}
-						render={({ field: { value, onChange } }) => (
-							<Select
-								isClearable
-								options={options}
-								name={name}
-								value={value}
-								onChange={onChange}
-							/>
-						)}
-					/>
+					<p>
+						<input placeholder={placeholder || ""} {...register(name)} />
+					</p>
 
 					{error && (
 						<ul
@@ -65,23 +46,15 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			const value = values[name];
 
 			return {
-				[name]: value ? value.value : null,
+				[name]: value || "",
 			};
 		},
 
-		parser: ({ values, name, fieldSchema: { options } }) => {
+		parser: ({ values, name }) => {
 			const value = values[name];
 
 			return {
-				[name]: value
-					? options.find((option) => {
-							if (option.value === value) {
-								return true;
-							}
-
-							return false;
-					  })
-					: null,
+				[name]: value || "",
 			};
 		},
 
@@ -90,77 +63,31 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			values,
 			name,
 			fieldSchema: { required },
-			getFieldSchema,
-			getFieldType,
 			parents,
 		}) => {
 			if (required && !values[name]) {
-				setError(name, parents, ["This field is required."]);
+				setError(name, parents, ["This field is required"]);
 			}
 		},
 	},
 };
 
-const getFieldType: GetFieldType<SelectSchema> = ({ type }) => fieldTypes[type];
+const getFieldType: GetFieldType<InputSchema> = ({ type }) => fieldTypes[type];
 
-const fullSchema: Record<string, SelectSchema> = {
+const fullSchema: Record<string, InputSchema> = {
 	animalRequired: {
-		type: "select",
+		type: "input",
 		label: "Animal (required)",
 		required: true,
-
-		options: [
-			{
-				value: 1,
-				label: "Cat",
-			},
-
-			{
-				value: 2,
-				label: "Dog",
-			},
-
-			{
-				value: 3,
-				label: "Elephant",
-			},
-
-			{
-				value: 4,
-				label: "Cow",
-			},
-		],
 	},
 
 	animalNotRequired: {
-		type: "select",
+		type: "input",
 		label: "Animal (not required)",
-
-		options: [
-			{
-				value: 1,
-				label: "Cat",
-			},
-
-			{
-				value: 2,
-				label: "Dog",
-			},
-
-			{
-				value: 3,
-				label: "Elephant",
-			},
-
-			{
-				value: 4,
-				label: "Cow",
-			},
-		],
 	},
 };
 
-const getFieldSchema: GetFieldSchema<SelectSchema> = (fieldName) =>
+const getFieldSchema: GetFieldSchema<InputSchema> = (fieldName) =>
 	fullSchema[fieldName];
 
 const names = ["animalRequired", "animalNotRequired"];
@@ -179,7 +106,7 @@ export function ValidateBeforeSubmit(): ReactElement {
 	> | null>(null);
 
 	const onSubmit = async (values: Record<string, any>): Promise<void> => {
-		await delay(1000);
+		await delay(800);
 
 		setSubmittedValues(values);
 	};

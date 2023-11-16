@@ -98,7 +98,7 @@ function ArrayComponent<
 				] as ParentType<Values>[];
 
 				return (
-					<div key={field.id}>
+					<div data-testid={`${name}/${index}`} key={field.id}>
 						{names.map((fieldName) => (
 							<Fragment key={fieldName}>
 								{renderBySchema(
@@ -149,7 +149,7 @@ function ArrayComponent<
 						color: "red",
 					}}
 				>
-					<li>{errors.message as string}</li>
+					<li data-testid={`${name}/error`}>{errors.message as string}</li>
 				</ul>
 			)}
 		</>

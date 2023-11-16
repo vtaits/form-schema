@@ -50,6 +50,10 @@ const fieldTypes: Record<string, FieldType<any>> = {
 				</div>
 			);
 		},
+
+		serializer: ({ name, values }) => ({
+			[name]: values[name] || "",
+		}),
 	},
 
 	dynamic,
@@ -99,14 +103,6 @@ const fullSchema: Record<string, FieldSchema> = {
 				placeholder: "WOW",
 			};
 		},
-
-		onShow: (...args) => {
-			console.log("onShow", args);
-		},
-
-		onHide: (...args) => {
-			console.log("onHide", args);
-		},
 	},
 };
 
@@ -133,7 +129,7 @@ export function Dynamic(): ReactElement {
 	): Promise<Record<string, any> | null> => {
 		setSubmittedValues(null);
 
-		await delay(1000);
+		await delay(800);
 
 		setSubmittedValues(values);
 

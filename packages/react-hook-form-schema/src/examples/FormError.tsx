@@ -30,7 +30,7 @@ export function FormError(): ReactElement {
 	});
 
 	const onSubmit = async (): Promise<void> => {
-		await delay(1000);
+		await delay(800);
 
 		setError("root", {
 			type: "serverError",
