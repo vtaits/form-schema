@@ -51,14 +51,11 @@
   },
   "peerDependencies": {
     "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
-    "react-final-form": "^6.0.0"
+    "react-hook-form": "^7.0.0"
   },
   "dependencies": {
     "@vtaits/form-schema": "^1.0.0",
-    "@vtaits/react-required-context": "^1.0.1",
     "is-promise": "^4.0.0",
-    "react-async-hook": "^4.0.0",
-    "react-hook-form": "^7.0.0",
     "use-latest": "^1.2.1"
   },
   "devDependencies": {
