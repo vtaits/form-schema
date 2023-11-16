@@ -18,6 +18,7 @@
     "jsx": "react-jsx"
   },
   "include": [
+    "docs-entry.ts",
     "packages/**/*"
   ],
   "exclude": [

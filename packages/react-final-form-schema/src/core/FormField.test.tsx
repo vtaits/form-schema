@@ -370,14 +370,14 @@ describe("getChildFieldSchema", () => {
 		);
 
 		expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
-		expect(createGetFieldSchema).toHaveBeenCalledWith(
-			"fieldSchema",
+		expect(createGetFieldSchema).toHaveBeenCalledWith({
+			fieldSchema: "fieldSchema",
 			getFieldSchema,
 			getFieldType,
-			formStateValues,
-			"render",
+			values: formStateValues,
+			phase: "render",
 			parents,
-		);
+		});
 	});
 });
 

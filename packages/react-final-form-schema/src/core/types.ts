@@ -125,7 +125,7 @@ export type FormProps<
 	initialValuesPlaceholder?: Values;
 	initialValues?: RawValues;
 
-	names: string[];
+	names: readonly string[];
 	getFieldSchema?: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,

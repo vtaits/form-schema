@@ -35,14 +35,14 @@ There are next entities:
 
 Type declaration is an object with next params:
 
-- `serializer` - function for serialize form values before submit. E.g. local value of select can be object `{ value, label }`, but only `value` should be submitted. Receives next arguments:
+- `serializer` - function for serialize form values before submit. E.g. local value of select can be an object `{ value, label }`, but only `value` should be submitted. Parameters:
 
-  1. `values` - all values of form;
-  2. `name` - name of current field;
-  3. `fieldSchema` - full schema of field;
-  4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above;
-  6. `parents` - stack of parent fields above current field with runtime values.
+  * `values` - all values of form;
+  * `name` - name of current field;
+  * `fieldSchema` - full schema of current field;
+  * `getFieldSchema` - see above;
+  * `getFieldType` - see above;
+  * `parents` - stack of parent fields above current field with runtime values.
 
   Should return **OBJECT** of values. By default returns
 
@@ -52,14 +52,14 @@ Type declaration is an object with next params:
   }
   ```
 
-- `parser` - function for parse initial values of form before initialize. Receives next arguments:
+- `parser` - function for parse initial values of form before initialize. Parameters:
 
-  1. `values` - all values of form;
-  2. `name` - name of current field;
-  3. `fieldSchema` - full schema of field;
-  4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above;
-  6. `parents` - stack of parent fields above current field with raw values.
+  * `values` - all values of form;
+  * `name` - name of current field;
+  * `fieldSchema` - full schema of current field;
+  * `getFieldSchema` - see above;
+  * `getFieldType` - see above;
+  * `parents` - stack of parent fields above current field with raw values.
 
   Should return **OBJECT** of values or `Promise` with object of values (can be `async`). By default returns
 
@@ -71,39 +71,43 @@ Type declaration is an object with next params:
 
 - `validatorBeforeSubmit` - function for collect validation errors of form before submit. Receives next arguments:
 
-  1. `values` - all values of form;
-  2. `name` - name of current field;
-  3. `fieldSchema` - full schema of field;
-  4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above;
-  6. `parents` - stack of parent fields above current field with runtime values.
+  * `setError` - a function for setting errors;
+  * `values` - all values of the form;
+  * `name` - name of current field;
+  * `fieldSchema` - full schema of current field;
+  * `getFieldSchema` - see above;
+  * `getFieldType` - see above;
+  * `parents` - stack of parent fields above current field with runtime values.
 
-  Should return **OBJECT** of values. By default returns empty object. Example:
+  Example:
 
-  ```
+  ```tsx
   {
-    validateBeforeSubmit: (values, name, { required }) => {
+    validateBeforeSubmit: ({
+      setError,
+      values,
+      name,
+      fieldSchema: { required },
+      parents,
+    }) => {
       if (required && !values[name]) {
-        return {
-          [name]: 'This field is required',
-        };
+        setError(name, parents, 'This field is required');
       }
-
-      return {};
     },
   }
   ```
 
 - `errorsMapper` - function for map errors of field from backend format to format of field. Receives next arguments:
 
-  1. `errors` - intermediate result (default errors of form and collected erros of other fields);
-  2. `name` - name of current field;
-  3. `fieldSchema` - full schema of field;
-  4. `getFieldSchema` - see above;
-  5. `getFieldType` - see above;
-  6. `values` - serialized values of form using `serializer` functions of field;
-  7. `rawValues` - all values of form without processing;
-  8. `parents` - stack of parent fields above current field with runtime values.
+  * `setError` - a function for setting errors;
+  * `errors` - errors object;
+  * `name` - name of current field;
+  * `fieldSchema` - full schema of current field;
+  * `getFieldSchema` - see above;
+  * `getFieldType` - see above;
+  * `values` - serialized values of form using `serializer` functions of field;
+  * `rawValues` - all values of form without processing;
+  * `parents` - stack of parent fields above current field with runtime values.
 
   Should return **OBJECT** of values. By default returns
 
@@ -113,55 +117,83 @@ Type declaration is an object with next params:
   }
   ```
 
-- `createGetFieldSchema` - function for create `getFieldSchema` for nested fields. Can be helpful for arrays of repeating fields etc. Arguments:
+- `createGetFieldSchema` - function for create `getFieldSchema` for nested fields. Can be helpful for arrays of repeating fields etc. Parameters:
 
-  1. `fieldSchema` - schema of current field;
-  2. `getFieldSchema` - default `getFieldSchema`;
-  3. `getFieldType` - see above;
-  4. `values` - current values (values of form during render and serialization or raw values during parsing);
-  5. `phase` - one of next values: `'parse'`, `'serialize'`, `'render'`;
-  6. `parents` - stack of parent fields above current field, raw values for phase 'parse' and runtime values otherwise.
+  * `fieldSchema` - schema of current field;
+  * `getFieldSchema` - default `getFieldSchema`;
+  * `getFieldType` - see above;
+  * `values` - current values (values of form during render and serialization or raw values during parsing);
+  * `phase` - one of next values: `'parse'`, `'serialize'`, `'render'`;
+  * `parents` - stack of parent fields above current field, raw values for phase 'parse' and runtime values otherwise.
 
 ## Usage
 
 ### Serialization
 
-```javascript
+```tsx
 import { serialize } from '@vtaits/form-schema';
 
-...
+// ...
 
-serialize(values, names, getFieldSchema, getFieldType);
+serialize({
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+});
 ```
 
 ### Parsing
 
-```javascript
+```tsx
 import { parse } from '@vtaits/form-schema';
 
-...
+// ...
 
-parse(values, names, getFieldSchema, getFieldType);
+parse({
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+});
 ```
 
 ### Validation before submit
 
-```javascript
+```tsx
 import { validateBeforeSubmit } from '@vtaits/form-schema';
 
-...
+// ...
 
-validateBeforeSubmit(values, names, getFieldSchema, getFieldType);
+validateBeforeSubmit({
+	setError,
+	values,
+	names,
+	getFieldSchema,
+	getFieldType,
+	parents,
+});
 ```
 
 ### Mapping of errors of fields
 
-```javascript
-import { mapFieldErrors } from '@vtaits/form-schema';
+```tsx
+import { setFieldErrors } from '@vtaits/form-schema';
 
-...
+// ...
 
-mapFieldErrors(errors, names, getFieldSchema, getFieldType, values, rawValues);
+setFieldErrors({
+	setError,
+	errors,
+	names,
+	getFieldSchema,
+	getFieldType,
+	values,
+	rawValues,
+	parents,
+});
 ```
 
 - `values` - serialied values of form (result of `serialize`);
