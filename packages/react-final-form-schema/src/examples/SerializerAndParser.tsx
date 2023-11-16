@@ -1,14 +1,14 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
+import { type ReactElement, type ReactNode, useState } from "react";
+import { useField } from "react-final-form";
+import Select from "react-select";
 import {
 	type FieldType,
 	Form,
 	FormField,
 	type GetFieldType,
 	useValuesReady,
-} from "@vtaits/react-final-form-schema";
-import { type ReactElement, type ReactNode, useState } from "react";
-import { useField } from "react-final-form";
-import Select from "react-select";
+} from "../core";
 
 type Option = {
 	value: number;
@@ -164,7 +164,7 @@ export function SerializerAndParser(): ReactElement {
 	> | null>(null);
 
 	const onSubmit = async (values: Record<string, any>): Promise<void> => {
-		await delay(1000);
+		await delay(800);
 
 		setSubmittedValues(values);
 	};

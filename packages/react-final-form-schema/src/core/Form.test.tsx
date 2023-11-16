@@ -464,6 +464,7 @@ test("should submit with error", async () => {
 	);
 
 	expect(result).toEqual({
+		test2: "error2",
 		test3: "error3",
 	});
 

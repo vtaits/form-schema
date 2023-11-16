@@ -1,16 +1,8 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	Form,
-	FormField,
-	type GetFieldType,
-} from "@vtaits/react-final-form-schema";
-import {
-	type DynamicSchema,
-	dynamic,
-} from "@vtaits/react-final-form-schema/fields/dynamic";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
+import { type FieldType, Form, FormField, type GetFieldType } from "../core";
+import { type DynamicSchema, dynamic } from "../fields/dynamic";
 
 type InputSchema = {
 	type: "input";
@@ -66,6 +58,10 @@ function InputComponent({
 const fieldTypes: Record<string, FieldType<any>> = {
 	input: {
 		component: InputComponent,
+
+		serializer: ({ name, values }) => ({
+			[name]: values[name] || "",
+		}),
 	},
 
 	dynamic,
@@ -121,14 +117,6 @@ const fullSchema: Record<string, FieldSchema> = {
 				placeholder: "WOW",
 			};
 		},
-
-		onShow: (...args) => {
-			console.log("onShow", args);
-		},
-
-		onHide: (...args) => {
-			console.log("onHide", args);
-		},
 	},
 };
 
@@ -155,7 +143,7 @@ export function Dynamic(): ReactElement {
 	): Promise<Record<string, any> | null> => {
 		setSubmittedValues(null);
 
-		await delay(1000);
+		await delay(800);
 
 		setSubmittedValues(values);
 

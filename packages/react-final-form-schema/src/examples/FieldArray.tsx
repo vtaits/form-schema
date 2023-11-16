@@ -4,25 +4,25 @@ import {
 	serialize,
 	setFieldErrors,
 } from "@vtaits/form-schema";
+import { ARRAY_ERROR } from "final-form";
+import arrayMutators from "final-form-arrays";
+import { Fragment, type ReactElement, type ReactNode, useState } from "react";
+import { useField } from "react-final-form";
+import { useFieldArray } from "react-final-form-arrays";
 import {
 	type FieldComponentProps,
 	type FieldType,
 	Form,
 	FormField,
 	type GetFieldType,
-} from "@vtaits/react-final-form-schema";
-import { ARRAY_ERROR } from "final-form";
-import arrayMutators from "final-form-arrays";
-import { Fragment, type ReactElement, type ReactNode, useState } from "react";
-import { useField } from "react-final-form";
-import { useFieldArray } from "react-final-form-arrays";
+} from "../core";
 
 type FieldArraySchema = {
 	type: "array";
 	label: string;
 	fields: Record<string, FieldSchema>;
 	initialValues?: Record<string, any>;
-	names: string[];
+	names: readonly string[];
 };
 
 type ArrayProps = FieldComponentProps<FieldSchema>;
@@ -49,7 +49,7 @@ function ArrayComponent({
 			{fields.map((namePrefix, index) => {
 				const currrentValues = (fields.value || [])[index] || {};
 				return (
-					<div key={namePrefix}>
+					<div data-testid={`${name}/${index}`} key={namePrefix}>
 						{names.map((fieldName) => (
 							<Fragment key={fieldName}>
 								<FormField
@@ -89,15 +89,17 @@ function ArrayComponent({
 				Add
 			</button>
 
-			{!dirtySinceLastSubmit && submitError && submitError[ARRAY_ERROR] && (
-				<ul
-					style={{
-						color: "red",
-					}}
-				>
-					<li>{submitError[ARRAY_ERROR]}</li>
-				</ul>
-			)}
+			{!dirtySinceLastSubmit &&
+				submitError &&
+				typeof submitError === "string" && (
+					<ul
+						style={{
+							color: "red",
+						}}
+					>
+						<li data-testid={`${name}/error`}>{submitError}</li>
+					</ul>
+				)}
 		</>
 	);
 }
@@ -383,7 +385,7 @@ export function FieldArray(): ReactElement {
 	): Promise<Errors | null> => {
 		setSubmittedValues(null);
 
-		await delay(1000);
+		await delay(800);
 
 		const errors: Errors = {};
 

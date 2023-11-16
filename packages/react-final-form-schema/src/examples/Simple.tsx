@@ -1,12 +1,7 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	Form,
-	FormField,
-	type GetFieldType,
-} from "@vtaits/react-final-form-schema";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
+import { type FieldType, Form, FormField, type GetFieldType } from "../core";
 
 type InputSchema = {
 	type: "input";
@@ -102,7 +97,7 @@ export function Simple(): ReactElement {
 	): Promise<Record<string, any> | null> => {
 		setSubmittedValues(null);
 
-		await delay(1000);
+		await delay(800);
 
 		const errors: Record<string, any> = {};
 

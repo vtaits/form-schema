@@ -1,8 +1,7 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import { Form } from "@vtaits/react-final-form-schema";
-import type { GetFieldType, MapErrors } from "@vtaits/react-final-form-schema";
 import { FORM_ERROR } from "final-form";
 import type { ReactElement, ReactNode } from "react";
+import { Form, type GetFieldType, type MapErrors } from "../core";
 
 function EmptyComponent(): ReactElement {
 	return <div />;
@@ -38,7 +37,7 @@ const mapErrors: MapErrors = (rawErrors) => {
 
 export function FormError(): ReactElement {
 	const onSubmit = async (): Promise<Record<string, any>> => {
-		await delay(1000);
+		await delay(800);
 
 		return {
 			formError: "Error",

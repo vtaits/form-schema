@@ -120,10 +120,8 @@ export function Form<
 				values,
 			);
 
-			const mappedErrors = {} as Errors;
-
 			setFieldErrors({
-				setError: makeSetError(mappedErrors),
+				setError: makeSetError(preparedErrors),
 				errors: preparedErrors,
 				names,
 				getFieldSchema,
@@ -137,7 +135,7 @@ export function Form<
 				],
 			});
 
-			return mappedErrors;
+			return preparedErrors;
 		},
 		[onSubmitProp, names, getFieldSchema, getFieldType, mapErrors],
 	);
