@@ -6,13 +6,13 @@
   "scripts": {
     "start": "storybook dev -p 6006",
     "postinstall": "yarn build",
-    "clean": "yarn workspaces foreach -pt run clean",
-    "build": "yarn workspaces foreach -pt run build",
-    "lint": "yarn workspaces foreach run lint",
-    "lint:fix": "yarn workspaces foreach run lint:fix",
-    "format": "yarn workspaces foreach run format",
-    "test:unit": "yarn workspaces foreach run test:unit",
-    "test:ts": "yarn workspaces foreach run test:ts",
+    "clean": "yarn workspaces foreach --all -pt run clean",
+    "build": "yarn workspaces foreach --all -pt run build",
+    "lint": "yarn workspaces foreach --all run lint",
+    "lint:fix": "yarn workspaces foreach --all run lint:fix",
+    "format": "yarn workspaces foreach --all run format",
+    "test:unit": "yarn workspaces foreach --all run test:unit",
+    "test:ts": "yarn workspaces foreach --all run test:ts",
     "test": "yarn lint && yarn test:ts && yarn test:unit",
     "upload:docs": "gh-pages -d docs",
     "build:docs": "typedoc ./docs-entry.ts",
@@ -32,15 +32,14 @@
     "@storybook/react": "^7.5.3",
     "@storybook/react-vite": "^7.5.3",
     "@storybook/testing-library": "^0.2.2",
-    "@vitejs/plugin-react-swc": "^3.4.1",
-    "gh-pages": "^6.0.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "gh-pages": "^6.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
     "storybook": "^7.5.3",
     "typedoc": "^0.25.3",
-    "typescript": "5.2.2",
-    "vite": "^4.5.0"
-  },
-  "packageManager": "yarn@3.6.4"
+    "typescript": "5.3.2",
+    "vite": "^5.0.2"
+  }
 }
