@@ -8,6 +8,7 @@ import {
 	type DynamicSchema,
 	dynamic,
 } from "@vtaits/react-hook-form-schema/fields/dynamic";
+import { type SetSchema, set } from "@vtaits/react-hook-form-schema/fields/set";
 import { type ReactElement, useState } from "react";
 
 type InputSchema = {
@@ -19,8 +20,11 @@ type InputSchema = {
 
 type FieldSchema =
 	| InputSchema
-	| (DynamicSchema<InputSchema> & {
+	| (DynamicSchema<InputSchema | SetSchema<any>> & {
 			type: "dynamic";
+	  })
+	| (SetSchema<any> & {
+			type: "set";
 	  });
 
 const fieldTypes: Record<string, FieldType<any>> = {
@@ -57,6 +61,8 @@ const fieldTypes: Record<string, FieldType<any>> = {
 	},
 
 	dynamic,
+
+	set,
 };
 
 const getFieldType: GetFieldType<FieldSchema> = ({ type }) => fieldTypes[type];
@@ -98,9 +104,21 @@ const fullSchema: Record<string, FieldSchema> = {
 			}
 
 			return {
-				type: "input",
-				label: "WOW",
-				placeholder: "WOW",
+				type: "set",
+
+				schemas: {
+					wow: {
+						type: "input",
+						label: "WOW",
+						placeholder: "WOW",
+					},
+
+					owo: {
+						type: "input",
+						label: "OWO",
+						placeholder: "OWO",
+					},
+				},
 			};
 		},
 	},

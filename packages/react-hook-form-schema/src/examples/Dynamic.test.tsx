@@ -28,6 +28,11 @@ const render = create(
 				parameters: ['[name="wow"]'],
 			},
 
+			owoInput: {
+				query: AccessorQueryType.QuerySelector,
+				parameters: ['[name="owo"]'],
+			},
+
 			submitButton: {
 				query: AccessorQueryType.QuerySelector,
 				parameters: ["button"],
@@ -48,6 +53,7 @@ const render = create(
 			changeFirstName: ["firstNameInput", changeInput],
 			changeLastName: ["lastNameInput", changeInput],
 			changeWow: ["wowInput", changeInput],
+			changeOwo: ["owoInput", changeInput],
 		},
 	},
 );
@@ -77,6 +83,7 @@ test("submit filled form", async () => {
 	await engine.run("changeFirstName", "foo");
 	await engine.run("changeLastName", "bar");
 	await engine.run("changeWow", "baz");
+	await engine.run("changeOwo", "quux");
 
 	engine.fireEvent("submit");
 
@@ -85,6 +92,7 @@ test("submit filled form", async () => {
 	expect(submitResult.textContent).toBe(`{
   "firstName": "foo",
   "lastName": "bar",
-  "wow": "baz"
+  "wow": "baz",
+  "owo": "quux"
 }`);
 });
