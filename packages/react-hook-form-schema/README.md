@@ -141,6 +141,63 @@ Parameters:
 
   5. `parents` - stack of parent fields above current field with runtime values.
 
+### Set
+
+The group of fields. It's comfortable when the `dynamic` field must render several fields. Example:
+
+```tsx
+import { dynamic } from '@vtaits/react-hook-form-schema/fields/dynamic';
+import { set } from '@vtaits/react-hook-form-schema/fields/set';
+
+const schema = {
+  type: 'dynamic',
+
+  getSchema: ({
+    responsibleType,
+  }) => {
+    if (responsibleType !== 'human') {
+      return null;
+    }
+
+    return {
+      type: 'set',
+      schemas: {
+        firstName: {
+          type: 'string',
+          label: 'First name',
+        },
+
+        lastName: {
+          type: 'string',
+          label: 'Last name',
+        },
+      },
+    };
+  },
+};
+
+const getFieldType = (fieldSchema) => {
+  if (fieldSchema.type === 'dynamic') {
+    return dynamic;
+  }
+
+  if (fieldSchema.type === 'set') {
+    return set;
+  }
+
+  // ...
+}
+```
+
+Parameters:
+
+- `schemas` - required, object whose keys are field names and values are their schemas;
+
+- `render` - not required, render function. . Arguments:
+
+  1. `renderField` - analogous to `renderField` result of `useFormSchema`;
+  2. `names` - fields names (keys of schemas);
+
 ## Utils
 
 ### renderBySchema

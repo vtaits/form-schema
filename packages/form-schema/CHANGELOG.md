@@ -1,3 +1,9 @@
+## 2.1.0 (26 nov 2023)
+
+### New features
+
+- Added built-in field `set`
+
 ## 2.0.0 (16 nov 2023)
 
 ### Breaking changes

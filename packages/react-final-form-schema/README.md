@@ -100,7 +100,7 @@ Type declaration is similar with [@vtaits/form-schema](https://github.com/vtaits
 
 ### Dynamic
 
-Field depends from other fields. Example:
+The field that depends from other fields. Example:
 
 ```tsx
 import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
@@ -167,6 +167,62 @@ Parameters:
   4. `getFieldType` - global `getFieldType`;
 
   5. `parents` - stack of parent fields above current field with runtime values.
+
+### Set
+
+The group of fields. It's comfortable when the `dynamic` field must render several fields. Example:
+
+```tsx
+import { dynamic } from '@vtaits/react-final-form-schema/fields/dynamic';
+import { set } from '@vtaits/react-final-form-schema/fields/set';
+
+const schema = {
+  type: 'dynamic',
+
+  getSchema: ({
+    responsibleType,
+  }) => {
+    if (responsibleType !== 'human') {
+      return null;
+    }
+
+    return {
+      type: 'set',
+      schemas: {
+        firstName: {
+          type: 'string',
+          label: 'First name',
+        },
+
+        lastName: {
+          type: 'string',
+          label: 'Last name',
+        },
+      },
+    };
+  },
+};
+
+const getFieldType = (fieldSchema) => {
+  if (fieldSchema.type === 'dynamic') {
+    return dynamic;
+  }
+
+  if (fieldSchema.type === 'set') {
+    return set;
+  }
+
+  // ...
+}
+```
+
+Parameters:
+
+- `schemas` - required, object whose keys are field names and values are their schemas;
+
+- `render` - not required, render function. . Arguments:
+
+  1. `names` - fields names (keys of schemas);
 
 ## Utils
 
