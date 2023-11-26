@@ -17,9 +17,7 @@ import {
 	type FieldType,
 	useFormSchemaState,
 } from "../../core";
-
 import { DynamicField } from "./component";
-import type { DynamicFieldProps } from "./component";
 
 vi.mock("react", async () => {
 	const actual = (await vi.importActual("react")) as Record<string, unknown>;
@@ -50,7 +48,7 @@ const fieldType: FieldType<any> = {
 	component: TestComponent as FC<FieldComponentProps<any>>,
 };
 
-const defaultProps: DynamicFieldProps<any, any, any, any, any, any> = {
+const defaultProps: FieldComponentProps<any, any, any, any, any, any> = {
 	fieldSchema: {
 		getSchema: () => "test",
 	},

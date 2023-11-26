@@ -1,6 +1,6 @@
+import { get } from "react-shallow-search";
 import { afterEach, expect, test, vi } from "vitest";
 
-import { get } from "react-shallow-search";
 import { defaultRender } from "./defaultRender";
 
 afterEach(() => {
@@ -10,8 +10,8 @@ afterEach(() => {
 test("render correctly", () => {
 	const renderField = vi
 		.fn()
-		.mockReturnValue("content1")
-		.mockReturnValue("content2");
+		.mockReturnValueOnce("content1")
+		.mockReturnValueOnce("content2");
 
 	const result = defaultRender(renderField, ["name1", "name2"]);
 

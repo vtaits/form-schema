@@ -19,6 +19,11 @@
       "require": "./dist/fields_dynamic.js",
       "import": "./dist/esm/fields_dynamic.js",
       "types": "./dist/fields_dynamic.d.ts"
+    },
+    "./fields/set": {
+      "require": "./dist/fields_set.js",
+      "import": "./dist/esm/fields_set.js",
+      "types": "./dist/fields_set.d.ts"
     }
   },
   "keywords": [
@@ -39,7 +44,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "yarn build:js && yarn build:proxy_directories",
-    "build:js": "tsup --entry.core src/core/index.ts --entry.fields_dynamic src/fields/dynamic/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
+    "build:js": "tsup",
     "build:proxy_directories": "exports-fallback -gf",
     "test:ts": "tsc",
     "lint": "biome check src",
@@ -81,6 +86,7 @@
     "react-integration-test-engine": "^1.3.0",
     "react-is": "^18.2.0",
     "react-select": "^5.8.0",
+    "react-shallow-search": "^2.2.0",
     "react-test-engine": "^1.1.1",
     "react-test-engine-vitest": "^1.0.0",
     "react-test-renderer": "^18.2.0",

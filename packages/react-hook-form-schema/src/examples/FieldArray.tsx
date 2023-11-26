@@ -423,7 +423,7 @@ export function FieldArray(): ReactElement {
 	): Promise<Errors | null> => {
 		setSubmittedValues(null);
 
-		await delay(1000);
+		await delay(800);
 
 		const errors: Errors = {};
 

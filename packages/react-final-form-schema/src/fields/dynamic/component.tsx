@@ -3,27 +3,8 @@ import type { ReactElement } from "react";
 import { useForm, useFormState } from "react-final-form";
 import useLatest from "use-latest";
 
-import { useFormSchemaState } from "../../core";
-
-import type { FieldComponentProps } from "../../core";
-
+import { type FieldComponentProps, useFormSchemaState } from "../../core";
 import type { DynamicSchema } from "./schema";
-
-export type DynamicFieldProps<
-	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
-	Errors extends Record<string, any>,
-	Payload,
-> = FieldComponentProps<
-	FieldSchema,
-	Values,
-	RawValues,
-	SerializedValues,
-	Errors,
-	Payload
->;
 
 export function DynamicField<
 	FieldSchema,
@@ -39,7 +20,7 @@ export function DynamicField<
 	getFieldType,
 	parents,
 	...rest
-}: DynamicFieldProps<
+}: FieldComponentProps<
 	FieldSchema,
 	Values,
 	RawValues,

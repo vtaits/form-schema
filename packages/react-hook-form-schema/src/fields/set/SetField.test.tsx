@@ -169,8 +169,6 @@ describe("names", () => {
 	});
 
 	test("return keys of `schemas`", () => {
-		vi.mocked(renderBySchema).mockReturnValue("RENDERED");
-
 		const engine = render({});
 
 		expect(engine.getHookArguments("names")[0]()).toEqual([

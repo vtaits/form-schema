@@ -3,6 +3,7 @@ import { type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
 import { type FieldType, Form, FormField, type GetFieldType } from "../core";
 import { type DynamicSchema, dynamic } from "../fields/dynamic";
+import { type SetSchema, set } from "../fields/set";
 
 type InputSchema = {
 	type: "input";
@@ -65,12 +66,16 @@ const fieldTypes: Record<string, FieldType<any>> = {
 	},
 
 	dynamic,
+	set,
 };
 
 type FieldSchema =
 	| InputSchema
-	| (DynamicSchema<InputSchema> & {
+	| (DynamicSchema<InputSchema | SetSchema<any>> & {
 			type: "dynamic";
+	  })
+	| (SetSchema<any> & {
+			type: "set";
 	  });
 
 const getFieldType: GetFieldType<FieldSchema> = ({ type }) => fieldTypes[type];
@@ -112,9 +117,21 @@ const fullSchema: Record<string, FieldSchema> = {
 			}
 
 			return {
-				type: "input",
-				label: "WOW",
-				placeholder: "WOW",
+				type: "set",
+
+				schemas: {
+					wow: {
+						type: "input",
+						label: "WOW",
+						placeholder: "WOW",
+					},
+
+					owo: {
+						type: "input",
+						label: "OWO",
+						placeholder: "OWO",
+					},
+				},
 			};
 		},
 	},
