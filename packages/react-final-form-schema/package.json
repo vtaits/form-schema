@@ -61,7 +61,7 @@
     "react-final-form": "^6.0.0"
   },
   "dependencies": {
-    "@vtaits/form-schema": "^2.1.0",
+    "@vtaits/form-schema": "^2.2.0",
     "@vtaits/react-required-context": "^1.0.1",
     "is-promise": "^4.0.0",
     "lodash": "^4.17.21",

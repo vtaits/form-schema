@@ -59,7 +59,7 @@
     "react-hook-form": "^7.0.0"
   },
   "dependencies": {
-    "@vtaits/form-schema": "^2.1.0",
+    "@vtaits/form-schema": "^2.2.0",
     "is-promise": "^4.0.0",
     "use-latest": "^1.2.1"
   },

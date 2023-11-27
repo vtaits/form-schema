@@ -1,3 +1,9 @@
+## 2.2.0 (27 nov 2023)
+
+### New features
+
+- Added property `nested` to field `set`
+
 ## 2.1.0 (26 nov 2023)
 
 ### New features
