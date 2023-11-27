@@ -1,3 +1,5 @@
+import isPromise from "is-promise";
+
 import {
 	type FieldType,
 	parse,
@@ -15,15 +17,38 @@ export const set: FieldType<SetSchema<any>> = {
 	},
 
 	serializer: ({
+		name,
 		values,
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
 		parents,
 	}) => {
-		const { schemas } = fieldSchema;
+		const { schemas, nested } = fieldSchema;
 
 		const names = Object.keys(schemas);
+
+		if (nested) {
+			const currentValues = values[name] as Record<string, unknown>;
+
+			const nextParents = [
+				...parents,
+				{
+					name,
+					values: currentValues,
+				},
+			];
+
+			return {
+				[name]: serialize({
+					values: currentValues,
+					names,
+					getFieldSchema,
+					getFieldType,
+					parents: nextParents,
+				}),
+			};
+		}
 
 		return serialize({
 			values,
@@ -34,10 +59,53 @@ export const set: FieldType<SetSchema<any>> = {
 		});
 	},
 
-	parser: ({ values, fieldSchema, getFieldSchema, getFieldType, parents }) => {
-		const { schemas } = fieldSchema;
+	parser: ({
+		name,
+		values,
+		fieldSchema,
+		getFieldSchema,
+		getFieldType,
+		parents,
+	}) => {
+		const { schemas, nested } = fieldSchema;
 
 		const names = Object.keys(schemas);
+
+		if (nested) {
+			const currentValues = (values[name] || {}) as Record<string, unknown>;
+
+			const nextParents = [
+				...parents,
+				{
+					name,
+					values: currentValues,
+				},
+			];
+
+			const parseResult = parse({
+				values: currentValues,
+				names,
+				getFieldSchema,
+				getFieldType,
+				parents: nextParents,
+			});
+
+			if (!parseResult) {
+				return {
+					[name]: {},
+				};
+			}
+
+			if (isPromise(parseResult)) {
+				return parseResult.then((promiseResult) => ({
+					[name]: promiseResult,
+				}));
+			}
+
+			return {
+				[name]: parseResult,
+			};
+		}
 
 		return (
 			parse({
@@ -51,6 +119,7 @@ export const set: FieldType<SetSchema<any>> = {
 	},
 
 	validatorBeforeSubmit: ({
+		name,
 		setError,
 		values,
 		fieldSchema,
@@ -58,9 +127,32 @@ export const set: FieldType<SetSchema<any>> = {
 		getFieldType,
 		parents,
 	}) => {
-		const { schemas } = fieldSchema;
+		const { nested, schemas } = fieldSchema;
 
 		const names = Object.keys(schemas);
+
+		if (nested) {
+			const currentValues = values[name] as Record<string, unknown>;
+
+			const nextParents = [
+				...parents,
+				{
+					name,
+					values: currentValues,
+				},
+			];
+
+			validateBeforeSubmit({
+				setError,
+				values: currentValues,
+				names,
+				getFieldSchema,
+				getFieldType,
+				parents: nextParents,
+			});
+
+			return;
+		}
 
 		validateBeforeSubmit({
 			setError,
@@ -73,6 +165,7 @@ export const set: FieldType<SetSchema<any>> = {
 	},
 
 	errorsSetter: ({
+		name,
 		setError,
 		errors,
 		fieldSchema,
@@ -82,9 +175,34 @@ export const set: FieldType<SetSchema<any>> = {
 		rawValues,
 		parents,
 	}) => {
-		const { schemas } = fieldSchema;
+		const { nested, schemas } = fieldSchema;
 
 		const names = Object.keys(schemas);
+
+		if (nested) {
+			const currentValues = (values[name] || {}) as Record<string, unknown>;
+
+			const nextParents = [
+				...parents,
+				{
+					name,
+					values: currentValues,
+				},
+			];
+
+			setFieldErrors({
+				setError,
+				errors: (errors[name] || {}) as Record<string, unknown>,
+				names,
+				getFieldSchema,
+				getFieldType,
+				values: currentValues,
+				rawValues: (rawValues[name] || {}) as Record<string, unknown>,
+				parents: nextParents,
+			});
+
+			return;
+		}
 
 		setFieldErrors({
 			setError,

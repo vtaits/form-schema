@@ -19,9 +19,25 @@ const values = {
 	foo: "bar",
 };
 
+const name = "test";
+
+const valuesForNested = {
+	[name]: values,
+};
+
 const parents: ParentType[] = [
 	{
 		values: {},
+	},
+];
+
+const parentsForNested: ParentType[] = [
+	{
+		values: {},
+	},
+	{
+		name,
+		values,
 	},
 ];
 
@@ -30,6 +46,11 @@ const fieldSchema: SetSchema<unknown> = {
 		field1: "SCHEMA_1",
 		field2: "SCHEMA_2",
 	},
+};
+
+const fieldSchemaNested: SetSchema<unknown> = {
+	...fieldSchema,
+	nested: true,
 };
 
 afterEach(() => {
@@ -72,7 +93,7 @@ describe("serializer", () => {
 		vi.mocked(serialize).mockReturnValue(expectedResult);
 
 		const result = serializer({
-			name: "test",
+			name,
 			fieldSchema,
 			getFieldSchema,
 			getFieldType,
@@ -88,6 +109,36 @@ describe("serializer", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			values,
+		});
+	});
+
+	test("should return serialized values for nested field", () => {
+		const expectedResult = {
+			bar: "baz",
+		};
+
+		vi.mocked(serialize).mockReturnValue(expectedResult);
+
+		const result = serializer({
+			name,
+			fieldSchema: fieldSchemaNested,
+			getFieldSchema,
+			getFieldType,
+			parents,
+			values: valuesForNested,
+		});
+
+		expect(result).toEqual({
+			[name]: expectedResult,
+		});
+
+		expect(serialize).toHaveBeenCalledTimes(1);
+		expect(serialize).toHaveBeenCalledWith({
+			names: ["field1", "field2"],
+			getFieldSchema,
+			getFieldType,
+			parents: parentsForNested,
 			values,
 		});
 	});
@@ -108,7 +159,7 @@ describe("parser", () => {
 		vi.mocked(parse).mockReturnValue(expectedResult);
 
 		const result = parser({
-			name: "test",
+			name,
 			fieldSchema,
 			getFieldSchema,
 			getFieldType,
@@ -127,6 +178,66 @@ describe("parser", () => {
 			values,
 		});
 	});
+
+	test("should return parsed values for nested field", () => {
+		const expectedResult = {
+			bar: "baz",
+		};
+
+		vi.mocked(parse).mockReturnValue(expectedResult);
+
+		const result = parser({
+			name,
+			fieldSchema: fieldSchemaNested,
+			getFieldSchema,
+			getFieldType,
+			parents,
+			values: valuesForNested,
+		});
+
+		expect(result).toEqual({
+			[name]: expectedResult,
+		});
+
+		expect(parse).toHaveBeenCalledTimes(1);
+		expect(parse).toHaveBeenCalledWith({
+			names: ["field1", "field2"],
+			getFieldSchema,
+			getFieldType,
+			parents: parentsForNested,
+			values,
+		});
+	});
+
+	test("should return asynchronously parsed values for nested field", async () => {
+		const expectedResult = {
+			bar: "baz",
+		};
+
+		vi.mocked(parse).mockResolvedValue(expectedResult);
+
+		const result = await parser({
+			name,
+			fieldSchema: fieldSchemaNested,
+			getFieldSchema,
+			getFieldType,
+			parents,
+			values: valuesForNested,
+		});
+
+		expect(result).toEqual({
+			[name]: expectedResult,
+		});
+
+		expect(parse).toHaveBeenCalledTimes(1);
+		expect(parse).toHaveBeenCalledWith({
+			names: ["field1", "field2"],
+			getFieldSchema,
+			getFieldType,
+			parents: parentsForNested,
+			values,
+		});
+	});
 });
 
 describe("validatorBeforeSubmit", () => {
@@ -136,9 +247,9 @@ describe("validatorBeforeSubmit", () => {
 		throw new Error("`validatorBeforeSubmit` is not defined");
 	}
 
-	test("should return validate add childs", () => {
+	test("should validate all childs", () => {
 		validatorBeforeSubmit({
-			name: "test",
+			name,
 			setError,
 			fieldSchema,
 			getFieldSchema,
@@ -157,6 +268,28 @@ describe("validatorBeforeSubmit", () => {
 			values,
 		});
 	});
+
+	test("should validate all childs for nested field", () => {
+		validatorBeforeSubmit({
+			name,
+			setError,
+			fieldSchema: fieldSchemaNested,
+			getFieldSchema,
+			getFieldType,
+			parents,
+			values: valuesForNested,
+		});
+
+		expect(validateBeforeSubmit).toHaveBeenCalledTimes(1);
+		expect(validateBeforeSubmit).toHaveBeenCalledWith({
+			names: ["field1", "field2"],
+			setError,
+			getFieldSchema,
+			getFieldType,
+			parents: parentsForNested,
+			values,
+		});
+	});
 });
 
 describe("errorsSetter", () => {
@@ -166,7 +299,7 @@ describe("errorsSetter", () => {
 		throw new Error("`errorsSetter` is not defined");
 	}
 
-	test("should return set errors to all childs", () => {
+	test("should set errors to all childs", () => {
 		const errors = {
 			error: "message",
 		};
@@ -176,7 +309,7 @@ describe("errorsSetter", () => {
 		};
 
 		errorsSetter({
-			name: "test",
+			name,
 			setError,
 			fieldSchema,
 			getFieldSchema,
@@ -194,6 +327,44 @@ describe("errorsSetter", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			values,
+			rawValues,
+			errors,
+		});
+	});
+
+	test("should set errors to all childs for nested field", () => {
+		const errors = {
+			error: "message",
+		};
+
+		const rawValues = {
+			raw: "value",
+		};
+
+		errorsSetter({
+			name,
+			setError,
+			fieldSchema: fieldSchemaNested,
+			getFieldSchema,
+			getFieldType,
+			parents,
+			values: valuesForNested,
+			errors: {
+				[name]: errors,
+			},
+			rawValues: {
+				[name]: rawValues,
+			},
+		});
+
+		expect(setFieldErrors).toHaveBeenCalledTimes(1);
+		expect(setFieldErrors).toHaveBeenCalledWith({
+			names: ["field1", "field2"],
+			setError,
+			getFieldSchema,
+			getFieldType,
+			parents: parentsForNested,
 			values,
 			rawValues,
 			errors,
