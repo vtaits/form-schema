@@ -1,7 +1,7 @@
 import type { ParentType } from "@vtaits/form-schema";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 
-export function makeSetError<Values extends FieldValues,>(
+export function makeSetError<Values extends FieldValues>(
 	setError: UseFormSetError<Values>,
 	errorType: string,
 	onError: () => void,

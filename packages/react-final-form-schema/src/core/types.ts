@@ -171,6 +171,6 @@ export type FormSchemaContextType<
 	>;
 };
 
-export type FormFieldContextType<FieldSchema,> = {
+export type FormFieldContextType<FieldSchema> = {
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 };

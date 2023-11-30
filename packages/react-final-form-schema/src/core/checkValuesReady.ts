@@ -7,7 +7,7 @@ import { IS_VALUES_READY_NAME } from "./constants";
  *
  * @param {Values extends Record<string, any>} formValues Current values of `final-form`
  */
-export const checkValuesReady = <Values extends Record<string, any>,>(
+export const checkValuesReady = <Values extends Record<string, any>>(
 	formValues: Values | null,
 ): boolean => {
 	if (!formValues) {

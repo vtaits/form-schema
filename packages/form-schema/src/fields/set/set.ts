@@ -29,7 +29,7 @@ export const set: FieldType<SetSchema<any>> = {
 		const names = Object.keys(schemas);
 
 		if (nested) {
-			const currentValues = values[name] as Record<string, unknown>;
+			const currentValues = (values[name] || {}) as Record<string, unknown>;
 
 			const nextParents = [
 				...parents,
@@ -132,7 +132,7 @@ export const set: FieldType<SetSchema<any>> = {
 		const names = Object.keys(schemas);
 
 		if (nested) {
-			const currentValues = values[name] as Record<string, unknown>;
+			const currentValues = (values[name] || {}) as Record<string, unknown>;
 
 			const nextParents = [
 				...parents,
