@@ -1,35 +1,24 @@
 {
-  "name": "@vtaits/react-final-form-schema",
-  "version": "2.1.0",
-  "description": "Integration of react-final-form and @vtaits/form-schema",
+  "name": "@vtaits/form-schema-react-base-ui",
+  "version": "1.0.0",
+  "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
   "files": [
     "dist",
     "fields"
   ],
-  "main": "./dist/core.js",
-  "module": "./dist/esm/core.js",
-  "typings": "dist/core.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/core.js",
-      "require": "./dist/core.js",
-      "types": "./dist/core.d.ts"
-    },
-    "./fields/dynamic": {
-      "require": "./dist/fields_dynamic.js",
-      "import": "./dist/esm/fields_dynamic.js",
-      "types": "./dist/fields_dynamic.d.ts"
-    },
-    "./fields/set": {
-      "require": "./dist/fields_set.js",
-      "import": "./dist/esm/fields_set.js",
-      "types": "./dist/fields_set.d.ts"
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "keywords": [
     "react",
-    "final-form",
-    "react-final-form",
+    "react-hook-form",
     "form",
     "schama",
     "serialization",
@@ -56,35 +45,20 @@
     "prepare": "yarn clean && yarn build"
   },
   "peerDependencies": {
-    "final-form": "^4.0.0",
-    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
-    "react-final-form": "^6.0.0"
-  },
-  "dependencies": {
-    "@vtaits/form-schema": "^2.2.0",
-    "@vtaits/react-required-context": "^1.0.1",
-    "is-promise": "^4.0.0",
-    "lodash": "^4.17.21",
-    "react-async-hook": "^4.0.0",
-    "use-latest": "^1.2.1"
+    "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.4.1",
     "@storybook/addon-docs": "^7.6.4",
     "@storybook/react": "^7.6.4",
     "@testing-library/react": "^14.1.2",
-    "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
     "@vitest/coverage-v8": "^1.0.4",
     "exports-fallback": "^1.0.1",
-    "final-form": "^4.20.10",
-    "final-form-arrays": "^3.1.0",
     "happy-dom": "^12.10.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-final-form": "^6.5.9",
-    "react-final-form-arrays": "^3.1.4",
     "react-integration-test-engine": "^1.4.0",
     "react-is": "^18.2.0",
     "react-select": "^5.8.0",

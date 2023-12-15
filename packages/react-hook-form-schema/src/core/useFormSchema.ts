@@ -185,9 +185,11 @@ export function useFormSchema<
 				onSubmitBySchema(onSubmit, values, event);
 
 			return handleSubmit(
-				submitHandler as Values extends FieldValues
+				submitHandler as Values extends undefined
 					? SubmitHandler<Values>
-					: SubmitHandler<Values>,
+					: Values extends FieldValues
+					  ? SubmitHandler<Values>
+					  : never,
 				onError,
 			);
 		},
