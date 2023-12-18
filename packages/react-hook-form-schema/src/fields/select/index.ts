@@ -1,2 +1,3 @@
+export { multiSelect } from "./multiSelect";
 export { select } from "./select";
-export type { SelectSchema } from "./schema";
+export type { MultiSelectSchema, SelectSchema } from "./schema";

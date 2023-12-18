@@ -1,49 +1,19 @@
 {
-  "name": "@vtaits/react-hook-form-schema",
-  "version": "1.1.0",
-  "description": "Integration of react-hook-form and @vtaits/form-schema",
+  "name": "@vtaits/react-form-schema-ui-antd",
+  "version": "1.0.0",
+  "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
   "files": [
     "dist",
     "fields"
   ],
-  "main": "./dist/core.js",
-  "module": "./dist/esm/core.js",
-  "typings": "dist/core.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/core.js",
-      "require": "./dist/core.js",
-      "types": "./dist/core.d.ts"
-    },
-    "./fields/checkbox": {
-      "require": "./dist/fields_checkbox.js",
-      "import": "./dist/esm/fields_checkbox.js",
-      "types": "./dist/fields_checkbox.d.ts"
-    },
-    "./fields/dynamic": {
-      "require": "./dist/fields_dynamic.js",
-      "import": "./dist/esm/fields_dynamic.js",
-      "types": "./dist/fields_dynamic.d.ts"
-    },
-    "./fields/input": {
-      "require": "./dist/fields_input.js",
-      "import": "./dist/esm/fields_input.js",
-      "types": "./dist/fields_input.d.ts"
-    },
-    "./fields/select": {
-      "require": "./dist/fields_select.js",
-      "import": "./dist/esm/fields_select.js",
-      "types": "./dist/fields_select.d.ts"
-    },
-    "./fields/set": {
-      "require": "./dist/fields_set.js",
-      "import": "./dist/esm/fields_set.js",
-      "types": "./dist/fields_set.d.ts"
-    },
-    "./fields/textarea": {
-      "require": "./dist/fields_textarea.js",
-      "import": "./dist/esm/fields_textarea.js",
-      "types": "./dist/fields_textarea.d.ts"
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "keywords": [
@@ -75,30 +45,26 @@
     "prepare": "yarn clean && yarn build"
   },
   "peerDependencies": {
-    "react": "^16.14.0 || ^17.0.0 || ^18.0.0",
-    "react-hook-form": "^7.0.0"
-  },
-  "dependencies": {
-    "@vtaits/form-schema": "^2.2.0",
     "@vtaits/react-form-schema-base-ui": "^1.0.0",
-    "is-promise": "^4.0.0",
-    "use-latest": "^1.2.1"
+    "antd": "^5.12.3",
+    "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.4.1",
     "@storybook/addon-docs": "^7.6.4",
     "@storybook/react": "^7.6.4",
     "@testing-library/react": "^14.1.2",
-    "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
     "@vitest/coverage-v8": "^1.0.4",
+    "@vtaits/form-schema": "^2.2.0",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0",
+    "@vtaits/react-hook-form-schema": "^1.0.0",
+    "antd": "^5.12.3",
     "exports-fallback": "^1.0.1",
     "happy-dom": "^12.10.3",
-    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.49.2",
     "react-integration-test-engine": "^1.4.0",
     "react-is": "^18.2.0",
     "react-select": "^5.8.0",
