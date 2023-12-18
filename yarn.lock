@@ -4402,36 +4402,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vtaits/form-schema-react-base-ui@workspace:packages/react-form-schema-base-ui":
-  version: 0.0.0-use.local
-  resolution: "@vtaits/form-schema-react-base-ui@workspace:packages/react-form-schema-base-ui"
-  dependencies:
-    "@biomejs/biome": "npm:^1.4.1"
-    "@storybook/addon-docs": "npm:^7.6.4"
-    "@storybook/react": "npm:^7.6.4"
-    "@testing-library/react": "npm:^14.1.2"
-    "@types/react": "npm:^18.2.45"
-    "@types/react-dom": "npm:^18.2.17"
-    "@vitest/coverage-v8": "npm:^1.0.4"
-    exports-fallback: "npm:^1.0.1"
-    happy-dom: "npm:^12.10.3"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-integration-test-engine: "npm:^1.4.0"
-    react-is: "npm:^18.2.0"
-    react-select: "npm:^5.8.0"
-    react-shallow-search: "npm:^2.2.0"
-    react-test-engine: "npm:^1.1.1"
-    react-test-engine-vitest: "npm:^1.0.1"
-    react-test-renderer: "npm:^18.2.0"
-    tsup: "npm:^8.0.1"
-    typescript: "npm:5.3.3"
-    vitest: "npm:^1.0.4"
-  peerDependencies:
-    react: ^17.0.0 || ^18.0.0
-  languageName: unknown
-  linkType: soft
-
 "@vtaits/form-schema@npm:^2.2.0, @vtaits/form-schema@workspace:packages/form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
@@ -4490,6 +4460,36 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vtaits/react-form-schema-base-ui@npm:^1.0.0, @vtaits/react-form-schema-base-ui@workspace:packages/react-form-schema-base-ui":
+  version: 0.0.0-use.local
+  resolution: "@vtaits/react-form-schema-base-ui@workspace:packages/react-form-schema-base-ui"
+  dependencies:
+    "@biomejs/biome": "npm:^1.4.1"
+    "@storybook/addon-docs": "npm:^7.6.4"
+    "@storybook/react": "npm:^7.6.4"
+    "@testing-library/react": "npm:^14.1.2"
+    "@types/react": "npm:^18.2.45"
+    "@types/react-dom": "npm:^18.2.17"
+    "@vitest/coverage-v8": "npm:^1.0.4"
+    exports-fallback: "npm:^1.0.1"
+    happy-dom: "npm:^12.10.3"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-integration-test-engine: "npm:^1.4.0"
+    react-is: "npm:^18.2.0"
+    react-select: "npm:^5.8.0"
+    react-shallow-search: "npm:^2.2.0"
+    react-test-engine: "npm:^1.1.1"
+    react-test-engine-vitest: "npm:^1.0.1"
+    react-test-renderer: "npm:^18.2.0"
+    tsup: "npm:^8.0.1"
+    typescript: "npm:5.3.3"
+    vitest: "npm:^1.0.4"
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+  languageName: unknown
+  linkType: soft
+
 "@vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema"
@@ -4503,6 +4503,7 @@ __metadata:
     "@types/react-dom": "npm:^18.2.17"
     "@vitest/coverage-v8": "npm:^1.0.4"
     "@vtaits/form-schema": "npm:^2.2.0"
+    "@vtaits/react-form-schema-base-ui": "npm:^1.0.0"
     exports-fallback: "npm:^1.0.1"
     happy-dom: "npm:^12.10.3"
     is-promise: "npm:^4.0.0"

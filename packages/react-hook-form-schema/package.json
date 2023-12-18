@@ -15,15 +15,35 @@
       "require": "./dist/core.js",
       "types": "./dist/core.d.ts"
     },
+    "./fields/checkbox": {
+      "require": "./dist/fields_checkbox.js",
+      "import": "./dist/esm/fields_checkbox.js",
+      "types": "./dist/fields_checkbox.d.ts"
+    },
     "./fields/dynamic": {
       "require": "./dist/fields_dynamic.js",
       "import": "./dist/esm/fields_dynamic.js",
       "types": "./dist/fields_dynamic.d.ts"
     },
+    "./fields/input": {
+      "require": "./dist/fields_input.js",
+      "import": "./dist/esm/fields_input.js",
+      "types": "./dist/fields_input.d.ts"
+    },
+    "./fields/select": {
+      "require": "./dist/fields_set.js",
+      "import": "./dist/esm/fields_set.js",
+      "types": "./dist/fields_set.d.ts"
+    },
     "./fields/set": {
       "require": "./dist/fields_set.js",
       "import": "./dist/esm/fields_set.js",
       "types": "./dist/fields_set.d.ts"
+    },
+    "./fields/textarea": {
+      "require": "./dist/fields_textarea.js",
+      "import": "./dist/esm/fields_textarea.js",
+      "types": "./dist/fields_textarea.d.ts"
     }
   },
   "keywords": [
@@ -60,6 +80,7 @@
   },
   "dependencies": {
     "@vtaits/form-schema": "^2.2.0",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0",
     "is-promise": "^4.0.0",
     "use-latest": "^1.2.1"
   },

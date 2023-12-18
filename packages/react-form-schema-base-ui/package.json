@@ -1,5 +1,5 @@
 {
-  "name": "@vtaits/form-schema-react-base-ui",
+  "name": "@vtaits/react-form-schema-base-ui",
   "version": "1.0.0",
   "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
   "files": [

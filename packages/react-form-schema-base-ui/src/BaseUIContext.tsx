@@ -188,8 +188,8 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</select>
 	),
 
-	renderTextarea: ({ textareaProps, name }) => (
-		<textarea name={name} {...textareaProps} />
+	renderTextArea: ({ textAreaProps, name }) => (
+		<textarea name={name} {...textAreaProps} />
 	),
 
 	renderWrapper: ({ children, error, hint, label }) => (

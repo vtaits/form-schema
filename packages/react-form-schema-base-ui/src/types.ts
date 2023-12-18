@@ -55,7 +55,7 @@ export type SelectRenderProps<OptionType> = Readonly<
 export type TextareaRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		debounceTimeout?: number;
-		textareaProps: Partial<HTMLProps<HTMLTextAreaElement>>;
+		textAreaProps: Partial<HTMLProps<HTMLTextAreaElement>>;
 	}
 >;
 
@@ -74,6 +74,6 @@ export type BaseUIContextValue = Readonly<{
 	renderSelect: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
-	renderTextarea: (renderProps: TextareaRenderProps) => ReactNode;
+	renderTextArea: (renderProps: TextareaRenderProps) => ReactNode;
 	renderWrapper: (renderProps: WrapperRenderProps) => ReactNode;
 }>;
