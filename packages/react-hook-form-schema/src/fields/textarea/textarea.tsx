@@ -3,7 +3,11 @@ import { input as inputBase } from "@vtaits/form-schema/fields/input";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import get from "lodash/get";
 import type { ReactElement } from "react";
-import type { FieldValues, UseFormReturn } from "react-hook-form";
+import {
+	Controller,
+	type FieldValues,
+	type UseFormReturn,
+} from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
 import { getFieldName } from "../base";
 import type { TextAreaSchema } from "./schema";
@@ -19,7 +23,7 @@ export function TextAreaComponent({
 		name: nameParam,
 		parents,
 	},
-	formResult: { formState: { errors }, register },
+	formResult: { control, formState: { errors }, register },
 }: TextAreaComponentProps): ReactElement {
 	const { renderTextArea, renderWrapper } = useUI();
 
@@ -34,14 +38,25 @@ export function TextAreaComponent({
 
 	return renderWrapper({
 		...wrapperParams,
-		children: renderTextArea({
-			name,
-			textAreaProps: {
-				...textAreaProps,
-				...register(name),
-			},
-			wrapper: wrapperParams,
-		}),
+		children: (
+			<Controller
+				name={name}
+				control={control}
+				render={({ field }) =>
+					renderTextArea({
+						name,
+						textAreaProps: {
+							...textAreaProps,
+							value: field.value || "",
+							onChange: (e) => {
+								field.onChange(e.currentTarget.value);
+							},
+						},
+						wrapper: wrapperParams,
+					}) as ReactElement
+				}
+			/>
+		),
 	}) as ReactElement;
 }
 

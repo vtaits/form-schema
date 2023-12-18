@@ -173,37 +173,47 @@ export const contextValue: BaseUIContextValue = {
 		name,
 	}) => <Input.TextArea name={name} {...textAreaProps} />,
 
-	renderWrapper: ({ children, error, hint, label }) => (
-		<div className="ant-form-item" style={wrapperStyle}>
-			<Row className="ant-form-item-row">
-				<Col xs={8} className="ant-form-item-label">
-					{label && <label>{label}</label>}
-				</Col>
+	renderWrapper: ({ children, error, hint, label }) => {
+		const outputError = error
+			? typeof error === "string"
+				? error
+				: typeof (error as Record<string, unknown>).message === "string"
+				  ? (error as Record<string, string>).message
+				  : null
+			: null;
 
-				<Col xs={16} className="ant-form-item-control">
-					{children}
+		return (
+			<div className="ant-form-item" style={wrapperStyle}>
+				<Row className="ant-form-item-row">
+					<Col xs={8} className="ant-form-item-label">
+						{label && <label>{label}</label>}
+					</Col>
 
-					{hint && (
-						<p
-							style={{
-								color: "gray",
-							}}
-						>
-							{hint}
-						</p>
-					)}
+					<Col xs={16} className="ant-form-item-control">
+						{children}
 
-					{typeof error === "string" && (
-						<p
-							style={{
-								color: "gray",
-							}}
-						>
-							{error}
-						</p>
-					)}
-				</Col>
-			</Row>
-		</div>
-	),
+						{hint && (
+							<p
+								style={{
+									color: "gray",
+								}}
+							>
+								{hint}
+							</p>
+						)}
+
+						{outputError && (
+							<p
+								style={{
+									color: "red",
+								}}
+							>
+								{outputError}
+							</p>
+						)}
+					</Col>
+				</Row>
+			</div>
+		);
+	},
 };

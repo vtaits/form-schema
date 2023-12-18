@@ -3,7 +3,11 @@ import { input as inputBase } from "@vtaits/form-schema/fields/input";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import get from "lodash/get";
 import type { ReactElement } from "react";
-import type { FieldValues, UseFormReturn } from "react-hook-form";
+import {
+	Controller,
+	type FieldValues,
+	type UseFormReturn,
+} from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
 import { getFieldName } from "../base";
 import type { InputSchema } from "./schema";
@@ -19,7 +23,7 @@ export function InputComponent({
 		name: nameParam,
 		parents,
 	},
-	formResult: { formState: { errors }, register },
+	formResult: { control, formState: { errors }, register },
 }: InputComponentProps): ReactElement {
 	const { renderInput, renderWrapper } = useUI();
 
@@ -34,14 +38,23 @@ export function InputComponent({
 
 	return renderWrapper({
 		...wrapperParams,
-		children: renderInput({
-			name,
-			inputProps: {
-				...inputProps,
-				...register(name),
-			},
-			wrapper: wrapperParams,
-		}),
+		children: (
+			<Controller
+				name={name}
+				control={control}
+				render={({ field }) =>
+					renderInput({
+						name,
+						inputProps: {
+							...inputProps,
+							value: field.value || "",
+							onChange: field.onChange,
+						},
+						wrapper: wrapperParams,
+					}) as ReactElement
+				}
+			/>
+		),
 	}) as ReactElement;
 }
 
