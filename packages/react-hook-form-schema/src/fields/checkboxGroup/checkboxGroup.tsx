@@ -15,32 +15,30 @@ import {
 import type { FieldType, RenderParams } from "../../core";
 import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
-import type { MultiSelectSchema } from "./schema";
+import type { CheckboxGroupSchema } from "./schema";
 
-type MultiSelectComponentProps = Readonly<{
-	renderParams: RenderParams<MultiSelectSchema, any, any, any, any, any>;
+type CheckboxGroupComponentProps = Readonly<{
+	renderParams: RenderParams<CheckboxGroupSchema, any, any, any, any, any>;
 	formResult: UseFormReturn<FieldValues, any, FieldValues>;
 }>;
 
-export function MultiSelectComponent({
+export function CheckboxGroupComponent({
 	renderParams: {
 		fieldSchema: {
 			label,
 			hint,
-			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
-			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 		name: nameParam,
 		parents,
 	},
 	formResult: { control, formState: { errors }, register },
-}: MultiSelectComponentProps): ReactElement {
-	const { renderMultiSelect, renderWrapper } = useUI();
+}: CheckboxGroupComponentProps): ReactElement {
+	const { renderCheckboxGroup, renderWrapper } = useUI();
 
 	const name = getFieldName(nameParam, parents);
 	const error = renderError(get(errors, name));
@@ -74,7 +72,7 @@ export function MultiSelectComponent({
 				control={control}
 				name={name}
 				render={({ field }) =>
-					renderMultiSelect({
+					renderCheckboxGroup({
 						value: field.value,
 						name,
 						getOptionLabel,
@@ -84,7 +82,6 @@ export function MultiSelectComponent({
 						},
 						onChange: field.onChange,
 						options,
-						placeholder,
 						wrapper: wrapperParams,
 					}) as ReactElement
 				}
@@ -93,10 +90,13 @@ export function MultiSelectComponent({
 	}) as ReactElement;
 }
 
-export const multiSelect: FieldType<MultiSelectSchema> = {
-	...(multiSelectBase as FieldTypeBase<MultiSelectSchema>),
+export const checkboxGroup: FieldType<CheckboxGroupSchema> = {
+	...(multiSelectBase as FieldTypeBase<CheckboxGroupSchema>),
 
 	render: (renderParams, formResult) => (
-		<MultiSelectComponent renderParams={renderParams} formResult={formResult} />
+		<CheckboxGroupComponent
+			renderParams={renderParams}
+			formResult={formResult}
+		/>
 	),
 };

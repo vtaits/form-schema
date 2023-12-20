@@ -2,7 +2,7 @@ import type { HTMLProps, ReactNode } from "react";
 
 export type WrapperRenderProps = Readonly<{
 	children?: ReactNode;
-	error?: unknown;
+	error?: ReactNode;
 	hint?: ReactNode;
 	label?: ReactNode;
 }>;
@@ -64,7 +64,7 @@ export type BaseUIContextValue = Readonly<{
 	renderCheckboxGroup: <OptionType>(
 		renderProps: MultiSelectRenderProps<OptionType>,
 	) => ReactNode;
-	renderRadio: <OptionType>(
+	renderRadioGroup: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
 	renderInput: (renderProps: InputRenderProps) => ReactNode;

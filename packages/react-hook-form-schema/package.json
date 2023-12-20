@@ -20,6 +20,11 @@
       "import": "./dist/esm/fields_checkbox.js",
       "types": "./dist/fields_checkbox.d.ts"
     },
+    "./fields/checkboxGroup": {
+      "require": "./dist/fields_checkboxGroup.js",
+      "import": "./dist/esm/fields_checkboxGroup.js",
+      "types": "./dist/fields_checkboxGroup.d.ts"
+    },
     "./fields/dynamic": {
       "require": "./dist/fields_dynamic.js",
       "import": "./dist/esm/fields_dynamic.js",
@@ -29,6 +34,11 @@
       "require": "./dist/fields_input.js",
       "import": "./dist/esm/fields_input.js",
       "types": "./dist/fields_input.d.ts"
+    },
+    "./fields/radioGroup": {
+      "require": "./dist/fields_radioGroup.js",
+      "import": "./dist/esm/fields_radioGroup.js",
+      "types": "./dist/fields_radioGroup.d.ts"
     },
     "./fields/select": {
       "require": "./dist/fields_select.js",

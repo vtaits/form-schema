@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
 import { getFieldName } from "../base";
+import { renderError } from "../base/renderError";
 import type { CheckboxSchema } from "./schema";
 
 type CheckboxComponentProps = Readonly<{
@@ -28,7 +29,7 @@ export function CheckboxComponent({
 	const { renderCheckbox, renderWrapper } = useUI();
 
 	const name = getFieldName(nameParam, parents);
-	const error = get(errors, name);
+	const error = renderError(get(errors, name));
 
 	const wrapperParams = {
 		error,

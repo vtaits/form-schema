@@ -105,7 +105,7 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderRadio: ({
+	renderRadioGroup: ({
 		name,
 		value,
 		onChange,
@@ -174,14 +174,6 @@ export const contextValue: BaseUIContextValue = {
 	}) => <Input.TextArea name={name} {...textAreaProps} />,
 
 	renderWrapper: ({ children, error, hint, label }) => {
-		const outputError = error
-			? typeof error === "string"
-				? error
-				: typeof (error as Record<string, unknown>).message === "string"
-				  ? (error as Record<string, string>).message
-				  : null
-			: null;
-
 		return (
 			<div className="ant-form-item" style={wrapperStyle}>
 				<Row className="ant-form-item-row">
@@ -202,13 +194,13 @@ export const contextValue: BaseUIContextValue = {
 							</p>
 						)}
 
-						{outputError && (
+						{error && (
 							<p
 								style={{
 									color: "red",
 								}}
 							>
-								{outputError}
+								{error}
 							</p>
 						)}
 					</Col>

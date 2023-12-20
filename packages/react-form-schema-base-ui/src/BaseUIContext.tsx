@@ -117,7 +117,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		);
 	},
 
-	renderRadio: ({
+	renderRadioGroup: ({
 		name,
 		value,
 		onChange,
@@ -208,15 +208,13 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 				</p>
 			)}
 
-			{typeof error === "string" && (
-				<p
-					style={{
-						color: "gray",
-					}}
-				>
-					{error}
-				</p>
-			)}
+			<p
+				style={{
+					color: "gray",
+				}}
+			>
+				{error}
+			</p>
 		</div>
 	),
 });

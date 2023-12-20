@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
 import { getFieldName } from "../base";
+import { renderError } from "../base/renderError";
 import type { TextAreaSchema } from "./schema";
 
 type TextAreaComponentProps = Readonly<{
@@ -28,7 +29,7 @@ export function TextAreaComponent({
 	const { renderTextArea, renderWrapper } = useUI();
 
 	const name = getFieldName(nameParam, parents);
-	const error = get(errors, name);
+	const error = renderError(get(errors, name));
 
 	const wrapperParams = {
 		error,

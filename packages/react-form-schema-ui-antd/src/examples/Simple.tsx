@@ -5,7 +5,9 @@ import {
 	useFormSchema,
 } from "@vtaits/react-hook-form-schema";
 import { checkbox } from "@vtaits/react-hook-form-schema/fields/checkbox";
+import { checkboxGroup } from "@vtaits/react-hook-form-schema/fields/checkboxGroup";
 import { input } from "@vtaits/react-hook-form-schema/fields/input";
+import { radioGroup } from "@vtaits/react-hook-form-schema/fields/radioGroup";
 import {
 	multiSelect,
 	select,
@@ -16,8 +18,10 @@ import { AntdProvider } from "..";
 
 const fieldTypes: Record<string, FieldType<any>> = {
 	checkbox,
+	checkboxGroup,
 	input,
 	multiSelect,
+	radioGroup,
 	select,
 	textarea,
 };
@@ -30,6 +34,25 @@ const fullSchema: Record<string, any> = {
 		checkboxLabel: "Checkbox",
 	},
 
+	checkboxGroup: {
+		type: "checkboxGroup",
+		label: "Checkbox group",
+		options: [
+			{
+				value: "value1",
+				label: "Label 1",
+			},
+			{
+				value: "value2",
+				label: "Label 2",
+			},
+			{
+				value: "value3",
+				label: "Label 3",
+			},
+		],
+	},
+
 	input: {
 		type: "input",
 		label: "Input",
@@ -40,6 +63,25 @@ const fullSchema: Record<string, any> = {
 		type: "multiSelect",
 		label: "Mulit select",
 		placeholder: "Multi select",
+		options: [
+			{
+				value: "value1",
+				label: "Label 1",
+			},
+			{
+				value: "value2",
+				label: "Label 2",
+			},
+			{
+				value: "value3",
+				label: "Label 3",
+			},
+		],
+	},
+
+	radioGroup: {
+		type: "radioGroup",
+		label: "Radio group",
 		options: [
 			{
 				value: "value1",

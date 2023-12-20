@@ -2,7 +2,7 @@ import type { FieldType as FieldTypeBase } from "@vtaits/form-schema";
 import {
 	DEFAULT_LABEL_KEY,
 	DEFAULT_VALUE_KEY,
-	multiSelect as multiSelectBase,
+	select as selectBase,
 } from "@vtaits/form-schema/fields/select";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import get from "lodash/get";
@@ -15,14 +15,14 @@ import {
 import type { FieldType, RenderParams } from "../../core";
 import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
-import type { MultiSelectSchema } from "./schema";
+import type { RadioGroupSchema } from "./schema";
 
-type MultiSelectComponentProps = Readonly<{
-	renderParams: RenderParams<MultiSelectSchema, any, any, any, any, any>;
+type RadioGroupComponentProps = Readonly<{
+	renderParams: RenderParams<RadioGroupSchema, any, any, any, any, any>;
 	formResult: UseFormReturn<FieldValues, any, FieldValues>;
 }>;
 
-export function MultiSelectComponent({
+export function RadioGroupComponent({
 	renderParams: {
 		fieldSchema: {
 			label,
@@ -32,15 +32,14 @@ export function MultiSelectComponent({
 			getOptionValue: getOptionValueParam,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
-			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 		name: nameParam,
 		parents,
 	},
 	formResult: { control, formState: { errors }, register },
-}: MultiSelectComponentProps): ReactElement {
-	const { renderMultiSelect, renderWrapper } = useUI();
+}: RadioGroupComponentProps): ReactElement {
+	const { renderRadioGroup, renderWrapper } = useUI();
 
 	const name = getFieldName(nameParam, parents);
 	const error = renderError(get(errors, name));
@@ -74,7 +73,8 @@ export function MultiSelectComponent({
 				control={control}
 				name={name}
 				render={({ field }) =>
-					renderMultiSelect({
+					renderRadioGroup({
+						clearable: !required,
 						value: field.value,
 						name,
 						getOptionLabel,
@@ -84,7 +84,6 @@ export function MultiSelectComponent({
 						},
 						onChange: field.onChange,
 						options,
-						placeholder,
 						wrapper: wrapperParams,
 					}) as ReactElement
 				}
@@ -93,10 +92,10 @@ export function MultiSelectComponent({
 	}) as ReactElement;
 }
 
-export const multiSelect: FieldType<MultiSelectSchema> = {
-	...(multiSelectBase as FieldTypeBase<MultiSelectSchema>),
+export const radioGroup: FieldType<RadioGroupSchema> = {
+	...(selectBase as FieldTypeBase<RadioGroupSchema>),
 
 	render: (renderParams, formResult) => (
-		<MultiSelectComponent renderParams={renderParams} formResult={formResult} />
+		<RadioGroupComponent renderParams={renderParams} formResult={formResult} />
 	),
 };
