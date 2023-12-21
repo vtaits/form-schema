@@ -2,11 +2,8 @@ import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
-import { Checkbox, Col, Input, Radio, Row, Select } from "antd";
-
-const wrapperStyle = {
-	marginBottom: "24px",
-};
+import { Alert, Checkbox, Input, Radio, Select, Typography } from "antd";
+import { FieldRow } from "./FieldRow";
 
 export const contextValue: BaseUIContextValue = {
 	renderCheckbox: ({ checked, name, onChange, children }) => (
@@ -65,6 +62,36 @@ export const contextValue: BaseUIContextValue = {
 			</div>
 		);
 	},
+
+	renderForm: ({ actions, error, fields, formProps, title }) => (
+		<form className="ant-form ant-form-horizontal" {...formProps}>
+			{title && (
+				<Typography.Title
+					level={3}
+					style={{
+						marginBottom: "30px",
+					}}
+				>
+					{title}
+				</Typography.Title>
+			)}
+
+			{fields}
+
+			{error && (
+				<div
+					style={{
+						marginTop: "20px",
+						marginBottom: "20px",
+					}}
+				>
+					<Alert message={error} type="error" />
+				</div>
+			)}
+
+			<FieldRow>{actions}</FieldRow>
+		</form>
+	),
 
 	renderInput: ({ inputProps: { ref, size, ...inputProps } = {}, name }) => (
 		<Input name={name} {...inputProps} />
@@ -175,37 +202,29 @@ export const contextValue: BaseUIContextValue = {
 
 	renderWrapper: ({ children, error, hint, label }) => {
 		return (
-			<div className="ant-form-item" style={wrapperStyle}>
-				<Row className="ant-form-item-row">
-					<Col xs={8} className="ant-form-item-label">
-						{label && <label>{label}</label>}
-					</Col>
+			<FieldRow label={label && <label>{label}</label>}>
+				{children}
 
-					<Col xs={16} className="ant-form-item-control">
-						{children}
+				{hint && (
+					<p
+						style={{
+							color: "gray",
+						}}
+					>
+						{hint}
+					</p>
+				)}
 
-						{hint && (
-							<p
-								style={{
-									color: "gray",
-								}}
-							>
-								{hint}
-							</p>
-						)}
-
-						{error && (
-							<p
-								style={{
-									color: "red",
-								}}
-							>
-								{error}
-							</p>
-						)}
-					</Col>
-				</Row>
-			</div>
+				{error && (
+					<p
+						style={{
+							color: "red",
+						}}
+					>
+						{error}
+					</p>
+				)}
+			</FieldRow>
 		);
 	},
 };

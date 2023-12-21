@@ -4,7 +4,8 @@
   "description": "Integration of react-hook-form and @vtaits/form-schema",
   "files": [
     "dist",
-    "fields"
+    "fields",
+    "form"
   ],
   "main": "./dist/core.js",
   "module": "./dist/esm/core.js",
@@ -54,6 +55,11 @@
       "require": "./dist/fields_textarea.js",
       "import": "./dist/esm/fields_textarea.js",
       "types": "./dist/fields_textarea.d.ts"
+    },
+    "./form": {
+      "import": "./dist/esm/form.js",
+      "require": "./dist/form.js",
+      "types": "./dist/form.d.ts"
     }
   },
   "keywords": [

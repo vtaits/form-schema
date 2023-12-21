@@ -63,6 +63,27 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		);
 	},
 
+	renderForm: ({ actions, error, fields, formProps, title }) => (
+		<form {...formProps}>
+			{title && <h1>{title}</h1>}
+
+			{fields}
+
+			{error && (
+				<p
+					style={{
+						color: "red",
+						fontSize: "1.5em",
+					}}
+				>
+					{error}
+				</p>
+			)}
+
+			<div>{actions}</div>
+		</form>
+	),
+
 	renderInput: ({ inputProps, name }) => <input name={name} {...inputProps} />,
 
 	renderMultiSelect: <OptionType,>({

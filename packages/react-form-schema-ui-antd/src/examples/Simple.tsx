@@ -1,34 +1,9 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	type GetFieldType,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
-import { checkbox } from "@vtaits/react-hook-form-schema/fields/checkbox";
-import { checkboxGroup } from "@vtaits/react-hook-form-schema/fields/checkboxGroup";
-import { input } from "@vtaits/react-hook-form-schema/fields/input";
-import { radioGroup } from "@vtaits/react-hook-form-schema/fields/radioGroup";
-import {
-	multiSelect,
-	select,
-} from "@vtaits/react-hook-form-schema/fields/select";
-import { textarea } from "@vtaits/react-hook-form-schema/fields/textarea";
-import { Fragment, type ReactElement, useState } from "react";
+import { Form } from "@vtaits/react-hook-form-schema/form";
+import { Button } from "antd";
+import { type ReactElement, useState } from "react";
 import { AntdProvider } from "..";
 
-const fieldTypes: Record<string, FieldType<any>> = {
-	checkbox,
-	checkboxGroup,
-	input,
-	multiSelect,
-	radioGroup,
-	select,
-	textarea,
-};
-
-const getFieldType: GetFieldType<any> = ({ type }) => fieldTypes[type];
-
-const fullSchema: Record<string, any> = {
+const schemas: Record<string, any> = {
 	checkbox: {
 		type: "checkbox",
 		checkboxLabel: "Checkbox",
@@ -125,11 +100,6 @@ const fullSchema: Record<string, any> = {
 	},
 };
 
-const getFieldSchema: GetFieldSchema<any> = (fieldName: string) =>
-	fullSchema[fieldName];
-
-const names = Object.keys(fullSchema);
-
 const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => {
 		setTimeout(() => {
@@ -163,40 +133,23 @@ export function Simple(): ReactElement {
 			return null;
 		}
 
-		if (Object.keys(errors).length === 0) {
-			setSubmittedValues(values);
-			return null;
-		}
+		errors.error = "There are errors in the form";
 
 		return errors;
 	};
 
-	const {
-		formState: { isSubmitting },
-		handleSubmit,
-		renderField,
-	} = useFormSchema({
-		getFieldSchema,
-		getFieldType,
-		names,
-	});
-
 	return (
 		<AntdProvider>
-			<form
-				className="ant-form ant-form-horizontal"
-				onSubmit={handleSubmit(onSubmit)}
-			>
-				{names.map((fieldName) => (
-					<Fragment key={fieldName}>{renderField(fieldName)}</Fragment>
-				))}
-
-				<hr />
-
-				<button type="submit" disabled={isSubmitting}>
-					Submit
-				</button>
-			</form>
+			<Form
+				schemas={schemas}
+				onSubmit={onSubmit}
+				renderActions={({ isSubmitting }) => (
+					<Button type="primary" htmlType="submit" disabled={isSubmitting}>
+						Submit
+					</Button>
+				)}
+				title="Antd integraion form"
+			/>
 
 			{submittedValues && (
 				<>

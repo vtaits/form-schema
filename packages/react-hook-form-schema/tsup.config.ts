@@ -11,6 +11,7 @@ export default defineConfig({
     fields_set: "src/fields/set/index.ts",
     fields_select: "src/fields/select/index.ts",
     fields_textarea: "src/fields/textarea/index.ts",
+    form: "src/form/index.ts",
   },
   sourcemap: true,
   format: ['esm', 'cjs'],

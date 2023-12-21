@@ -20,6 +20,14 @@ export type CheckboxRenderProps = Readonly<
 	}
 >;
 
+export type FormRenderProps = Readonly<{
+	actions?: ReactNode;
+	error?: ReactNode;
+	fields?: ReactNode;
+	formProps?: HTMLProps<HTMLFormElement>;
+	title?: ReactNode;
+}>;
+
 export type InputRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		debounceTimeout?: number;
@@ -64,6 +72,7 @@ export type BaseUIContextValue = Readonly<{
 	renderCheckboxGroup: <OptionType>(
 		renderProps: MultiSelectRenderProps<OptionType>,
 	) => ReactNode;
+	renderForm: (renderProps: FormRenderProps) => ReactNode;
 	renderRadioGroup: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
