@@ -4663,7 +4663,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vtaits/react-form-schema-base-ui@npm:^1.0.0-alpha.0, @vtaits/react-form-schema-base-ui@workspace:packages/react-form-schema-base-ui":
+"@vtaits/react-form-schema-base-ui@npm:^1.0.0-alpha.1, @vtaits/react-form-schema-base-ui@workspace:packages/react-form-schema-base-ui":
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-base-ui@workspace:packages/react-form-schema-base-ui"
   dependencies:
@@ -4691,7 +4691,6 @@ __metadata:
     vitest: "npm:^1.0.4"
   peerDependencies:
     react: ^17.0.0 || ^18.0.0
-    react-is: ^17.0.0 || ^18.0.0
   languageName: unknown
   linkType: soft
 
@@ -4707,8 +4706,8 @@ __metadata:
     "@types/react-dom": "npm:^18.2.17"
     "@vitest/coverage-v8": "npm:^1.0.4"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
-    "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.0"
-    "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.0"
+    "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.1"
+    "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.1"
     antd: "npm:^5.12.3"
     exports-fallback: "npm:^1.0.1"
     happy-dom: "npm:^12.10.3"
@@ -4725,13 +4724,13 @@ __metadata:
     typescript: "npm:5.3.3"
     vitest: "npm:^1.0.4"
   peerDependencies:
-    "@vtaits/react-form-schema-base-ui": ^1.0.0-alpha.0
+    "@vtaits/react-form-schema-base-ui": ^1.0.0-alpha.1
     antd: ^5.12.3
     react: ^17.0.0 || ^18.0.0
   languageName: unknown
   linkType: soft
 
-"@vtaits/react-hook-form-schema@npm:^1.2.0-alpha.0, @vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema":
+"@vtaits/react-hook-form-schema@npm:^1.2.0-alpha.1, @vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema"
   dependencies:
@@ -4744,7 +4743,7 @@ __metadata:
     "@types/react-dom": "npm:^18.2.17"
     "@vitest/coverage-v8": "npm:^1.0.4"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
-    "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.0"
+    "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.1"
     exports-fallback: "npm:^1.0.1"
     happy-dom: "npm:^12.10.3"
     is-promise: "npm:^4.0.0"
