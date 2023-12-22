@@ -1,7 +1,7 @@
 {
-  "name": "@vtaits/react-form-schema-ui-antd",
-  "version": "1.0.0-alpha.1",
-  "description": "Antd fields for @vtaits/form-schema",
+  "name": "@vtaits/react-form-schema-ui-mui",
+  "version": "1.0.0-alpha.0",
+  "description": "Mui fields for @vtaits/form-schema",
   "files": [
     "dist",
     "fields"
@@ -45,12 +45,13 @@
     "prepare": "yarn clean && yarn build"
   },
   "peerDependencies": {
+    "@mui/material": "^5.0.0",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.1",
-    "antd": "^5.12.3",
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.4.1",
+    "@mui/material": "^5.15.1",
     "@storybook/addon-docs": "^7.6.4",
     "@storybook/react": "^7.6.4",
     "@testing-library/react": "^14.1.2",
@@ -60,7 +61,6 @@
     "@vtaits/form-schema": "^2.3.0-alpha.0",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.1",
     "@vtaits/react-hook-form-schema": "^1.2.0-alpha.1",
-    "antd": "^5.12.3",
     "exports-fallback": "^1.0.1",
     "happy-dom": "^12.10.3",
     "react": "^18.2.0",

@@ -5,6 +5,6 @@ import type { BaseFieldSchema } from "../base";
 export type TextAreaSchema = Readonly<
 	InputSchemaBase &
 		BaseFieldSchema & {
-			textAreaProps: Partial<HTMLProps<HTMLTextAreaElement>>;
+			textAreaProps?: Partial<HTMLProps<HTMLTextAreaElement>>;
 		}
 >;
