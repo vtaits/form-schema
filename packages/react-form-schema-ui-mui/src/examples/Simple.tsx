@@ -1,7 +1,6 @@
 import Button from "@mui/material/Button";
 import { Form } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useState } from "react";
-import { MuiProvider } from "..";
 
 const schemas: Record<string, any> = {
 	checkbox: {
@@ -139,16 +138,16 @@ export function Simple(): ReactElement {
 	};
 
 	return (
-		<MuiProvider>
+		<>
 			<Form
 				schemas={schemas}
 				onSubmit={onSubmit}
 				renderActions={({ isSubmitting }) => (
-					<Button color="primary" type="submit" disabled={isSubmitting}>
+					<Button variant="contained" type="submit" disabled={isSubmitting}>
 						Submit
 					</Button>
 				)}
-				title="Antd integraion form"
+				title="Mui integraion form"
 			/>
 
 			{submittedValues && (
@@ -160,6 +159,6 @@ export function Simple(): ReactElement {
 					<pre>{JSON.stringify(submittedValues, null, 2)}</pre>
 				</>
 			)}
-		</MuiProvider>
+		</>
 	);
 }
