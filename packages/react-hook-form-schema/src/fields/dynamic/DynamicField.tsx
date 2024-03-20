@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import useLatest from "use-latest";
 
-import { RenderParams } from "../../core";
+import type { RenderParams } from "../../core";
 
 import type { DynamicSchema } from "./schema";
 

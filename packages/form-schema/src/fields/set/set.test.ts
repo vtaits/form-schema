@@ -7,7 +7,7 @@ import {
 	setFieldErrors,
 	validateBeforeSubmit,
 } from "../../core";
-import { SetSchema } from "./schema";
+import type { SetSchema } from "./schema";
 import { set } from "./set";
 
 vi.mock("../../core");

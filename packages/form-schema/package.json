@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/form-schema",
-  "version": "2.2.1",
+  "version": "2.3.0-alpha.0",
   "description": "Serialization and parsing form values by schema",
   "files": [
     "dist",
@@ -15,10 +15,30 @@
       "require": "./dist/core.js",
       "types": "./dist/core.d.ts"
     },
+    "./fields/base": {
+      "require": "./dist/fields_base.js",
+      "import": "./dist/esm/fields_base.js",
+      "types": "./dist/fields_base.d.ts"
+    },
+    "./fields/checkbox": {
+      "require": "./dist/fields_checkbox.js",
+      "import": "./dist/esm/fields_checkbox.js",
+      "types": "./dist/fields_checkbox.d.ts"
+    },
     "./fields/dynamic": {
       "require": "./dist/fields_dynamic.js",
       "import": "./dist/esm/fields_dynamic.js",
       "types": "./dist/fields_dynamic.d.ts"
+    },
+    "./fields/input": {
+      "require": "./dist/fields_input.js",
+      "import": "./dist/esm/fields_input.js",
+      "types": "./dist/fields_input.d.ts"
+    },
+    "./fields/select": {
+      "require": "./dist/fields_select.js",
+      "import": "./dist/esm/fields_select.js",
+      "types": "./dist/fields_select.d.ts"
     },
     "./fields/set": {
       "require": "./dist/fields_set.js",
@@ -57,11 +77,11 @@
     "is-promise": "^4.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.4.0",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@biomejs/biome": "^1.4.1",
+    "@vitest/coverage-v8": "^1.1.1",
     "exports-fallback": "^1.0.1",
     "tsup": "^8.0.1",
-    "typescript": "5.3.2",
-    "vitest": "^0.34.6"
+    "typescript": "5.3.3",
+    "vitest": "^1.1.1"
   }
 }

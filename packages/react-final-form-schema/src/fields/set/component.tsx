@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { ReactElement } from "react";
 
-import { type FieldComponentProps } from "../../core";
+import type { FieldComponentProps } from "../../core";
 import { defaultRender } from "./defaultRender";
 import type { SetSchema } from "./schema";
 

@@ -1,0 +1,81 @@
+{
+  "name": "@vtaits/react-form-schema-ui-mui",
+  "version": "1.0.0-alpha.0",
+  "description": "Mui fields for @vtaits/form-schema",
+  "files": [
+    "dist",
+    "fields"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [
+    "react",
+    "react-hook-form",
+    "form",
+    "schama",
+    "serialization",
+    "parsing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vtaits/form-schema.git"
+  },
+  "author": "Vadim Taits <taizvadim@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "yarn build:js && yarn build:proxy_directories",
+    "build:js": "tsup",
+    "build:proxy_directories": "exports-fallback -gf",
+    "test:ts": "tsc",
+    "lint": "biome check src",
+    "lint:fix": "biome check src --apply-unsafe",
+    "format": "biome format src --write",
+    "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
+    "test:unit:watch": "vitest",
+    "test": "yarn test:unit",
+    "prepare": "yarn clean && yarn build"
+  },
+  "peerDependencies": {
+    "@mui/material": "^5.0.0",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.1",
+    "react": "^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.4.1",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.2",
+    "@storybook/addon-docs": "^7.6.7",
+    "@storybook/react": "^7.6.7",
+    "@testing-library/react": "^14.1.2",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "@vitest/coverage-v8": "^1.1.1",
+    "@vtaits/form-schema": "^2.3.0-alpha.0",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.1",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.1",
+    "exports-fallback": "^1.0.1",
+    "happy-dom": "^12.10.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-integration-test-engine": "^1.4.0",
+    "react-is": "^18.2.0",
+    "react-select": "^5.8.0",
+    "react-shallow-search": "^2.2.0",
+    "react-test-engine": "^1.1.1",
+    "react-test-engine-vitest": "^1.0.1",
+    "react-test-renderer": "^18.2.0",
+    "tsup": "^8.0.1",
+    "typescript": "5.3.3",
+    "vitest": "^1.1.1"
+  }
+}

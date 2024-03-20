@@ -1,6 +1,6 @@
 import { cleanup, waitFor } from "@testing-library/react";
 import {
-	AccessorParamsType,
+	type AccessorParamsType,
 	AccessorQueryType,
 	create,
 } from "react-integration-test-engine";
