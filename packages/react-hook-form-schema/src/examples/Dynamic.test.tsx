@@ -46,7 +46,7 @@ const render = create(
 		},
 
 		fireEvents: {
-			submit: ["submitButton", "click"],
+			submit: ["submitButton", "submit"],
 		},
 
 		scenarios: {

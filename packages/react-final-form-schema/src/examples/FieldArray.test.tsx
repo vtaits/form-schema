@@ -171,7 +171,7 @@ const render = create(
 			addBlock: ["addBlock", "click"],
 			removeBlock1: ["block1Remove", "click"],
 			removeBlock2: ["block2Remove", "click"],
-			submit: ["submitButton", "click"],
+			submit: ["submitButton", "submit"],
 		},
 
 		scenarios: {

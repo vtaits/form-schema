@@ -74,7 +74,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 			await new Promise((resolve) => {
 				setTimeout(() => {
 					resolve(undefined);
-				}, 1000);
+				}, 500);
 			});
 
 			return {
