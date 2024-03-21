@@ -3636,6 +3636,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/helpers@npm:^0.5.0, @swc/helpers@npm:^0.5.1, @swc/helpers@npm:^0.5.3":
+  version: 0.5.7
+  resolution: "@swc/helpers@npm:0.5.7"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 10c0/1f52e76668e12b5b991b9fc9e74e433bad671406812473c1639f79e4f46e72c85d37397adabaf9a8bbac54386ac0c887f067ceb8aaf51bcb99de697831eb4921
+  languageName: node
+  linkType: hard
+
 "@swc/types@npm:^0.1.5":
   version: 0.1.6
   resolution: "@swc/types@npm:0.1.6"
@@ -4239,6 +4248,67 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vkontakte/icons-sprite@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@vkontakte/icons-sprite@npm:2.0.0"
+  dependencies:
+    "@swc/helpers": "npm:^0.5.1"
+  peerDependencies:
+    react: ^16.9.34 || ^17 || ^18
+  checksum: 10c0/2359dc4a32d37dd80ed1df691bf6474bd842bb16819a45425512a76315f5a7131f0dba6c274684f113c98c51147f09a55116ba98bc02f136f7f75587667e8f83
+  languageName: node
+  linkType: hard
+
+"@vkontakte/icons@npm:^2.62.0":
+  version: 2.103.0
+  resolution: "@vkontakte/icons@npm:2.103.0"
+  dependencies:
+    "@vkontakte/icons-sprite": "npm:2.0.0"
+  peerDependencies:
+    react: ^16.9.34 || ^17 || ^18
+  checksum: 10c0/1816f6bf11081888c7c304409b1f452ffaa1d0995fa39af06765887e91158a62e13026428b20e1bc22767a7b98a00f4f064d152e08b7045cc42ca4a0781dbe4c
+  languageName: node
+  linkType: hard
+
+"@vkontakte/vkjs@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "@vkontakte/vkjs@npm:1.1.2"
+  dependencies:
+    "@swc/helpers": "npm:^0.5.0"
+  checksum: 10c0/9a7df4f4a001f5ea65009d2b103ef1032a2a65899ffa20bd2890407534ad9eec00525ccde027d047d0a9f1801d0b6f6f2612c4bb1db604addc581830c26d5210
+  languageName: node
+  linkType: hard
+
+"@vkontakte/vkui-floating-ui@npm:^0.1.2":
+  version: 0.1.5
+  resolution: "@vkontakte/vkui-floating-ui@npm:0.1.5"
+  dependencies:
+    "@floating-ui/react-dom": "npm:^2.0.8"
+    "@swc/helpers": "npm:^0.5.3"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10c0/ab814137f0344b1162e52437dc796188cc4991e9b2bc58745e82d7286c96770bc568003561c6219a23ece970bc76727c00f873aacf08d964d6ec3b2693df57e1
+  languageName: node
+  linkType: hard
+
+"@vkontakte/vkui@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@vkontakte/vkui@npm:6.0.1"
+  dependencies:
+    "@swc/helpers": "npm:^0.5.3"
+    "@vkontakte/icons": "npm:^2.62.0"
+    "@vkontakte/vkjs": "npm:^1.1.1"
+    "@vkontakte/vkui-floating-ui": "npm:^0.1.2"
+    dayjs: "npm:^1.11.10"
+    mitt: "npm:^3.0.1"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 10c0/64378c54488a0ebe7caa023d0f5d630e247df5b62c1708afbf402fe170bfb86eb26fca9fd6710065b4b7db3f7e070ad302cff9bad70e845416bf74bb67ba4d16
+  languageName: node
+  linkType: hard
+
 "@vtaits/form-schema@npm:^2.3.0-alpha.0, @vtaits/form-schema@workspace:packages/form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
@@ -4397,6 +4467,40 @@ __metadata:
     vitest: "npm:^1.4.0"
   peerDependencies:
     "@mui/material": ^5.0.0
+    "@vtaits/react-form-schema-base-ui": ^1.0.0-alpha.1
+    react: ^17.0.0 || ^18.0.0
+  languageName: unknown
+  linkType: soft
+
+"@vtaits/react-form-schema-ui-vkui@workspace:packages/react-form-schema-ui-vkui":
+  version: 0.0.0-use.local
+  resolution: "@vtaits/react-form-schema-ui-vkui@workspace:packages/react-form-schema-ui-vkui"
+  dependencies:
+    "@biomejs/biome": "npm:^1.6.1"
+    "@storybook/addon-docs": "npm:^8.0.2"
+    "@storybook/react": "npm:^8.0.2"
+    "@testing-library/react": "npm:^14.2.2"
+    "@types/react": "npm:^18.2.67"
+    "@types/react-dom": "npm:^18.2.22"
+    "@vitest/coverage-v8": "npm:^1.4.0"
+    "@vkontakte/vkui": "npm:^6.0.1"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
+    "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.1"
+    "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.1"
+    exports-fallback: "npm:^1.0.1"
+    happy-dom: "npm:^14.1.1"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-integration-test-engine: "npm:^1.4.0"
+    react-is: "npm:^18.2.0"
+    react-shallow-search: "npm:^2.2.0"
+    react-test-engine: "npm:^1.1.1"
+    react-test-engine-vitest: "npm:^1.0.1"
+    react-test-renderer: "npm:^18.2.0"
+    tsup: "npm:^8.0.2"
+    typescript: "npm:5.4.2"
+    vitest: "npm:^1.4.0"
+  peerDependencies:
     "@vtaits/react-form-schema-base-ui": ^1.0.0-alpha.1
     react: ^17.0.0 || ^18.0.0
   languageName: unknown
@@ -8187,6 +8291,13 @@ __metadata:
     minipass: "npm:^3.0.0"
     yallist: "npm:^4.0.0"
   checksum: 10c0/64fae024e1a7d0346a1102bb670085b17b7f95bf6cfdf5b128772ec8faf9ea211464ea4add406a3a6384a7d87a0cd1a96263692134323477b4fb43659a6cab78
+  languageName: node
+  linkType: hard
+
+"mitt@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mitt@npm:3.0.1"
+  checksum: 10c0/3ab4fdecf3be8c5255536faa07064d05caa3dd332bd318ff02e04621f7b3069ca1de9106cfe8e7ced675abfc2bec2ce4c4ef321c4a1bb1fb29df8ae090741913
   languageName: node
   linkType: hard
 

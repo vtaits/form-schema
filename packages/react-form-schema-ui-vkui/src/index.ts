@@ -1,0 +1,1 @@
+export { VKUIProvider } from "./VKUIProvider";
