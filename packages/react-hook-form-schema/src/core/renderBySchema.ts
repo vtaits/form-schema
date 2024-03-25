@@ -49,7 +49,7 @@ export function renderBySchema<
 				values,
 				phase: "render",
 				parents: providedParents,
-		  })
+			})
 		: getFieldSchema;
 
 	return render(

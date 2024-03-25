@@ -3,8 +3,7 @@
   "version": "1.0.0-alpha.0",
   "description": "VKUI fields for @vtaits/form-schema",
   "files": [
-    "dist",
-    "fields"
+    "dist"
   ],
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
@@ -32,7 +31,6 @@
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf dist",
     "build": "yarn build:js && yarn build:proxy_directories",
     "build:js": "tsup",
     "build:proxy_directories": "exports-fallback -gf",
@@ -43,7 +41,7 @@
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
     "test": "yarn test:unit",
-    "prepare": "yarn clean && yarn build"
+    "prepare": "yarn build"
   },
   "peerDependencies": {
     "@vkontakte/vkui": "^6.0.0",
@@ -51,11 +49,11 @@
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.1",
-    "@storybook/addon-docs": "^8.0.2",
-    "@storybook/react": "^8.0.2",
+    "@biomejs/biome": "^1.6.2",
+    "@storybook/addon-docs": "^8.0.4",
+    "@storybook/react": "^8.0.4",
     "@testing-library/react": "^14.2.2",
-    "@types/react": "^18.2.67",
+    "@types/react": "^18.2.69",
     "@types/react-dom": "^18.2.22",
     "@vitest/coverage-v8": "^1.4.0",
     "@vkontakte/vkui": "^6.0.1",
@@ -63,7 +61,7 @@
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.1",
     "@vtaits/react-hook-form-schema": "^1.2.0-alpha.1",
     "exports-fallback": "^1.0.1",
-    "happy-dom": "^14.1.1",
+    "happy-dom": "^14.3.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-integration-test-engine": "^1.4.0",
@@ -73,7 +71,7 @@
     "react-test-engine-vitest": "^1.0.1",
     "react-test-renderer": "^18.2.0",
     "tsup": "^8.0.2",
-    "typescript": "5.4.2",
+    "typescript": "5.4.3",
     "vitest": "^1.4.0"
   }
 }

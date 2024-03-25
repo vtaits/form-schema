@@ -72,7 +72,7 @@ export const serialize = <
 					values,
 					phase: "serialize",
 					parents,
-			  })
+				})
 			: getFieldSchema;
 
 		Object.assign(

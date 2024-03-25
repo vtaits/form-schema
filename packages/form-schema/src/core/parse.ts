@@ -75,7 +75,7 @@ export const parse = <
 					values,
 					phase: "parse",
 					parents,
-			  })
+				})
 			: getFieldSchema;
 
 		const parserResult = parser({

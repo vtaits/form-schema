@@ -71,7 +71,7 @@ export const setFieldErrors = <
 					values: rawValues,
 					phase: "serialize",
 					parents,
-			  })
+				})
 			: getFieldSchema;
 
 		errorsSetter({

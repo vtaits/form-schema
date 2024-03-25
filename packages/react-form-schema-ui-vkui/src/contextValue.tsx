@@ -134,7 +134,7 @@ export const contextValue: BaseUIContextValue = {
 					? value.map((option) => ({
 							label: getOptionLabel(option),
 							value: getOptionValue(option),
-					  }))
+						}))
 					: []
 			}
 			options={options.map((option) => ({

@@ -85,7 +85,7 @@ const fieldTypes: Record<string, FieldType<SelectSchema>> = {
 							}
 
 							return false;
-					  })
+						})
 					: null,
 			};
 		},

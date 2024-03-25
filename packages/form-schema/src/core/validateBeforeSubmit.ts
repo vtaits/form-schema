@@ -61,7 +61,7 @@ export const validateBeforeSubmit = <
 						values,
 						phase: "serialize",
 						parents,
-				  })
+					})
 				: getFieldSchema;
 
 			validatorBeforeSubmit({

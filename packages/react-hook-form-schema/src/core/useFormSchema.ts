@@ -190,8 +190,8 @@ export function useFormSchema<
 				submitHandler as Values extends undefined
 					? SubmitHandler<Values>
 					: Values extends FieldValues
-					  ? SubmitHandler<Values>
-					  : never,
+						? SubmitHandler<Values>
+						: never,
 				onError,
 			);
 		},
