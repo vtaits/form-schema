@@ -31,9 +31,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ant-design/cssinjs@npm:^1.18.4":
-  version: 1.18.4
-  resolution: "@ant-design/cssinjs@npm:1.18.4"
+"@ant-design/cssinjs@npm:^1.18.5":
+  version: 1.18.5
+  resolution: "@ant-design/cssinjs@npm:1.18.5"
   dependencies:
     "@babel/runtime": "npm:^7.11.1"
     "@emotion/hash": "npm:^0.8.0"
@@ -45,7 +45,7 @@ __metadata:
   peerDependencies:
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 10c0/aa419ed7f0acb958ef738be89b2dc7d4f4f84caf954d7488c8a7782b60020e266087ec330dc907c1b7126e8be996ba6b25b24281c5a962ebaf3c73f2c4a581df
+  checksum: 10c0/24a7675e9ee6b0c0552c18a06fa8f6558295fc66e9b32f4d24ecd6a8bec289b1613703787cfb0af34fbf729217a857c3d335e287700bba1c813cb9cbd40f4bc9
   languageName: node
   linkType: hard
 
@@ -56,9 +56,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ant-design/icons@npm:^5.3.3":
-  version: 5.3.4
-  resolution: "@ant-design/icons@npm:5.3.4"
+"@ant-design/icons@npm:^5.3.5":
+  version: 5.3.5
+  resolution: "@ant-design/icons@npm:5.3.5"
   dependencies:
     "@ant-design/colors": "npm:^7.0.0"
     "@ant-design/icons-svg": "npm:^4.4.0"
@@ -68,7 +68,7 @@ __metadata:
   peerDependencies:
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 10c0/bede7260857e23e2c831a38e206dffe6919856eb22af0bf8a603f86f36d0dc8d4652337ef86c24bc595fc1047b8da527610c99b0dea40c21cedd85e58e326ee5
+  checksum: 10c0/ca0712b2dd9486c72fc5e6bc7bf6cd096fbd20b40b92d06576f4d6532d839b7b4a295ba180913a95f9154e01cbf1a63b8a0207189a191578e250334cfb3267c2
   languageName: node
   linkType: hard
 
@@ -1455,7 +1455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.1, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.22.5, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.23.9, @babel/runtime@npm:^7.24.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.1, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.22.5, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.23.9, @babel/runtime@npm:^7.24.0, @babel/runtime@npm:^7.24.1, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
   version: 7.24.1
   resolution: "@babel/runtime@npm:7.24.1"
   dependencies:
@@ -1518,18 +1518,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/biome@npm:1.6.2"
+"@biomejs/biome@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/biome@npm:1.6.3"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:1.6.2"
-    "@biomejs/cli-darwin-x64": "npm:1.6.2"
-    "@biomejs/cli-linux-arm64": "npm:1.6.2"
-    "@biomejs/cli-linux-arm64-musl": "npm:1.6.2"
-    "@biomejs/cli-linux-x64": "npm:1.6.2"
-    "@biomejs/cli-linux-x64-musl": "npm:1.6.2"
-    "@biomejs/cli-win32-arm64": "npm:1.6.2"
-    "@biomejs/cli-win32-x64": "npm:1.6.2"
+    "@biomejs/cli-darwin-arm64": "npm:1.6.3"
+    "@biomejs/cli-darwin-x64": "npm:1.6.3"
+    "@biomejs/cli-linux-arm64": "npm:1.6.3"
+    "@biomejs/cli-linux-arm64-musl": "npm:1.6.3"
+    "@biomejs/cli-linux-x64": "npm:1.6.3"
+    "@biomejs/cli-linux-x64-musl": "npm:1.6.3"
+    "@biomejs/cli-win32-arm64": "npm:1.6.3"
+    "@biomejs/cli-win32-x64": "npm:1.6.3"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -1549,62 +1549,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10c0/a1b0c5a557469c7f8c8501a2d78a8eb91fc678d639faf0566ccaf84be7b8ee38956a1a47d10b227b60004217cad80e44730a55505a2d00b01327921a421706ca
+  checksum: 10c0/5dd7a08e8c05eea2f687257c0d14c5fa0b433803ca9a003c447d501bc5167fb1a9d7daad12a7d177e1894666144d4c4897ec3efdfa78489d9606f08f222a5f60
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-darwin-arm64@npm:1.6.2"
+"@biomejs/cli-darwin-arm64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-darwin-arm64@npm:1.6.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-darwin-x64@npm:1.6.2"
+"@biomejs/cli-darwin-x64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-darwin-x64@npm:1.6.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.6.2"
+"@biomejs/cli-linux-arm64-musl@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:1.6.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-linux-arm64@npm:1.6.2"
+"@biomejs/cli-linux-arm64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-linux-arm64@npm:1.6.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-linux-x64-musl@npm:1.6.2"
+"@biomejs/cli-linux-x64-musl@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-linux-x64-musl@npm:1.6.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-linux-x64@npm:1.6.2"
+"@biomejs/cli-linux-x64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-linux-x64@npm:1.6.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-win32-arm64@npm:1.6.2"
+"@biomejs/cli-win32-arm64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-win32-arm64@npm:1.6.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:1.6.2":
-  version: 1.6.2
-  resolution: "@biomejs/cli-win32-x64@npm:1.6.2"
+"@biomejs/cli-win32-x64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "@biomejs/cli-win32-x64@npm:1.6.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4124,14 +4124,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^16.8.0 || ^17.0.0 || ^18.0.0, @types/react@npm:^18.2.69":
-  version: 18.2.69
-  resolution: "@types/react@npm:18.2.69"
+"@types/react@npm:*, @types/react@npm:^16.8.0 || ^17.0.0 || ^18.0.0, @types/react@npm:^18.2.72":
+  version: 18.2.72
+  resolution: "@types/react@npm:18.2.72"
   dependencies:
     "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/239b947ed8576a271057a6f571d0967098074b101a2bece244e88093dc8fb2f020872c463b8e78b2049334ba99158f6eef5960e51f73a389f86eee39b835d846
+  checksum: 10c0/fe8a17a4067ab9d432ab1034967a8b2a773125e47ae84ee00e428a8b6c48912ab22d244ae6128663b119a38716a642bc5be019fcd2b3b2f4ab3c9b0200a6cc2d
   languageName: node
   linkType: hard
 
@@ -4139,13 +4138,6 @@ __metadata:
   version: 1.20.6
   resolution: "@types/resolve@npm:1.20.6"
   checksum: 10c0/a9b0549d816ff2c353077365d865a33655a141d066d0f5a3ba6fd4b28bc2f4188a510079f7c1f715b3e7af505a27374adce2a5140a3ece2a059aab3d6e1a4244
-  languageName: node
-  linkType: hard
-
-"@types/scheduler@npm:*":
-  version: 0.16.8
-  resolution: "@types/scheduler@npm:0.16.8"
-  checksum: 10c0/f86de504945b8fc41b1f391f847444d542e2e4067cf7e5d9bfeb5d2d2393d3203b1161bc0ef3b1e104d828dabfb60baf06e8d2c27e27ff7e8258e6e618d8c4ec
   languageName: node
   linkType: hard
 
@@ -4384,7 +4376,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@types/is-promise": "npm:^2.2.0"
     "@vitest/coverage-v8": "npm:^1.4.0"
     date-fns: "npm:^3.6.0"
@@ -4400,12 +4392,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-final-form-schema@workspace:packages/react-final-form-schema"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@storybook/addon-docs": "npm:^8.0.4"
     "@storybook/react": "npm:^8.0.4"
     "@testing-library/react": "npm:^14.2.2"
     "@types/lodash": "npm:^4.17.0"
-    "@types/react": "npm:^18.2.69"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@vitest/coverage-v8": "npm:^1.4.0"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
@@ -4413,7 +4405,7 @@ __metadata:
     exports-fallback: "npm:^1.0.1"
     final-form: "npm:^4.20.10"
     final-form-arrays: "npm:^3.1.0"
-    happy-dom: "npm:^14.3.6"
+    happy-dom: "npm:^14.3.9"
     is-promise: "npm:^4.0.0"
     lodash: "npm:^4.17.21"
     react: "npm:^18.2.0"
@@ -4443,17 +4435,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-base-ui@workspace:packages/react-form-schema-base-ui"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@storybook/addon-docs": "npm:^8.0.4"
     "@storybook/react": "npm:^8.0.4"
     "@testing-library/react": "npm:^14.2.2"
-    "@types/react": "npm:^18.2.69"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@types/react-is": "npm:^18.2.4"
     "@vitest/coverage-v8": "npm:^1.4.0"
     date-fns: "npm:^3.6.0"
     exports-fallback: "npm:^1.0.1"
-    happy-dom: "npm:^14.3.6"
+    happy-dom: "npm:^14.3.9"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-integration-test-engine: "npm:^1.4.0"
@@ -4475,20 +4467,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-antd@workspace:packages/react-form-schema-ui-antd"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@storybook/addon-docs": "npm:^8.0.4"
     "@storybook/react": "npm:^8.0.4"
     "@testing-library/react": "npm:^14.2.2"
-    "@types/react": "npm:^18.2.69"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@vitest/coverage-v8": "npm:^1.4.0"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.1"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.1"
-    antd: "npm:^5.15.3"
+    antd: "npm:^5.15.4"
     dayjs: "npm:^1.11.10"
     exports-fallback: "npm:^1.0.1"
-    happy-dom: "npm:^14.3.6"
+    happy-dom: "npm:^14.3.9"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-integration-test-engine: "npm:^1.4.0"
@@ -4512,7 +4504,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-mui@workspace:packages/react-form-schema-ui-mui"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.0"
     "@mui/material": "npm:^5.15.14"
@@ -4520,7 +4512,7 @@ __metadata:
     "@storybook/addon-docs": "npm:^8.0.4"
     "@storybook/react": "npm:^8.0.4"
     "@testing-library/react": "npm:^14.2.2"
-    "@types/react": "npm:^18.2.69"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@vitest/coverage-v8": "npm:^1.4.0"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
@@ -4528,7 +4520,7 @@ __metadata:
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.1"
     date-fns: "npm:^3.6.0"
     exports-fallback: "npm:^1.0.1"
-    happy-dom: "npm:^14.3.6"
+    happy-dom: "npm:^14.3.9"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-integration-test-engine: "npm:^1.4.0"
@@ -4552,11 +4544,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-vkui@workspace:packages/react-form-schema-ui-vkui"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@storybook/addon-docs": "npm:^8.0.4"
     "@storybook/react": "npm:^8.0.4"
     "@testing-library/react": "npm:^14.2.2"
-    "@types/react": "npm:^18.2.69"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@vitest/coverage-v8": "npm:^1.4.0"
     "@vkontakte/vkui": "npm:^6.0.1"
@@ -4565,7 +4557,7 @@ __metadata:
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.1"
     date-fns: "npm:^3.6.0"
     exports-fallback: "npm:^1.0.1"
-    happy-dom: "npm:^14.3.6"
+    happy-dom: "npm:^14.3.9"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-integration-test-engine: "npm:^1.4.0"
@@ -4588,23 +4580,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-hook-form-schema@workspace:packages/react-hook-form-schema"
   dependencies:
-    "@biomejs/biome": "npm:^1.6.2"
+    "@biomejs/biome": "npm:^1.6.3"
     "@storybook/addon-docs": "npm:^8.0.4"
     "@storybook/react": "npm:^8.0.4"
     "@testing-library/react": "npm:^14.2.2"
     "@types/lodash": "npm:^4.17.0"
-    "@types/react": "npm:^18.2.69"
+    "@types/react": "npm:^18.2.72"
     "@types/react-dom": "npm:^18.2.22"
     "@vitest/coverage-v8": "npm:^1.4.0"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.0"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.1"
     exports-fallback: "npm:^1.0.1"
-    happy-dom: "npm:^14.3.6"
+    happy-dom: "npm:^14.3.9"
     is-promise: "npm:^4.0.0"
     lodash: "npm:^4.17.21"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-hook-form: "npm:^7.51.1"
+    react-hook-form: "npm:^7.51.2"
     react-integration-test-engine: "npm:^1.4.0"
     react-is: "npm:^18.2.0"
     react-select: "npm:^5.8.0"
@@ -4799,15 +4791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:^5.15.3":
-  version: 5.15.3
-  resolution: "antd@npm:5.15.3"
+"antd@npm:^5.15.4":
+  version: 5.15.4
+  resolution: "antd@npm:5.15.4"
   dependencies:
     "@ant-design/colors": "npm:^7.0.2"
-    "@ant-design/cssinjs": "npm:^1.18.4"
-    "@ant-design/icons": "npm:^5.3.3"
+    "@ant-design/cssinjs": "npm:^1.18.5"
+    "@ant-design/icons": "npm:^5.3.5"
     "@ant-design/react-slick": "npm:~1.0.2"
-    "@babel/runtime": "npm:^7.24.0"
+    "@babel/runtime": "npm:^7.24.1"
     "@ctrl/tinycolor": "npm:^3.6.1"
     "@rc-component/color-picker": "npm:~1.5.3"
     "@rc-component/mutate-observer": "npm:^1.1.0"
@@ -4819,7 +4811,7 @@ __metadata:
     qrcode.react: "npm:^3.1.0"
     rc-cascader: "npm:~3.24.0"
     rc-checkbox: "npm:~3.2.0"
-    rc-collapse: "npm:~3.7.2"
+    rc-collapse: "npm:~3.7.3"
     rc-dialog: "npm:~9.4.0"
     rc-drawer: "npm:~7.1.0"
     rc-dropdown: "npm:~4.2.0"
@@ -4854,7 +4846,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 10c0/8395a926524b3fa20f0cd9b1421ec894cf8e41c18ce370e3dc844cc322e888e13a0cae252cf8f4652e0cb8637e28e6635dfc01553bd53f7ecf14dd7f6fe77372
+  checksum: 10c0/13a301fb84c8e2d947cd34b133762b4f1302e9cbb8545c10524b01e20e2497a2548d7b8448f4a8340c448f118f1b2507346aa5047c29fd1ea27fd376b179ce6c
   languageName: node
   linkType: hard
 
@@ -7007,14 +6999,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:^14.3.6":
-  version: 14.3.6
-  resolution: "happy-dom@npm:14.3.6"
+"happy-dom@npm:^14.3.9":
+  version: 14.3.9
+  resolution: "happy-dom@npm:14.3.9"
   dependencies:
     entities: "npm:^4.5.0"
     webidl-conversions: "npm:^7.0.0"
     whatwg-mimetype: "npm:^3.0.0"
-  checksum: 10c0/96831b9ca1fbf36c9bc636d193861b67245e386cc258e227bb03ad19dd9d0f07e7e173577715c63c9a193359e81206c60c2c96df63134a72dab4903c89f133e6
+  checksum: 10c0/b2d22fb5c64704860fd36ea490c9fe178950ed93ee1e5ba109e182d2940ecbffadc169203874fa0384ffe795ee68c577547e2063828741a2935bf5189c6d5f3b
   languageName: node
   linkType: hard
 
@@ -9258,7 +9250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc-collapse@npm:~3.7.2":
+"rc-collapse@npm:~3.7.3":
   version: 3.7.3
   resolution: "rc-collapse@npm:3.7.3"
   dependencies:
@@ -9859,12 +9851,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.51.1":
-  version: 7.51.1
-  resolution: "react-hook-form@npm:7.51.1"
+"react-hook-form@npm:^7.51.2":
+  version: 7.51.2
+  resolution: "react-hook-form@npm:7.51.2"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 10c0/f0acbf27fc548d3cd0e4db40b84d9dfe6c24209e4421fffbd422da15e32cc98f877ab0af9e06cb1deaf4205ec655b56020ff9f8b2bae6ada5e619890f174c374
+  checksum: 10c0/9d5e303b64f77330f244304854522e4f588fd3a5554734d2daebf64230195eb42c44504e074d5acfabd6f33a2272ffca4ebef7a54fad7019ae519471b720327e
   languageName: node
   linkType: hard
 
