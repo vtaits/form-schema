@@ -28,6 +28,14 @@ const schemas: Record<string, any> = {
 		],
 	},
 
+	date: {
+		type: "date",
+	},
+
+	datetime: {
+		type: "datetime",
+	},
+
 	input: {
 		type: "input",
 		label: "Input",

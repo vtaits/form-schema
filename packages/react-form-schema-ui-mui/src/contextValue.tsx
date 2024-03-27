@@ -12,6 +12,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import TextField, { type TextFieldProps } from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
@@ -91,6 +93,36 @@ export function getContextValue(
 				</FormControl>
 			);
 		},
+
+		renderDatePicker: ({
+			displayDateFormat,
+			onChange,
+			value,
+			wrapper: { label },
+		}) => (
+			<DatePicker
+				format={displayDateFormat}
+				label={label}
+				value={value}
+				onChange={onChange}
+				slotProps={{ textField: { size: muiSize } }}
+			/>
+		),
+
+		renderDateTimePicker: ({
+			displayDateFormat,
+			onChange,
+			value,
+			wrapper: { label },
+		}) => (
+			<DateTimePicker
+				format={displayDateFormat}
+				label={label}
+				value={value}
+				onChange={onChange}
+				slotProps={{ textField: { size: muiSize } }}
+			/>
+		),
 
 		renderForm: ({ actions, error, fields, formProps, title }) => (
 			<form {...formProps}>

@@ -27,7 +27,6 @@ export function InputComponent({
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: InputComponentProps): ReactElement {
 	const { renderInput, renderWrapper } = useUI();

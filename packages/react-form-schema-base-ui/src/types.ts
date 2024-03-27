@@ -20,6 +20,15 @@ export type CheckboxRenderProps = Readonly<
 	}
 >;
 
+export type DatePickerRenderProps = Readonly<
+	BaseFieldRenderProps & {
+		displayDateFormat?: string;
+		value: Date | null | undefined;
+		onChange: (nextValue: Date | null | undefined) => void;
+		inputProps: Partial<HTMLProps<HTMLInputElement>>;
+	}
+>;
+
 export type FormRenderProps = Readonly<{
 	actions?: ReactNode;
 	error?: ReactNode;
@@ -72,6 +81,8 @@ export type BaseUIContextValue = Readonly<{
 	renderCheckboxGroup: <OptionType>(
 		renderProps: MultiSelectRenderProps<OptionType>,
 	) => ReactNode;
+	renderDatePicker: (renderProps: DatePickerRenderProps) => ReactNode;
+	renderDateTimePicker: (renderProps: DatePickerRenderProps) => ReactNode;
 	renderForm: (renderProps: FormRenderProps) => ReactNode;
 	renderRadioGroup: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,

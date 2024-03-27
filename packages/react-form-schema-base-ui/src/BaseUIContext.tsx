@@ -1,5 +1,11 @@
+import { format } from "date-fns/format";
+import { isValid } from "date-fns/isValid";
+import { parse } from "date-fns/parse";
 import { createContext } from "react";
 import type { BaseUIContextValue, MultiSelectRenderProps } from "./types";
+
+const DATE_FORMAT = "yyyy-MM-dd";
+const DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
 export const BaseUIContext = createContext<BaseUIContextValue>({
 	renderCheckbox: ({ checked, name, onChange, children }) => (
@@ -62,6 +68,56 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 			</div>
 		);
 	},
+
+	renderDatePicker: ({ inputProps, onChange, value }) => (
+		<input
+			{...inputProps}
+			type="date"
+			value={value ? format(value, DATE_FORMAT) : ""}
+			onChange={(event) => {
+				const dateRaw = event.target.value;
+
+				if (!dateRaw) {
+					onChange(null);
+					return;
+				}
+
+				const date = parse(dateRaw, DATE_FORMAT, new Date());
+
+				if (!isValid(date)) {
+					onChange(null);
+					return;
+				}
+
+				onChange(date);
+			}}
+		/>
+	),
+
+	renderDateTimePicker: ({ inputProps, onChange, value }) => (
+		<input
+			{...inputProps}
+			type="datetime-local"
+			value={value ? format(value, DATETIME_FORMAT) : ""}
+			onChange={(event) => {
+				const dateRaw = event.target.value;
+
+				if (!dateRaw) {
+					onChange(null);
+					return;
+				}
+
+				const date = parse(dateRaw, DATETIME_FORMAT, new Date());
+
+				if (!isValid(date)) {
+					onChange(null);
+					return;
+				}
+
+				onChange(date);
+			}}
+		/>
+	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (
 		<form {...formProps}>

@@ -1,4 +1,4 @@
-import { Button } from "@vkontakte/vkui";
+import { AppRoot, Button } from "@vkontakte/vkui";
 import { Form } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useState } from "react";
 import { VKUIProvider } from "..";
@@ -26,6 +26,14 @@ const schemas: Record<string, any> = {
 				label: "Label 3",
 			},
 		],
+	},
+
+	date: {
+		type: "date",
+	},
+
+	datetime: {
+		type: "datetime",
 	},
 
 	input: {
@@ -139,27 +147,29 @@ export function Simple(): ReactElement {
 	};
 
 	return (
-		<VKUIProvider>
-			<Form
-				schemas={schemas}
-				onSubmit={onSubmit}
-				renderActions={({ isSubmitting }) => (
-					<Button mode="primary" type="submit" disabled={isSubmitting}>
-						Submit
-					</Button>
+		<AppRoot>
+			<VKUIProvider>
+				<Form
+					schemas={schemas}
+					onSubmit={onSubmit}
+					renderActions={({ isSubmitting }) => (
+						<Button mode="primary" type="submit" disabled={isSubmitting}>
+							Submit
+						</Button>
+					)}
+					title="VKUI integraion form"
+				/>
+
+				{submittedValues && (
+					<>
+						<hr />
+
+						<h3>Submitted values:</h3>
+
+						<pre>{JSON.stringify(submittedValues, null, 2)}</pre>
+					</>
 				)}
-				title="VKUI integraion form"
-			/>
-
-			{submittedValues && (
-				<>
-					<hr />
-
-					<h3>Submitted values:</h3>
-
-					<pre>{JSON.stringify(submittedValues, null, 2)}</pre>
-				</>
-			)}
-		</VKUIProvider>
+			</VKUIProvider>
+		</AppRoot>
 	);
 }

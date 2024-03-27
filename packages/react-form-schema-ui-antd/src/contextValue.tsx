@@ -2,7 +2,16 @@ import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
-import { Alert, Checkbox, Input, Radio, Select, Typography } from "antd";
+import {
+	Alert,
+	Checkbox,
+	DatePicker,
+	Input,
+	Radio,
+	Select,
+	Typography,
+} from "antd";
+import dayjs from "dayjs";
 import { FieldRow } from "./FieldRow";
 
 export const contextValue: BaseUIContextValue = {
@@ -62,6 +71,37 @@ export const contextValue: BaseUIContextValue = {
 			</div>
 		);
 	},
+
+	renderDatePicker: ({ displayDateFormat, onChange, value }) => (
+		<DatePicker
+			format={displayDateFormat}
+			value={value ? dayjs(value) : undefined}
+			onChange={(dayjs) => {
+				if (!dayjs) {
+					onChange(null);
+					return;
+				}
+
+				onChange(dayjs.toDate());
+			}}
+		/>
+	),
+
+	renderDateTimePicker: ({ displayDateFormat, onChange, value }) => (
+		<DatePicker
+			format={displayDateFormat}
+			value={value ? dayjs(value) : undefined}
+			onChange={(dayjs) => {
+				if (!dayjs) {
+					onChange(null);
+					return;
+				}
+
+				onChange(dayjs.toDate());
+			}}
+			showTime
+		/>
+	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (
 		<form className="ant-form ant-form-horizontal" {...formProps}>

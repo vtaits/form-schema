@@ -1,6 +1,7 @@
 import {
 	Checkbox,
 	ChipsSelect,
+	DateInput,
 	FormItem,
 	FormStatus,
 	Input,
@@ -71,6 +72,18 @@ export const contextValue: BaseUIContextValue = {
 			</div>
 		);
 	},
+
+	renderDatePicker: ({ onChange, value }) => (
+		<div style={{ display: "flex" }}>
+			<DateInput value={value || undefined} onChange={onChange} />
+		</div>
+	),
+
+	renderDateTimePicker: ({ onChange, value }) => (
+		<div style={{ display: "flex" }}>
+			<DateInput enableTime value={value || undefined} onChange={onChange} />
+		</div>
+	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (
 		<form className="ant-form ant-form-horizontal" {...formProps}>

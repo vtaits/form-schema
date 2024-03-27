@@ -25,6 +25,21 @@
       "import": "./dist/esm/fields_checkbox.js",
       "types": "./dist/fields_checkbox.d.ts"
     },
+    "./fields/date": {
+      "require": "./dist/fields_date.js",
+      "import": "./dist/esm/fields_date.js",
+      "types": "./dist/fields_date.d.ts"
+    },
+    "./fields/datetime": {
+      "require": "./dist/fields_datetime.js",
+      "import": "./dist/esm/fields_datetime.js",
+      "types": "./dist/fields_datetime.d.ts"
+    },
+    "./fields/date-base": {
+      "require": "./dist/fields_date-base.js",
+      "import": "./dist/esm/fields_date-base.js",
+      "types": "./dist/fields_date-base.d.ts"
+    },
     "./fields/dynamic": {
       "require": "./dist/fields_dynamic.js",
       "import": "./dist/esm/fields_dynamic.js",
@@ -74,6 +89,7 @@
   },
   "dependencies": {
     "@types/is-promise": "^2.2.0",
+    "date-fns": "^3.6.0",
     "is-promise": "^4.0.0"
   },
   "devDependencies": {

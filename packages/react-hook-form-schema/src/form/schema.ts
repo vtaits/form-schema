@@ -1,5 +1,7 @@
 import type { CheckboxSchema } from "../fields/checkbox";
 import type { CheckboxGroupSchema } from "../fields/checkboxGroup";
+import type { DateSchema } from "../fields/date";
+import type { DateTimeSchema } from "../fields/datetime";
 import type { DynamicSchema } from "../fields/dynamic";
 import type { InputSchema } from "../fields/input";
 import type { RadioGroupSchema } from "../fields/radioGroup";
@@ -21,6 +23,12 @@ export type DefaultFieldSchema<
 	  })
 	| (CheckboxGroupSchema & {
 			type: "checkboxGroup";
+	  })
+	| (DateSchema & {
+			type: "date";
+	  })
+	| (DateTimeSchema & {
+			type: "datetime";
 	  })
 	| (DynamicSchema<any, Values, RawValues, SerializedValues, Errors> & {
 			type: "dynamic";
