@@ -50,6 +50,11 @@
       "import": "./dist/esm/fields_input.js",
       "types": "./dist/fields_input.d.ts"
     },
+    "./fields/list": {
+      "require": "./dist/fields_list.js",
+      "import": "./dist/esm/fields_list.js",
+      "types": "./dist/fields_list.d.ts"
+    },
     "./fields/select": {
       "require": "./dist/fields_select.js",
       "import": "./dist/esm/fields_select.js",
@@ -90,7 +95,8 @@
   "dependencies": {
     "@types/is-promise": "^2.2.0",
     "date-fns": "^3.6.0",
-    "is-promise": "^4.0.0"
+    "is-promise": "^4.0.0",
+    "krustykrab": "^1.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",

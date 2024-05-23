@@ -4,28 +4,21 @@ import { DEFAULT_VALUE_KEY } from "./constants";
 import type { SelectSchema } from "./schema";
 
 export const select: FieldType<SelectSchema> = {
-	serializer: ({
+	serializerSingle: ({
+		value,
 		name,
 		values,
 		fieldSchema: { getOptionValue, valueKey = DEFAULT_VALUE_KEY },
 	}) => {
-		const value = values[name];
-
 		if (!value) {
-			return {
-				[name]: null,
-			};
+			return null;
 		}
 
 		if (getOptionValue) {
-			return {
-				[name]: getOptionValue(value),
-			};
+			return getOptionValue(value);
 		}
 
-		return {
-			[name]: (value as Record<string, string>)[valueKey],
-		};
+		return (value as Record<string, string>)[valueKey];
 	},
 
 	parser: ({

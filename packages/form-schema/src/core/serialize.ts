@@ -38,7 +38,7 @@ export type SerializeParams<
 	parents: readonly ParentType<Values>[];
 }>;
 
-export const serialize = <
+export function serialize<
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
@@ -56,14 +56,13 @@ export const serialize = <
 	RawValues,
 	SerializedValues,
 	Errors
->): SerializedValues => {
+>): SerializedValues {
 	const res = {} as SerializedValues;
 
 	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const serializer = fieldType.serializer || defaultSerializer;
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
 			? fieldType.createGetFieldSchema({
 					fieldSchema,
@@ -75,17 +74,31 @@ export const serialize = <
 				})
 			: getFieldSchema;
 
-		Object.assign(
-			res,
-			serializer({
+		if (fieldType.serializerSingle) {
+			res[name] = fieldType.serializerSingle({
+				value: values[name],
 				values,
 				name,
 				fieldSchema,
 				getFieldSchema: computedGetFieldSchema,
 				getFieldType,
 				parents,
-			}),
-		);
+			})
+		} else {
+			const serializer = fieldType.serializer || defaultSerializer;
+	
+			Object.assign(
+				res,
+				serializer({
+					values,
+					name,
+					fieldSchema,
+					getFieldSchema: computedGetFieldSchema,
+					getFieldType,
+					parents,
+				}),
+			);
+		}
 	}
 
 	return res;

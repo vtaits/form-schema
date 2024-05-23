@@ -8,7 +8,8 @@ import {
 import type { DateTimeSchema } from "./schema";
 
 export const datetime: FieldType<DateTimeSchema> = {
-	serializer: ({
+	serializerSingle: ({
+		value,
 		name,
 		values,
 		fieldSchema: {
@@ -16,13 +17,13 @@ export const datetime: FieldType<DateTimeSchema> = {
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
 		},
 	}) => {
-		const value = values[name];
-
 		const date = parseValueAndValidate(value, clientDateFormat);
 
-		return {
-			[name]: date ? serializeDate(date, serverDateFormat) : null,
-		};
+		if (date) {
+			return serializeDate(date, serverDateFormat);
+		}
+
+		return null;
 	},
 
 	parser: ({

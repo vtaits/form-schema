@@ -4700,6 +4700,7 @@ __metadata:
     date-fns: "npm:^3.6.0"
     exports-fallback: "npm:^1.0.1"
     is-promise: "npm:^4.0.0"
+    krustykrab: "npm:^1.0.0"
     tsup: "npm:^8.0.2"
     typescript: "npm:5.4.5"
     vitest: "npm:^1.6.0"
@@ -8219,6 +8220,13 @@ __metadata:
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
   checksum: 10c0/cd3a0b8878e7d6d3799e54340efe3591ca787d9f95f109f28129bdd2915e37807bf8918bb295ab86afb8c82196beec5a1adcaf29042ce3f2bd932b038fe3aa4b
+  languageName: node
+  linkType: hard
+
+"krustykrab@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "krustykrab@npm:1.0.0"
+  checksum: 10c0/d1f59e4f9e0faec07a633c622528ef9c4e0a18aacd38e45c2c5982c99c12a0a1b843c505b47f9625909d538be5cfd134ffa9824a5ed1e4af6d7e4765b20da94f
   languageName: node
   linkType: hard
 
