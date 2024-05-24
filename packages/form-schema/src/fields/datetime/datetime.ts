@@ -26,21 +26,20 @@ export const datetime: FieldType<DateTimeSchema> = {
 		return null;
 	},
 
-	parser: ({
-		name,
-		values,
+	parserSingle: ({
+		value,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
 		},
 	}) => {
-		const value = values[name];
-
 		const date = parseValueAndValidate(value, serverDateFormat);
 
-		return {
-			[name]: date ? serializeDate(date, clientDateFormat) : null,
-		};
+		if (date) {
+			return serializeDate(date, clientDateFormat);
+		}
+
+		return null;
 	},
 
 	validatorBeforeSubmit: ({

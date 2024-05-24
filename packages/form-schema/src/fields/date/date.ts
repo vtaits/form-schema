@@ -10,39 +10,34 @@ import type { DateSchema } from "./schema";
 export const date: FieldType<DateSchema> = {
 	serializerSingle: ({
 		value,
-		name,
-		values,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
 		},
 	}) => {
-		const value = values[name];
-
 		const date = parseValueAndValidate(value, clientDateFormat);
 
 		if (date) {
-			return serializeDate(date, serverDateFormat)
+			return serializeDate(date, serverDateFormat);
 		}
 
 		return null;
 	},
 
-	parser: ({
-		name,
-		values,
+	parserSingle: ({
+		value,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
 		},
 	}) => {
-		const value = values[name];
-
 		const date = parseValueAndValidate(value, serverDateFormat);
 
-		return {
-			[name]: date ? serializeDate(date, clientDateFormat) : null,
-		};
+		if (date) {
+			return serializeDate(date, clientDateFormat);
+		}
+
+		return null;
 	},
 
 	validatorBeforeSubmit: ({

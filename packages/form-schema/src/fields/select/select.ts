@@ -21,35 +21,28 @@ export const select: FieldType<SelectSchema> = {
 		return (value as Record<string, string>)[valueKey];
 	},
 
-	parser: ({
-		name,
-		values,
+	parserSingle: ({
+		value,
 		fieldSchema: { getOptionValue, options, valueKey = DEFAULT_VALUE_KEY },
 	}) => {
-		const value = values[name];
-
 		if (!value) {
-			return {
-				[name]: null,
-			};
+			return null;
 		}
 
-		return {
-			[name]: options.find((option) => {
-				if (getOptionValue) {
-					const optionValue = getOptionValue(option);
+		return options.find((option) => {
+			if (getOptionValue) {
+				const optionValue = getOptionValue(option);
 
-					return value === optionValue || getOptionValue(value) === optionValue;
-				}
+				return value === optionValue || getOptionValue(value) === optionValue;
+			}
 
-				const optionValue = (option as Record<string, string>)[valueKey];
+			const optionValue = (option as Record<string, string>)[valueKey];
 
-				return (
-					value === optionValue ||
-					(value as Record<string, string>)[valueKey] === optionValue
-				);
-			}),
-		};
+			return (
+				value === optionValue ||
+				(value as Record<string, string>)[valueKey] === optionValue
+			);
+		});
 	},
 
 	validatorBeforeSubmit: ({ name, setError, values, fieldSchema, parents }) => {

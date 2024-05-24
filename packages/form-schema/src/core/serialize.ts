@@ -74,32 +74,24 @@ export function serialize<
 				})
 			: getFieldSchema;
 
+		const params = {
+			value: values[name],
+			values,
+			name,
+			fieldSchema,
+			getFieldSchema: computedGetFieldSchema,
+			getFieldType,
+			parents,
+		};
+
 		if (fieldType.serializerSingle) {
-			res[name] = fieldType.serializerSingle({
-				value: values[name],
-				values,
-				name,
-				fieldSchema,
-				getFieldSchema: computedGetFieldSchema,
-				getFieldType,
-				parents,
-			})
+			res[name] = fieldType.serializerSingle(params);
 		} else {
 			const serializer = fieldType.serializer || defaultSerializer;
-	
-			Object.assign(
-				res,
-				serializer({
-					values,
-					name,
-					fieldSchema,
-					getFieldSchema: computedGetFieldSchema,
-					getFieldType,
-					parents,
-				}),
-			);
+
+			Object.assign(res, serializer(params));
 		}
 	}
 
 	return res;
-};
+}

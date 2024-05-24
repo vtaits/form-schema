@@ -1,15 +1,15 @@
-import { defaultSerializer } from "./serialize";
+import isPromise from "is-promise";
+import { defaultParser } from "./parse";
 import type { GetFieldSchema, GetFieldType, ParentType } from "./types";
 
-export type SerializeSingleParams<
+export type ParseSingleParams<
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
 > = Readonly<{
-	value: unknown;
-	values: Values;
+	values: RawValues | null;
 	name: string;
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
@@ -19,29 +19,29 @@ export type SerializeSingleParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType<RawValues>[];
 }>;
 
-export function serializeSingle<
+export function parseSingle<
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
 	Errors extends Record<string, any>,
 >({
-	value,
 	values,
 	name,
 	getFieldSchema,
 	getFieldType,
 	parents,
-}: SerializeSingleParams<
-	FieldSchema,
-	Values,
-	RawValues,
-	SerializedValues,
-	Errors
->): unknown {
+}: ParseSingleParams<FieldSchema, Values, RawValues, SerializedValues, Errors>):
+	| unknown
+	| Promise<unknown>
+	| null {
+	if (!values) {
+		return null;
+	}
+
 	const fieldSchema = getFieldSchema(name);
 	const fieldType = getFieldType(fieldSchema);
 
@@ -51,7 +51,7 @@ export function serializeSingle<
 				getFieldSchema,
 				getFieldType,
 				values,
-				phase: "serialize",
+				phase: "parse",
 				parents,
 			})
 		: getFieldSchema;
@@ -66,13 +66,17 @@ export function serializeSingle<
 		parents,
 	};
 
-	if (fieldType.serializerSingle) {
-		return fieldType.serializerSingle(params);
+	if (fieldType.parserSingle) {
+		return fieldType.parserSingle(params);
 	}
 
-	const serializer = fieldType.serializer || defaultSerializer;
+	const parser = fieldType.parser || defaultParser;
 
-	const serialized = serializer(params);
+	const parserResult = parser(params);
 
-	return serialized[name];
+	if (isPromise(parserResult)) {
+		return parserResult.then((result) => (result as Values)[name]);
+	}
+
+	return parserResult[name];
 }

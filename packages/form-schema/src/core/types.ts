@@ -98,6 +98,10 @@ export type SerializerParams<
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = Readonly<{
 	/**
+	 * current runtime value by field name
+	 */
+	value: unknown;
+	/**
 	 * current runtime values
 	 */
 	values: Values;
@@ -146,62 +150,16 @@ export type Serializer<
 ) => SerializedValues;
 
 /**
- * Parameters of single serializer of the field
+ * Single serializer of the field
  */
-export type SerializerSingleParams<
+export type SerializerSingle<
 	FieldSchema,
 	Values extends Record<string, unknown> = Record<string, unknown>,
 	RawValues extends Record<string, unknown> = Record<string, unknown>,
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
-> = Readonly<{
-	/**
-	 * current runtime value of field name
-	 */
-	value: unknown;
-	/**
-	 * current runtime values
-	 */
-	values: Values;
-	/**
-	 * name of current field
-	 */
-	name: string;
-	/**
-	 * schema of current field
-	 */
-	fieldSchema: FieldSchema;
-	/**
-	 * current `getFieldSchema`
-	 */
-	getFieldSchema: GetFieldSchema<FieldSchema>;
-	/**
-	 * global `getFieldType`
-	 */
-	getFieldType: GetFieldType<
-		FieldSchema,
-		Values,
-		RawValues,
-		SerializedValues,
-		Errors
-	>;
-	/**
-	 * stack of parent fields above current field with runtime values
-	 */
-	parents: readonly ParentType<Values>[];
-}>;
-
-/**
- * Single serializer of the field
- */
-export type SerializerSingle<
-FieldSchema,
-Values extends Record<string, unknown> = Record<string, unknown>,
-RawValues extends Record<string, unknown> = Record<string, unknown>,
-SerializedValues extends Record<string, unknown> = Record<string, unknown>,
-Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
-	params: SerializerSingleParams<
+	params: SerializerParams<
 		FieldSchema,
 		Values,
 		RawValues,
@@ -220,6 +178,10 @@ export type ParserParams<
 	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = Readonly<{
+	/**
+	 * current raw value by field name
+	 */
+	value: unknown;
 	/**
 	 * raw values
 	 */
@@ -268,6 +230,25 @@ export type Parser<
 	>,
 ) => Values | Promise<Values>;
 
+/**
+ * Single parser of the field
+ */
+export type ParserSingle<
+	FieldSchema,
+	Values extends Record<string, unknown> = Record<string, unknown>,
+	RawValues extends Record<string, unknown> = Record<string, unknown>,
+	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = (
+	params: ParserParams<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
+) => unknown | Promise<unknown>;
+
 export type ValidatorBeforeSubmitParams<
 	FieldSchema,
 	Values extends Record<string, unknown> = Record<string, unknown>,
@@ -279,6 +260,10 @@ export type ValidatorBeforeSubmitParams<
 	 * Function for setting errors
 	 */
 	setError: SetError<Values>;
+	/**
+	 * current runtime value by field name
+	 */
+	value: unknown;
 	/**
 	 * current runtime values
 	 */
@@ -365,9 +350,17 @@ export type ErrorsSetterParams<
 		Errors
 	>;
 	/**
+	 * current serialized value by field name
+	 */
+	value: unknown;
+	/**
 	 * serialized values
 	 */
 	values: SerializedValues;
+	/**
+	 * current runtime value by field name
+	 */
+	rawValue: unknown;
 	/**
 	 * current runtime values
 	 */
@@ -423,6 +416,13 @@ export type FieldType<
 		Errors
 	>;
 	parser?: Parser<FieldSchema, Values, RawValues, SerializedValues, Errors>;
+	parserSingle?: ParserSingle<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>;
 	validatorBeforeSubmit?: ValidatorBeforeSubmit<
 		FieldSchema,
 		Values,

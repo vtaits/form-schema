@@ -1,5 +1,4 @@
 import isPromise from "is-promise";
-
 import type { GetFieldSchema, GetFieldType, ParentType, Parser } from "./types";
 
 export const defaultParser: Parser<any, any, any, any, any> = ({
@@ -37,7 +36,7 @@ export type ParseParams<
 	parents: readonly ParentType<RawValues>[];
 }>;
 
-export const parse = <
+export function parse<
 	FieldSchema,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
@@ -52,7 +51,7 @@ export const parse = <
 }: ParseParams<FieldSchema, Values, RawValues, SerializedValues, Errors>):
 	| Values
 	| Promise<Values>
-	| null => {
+	| null {
 	if (!values) {
 		return null;
 	}
@@ -66,7 +65,6 @@ export const parse = <
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const parser = fieldType.parser || defaultParser;
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
 			? fieldType.createGetFieldSchema({
 					fieldSchema,
@@ -78,20 +76,43 @@ export const parse = <
 				})
 			: getFieldSchema;
 
-		const parserResult = parser({
+		const params = {
+			value: values[name],
 			values,
 			name,
 			fieldSchema,
 			getFieldSchema: computedGetFieldSchema,
 			getFieldType,
 			parents,
-		});
+		};
 
-		if (isPromise(parserResult)) {
-			hasPromise = true;
+		if (fieldType.parserSingle) {
+			const parsedSingle = fieldType.parserSingle(params);
+
+			if (isPromise(parsedSingle)) {
+				hasPromise = true;
+
+				preparsedValues.push(
+					parsedSingle.then((singleResult) => ({
+						[name]: singleResult,
+					})) as Promise<Values>,
+				);
+			} else {
+				preparsedValues.push({
+					[name]: parsedSingle,
+				} as Values);
+			}
+		} else {
+			const parser = fieldType.parser || defaultParser;
+
+			const parserResult = parser(params);
+
+			if (isPromise(parserResult)) {
+				hasPromise = true;
+			}
+
+			preparsedValues.push(parserResult);
 		}
-
-		preparsedValues.push(parserResult);
 	}
 
 	if (hasPromise) {
@@ -109,4 +130,4 @@ export const parse = <
 	}
 
 	return res;
-};
+}

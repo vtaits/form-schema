@@ -94,6 +94,7 @@ test("should call redefined validatorBeforeSubmit", () => {
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
 	expect(validatorBeforeSubmit).toHaveBeenCalledWith({
 		setError,
+		value: "test",
 		values: rawValues,
 		name: "value",
 		fieldSchema,

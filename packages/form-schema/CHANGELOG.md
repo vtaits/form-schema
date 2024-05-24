@@ -3,7 +3,10 @@
 ### New features
 
 - Added `serializerSingle` property for field types
-- Added `serializeSingle` helper 
+- Added `parserSingle` property for field types
+- Added `serializeSingle` helper
+- Added `parseSingle` helper
+- Added `value` property for field methods
 
 ## 2.2.0 (27 nov 2023)
 

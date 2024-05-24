@@ -17,13 +17,7 @@ export function prepareValue(rawValue: unknown) {
 export const input: FieldType<InputSchema> = {
 	serializerSingle: ({ value }) => prepareValue(value),
 
-	parser: ({ name, values }) => {
-		const value = values[name];
-
-		return {
-			[name]: prepareValue(value),
-		};
-	},
+	parserSingle: ({ value }) => prepareValue(value),
 
 	validatorBeforeSubmit: ({ name, setError, values, fieldSchema, parents }) => {
 		const {

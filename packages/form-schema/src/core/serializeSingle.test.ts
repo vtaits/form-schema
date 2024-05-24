@@ -22,6 +22,8 @@ describe("serializeSingle", () => {
 	test("should call default serializer", () => {
 		expect(
 			serializeSingle({
+				value: "test",
+
 				values: {
 					value: "test",
 					value2: "test2",
@@ -64,10 +66,9 @@ describe("serializeSingle", () => {
 
 		expect(
 			serializeSingle({
+				value: "test",
 				values: rawValues,
-
 				name: "value",
-
 				getFieldSchema,
 				getFieldType,
 				parents,
@@ -76,6 +77,7 @@ describe("serializeSingle", () => {
 
 		expect(serializer).toHaveBeenCalledTimes(1);
 		expect(serializer).toHaveBeenCalledWith({
+			value: "test",
 			values: rawValues,
 			name: "value",
 			fieldSchema,
@@ -91,7 +93,7 @@ describe("serializeSingle", () => {
 			value2: "test2",
 		};
 
-		const serializerSingle = vi.fn().mockReturnValue('serialized single');
+		const serializerSingle = vi.fn().mockReturnValue("serialized single");
 		const serializer = vi.fn();
 
 		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
@@ -108,6 +110,7 @@ describe("serializeSingle", () => {
 
 		expect(
 			serializeSingle({
+				value: "test",
 				values: rawValues,
 
 				name: "value",
@@ -116,7 +119,7 @@ describe("serializeSingle", () => {
 				getFieldType,
 				parents,
 			}),
-		).toBe('serialized single');
+		).toBe("serialized single");
 
 		expect(serializer).toHaveBeenCalledTimes(0);
 
@@ -158,6 +161,7 @@ describe("serializeSingle", () => {
 
 		expect(
 			serializeSingle({
+				value: "test1",
 				values: {
 					value1: "test1",
 					value2: "test2",
@@ -200,12 +204,12 @@ describe("serializeSingle", () => {
 		});
 
 		serializeSingle({
+			value: "test",
 			values: {
 				value: "test",
 			},
 
 			name: "value",
-
 			getFieldSchema: parentGetFieldSchema,
 			getFieldType,
 			parents,

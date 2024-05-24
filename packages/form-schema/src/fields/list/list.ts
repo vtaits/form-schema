@@ -1,9 +1,9 @@
-export { ListSchema } from './schema';
 import isPromise from "is-promise";
 import { unwrapOr } from "krustykrab";
 import {
 	type FieldType,
 	parse,
+	parseSingle,
 	serializeSingle,
 	setFieldErrors,
 	validateBeforeSubmit,
@@ -21,98 +21,73 @@ function prepareValue(value: unknown): readonly unknown[] {
 }
 
 export const list: FieldType<ListSchema<any>> = {
-	createGetFieldSchema: ({ itemSchema }) => {
+	createGetFieldSchema: ({ fieldSchema: { itemSchema } }) => {
 		return () => itemSchema;
 	},
 
 	serializerSingle: ({
 		value,
 		name,
-		values,
-		itemSchema,
 		getFieldSchema,
 		getFieldType,
 		parents,
 	}) => {
 		const arrayValue = prepareValue(value);
 
-		const { itemSchema } = fieldSchema;
-
-		return arrayValue.map((arrayValueItem, index) => serializeSingle({
-			value: arrayValueItem,
-			values: {
-				[index]: arrayValueItem,
-			},
-			name: String(index),
-			getFieldSchema,
-			getFieldType,
-			parents: [
-				...parents,
-				{
-					name,
-					values: value,
+		return arrayValue.map((arrayValueItem, index) =>
+			serializeSingle({
+				value: arrayValueItem,
+				values: {
+					[index]: arrayValueItem,
 				},
-			],
-		}));
+				name: String(index),
+				getFieldSchema,
+				getFieldType,
+				parents: [
+					...parents,
+					{
+						name,
+						values: value,
+					},
+				],
+			}),
+		);
 	},
 
-	parser: ({
+	parserSingle: ({
+		value,
 		name,
 		values,
-		fieldSchema,
 		getFieldSchema,
 		getFieldType,
 		parents,
 	}) => {
-		const { schemas, nested } = fieldSchema;
+		const arrayValue = prepareValue(value);
 
-		const names = Object.keys(schemas);
-
-		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
-
-			const nextParents = [
-				...parents,
-				{
-					name,
-					values: currentValues,
+		const preparsed = arrayValue.map((arrayValueItem, index) =>
+			parseSingle({
+				value: arrayValueItem,
+				values: {
+					[index]: arrayValueItem,
 				},
-			];
-
-			const parseResult = parse({
-				values: currentValues,
-				names,
+				name: String(index),
 				getFieldSchema,
 				getFieldType,
-				parents: nextParents,
-			});
+				parents: [
+					...parents,
+					{
+						name,
+						values: value,
+					},
+				],
+			}),
+		);
 
-			if (!parseResult) {
-				return {
-					[name]: {},
-				};
-			}
-
-			if (isPromise(parseResult)) {
-				return parseResult.then((promiseResult) => ({
-					[name]: promiseResult,
-				}));
-			}
-
-			return {
-				[name]: parseResult,
-			};
+		if (preparsed.some(isPromise)) {
+			return Promise.all(preparsed);
 		}
 
-		return (
-			parse({
-				values,
-				names,
-				getFieldSchema,
-				getFieldType,
-				parents,
-			}) || {}
-		);
+		return preparsed;
 	},
 
 	validatorBeforeSubmit: ({

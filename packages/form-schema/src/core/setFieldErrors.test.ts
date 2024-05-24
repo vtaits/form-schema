@@ -36,7 +36,9 @@ describe("defaultFieldErrorsSetter", () => {
 			fieldSchema: null,
 			getFieldSchema: vi.fn(),
 			getFieldType: vi.fn(),
+			value: null,
 			values: {},
+			rawValue: null,
 			rawValues: {},
 			parents,
 		});
@@ -55,7 +57,9 @@ describe("defaultFieldErrorsSetter", () => {
 			fieldSchema: null,
 			getFieldSchema: vi.fn(),
 			getFieldType: vi.fn(),
+			value: null,
 			values: {},
+			rawValue: null,
 			rawValues: {},
 			parents,
 		});
@@ -390,7 +394,9 @@ describe("setFieldErrors", () => {
 			},
 			getFieldSchema,
 			getFieldType,
+			value: "testValue",
 			values,
+			rawValue: "testValueRaw",
 			rawValues,
 			parents,
 		});

@@ -66,6 +66,7 @@ export const validateBeforeSubmit = <
 
 			validatorBeforeSubmit({
 				setError,
+				value: values[name],
 				values,
 				name,
 				fieldSchema,

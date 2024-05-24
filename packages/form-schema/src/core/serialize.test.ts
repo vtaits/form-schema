@@ -8,8 +8,6 @@ import type {
 	Serializer,
 } from "./types";
 
-type Values = Record<string, any>;
-
 type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
 
 const parents = [
@@ -22,6 +20,7 @@ describe("defaultSerializer", () => {
 	test("get value by name", () => {
 		expect(
 			defaultSerializer({
+				value: "error1",
 				values: {
 					foo: "error1",
 					bar: "error2",
@@ -40,6 +39,7 @@ describe("defaultSerializer", () => {
 	test("return an empty object if there is no value by name", () => {
 		expect(
 			defaultSerializer({
+				value: undefined,
 				values: {
 					bar: "error2",
 				},
@@ -115,6 +115,7 @@ describe("serialize", () => {
 
 		expect(serializer).toHaveBeenCalledTimes(1);
 		expect(serializer).toHaveBeenCalledWith({
+			value: "test",
 			values: rawValues,
 			name: "value",
 			fieldSchema,
@@ -130,7 +131,7 @@ describe("serialize", () => {
 			value2: "test2",
 		};
 
-		const serializerSingle = vi.fn().mockReturnValue('serialized single');
+		const serializerSingle = vi.fn().mockReturnValue("serialized single");
 		const serializer = vi.fn();
 
 		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
@@ -156,7 +157,7 @@ describe("serialize", () => {
 				parents,
 			}),
 		).toEqual({
-			value: 'serialized single',
+			value: "serialized single",
 		});
 
 		expect(serializer).toHaveBeenCalledTimes(0);

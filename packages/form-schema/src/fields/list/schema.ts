@@ -1,5 +1,5 @@
 export type ListSchema<FieldSchema> = {
-  maxLength?: number;
+	maxLength?: number;
 	minLength?: number;
-  itemSchema: FieldSchema;
+	itemSchema: FieldSchema;
 };

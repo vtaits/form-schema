@@ -81,7 +81,9 @@ export const setFieldErrors = <
 			fieldSchema,
 			getFieldSchema: computedGetFieldSchema,
 			getFieldType,
+			value: values[name],
 			values,
+			rawValue: rawValues[name],
 			rawValues,
 			parents,
 		});
