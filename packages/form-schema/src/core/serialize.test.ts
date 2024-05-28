@@ -5,12 +5,13 @@ import type {
 	FieldType,
 	GetFieldSchema,
 	GetFieldType,
+	ParentType,
 	Serializer,
 } from "./types";
 
 type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
 
-const parents = [
+const parents: ParentType[] = [
 	{
 		values: {},
 	},
@@ -176,7 +177,7 @@ describe("serialize", () => {
 
 	test("should call multiple serializers", () => {
 		const fields: Record<
-			string,
+			string | number | symbol,
 			{
 				type: string;
 			}

@@ -1,9 +1,6 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type GetFieldType,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
 import type { ReactElement } from "react";
+import { type GetFieldType, useFormSchema } from "../core";
 
 const getFieldType: GetFieldType<unknown> = () => ({
 	render: () => null,

@@ -1,4 +1,4 @@
-import type { ParentType } from "@vtaits/form-schema";
+import type { NameType, ParentType } from "@vtaits/form-schema";
 import set from "lodash/set";
 
 export function makeSetError<
@@ -6,7 +6,7 @@ export function makeSetError<
 	Errors extends Record<string, any>,
 >(target: Errors) {
 	return (
-		fieldName: string,
+		fieldName: NameType,
 		parents: readonly ParentType<Values>[] | undefined,
 		error: unknown,
 	) => {

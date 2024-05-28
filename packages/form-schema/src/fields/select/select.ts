@@ -45,15 +45,13 @@ export const select: FieldType<SelectSchema> = {
 		});
 	},
 
-	validatorBeforeSubmit: ({ name, setError, values, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
 		const { errorMessages: errorMessagesParam, required } = fieldSchema;
 
 		const errorMessages: ErrorMessages = {
 			...defaultErrorMessages,
 			...errorMessagesParam,
 		};
-
-		const value = values[name];
 
 		if (required && !value) {
 			setError(name, parents, errorMessages.required);

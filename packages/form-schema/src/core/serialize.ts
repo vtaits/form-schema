@@ -1,8 +1,11 @@
 import type {
+	BaseValues,
 	GetFieldSchema,
 	GetFieldType,
+	NameType,
 	ParentType,
 	Serializer,
+	SerializerParams,
 } from "./types";
 
 export const defaultSerializer: Serializer<any, any, any, any, any> = ({
@@ -20,13 +23,13 @@ export const defaultSerializer: Serializer<any, any, any, any, any> = ({
 
 export type SerializeParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
 	values: Values;
-	names: readonly string[];
+	names: readonly NameType[];
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -35,14 +38,14 @@ export type SerializeParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export function serialize<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
 	values,
@@ -74,8 +77,14 @@ export function serialize<
 				})
 			: getFieldSchema;
 
-		const params = {
-			value: values[name],
+		const params: SerializerParams<
+			FieldSchema,
+			Values,
+			RawValues,
+			SerializedValues,
+			Errors
+		> = {
+			value: values[name as keyof Values],
 			values,
 			name,
 			fieldSchema,
@@ -85,9 +94,19 @@ export function serialize<
 		};
 
 		if (fieldType.serializerSingle) {
-			res[name] = fieldType.serializerSingle(params);
+			res[name as keyof SerializedValues] = fieldType.serializerSingle(
+				params,
+			) as SerializedValues[keyof SerializedValues];
 		} else {
-			const serializer = fieldType.serializer || defaultSerializer;
+			const serializer =
+				fieldType.serializer ||
+				(defaultSerializer as Serializer<
+					FieldSchema,
+					Values,
+					RawValues,
+					SerializedValues,
+					Errors
+				>);
 
 			Object.assign(res, serializer(params));
 		}

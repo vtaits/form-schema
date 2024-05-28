@@ -1,16 +1,22 @@
 import isPromise from "is-promise";
 import { defaultParser } from "./parse";
-import type { GetFieldSchema, GetFieldType, ParentType } from "./types";
+import type {
+	BaseValues,
+	GetFieldSchema,
+	GetFieldType,
+	NameType,
+	ParentType,
+} from "./types";
 
 export type ParseSingleParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
 	values: RawValues | null;
-	name: string;
+	name: NameType;
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -19,14 +25,14 @@ export type ParseSingleParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<RawValues>[];
+	parents: readonly ParentType[];
 }>;
 
 export function parseSingle<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
 	values,
@@ -57,7 +63,7 @@ export function parseSingle<
 		: getFieldSchema;
 
 	const params = {
-		value: values[name],
+		value: values[name as keyof RawValues],
 		values,
 		name,
 		fieldSchema,
@@ -75,7 +81,9 @@ export function parseSingle<
 	const parserResult = parser(params);
 
 	if (isPromise(parserResult)) {
-		return parserResult.then((result) => (result as Values)[name]);
+		return parserResult.then(
+			(result) => (result as Values)[name as keyof Values],
+		);
 	}
 
 	return parserResult[name];

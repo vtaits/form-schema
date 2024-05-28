@@ -1,11 +1,14 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { defaultFieldErrorsSetter, setFieldErrors } from "./setFieldErrors";
 import type {
+	BaseValues,
 	CreateGetFieldSchema,
 	ErrorsSetter,
 	FieldType,
 	GetFieldSchema,
 	GetFieldType,
+	NameType,
+	ParentType,
 } from "./types";
 
 type Values = Record<string, any>;
@@ -14,7 +17,7 @@ type ErrorsSetterArgs = Parameters<ErrorsSetter<any, any, any, any, any>>;
 
 const setError = vi.fn();
 
-const parents = [
+const parents: ParentType[] = [
 	{
 		values: {},
 	},
@@ -96,7 +99,7 @@ describe("setFieldErrors", () => {
 			errors: {
 				value: ["test"],
 				value2: ["test2"],
-			} as Record<string, string[]>,
+			} as Record<NameType, string[]>,
 			names: ["value"],
 			getFieldSchema: (): any => ({
 				type: "testType",
@@ -117,8 +120,8 @@ describe("setFieldErrors", () => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
 				},
 			}),
-			values: {},
-			rawValues: {},
+			values: {} as Record<string, unknown>,
+			rawValues: {} as Record<string, unknown>,
 			parents,
 		});
 
@@ -128,7 +131,7 @@ describe("setFieldErrors", () => {
 
 	test("should call multiple errors mappers", () => {
 		const fields: Record<
-			string,
+			string | number | symbol,
 			{
 				type: string;
 			}
@@ -207,7 +210,7 @@ describe("setFieldErrors", () => {
 
 	test("should call multiple nested errors mappers", () => {
 		const fields: Record<
-			string,
+			string | number | symbol,
 			{
 				type: string;
 				childNames: readonly string[];
@@ -318,7 +321,7 @@ describe("setFieldErrors", () => {
 
 			names: ["wrapper1", "wrapper2"],
 
-			getFieldSchema: (name: string): any => ({
+			getFieldSchema: (name): any => ({
 				...fields[name],
 				name,
 			}),
@@ -434,7 +437,7 @@ describe("setFieldErrors", () => {
 
 			getFieldType: getFieldType,
 
-			values: {},
+			values: {} as Record<string, unknown>,
 
 			rawValues: {
 				value: "test",

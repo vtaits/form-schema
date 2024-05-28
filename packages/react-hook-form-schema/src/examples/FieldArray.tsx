@@ -1,19 +1,13 @@
 import {
 	type GetFieldSchema,
+	type NameType,
 	type ParentType,
 	parse,
 	serialize,
 	setFieldErrors,
 } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	type GetFieldType,
-	type RenderParams,
-	renderBySchema,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
 import get from "lodash/get";
-import { Fragment, type ReactElement, type ReactNode, useState } from "react";
+import { Fragment, type ReactElement, useState } from "react";
 import {
 	type ArrayPath,
 	type FieldArray as FieldArrayType,
@@ -22,6 +16,13 @@ import {
 	type UseFormReturn,
 	useFieldArray,
 } from "react-hook-form";
+import {
+	type FieldType,
+	type GetFieldType,
+	type RenderParams,
+	renderBySchema,
+	useFormSchema,
+} from "../core";
 
 type FieldArraySchema = {
 	type: "array";
@@ -177,8 +178,9 @@ const fieldTypes: Record<
 
 		createGetFieldSchema: ({ fieldSchema }) => {
 			const { fields } = fieldSchema as FieldArraySchema;
-			const getChildFieldSchema: GetFieldSchema<FieldSchema> = (name: string) =>
-				fields[name];
+			const getChildFieldSchema: GetFieldSchema<FieldSchema> = (
+				name: NameType,
+			) => fields[name];
 
 			return getChildFieldSchema;
 		},
@@ -400,7 +402,7 @@ const fullSchema: Record<string, FieldSchema> = {
 	},
 };
 
-const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: string) =>
+const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: NameType) =>
 	fullSchema[fieldName];
 
 const names: string[] = ["users"];

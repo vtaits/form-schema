@@ -1,4 +1,4 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
+import type { GetFieldSchema, NameType } from "@vtaits/form-schema";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
 import { type FieldType, Form, FormField, type GetFieldType } from "../core";
@@ -137,7 +137,7 @@ const fullSchema: Record<string, FieldSchema> = {
 	},
 };
 
-const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: string) =>
+const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: NameType) =>
 	fullSchema[fieldName];
 
 const names = ["firstName", "lastName", "wow"];

@@ -131,6 +131,7 @@ describe("serializer", () => {
 		};
 
 		serializer({
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: { getSchema },
@@ -155,6 +156,7 @@ describe("serializer", () => {
 		};
 
 		const result = serializer({
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
@@ -176,6 +178,7 @@ describe("serializer", () => {
 		};
 
 		serializer({
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
@@ -204,6 +207,7 @@ describe("serializer", () => {
 		};
 
 		const result = serializer({
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
@@ -237,6 +241,7 @@ describe("serializer", () => {
 		};
 
 		const result = serializer({
+			value: null,
 			values,
 			name: "field1",
 			fieldSchema: {
@@ -272,6 +277,7 @@ describe("parser", () => {
 			};
 
 			parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: { getSchema },
@@ -296,6 +302,7 @@ describe("parser", () => {
 			};
 
 			const result = parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -317,6 +324,7 @@ describe("parser", () => {
 			};
 
 			parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -345,6 +353,7 @@ describe("parser", () => {
 			};
 
 			const result = parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -378,6 +387,7 @@ describe("parser", () => {
 			};
 
 			const result = parser({
+				value: null,
 				values,
 				name: "field1",
 				fieldSchema: {
@@ -404,6 +414,7 @@ describe("parser", () => {
 			};
 
 			await parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -436,6 +447,7 @@ describe("parser", () => {
 			};
 
 			const result = await parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -461,6 +473,7 @@ describe("parser", () => {
 			};
 
 			await parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -493,6 +506,7 @@ describe("parser", () => {
 			};
 
 			const result = await parser({
+				value: null,
 				values,
 				name: "test",
 				fieldSchema: {
@@ -530,6 +544,7 @@ describe("parser", () => {
 			};
 
 			const result = await parser({
+				value: null,
 				values,
 				name: "field1",
 				fieldSchema: {
@@ -571,6 +586,7 @@ describe("validatorBeforeSubmit", () => {
 
 		validatorBeforeSubmit({
 			setError,
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: { getSchema },
@@ -596,6 +612,7 @@ describe("validatorBeforeSubmit", () => {
 
 		const result = validatorBeforeSubmit({
 			setError,
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
@@ -618,6 +635,7 @@ describe("validatorBeforeSubmit", () => {
 
 		validatorBeforeSubmit({
 			setError,
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
@@ -647,6 +665,7 @@ describe("validatorBeforeSubmit", () => {
 
 		const result = validatorBeforeSubmit({
 			setError,
+			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
@@ -682,6 +701,7 @@ describe("validatorBeforeSubmit", () => {
 
 		const result = validatorBeforeSubmit({
 			setError,
+			value: null,
 			values,
 			name: "field1",
 			fieldSchema: {
@@ -729,7 +749,9 @@ describe("errorsSetter", () => {
 			fieldSchema: { getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
+			value: null,
 			values,
+			rawValue: null,
 			rawValues,
 			parents,
 		});
@@ -758,7 +780,9 @@ describe("errorsSetter", () => {
 			},
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
+			value: null,
 			values,
+			rawValue: null,
 			rawValues,
 			parents,
 		});
@@ -782,7 +806,9 @@ describe("errorsSetter", () => {
 			},
 			getFieldSchema,
 			getFieldType,
+			value: null,
 			values,
+			rawValue: null,
 			rawValues,
 			parents,
 		});
@@ -792,9 +818,7 @@ describe("errorsSetter", () => {
 	});
 
 	test("should call errorsSetter of computed field type if defined", () => {
-		const fieldErrorsSetter = vi.fn().mockReturnValue({
-			field1: "processed1",
-		});
+		const fieldErrorsSetter = vi.fn();
 
 		const getFieldType = vi.fn().mockReturnValue({
 			errorsSetter: fieldErrorsSetter,
@@ -804,32 +828,32 @@ describe("errorsSetter", () => {
 			field1: "error1",
 		};
 
-		const result = errorsSetter({
+		errorsSetter({
 			setError,
 			errors,
-			name: "test",
+			name: "field1",
 			fieldSchema: {
 				getSchema: () => "testSchema",
 			},
 			getFieldSchema,
 			getFieldType,
+			value: undefined,
 			values,
+			rawValue: undefined,
 			rawValues,
 			parents,
-		});
-
-		expect(result).toEqual({
-			field1: "processed1",
 		});
 
 		expect(fieldErrorsSetter).toHaveBeenCalledWith({
 			setError,
 			errors,
-			name: "test",
+			name: "field1",
 			fieldSchema: "testSchema",
 			getFieldSchema,
 			getFieldType,
+			value: "value1",
 			values,
+			rawValue: "rawValue1",
 			rawValues,
 			parents,
 		});
@@ -852,7 +876,9 @@ describe("errorsSetter", () => {
 			},
 			getFieldSchema,
 			getFieldType,
+			value: null,
 			values,
+			rawValue: null,
 			rawValues,
 			parents,
 		});

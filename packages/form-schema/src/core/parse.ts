@@ -1,5 +1,12 @@
 import isPromise from "is-promise";
-import type { GetFieldSchema, GetFieldType, ParentType, Parser } from "./types";
+import type {
+	BaseValues,
+	GetFieldSchema,
+	GetFieldType,
+	NameType,
+	ParentType,
+	Parser,
+} from "./types";
 
 export const defaultParser: Parser<any, any, any, any, any> = ({
 	values,
@@ -18,13 +25,13 @@ export const defaultParser: Parser<any, any, any, any, any> = ({
 
 export type ParseParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
 	values: RawValues | null;
-	names: readonly string[];
+	names: readonly NameType[];
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -33,14 +40,14 @@ export type ParseParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<RawValues>[];
+	parents: readonly ParentType[];
 }>;
 
 export function parse<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
 	values,
@@ -50,10 +57,9 @@ export function parse<
 	parents,
 }: ParseParams<FieldSchema, Values, RawValues, SerializedValues, Errors>):
 	| Values
-	| Promise<Values>
-	| null {
+	| Promise<Values> {
 	if (!values) {
-		return null;
+		return {} as Values;
 	}
 
 	const res = {} as Values;
@@ -77,7 +83,7 @@ export function parse<
 			: getFieldSchema;
 
 		const params = {
-			value: values[name],
+			value: values[name as keyof RawValues],
 			values,
 			name,
 			fieldSchema,

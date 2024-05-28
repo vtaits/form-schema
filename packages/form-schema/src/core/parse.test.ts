@@ -13,7 +13,7 @@ type Values = Record<string, any>;
 
 type ParserArgs = Parameters<Parser<any, any, any, any, any>>;
 
-const fieldSchemas: Record<string, unknown> = {
+const fieldSchemas: Record<string | number | symbol, unknown> = {
 	value: {
 		type: "testType",
 	},
@@ -37,10 +37,9 @@ const parents = [
 	},
 ];
 
-const defaultGetFieldSchema: GetFieldSchema<any> = (name: string) =>
-	fieldSchemas[name];
+const defaultGetFieldSchema: GetFieldSchema<any> = (name) => fieldSchemas[name];
 
-test("should return null for falsy values object", () => {
+test("should return empty object for falsy values object", () => {
 	expect(
 		parse({
 			values: null,
@@ -49,7 +48,7 @@ test("should return null for falsy values object", () => {
 			getFieldType: (): FieldType<any, any, any, any, any> => ({}),
 			parents,
 		}),
-	).toBe(null);
+	).toEqual({});
 });
 
 test("should call default parser", () => {

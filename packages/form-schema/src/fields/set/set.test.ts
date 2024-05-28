@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 
 import {
+	type BaseValues,
 	type ParentType,
 	parse,
 	serialize,
@@ -19,7 +20,7 @@ const values = {
 	foo: "bar",
 };
 
-const name = "test";
+const name = "test" as keyof BaseValues;
 
 const valuesForNested = {
 	[name]: values,
@@ -98,6 +99,7 @@ describe("serializer", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values,
 		});
 
@@ -109,6 +111,7 @@ describe("serializer", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values,
 		});
 	});
@@ -126,6 +129,7 @@ describe("serializer", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values: valuesForNested,
 		});
 
@@ -164,6 +168,7 @@ describe("parser", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values,
 		});
 
@@ -192,6 +197,7 @@ describe("parser", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values: valuesForNested,
 		});
 
@@ -222,6 +228,7 @@ describe("parser", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values: valuesForNested,
 		});
 
@@ -255,6 +262,7 @@ describe("validatorBeforeSubmit", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values,
 		});
 
@@ -277,6 +285,7 @@ describe("validatorBeforeSubmit", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values: valuesForNested,
 		});
 
@@ -315,8 +324,10 @@ describe("errorsSetter", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values,
 			errors,
+			rawValue: undefined,
 			rawValues,
 		});
 
@@ -349,10 +360,12 @@ describe("errorsSetter", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
+			value: undefined,
 			values: valuesForNested,
 			errors: {
 				[name]: errors,
 			},
+			rawValue: undefined,
 			rawValues: {
 				[name]: rawValues,
 			},

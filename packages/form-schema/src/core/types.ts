@@ -1,9 +1,13 @@
-export type GetFieldSchema<FieldSchema> = (name: string) => FieldSchema;
+export type NameType = string | number;
+
+export type BaseValues = Record<NameType, unknown> | readonly unknown[];
+
+export type GetFieldSchema<FieldSchema> = (name: NameType) => FieldSchema;
 export type GetFieldType<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	fieldSchema: FieldSchema,
@@ -11,27 +15,25 @@ export type GetFieldType<
 
 export type PhaseType = "parse" | "serialize" | "render";
 
-export type SetError<Values extends Record<string, unknown>> = (
-	name: string,
-	parents: readonly ParentType<Values>[] | undefined,
+export type SetError<Values extends BaseValues> = (
+	name: NameType,
+	parents: readonly ParentType[] | undefined,
 	error: unknown,
 ) => void;
 
-export type ParentType<
-	Values extends Record<string, unknown> = Record<string, unknown>,
-> = {
+export type ParentType<Values extends BaseValues = BaseValues> = {
 	/**
 	 * Empty for the root node
 	 */
-	name?: string | number;
+	name?: NameType;
 	values: Values;
 };
 
 export type CreateGetFieldSchemaParams<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = Readonly<{
 	/**
@@ -64,7 +66,7 @@ export type CreateGetFieldSchemaParams<
 	 * stack of parent fields above current field
 	 * raw values for phase 'parse' and runtime values otherwise
 	 */
-	parents: readonly ParentType<Values | RawValues>[];
+	parents: readonly ParentType[];
 }>;
 
 /**
@@ -73,9 +75,9 @@ export type CreateGetFieldSchemaParams<
  */
 export type CreateGetFieldSchema<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	params: CreateGetFieldSchemaParams<
@@ -92,9 +94,9 @@ export type CreateGetFieldSchema<
  */
 export type SerializerParams<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = Readonly<{
 	/**
@@ -108,7 +110,7 @@ export type SerializerParams<
 	/**
 	 * name of current field
 	 */
-	name: string;
+	name: NameType;
 	/**
 	 * schema of current field
 	 */
@@ -130,14 +132,14 @@ export type SerializerParams<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export type Serializer<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	params: SerializerParams<
@@ -154,9 +156,9 @@ export type Serializer<
  */
 export type SerializerSingle<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	params: SerializerParams<
@@ -173,9 +175,9 @@ export type SerializerSingle<
  */
 export type ParserParams<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = Readonly<{
 	/**
@@ -189,7 +191,7 @@ export type ParserParams<
 	/**
 	 * name of current field
 	 */
-	name: string;
+	name: NameType;
 	/**
 	 * schema of current field
 	 */
@@ -211,14 +213,14 @@ export type ParserParams<
 	/**
 	 * stack of parent fields above current field with raw values
 	 */
-	parents: readonly ParentType<RawValues>[];
+	parents: readonly ParentType[];
 }>;
 
 export type Parser<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	params: ParserParams<
@@ -235,9 +237,9 @@ export type Parser<
  */
 export type ParserSingle<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	params: ParserParams<
@@ -251,9 +253,9 @@ export type ParserSingle<
 
 export type ValidatorBeforeSubmitParams<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = Readonly<{
 	/**
@@ -271,7 +273,7 @@ export type ValidatorBeforeSubmitParams<
 	/**
 	 * name of current field
 	 */
-	name: string;
+	name: NameType;
 	/**
 	 * schema of current field
 	 */
@@ -293,14 +295,14 @@ export type ValidatorBeforeSubmitParams<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export type ValidatorBeforeSubmit<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, unknown> = Record<string, unknown>,
 > = (
 	params: ValidatorBeforeSubmitParams<
@@ -314,10 +316,10 @@ export type ValidatorBeforeSubmit<
 
 export type ErrorsSetterParams<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
-	Errors extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
+	Errors extends Record<NameType, unknown> = Record<NameType, unknown>,
 > = Readonly<{
 	/**
 	 * Function for setting errors
@@ -330,7 +332,7 @@ export type ErrorsSetterParams<
 	/**
 	 * name of current field
 	 */
-	name: string;
+	name: NameType;
 	/**
 	 * schema of current field
 	 */
@@ -368,15 +370,15 @@ export type ErrorsSetterParams<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export type ErrorsSetter<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
-	Errors extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
+	Errors extends Record<NameType, unknown> = Record<NameType, unknown>,
 > = (
 	params: ErrorsSetterParams<
 		FieldSchema,
@@ -389,10 +391,10 @@ export type ErrorsSetter<
 
 export type FieldType<
 	FieldSchema,
-	Values extends Record<string, unknown> = Record<string, unknown>,
-	RawValues extends Record<string, unknown> = Record<string, unknown>,
-	SerializedValues extends Record<string, unknown> = Record<string, unknown>,
-	Errors extends Record<string, unknown> = Record<string, unknown>,
+	Values extends BaseValues = BaseValues,
+	RawValues extends BaseValues = BaseValues,
+	SerializedValues extends BaseValues = BaseValues,
+	Errors extends Record<NameType, unknown> = Record<NameType, unknown>,
 > = {
 	createGetFieldSchema?: CreateGetFieldSchema<
 		FieldSchema,

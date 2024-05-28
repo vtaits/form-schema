@@ -10,8 +10,6 @@ import type { DateTimeSchema } from "./schema";
 export const datetime: FieldType<DateTimeSchema> = {
 	serializerSingle: ({
 		value,
-		name,
-		values,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
@@ -44,8 +42,8 @@ export const datetime: FieldType<DateTimeSchema> = {
 
 	validatorBeforeSubmit: ({
 		name,
+		value,
 		setError,
-		values,
 		fieldSchema,
 		parents,
 		fieldSchema: { clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT },
@@ -57,9 +55,9 @@ export const datetime: FieldType<DateTimeSchema> = {
 			...errorMessagesParam,
 		};
 
-		const value = parseValueAndValidate(values[name], clientDateFormat);
+		const date = parseValueAndValidate(value, clientDateFormat);
 
-		if (required && !value) {
+		if (required && !date) {
 			setError(name, parents, errorMessages.required);
 		}
 	},

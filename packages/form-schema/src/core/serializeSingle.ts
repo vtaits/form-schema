@@ -1,16 +1,21 @@
 import { defaultSerializer } from "./serialize";
-import type { GetFieldSchema, GetFieldType, ParentType } from "./types";
+import type {
+	BaseValues,
+	GetFieldSchema,
+	GetFieldType,
+	NameType,
+	ParentType,
+} from "./types";
 
 export type SerializeSingleParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
-	value: unknown;
 	values: Values;
-	name: string;
+	name: NameType;
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -19,17 +24,16 @@ export type SerializeSingleParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export function serializeSingle<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
-	value,
 	values,
 	name,
 	getFieldSchema,
@@ -57,7 +61,7 @@ export function serializeSingle<
 		: getFieldSchema;
 
 	const params = {
-		value: values[name],
+		value: values[name as keyof Values],
 		values,
 		name,
 		fieldSchema,

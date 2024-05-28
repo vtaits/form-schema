@@ -1,20 +1,22 @@
 import type {
+	BaseValues,
 	GetFieldSchema,
 	GetFieldType,
+	NameType,
 	ParentType,
 	SetError,
 } from "./types";
 
 export type ValidateBeforeSubmitParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
 	setError: SetError<Values>;
 	values: Values;
-	names: readonly string[];
+	names: readonly NameType[];
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -23,14 +25,14 @@ export type ValidateBeforeSubmitParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export const validateBeforeSubmit = <
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
 	setError,
@@ -66,7 +68,7 @@ export const validateBeforeSubmit = <
 
 			validatorBeforeSubmit({
 				setError,
-				value: values[name],
+				value: values[name as keyof Values],
 				values,
 				name,
 				fieldSchema,

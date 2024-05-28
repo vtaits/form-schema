@@ -1,13 +1,15 @@
 import isPromise from "is-promise";
 import { unwrapOr } from "krustykrab";
 import {
+	type BaseValues,
 	type FieldType,
-	parse,
+	type ParentType,
 	parseSingle,
 	serializeSingle,
 	setFieldErrors,
 	validateBeforeSubmit,
 } from "../../core";
+import { type ErrorMessages, defaultErrorMessages } from "../base";
 import type { ListSchema } from "./schema";
 
 function prepareValue(value: unknown): readonly unknown[] {
@@ -36,7 +38,6 @@ export const list: FieldType<ListSchema<any>> = {
 
 		return arrayValue.map((arrayValueItem, index) =>
 			serializeSingle({
-				value: arrayValueItem,
 				values: {
 					[index]: arrayValueItem,
 				},
@@ -47,26 +48,18 @@ export const list: FieldType<ListSchema<any>> = {
 					...parents,
 					{
 						name,
-						values: value,
+						values: arrayValue,
 					},
 				],
 			}),
 		);
 	},
 
-	parserSingle: ({
-		value,
-		name,
-		values,
-		getFieldSchema,
-		getFieldType,
-		parents,
-	}) => {
+	parserSingle: ({ value, name, getFieldSchema, getFieldType, parents }) => {
 		const arrayValue = prepareValue(value);
 
 		const preparsed = arrayValue.map((arrayValueItem, index) =>
 			parseSingle({
-				value: arrayValueItem,
 				values: {
 					[index]: arrayValueItem,
 				},
@@ -77,7 +70,7 @@ export const list: FieldType<ListSchema<any>> = {
 					...parents,
 					{
 						name,
-						values: value,
+						values: arrayValue,
 					},
 				],
 			}),
@@ -91,6 +84,7 @@ export const list: FieldType<ListSchema<any>> = {
 	},
 
 	validatorBeforeSubmit: ({
+		value,
 		name,
 		setError,
 		values,
@@ -99,40 +93,51 @@ export const list: FieldType<ListSchema<any>> = {
 		getFieldType,
 		parents,
 	}) => {
-		const { nested, schemas } = fieldSchema;
+		const {
+			errorMessages: errorMessagesParam,
+			required,
+			maxLength,
+			minLength,
+		} = fieldSchema;
 
-		const names = Object.keys(schemas);
+		const errorMessages: ErrorMessages = {
+			...defaultErrorMessages,
+			...errorMessagesParam,
+		};
 
-		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
+		const arrayValue = prepareValue(value);
 
-			const nextParents = [
-				...parents,
-				{
-					name,
-					values: currentValues,
-				},
-			];
-
-			validateBeforeSubmit({
-				setError,
-				values: currentValues,
-				names,
-				getFieldSchema,
-				getFieldType,
-				parents: nextParents,
-			});
+		if (arrayValue.length === 0) {
+			if (required) {
+				setError(name, parents, errorMessages.required);
+			}
 
 			return;
 		}
 
+		if (minLength && arrayValue.length < minLength) {
+			setError(name, parents, errorMessages.minLength(minLength));
+		}
+
+		if (maxLength && arrayValue.length > maxLength) {
+			setError(name, parents, errorMessages.maxLength(maxLength));
+		}
+
+		const nextParents: ParentType[] = [
+			...parents,
+			{
+				name,
+				values: arrayValue,
+			},
+		];
+
 		validateBeforeSubmit({
 			setError,
-			values,
-			names,
+			values: arrayValue,
+			names: Object.keys(arrayValue) as (keyof BaseValues)[],
 			getFieldSchema,
 			getFieldType,
-			parents,
+			parents: nextParents,
 		});
 	},
 
@@ -143,48 +148,33 @@ export const list: FieldType<ListSchema<any>> = {
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
+		value,
 		values,
+		rawValue,
 		rawValues,
 		parents,
 	}) => {
-		const { nested, schemas } = fieldSchema;
+		const arrayValue = prepareValue(rawValue);
 
-		const names = Object.keys(schemas);
+		const names = Object.keys(arrayValue) as (keyof BaseValues)[];
 
-		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
-
-			const nextParents = [
-				...parents,
-				{
-					name,
-					values: currentValues,
-				},
-			];
-
-			setFieldErrors({
-				setError,
-				errors: (errors[name] || {}) as Record<string, unknown>,
-				names,
-				getFieldSchema,
-				getFieldType,
-				values: currentValues,
-				rawValues: (rawValues[name] || {}) as Record<string, unknown>,
-				parents: nextParents,
-			});
-
-			return;
-		}
+		const nextParents: ParentType[] = [
+			...parents,
+			{
+				name,
+				values: arrayValue,
+			},
+		];
 
 		setFieldErrors({
 			setError,
-			errors,
+			errors: (errors[name] || {}) as Record<string, unknown>,
 			names,
 			getFieldSchema,
 			getFieldType,
-			values,
-			rawValues,
-			parents,
+			values: prepareValue(value),
+			rawValues: arrayValue,
+			parents: nextParents,
 		});
 	},
 };

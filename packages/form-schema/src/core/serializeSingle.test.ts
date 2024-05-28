@@ -5,14 +5,13 @@ import type {
 	FieldType,
 	GetFieldSchema,
 	GetFieldType,
+	ParentType,
 	Serializer,
 } from "./types";
 
-type Values = Record<string, any>;
-
 type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
 
-const parents = [
+const parents: ParentType[] = [
 	{
 		values: {},
 	},
@@ -22,8 +21,6 @@ describe("serializeSingle", () => {
 	test("should call default serializer", () => {
 		expect(
 			serializeSingle({
-				value: "test",
-
 				values: {
 					value: "test",
 					value2: "test2",
@@ -66,7 +63,6 @@ describe("serializeSingle", () => {
 
 		expect(
 			serializeSingle({
-				value: "test",
 				values: rawValues,
 				name: "value",
 				getFieldSchema,
@@ -110,7 +106,6 @@ describe("serializeSingle", () => {
 
 		expect(
 			serializeSingle({
-				value: "test",
 				values: rawValues,
 
 				name: "value",
@@ -137,7 +132,7 @@ describe("serializeSingle", () => {
 
 	test("should call multiple serializers", () => {
 		const fields: Record<
-			string,
+			string | number | symbol,
 			{
 				type: string;
 			}
@@ -161,7 +156,6 @@ describe("serializeSingle", () => {
 
 		expect(
 			serializeSingle({
-				value: "test1",
 				values: {
 					value1: "test1",
 					value2: "test2",
@@ -204,7 +198,6 @@ describe("serializeSingle", () => {
 		});
 
 		serializeSingle({
-			value: "test",
 			values: {
 				value: "test",
 			},

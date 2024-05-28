@@ -1,3 +1,4 @@
+import type { NameType } from "@vtaits/form-schema";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import {
 	type BaseSyntheticEvent,
@@ -155,7 +156,7 @@ export function Form<
 	const { renderForm } = useUI();
 
 	const getFieldSchema = useCallback(
-		(name: string) => schemas[name],
+		(name: NameType) => schemas[name],
 		[schemas],
 	);
 
