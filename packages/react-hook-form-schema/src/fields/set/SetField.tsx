@@ -2,7 +2,6 @@ import type { ParentType } from "@vtaits/form-schema";
 import { useCallback, useMemo } from "react";
 import type { ReactElement } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
-
 import { type RenderParams, renderBySchema } from "../../core";
 import { defaultRender } from "./defaultRender";
 import type { SetSchema } from "./schema";

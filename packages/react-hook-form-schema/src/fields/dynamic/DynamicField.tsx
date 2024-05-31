@@ -2,9 +2,7 @@ import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import useLatest from "use-latest";
-
-import type { RenderParams } from "../../core";
-
+import { type RenderParams, renderBySchema } from "../../core";
 import type { DynamicSchema } from "./schema";
 
 export type DynamicFieldProps<
@@ -45,6 +43,7 @@ export function DynamicField<
 		payload,
 	},
 	formResult,
+	formResult: { getValues },
 }: DynamicFieldProps<
 	FieldSchema,
 	Values,
@@ -137,21 +136,13 @@ export function DynamicField<
 		return null;
 	}
 
-	const fieldType = getFieldType(schema);
-
-	const { render } = fieldType;
-
-	return (
-		(render(
-			{
-				name,
-				fieldSchema: schema,
-				getFieldSchema,
-				getFieldType,
-				parents,
-				payload,
-			},
-			formResult,
-		) as ReactElement) || null
-	);
+	return renderBySchema(
+		formResult,
+		getFieldSchema,
+		getFieldType,
+		getValues,
+		name,
+		payload,
+		parents,
+	) as ReactElement;
 }

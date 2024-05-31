@@ -2,8 +2,11 @@ import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import { useForm, useFormState } from "react-final-form";
 import useLatest from "use-latest";
-
-import { type FieldComponentProps, useFormSchemaState } from "../../core";
+import {
+	type FieldComponentProps,
+	FormField,
+	useFormSchemaState,
+} from "../../core";
 import type { DynamicSchema } from "./schema";
 
 export function DynamicField<
@@ -106,14 +109,5 @@ export function DynamicField<
 
 	const { component: FieldComponent } = fieldType;
 
-	return (
-		<FieldComponent
-			{...rest}
-			name={name}
-			fieldSchema={schema}
-			getFieldSchema={getFieldSchema}
-			getFieldType={getFieldType}
-			parents={parents}
-		/>
-	);
+	return <FormField name={name} />;
 }
