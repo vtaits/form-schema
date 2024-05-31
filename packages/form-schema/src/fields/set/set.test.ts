@@ -129,7 +129,7 @@ describe("serializer", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
-			value: undefined,
+			value: values,
 			values: valuesForNested,
 		});
 
@@ -197,7 +197,7 @@ describe("parser", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
-			value: undefined,
+			value: values,
 			values: valuesForNested,
 		});
 
@@ -228,7 +228,7 @@ describe("parser", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
-			value: undefined,
+			value: values,
 			values: valuesForNested,
 		});
 
@@ -285,7 +285,7 @@ describe("validatorBeforeSubmit", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
-			value: undefined,
+			value: values,
 			values: valuesForNested,
 		});
 
@@ -360,12 +360,12 @@ describe("errorsSetter", () => {
 			getFieldSchema,
 			getFieldType,
 			parents,
-			value: undefined,
+			value: values,
 			values: valuesForNested,
 			errors: {
 				[name]: errors,
 			},
-			rawValue: undefined,
+			rawValue: rawValues,
 			rawValues: {
 				[name]: rawValues,
 			},
