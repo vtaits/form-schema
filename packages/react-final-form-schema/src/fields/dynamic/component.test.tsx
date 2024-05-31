@@ -11,10 +11,10 @@ import { useForm, useFormState } from "react-final-form";
 import { create } from "react-test-engine-vitest";
 import useLatest from "use-latest";
 import { afterEach, describe, expect, test, vi } from "vitest";
-
 import {
 	type FieldComponentProps,
 	type FieldType,
+	FormField,
 	useFormSchemaState,
 } from "../../core";
 import { DynamicField } from "./component";
@@ -65,7 +65,7 @@ const form = {
 const render = create(DynamicField, defaultProps, {
 	queries: {
 		field: {
-			component: TestComponent,
+			component: FormField,
 		},
 	},
 
@@ -205,12 +205,7 @@ describe("render", () => {
 		});
 
 		const allProps = wrapper.accessors.field.getProps();
-
-		expect(allProps.fieldSchema).toBe("test");
 		expect(allProps.name).toBe("testName");
-		expect(allProps.getFieldSchema).toBe(getFieldSchema);
-		expect(allProps.getFieldType).toBe(getFieldType);
-		expect(allProps.parents).toBe(parents);
 	});
 });
 
