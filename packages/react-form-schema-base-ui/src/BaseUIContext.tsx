@@ -142,6 +142,40 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 	renderInput: ({ inputProps, name }) => <input name={name} {...inputProps} />,
 
+	renderListAddButton: ({ children, onClick, disabled }) => (
+		<button type="button" onClick={onClick}>
+			{children}
+		</button>
+	),
+
+	renderListWrapper: ({ actions, error, hint, items, label }) => (
+		<div>
+			{label && <label>{label}</label>}
+
+			<div role="list">{items}</div>
+
+			{hint && (
+				<p
+					style={{
+						color: "gray",
+					}}
+				>
+					{hint}
+				</p>
+			)}
+
+			{actions && <div>{actions}</div>}
+
+			<p
+				style={{
+					color: "gray",
+				}}
+			>
+				{error}
+			</p>
+		</div>
+	),
+
 	renderMultiSelect: <OptionType,>({
 		name,
 		options,

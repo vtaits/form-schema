@@ -36,6 +36,11 @@
       "import": "./dist/esm/fields_input.js",
       "types": "./dist/fields_input.d.ts"
     },
+    "./fields/list": {
+      "require": "./dist/fields_list.js",
+      "import": "./dist/esm/fields_list.js",
+      "types": "./dist/fields_list.d.ts"
+    },
     "./fields/radioGroup": {
       "require": "./dist/fields_radioGroup.js",
       "import": "./dist/esm/fields_radioGroup.js",
