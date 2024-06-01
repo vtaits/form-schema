@@ -42,6 +42,36 @@ const schemas: Record<string, any> = {
 		placeholder: "Input",
 	},
 
+	list: {
+		type: "list",
+		label: "List",
+		getBlockLabel: (index) => `Block #${index + 1}`,
+		initialItem: "Initial",
+		itemSchema: {
+			type: "input",
+		},
+	},
+
+	setList: {
+		type: "list",
+		label: "List of sets",
+		getBlockLabel: (index) => `Block #${index + 1}`,
+		itemSchema: {
+			type: "set",
+			nested: true,
+			schemas: {
+				checkbox: {
+					type: "checkbox",
+					checkboxLabel: "Checkbox",
+				},
+
+				date: {
+					type: "date",
+				},
+			},
+		},
+	},
+
 	multiSelect: {
 		type: "multiSelect",
 		label: "Mulit select",

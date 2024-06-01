@@ -21,12 +21,19 @@ type ListComponentProps = Readonly<{
 
 export function ListComponent({
 	renderParams: {
-		fieldSchema: { addButtonLabel, getBlockLabel, initialItem, label, hint },
+		fieldSchema: {
+			addButtonLabel = "Add",
+			getBlockLabel,
+			initialItem,
+			label,
+			hint,
+		},
 		getFieldSchema,
 		getFieldType,
 		name: nameParam,
 		parents,
 	},
+	formResult,
 	formResult: {
 		cleanErrors,
 		control,
@@ -51,6 +58,14 @@ export function ListComponent({
 		label,
 	};
 
+	const itemParents = [
+		...parents,
+		{
+			name: nameParam,
+			values: fields,
+		},
+	];
+
 	return renderListWrapper({
 		...wrapperParams,
 		actions: renderListAddButton({
@@ -61,18 +76,6 @@ export function ListComponent({
 			},
 		}),
 		items: fields.map((field, index) => {
-			const itemParents = [
-				...parents,
-				{
-					name: nameParam,
-					values: fields,
-				},
-				{
-					name: index,
-					value: field,
-				},
-			];
-
 			return (
 				<Fragment key={field.id}>
 					{renderListItemWrapper({
