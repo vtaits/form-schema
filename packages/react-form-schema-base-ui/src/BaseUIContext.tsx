@@ -148,6 +148,20 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</button>
 	),
 
+	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
+		<fieldset>
+			{title && <legend>{title}</legend>}
+
+			{children}
+
+			{handleRemove && (
+				<button disabled={disabled} type="button" onClick={handleRemove}>
+					Remove
+				</button>
+			)}
+		</fieldset>
+	),
+
 	renderListWrapper: ({ actions, error, hint, items, label }) => (
 		<div>
 			{label && <label>{label}</label>}

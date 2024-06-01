@@ -119,6 +119,54 @@ export const contextValue: BaseUIContextValue = {
 		<Input name={name} {...inputProps} />
 	),
 
+	renderListAddButton: ({ children, onClick, disabled }) => (
+		<button type="button" onClick={onClick}>
+			{children}
+		</button>
+	),
+
+	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
+		<fieldset>
+			{title && <legend>{title}</legend>}
+
+			{children}
+
+			{handleRemove && (
+				<button disabled={disabled} type="button" onClick={handleRemove}>
+					Remove
+				</button>
+			)}
+		</fieldset>
+	),
+
+	renderListWrapper: ({ actions, error, hint, items, label }) => (
+		<div>
+			{label && <label>{label}</label>}
+
+			<div role="list">{items}</div>
+
+			{hint && (
+				<p
+					style={{
+						color: "gray",
+					}}
+				>
+					{hint}
+				</p>
+			)}
+
+			{actions && <div>{actions}</div>}
+
+			<p
+				style={{
+					color: "gray",
+				}}
+			>
+				{error}
+			</p>
+		</div>
+	),
+
 	renderMultiSelect: <OptionType,>({
 		options,
 		value,

@@ -9,7 +9,7 @@ import {
 	type UseFormReturn,
 	useFieldArray,
 } from "react-hook-form";
-import type { FieldType, RenderParams } from "../../core";
+import { type FieldType, type RenderParams, renderBySchema } from "../../core";
 import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { ListSchema } from "./schema";
@@ -22,6 +22,8 @@ type ListComponentProps = Readonly<{
 export function ListComponent({
 	renderParams: {
 		fieldSchema: { addButtonLabel, getBlockLabel, initialItem, label, hint },
+		getFieldSchema,
+		getFieldType,
 		name: nameParam,
 		parents,
 	},
@@ -32,7 +34,8 @@ export function ListComponent({
 		register,
 	},
 }: ListComponentProps): ReactElement {
-	const { renderListAddButton, renderListWrapper } = useUI();
+	const { renderListAddButton, renderListItemWrapper, renderListWrapper } =
+		useUI();
 
 	const name = getFieldName(nameParam, parents);
 	const error = renderError(get(errors, name));
@@ -70,7 +73,26 @@ export function ListComponent({
 				},
 			];
 
-			return <Fragment key={field.id} />;
+			return (
+				<Fragment key={field.id}>
+					{renderListItemWrapper({
+						children: renderBySchema(
+							formResult,
+							getFieldSchema,
+							getFieldType,
+							() => field,
+							`${index}`,
+							undefined,
+							itemParents,
+						),
+						handleRemove: () => {
+							remove(index);
+							clearErrors(name);
+						},
+						title: getBlockLabel?.(index),
+					})}
+				</Fragment>
+			);
 		}),
 	}) as ReactElement;
 }

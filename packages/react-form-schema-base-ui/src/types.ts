@@ -6,6 +6,13 @@ export type ButtonRenderProps = Readonly<{
 	onClick?: () => void;
 }>;
 
+export type ListItemWrapperRenderProps = Readonly<{
+	children?: ReactNode;
+	disabled?: boolean;
+	handleRemove?: () => void;
+	title?: ReactNode;
+}>;
+
 export type ListWrapperRenderProps = Readonly<{
 	actions?: ReactNode;
 	error?: ReactNode;
@@ -102,8 +109,9 @@ export type BaseUIContextValue = Readonly<{
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
 	renderInput: (renderProps: InputRenderProps) => ReactNode;
-	renderListWrapper: (renderProps: WrapperRenderProps) => ReactNode;
 	renderListAddButton: (renderProps: ButtonRenderProps) => ReactNode;
+	renderListItemWrapper: (renderProps: ListItemWrapperRenderProps) => ReactNode;
+	renderListWrapper: (renderProps: ListWrapperRenderProps) => ReactNode;
 	renderMultiSelect: <OptionType>(
 		renderProps: MultiSelectRenderProps<OptionType>,
 	) => ReactNode;
@@ -111,5 +119,5 @@ export type BaseUIContextValue = Readonly<{
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
 	renderTextArea: (renderProps: TextareaRenderProps) => ReactNode;
-	renderWrapper: (renderProps: ListWrapperRenderProps) => ReactNode;
+	renderWrapper: (renderProps: WrapperRenderProps) => ReactNode;
 }>;
