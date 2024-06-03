@@ -17,7 +17,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { DateSchema } from "./schema";
 
@@ -28,6 +27,7 @@ type DateComponentProps = Readonly<{
 
 export function DateComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			displayDateFormat,
@@ -35,7 +35,6 @@ export function DateComponent({
 			hint,
 			inputProps,
 		},
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -45,8 +44,7 @@ export function DateComponent({
 }: DateComponentProps): ReactElement {
 	const { renderDatePicker, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -58,12 +56,12 @@ export function DateComponent({
 		...wrapperParams,
 		children: (
 			<Controller
-				name={name}
+				name={fieldPath}
 				control={control}
 				render={({ field }) =>
 					renderDatePicker({
 						displayDateFormat,
-						name,
+						name: fieldPath,
 						inputProps: inputProps || {},
 						onChange: (nextValue) => {
 							field.onChange(

@@ -1,6 +1,7 @@
 import type { GetFieldSchema, ParentType } from "@vtaits/form-schema";
 import type { ReactNode } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
+import { getFieldPath } from "./getFieldPath";
 import type { GetFieldType } from "./types";
 
 export function renderBySchema<
@@ -54,6 +55,7 @@ export function renderBySchema<
 
 	return render(
 		{
+			fieldPath: getFieldPath(name, providedParents),
 			name,
 			payload,
 			parents: providedParents,

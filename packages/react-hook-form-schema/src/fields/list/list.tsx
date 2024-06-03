@@ -10,7 +10,6 @@ import {
 	useFieldArray,
 } from "react-hook-form";
 import { type FieldType, type RenderParams, renderBySchema } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { ListSchema } from "./schema";
 
@@ -21,6 +20,7 @@ type ListComponentProps = Readonly<{
 
 export function ListComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: {
 			addButtonLabel = "Add",
 			getBlockLabel,
@@ -44,12 +44,11 @@ export function ListComponent({
 	const { renderListAddButton, renderListItemWrapper, renderListWrapper } =
 		useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const { append, fields, remove } = useFieldArray({
 		control,
-		name,
+		name: fieldPath,
 	});
 
 	const wrapperParams = {
@@ -72,7 +71,7 @@ export function ListComponent({
 			children: addButtonLabel,
 			onClick: () => {
 				append(initialItem || {});
-				cleanErrors(name);
+				cleanErrors(fieldPath);
 			},
 		}),
 		items: fields.map((field, index) => {
@@ -90,7 +89,7 @@ export function ListComponent({
 						),
 						handleRemove: () => {
 							remove(index);
-							clearErrors(name);
+							clearErrors(fieldPath);
 						},
 						title: getBlockLabel?.(index),
 					})}

@@ -13,7 +13,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { CheckboxGroupSchema } from "./schema";
 
@@ -24,6 +23,7 @@ type CheckboxGroupComponentProps = Readonly<{
 
 export function CheckboxGroupComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: {
 			label,
 			hint,
@@ -33,7 +33,6 @@ export function CheckboxGroupComponent({
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -44,8 +43,7 @@ export function CheckboxGroupComponent({
 }: CheckboxGroupComponentProps): ReactElement {
 	const { renderCheckboxGroup, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -74,11 +72,11 @@ export function CheckboxGroupComponent({
 		children: (
 			<Controller
 				control={control}
-				name={name}
+				name={fieldPath}
 				render={({ field }) =>
 					renderCheckboxGroup({
 						value: field.value,
-						name,
+						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {

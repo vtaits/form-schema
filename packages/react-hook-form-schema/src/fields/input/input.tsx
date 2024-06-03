@@ -9,7 +9,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { InputSchema } from "./schema";
 
@@ -20,8 +19,8 @@ type InputComponentProps = Readonly<{
 
 export function InputComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: { label, hint, inputProps },
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -31,8 +30,7 @@ export function InputComponent({
 }: InputComponentProps): ReactElement {
 	const { renderInput, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -44,11 +42,11 @@ export function InputComponent({
 		...wrapperParams,
 		children: (
 			<Controller
-				name={name}
+				name={fieldPath}
 				control={control}
 				render={({ field }) =>
 					renderInput({
-						name,
+						name: fieldPath,
 						inputProps: {
 							...inputProps,
 							value: field.value || "",

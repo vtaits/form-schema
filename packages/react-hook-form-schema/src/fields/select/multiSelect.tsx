@@ -13,7 +13,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { MultiSelectSchema } from "./schema";
 
@@ -24,6 +23,7 @@ type MultiSelectComponentProps = Readonly<{
 
 export function MultiSelectComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: {
 			label,
 			hint,
@@ -35,7 +35,6 @@ export function MultiSelectComponent({
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -46,8 +45,7 @@ export function MultiSelectComponent({
 }: MultiSelectComponentProps): ReactElement {
 	const { renderMultiSelect, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -76,11 +74,11 @@ export function MultiSelectComponent({
 		children: (
 			<Controller
 				control={control}
-				name={name}
+				name={fieldPath}
 				render={({ field }) =>
 					renderMultiSelect({
 						value: field.value,
-						name,
+						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {

@@ -9,7 +9,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { TextAreaSchema } from "./schema";
 
@@ -20,8 +19,8 @@ type TextAreaComponentProps = Readonly<{
 
 export function TextAreaComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: { label, hint, textAreaProps },
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -32,8 +31,7 @@ export function TextAreaComponent({
 }: TextAreaComponentProps): ReactElement {
 	const { renderTextArea, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -45,11 +43,11 @@ export function TextAreaComponent({
 		...wrapperParams,
 		children: (
 			<Controller
-				name={name}
+				name={fieldPath}
 				control={control}
 				render={({ field }) =>
 					renderTextArea({
-						name,
+						name: fieldPath,
 						textAreaProps: {
 							...textAreaProps,
 							value: field.value || "",

@@ -7,7 +7,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import { type RenderParams, renderBySchema } from "../../core";
-import { getFieldName } from "../base";
 import { defaultRender } from "./defaultRender";
 import type { SetSchema } from "./schema";
 
@@ -41,6 +40,7 @@ export function SetField<
 	TContext,
 >({
 	renderParams: {
+		fieldPath,
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
@@ -63,15 +63,13 @@ export function SetField<
 		render = defaultRender,
 	} = fieldSchema as unknown as SetSchema<FieldSchema>;
 
-	const name = getFieldName(nameParam, parents);
-
 	const names = useMemo(() => Object.keys(schemas), [schemas]);
 
 	const { control, getValues } = formResult;
 
 	return (
 		<Controller
-			name={name}
+			name={fieldPath}
 			control={control}
 			render={({ field }) => {
 				const providedParents = nested
