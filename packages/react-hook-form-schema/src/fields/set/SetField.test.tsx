@@ -1,9 +1,8 @@
 import type { ParentType } from "@vtaits/form-schema";
-import { useCallback, useMemo } from "react";
-import type { UseFormReturn } from "react-hook-form";
+import { useMemo } from "react";
+import { Controller, type UseFormReturn } from "react-hook-form";
 import { create } from "react-test-engine-vitest";
 import { afterEach, describe, expect, test, vi } from "vitest";
-
 import { renderBySchema } from "../../core";
 import { SetField, type SetFieldProps } from "./SetField";
 import { defaultRender } from "./defaultRender";
@@ -14,11 +13,14 @@ vi.mock("react", async () => {
 	return {
 		...actual,
 		useMemo: vi.fn(),
-		useCallback: vi.fn(),
 	};
 });
 vi.mock("./defaultRender");
 vi.mock("../../core");
+
+const fieldValue = {
+	baz: "qux",
+};
 
 const getValues = vi.fn();
 
@@ -62,19 +64,25 @@ const defaultProps: SetFieldProps<any, any, any, any, any, any, any> = {
 };
 
 const render = create(SetField, defaultProps, {
-	queries: {},
+	queries: {
+		controller: {
+			component: Controller,
+		},
+	},
+
+	callbacks: {
+		render: ["controller", "render"],
+	},
 
 	hooks: {
 		names: useMemo,
-		renderField: useCallback,
 	},
 
 	hookDefaultValues: {
 		names: [],
-		renderField,
 	},
 
-	hookOrder: ["names", "renderField"],
+	hookOrder: ["names"],
 });
 
 afterEach(() => {
@@ -84,97 +92,76 @@ afterEach(() => {
 describe("return result of render", () => {
 	const renderParam = vi.fn();
 
-	test.each([
-		["default render", undefined, defaultRender],
-		["custom render", renderParam, renderParam],
-	])("%s", (_, renderFunction, targetRenderFunction) => {
-		const result = <span>RENDER_RESULT</span>;
+	describe.each([
+		[
+			true,
+			[
+				{
+					values: {},
+				},
+				{
+					name,
+					values: fieldValue,
+				},
+			],
+		],
+		[false, parents],
+		[undefined, parents],
+	])("nested = %s", (nested, expectedParents) => {
+		test.each([
+			["default render", undefined, defaultRender],
+			["custom render", renderParam, renderParam],
+		])("%s", (_, renderFunction, targetRenderFunction) => {
+			const result = <span>RENDER_RESULT</span>;
 
-		vi.mocked(targetRenderFunction).mockReturnValue(result);
+			vi.mocked(targetRenderFunction).mockReturnValue(result);
 
-		const engine = render(
-			{
-				renderParams: {
-					...defaultProps.renderParams,
-					fieldSchema: {
-						...defaultProps.renderParams.fieldSchema,
-						render: renderFunction,
+			const engine = render(
+				{
+					renderParams: {
+						...defaultProps.renderParams,
+						fieldSchema: {
+							...defaultProps.renderParams.fieldSchema,
+							nested,
+							render: renderFunction,
+						},
 					},
 				},
-			},
-			{
-				names: ["foo", "bar"],
-			},
-		);
-
-		expect(engine.root).toBe(result);
-
-		expect(targetRenderFunction).toHaveBeenCalledTimes(1);
-		expect(targetRenderFunction).toHaveBeenCalledWith(renderField, [
-			"foo",
-			"bar",
-		]);
-	});
-});
-
-describe("renderField", () => {
-	test("provide correct dependencies", () => {
-		const engine = render({});
-
-		expect(engine.getHookArguments("renderField")[1]).toEqual([
-			formResult,
-			getFieldSchema,
-			getFieldType,
-			getValues,
-		]);
-	});
-
-	test("call `renderBySchema`", () => {
-		vi.mocked(renderBySchema).mockReturnValue("RENDERED");
-
-		const engine = render({});
-
-		const name = "NAME";
-		const payload = "PAYLOAD";
-		const parents = [
-			{
-				values: {
-					foo: "bar",
+				{
+					names: ["foo", "bar"],
 				},
-			},
-		];
+			);
 
-		expect(
-			engine.getHookArguments("renderField")[0](name, payload, parents),
-		).toBe("RENDERED");
+			const renderResult = engine.getCallback("render")({
+				field: {
+					value: fieldValue,
+				},
+			});
 
-		expect(renderBySchema).toHaveBeenCalledTimes(1);
-		expect(renderBySchema).toHaveBeenCalledWith(
-			formResult,
-			getFieldSchema,
-			getFieldType,
-			getValues,
-			name,
-			payload,
-			parents,
-		);
-	});
-});
+			expect(renderResult).toBe(result);
 
-describe("names", () => {
-	test("provide correct dependencies", () => {
-		const engine = render({});
+			expect(targetRenderFunction).toHaveBeenCalledTimes(1);
+			expect(targetRenderFunction.mock.calls[0][1]).toEqual(["foo", "bar"]);
 
-		expect(engine.getHookArguments("names")[1]).toEqual([schemas]);
-	});
+			const renderField = targetRenderFunction.mock.calls[0][0];
 
-	test("return keys of `schemas`", () => {
-		const engine = render({});
+			vi.mocked(renderBySchema).mockReturnValue("RENDERED");
 
-		expect(engine.getHookArguments("names")[0]()).toEqual([
-			"foo",
-			"bar",
-			"baz",
-		]);
+			const name = "NAME";
+			const payload = "PAYLOAD";
+
+			expect(renderField(name, payload)).toBe("RENDERED");
+
+			expect(renderBySchema).toHaveBeenCalledTimes(1);
+			expect(renderBySchema).toHaveBeenCalledWith(
+				formResult,
+				getFieldSchema,
+				getFieldType,
+				getValues,
+				name,
+				payload,
+				expectedParents,
+			);
+		});
 	});
 });

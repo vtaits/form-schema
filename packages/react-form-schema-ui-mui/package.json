@@ -73,10 +73,10 @@
     "react-is": "^18.3.1",
     "react-select": "^5.8.0",
     "react-shallow-search": "^2.2.0",
-    "react-test-engine": "^1.1.1",
-    "react-test-engine-vitest": "^1.0.1",
+    "react-test-engine": "^1.1.2",
+    "react-test-engine-vitest": "^1.0.2",
     "react-test-renderer": "^18.3.1",
-    "tsup": "^8.0.2",
+    "tsup": "^8.1.0",
     "typescript": "5.4.5",
     "vitest": "^1.6.0"
   },
