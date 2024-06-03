@@ -50,6 +50,7 @@ const payload = "PAYLOAD";
 
 const defaultProps: DynamicFieldProps<any, any, any, any, any, any, any> = {
 	renderParams: {
+		fieldPath: "container.TEST_NAME",
 		fieldSchema: {
 			getSchema,
 		},

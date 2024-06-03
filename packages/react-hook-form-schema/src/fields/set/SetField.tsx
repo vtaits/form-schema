@@ -4,6 +4,7 @@ import type { ReactElement } from "react";
 import {
 	Controller,
 	type FieldValues,
+	type Path,
 	type UseFormReturn,
 } from "react-hook-form";
 import { type RenderParams, renderBySchema } from "../../core";
@@ -69,7 +70,7 @@ export function SetField<
 
 	return (
 		<Controller
-			name={fieldPath}
+			name={fieldPath as Path<Values>}
 			control={control}
 			render={({ field }) => {
 				const providedParents = nested

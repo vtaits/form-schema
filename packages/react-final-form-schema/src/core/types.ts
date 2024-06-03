@@ -33,11 +33,7 @@ export type GetFieldType<
 export type RenderField<
 	Values extends Record<string, any> = Record<string, any>,
 	Payload = any,
-> = (
-	name: string,
-	payload?: Payload,
-	parents?: ParentType<Values>[],
-) => ReactNode;
+> = (name: string, payload?: Payload, parents?: ParentType[]) => ReactNode;
 
 export type FieldComponentProps<
 	FieldSchema,
@@ -62,7 +58,7 @@ export type FieldComponentProps<
 	/**
 	 * stack of parent fields above current field with runtime values
 	 */
-	parents: ParentType<Values>[];
+	parents: readonly ParentType[];
 };
 
 export type MapErrors<

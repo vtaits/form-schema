@@ -45,7 +45,7 @@ const schemas: Record<string, any> = {
 	list: {
 		type: "list",
 		label: "List",
-		getBlockLabel: (index) => `Block #${index + 1}`,
+		getBlockLabel: (index: number) => `Block #${index + 1}`,
 		initialItem: "Initial",
 		itemSchema: {
 			label: "Input",
@@ -56,7 +56,7 @@ const schemas: Record<string, any> = {
 	setList: {
 		type: "list",
 		label: "List of sets",
-		getBlockLabel: (index) => `Block #${index + 1}`,
+		getBlockLabel: (index: number) => `Block #${index + 1}`,
 		itemSchema: {
 			type: "set",
 			nested: true,

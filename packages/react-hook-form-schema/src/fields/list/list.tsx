@@ -13,12 +13,12 @@ import { type FieldType, type RenderParams, renderBySchema } from "../../core";
 import { renderError } from "../base/renderError";
 import type { ListSchema } from "./schema";
 
-type ListComponentProps = Readonly<{
-	renderParams: RenderParams<ListSchema, any, any, any, any, any>;
+type ListComponentProps<FieldSchema> = Readonly<{
+	renderParams: RenderParams<ListSchema<FieldSchema>, any, any, any, any, any>;
 	formResult: UseFormReturn<FieldValues, any, FieldValues>;
 }>;
 
-export function ListComponent({
+export function ListComponent<FieldSchema>({
 	renderParams: {
 		fieldPath,
 		fieldSchema: {
@@ -35,12 +35,12 @@ export function ListComponent({
 	},
 	formResult,
 	formResult: {
-		cleanErrors,
+		clearErrors,
 		control,
 		formState: { errors },
 		register,
 	},
-}: ListComponentProps): ReactElement {
+}: ListComponentProps<FieldSchema>): ReactElement {
 	const { renderListAddButton, renderListItemWrapper, renderListWrapper } =
 		useUI();
 
@@ -71,7 +71,7 @@ export function ListComponent({
 			children: addButtonLabel,
 			onClick: () => {
 				append(initialItem || {});
-				cleanErrors(fieldPath);
+				clearErrors(fieldPath);
 			},
 		}),
 		items: fields.map((field, index) => {
@@ -99,8 +99,8 @@ export function ListComponent({
 	}) as ReactElement;
 }
 
-export const list: FieldType<ListSchema> = {
-	...(listBase as unknown as FieldTypeBase<ListSchema>),
+export const list: FieldType<ListSchema<any>> = {
+	...(listBase as unknown as FieldTypeBase<ListSchema<any>>),
 
 	render: (renderParams, formResult) => (
 		<ListComponent renderParams={renderParams} formResult={formResult} />

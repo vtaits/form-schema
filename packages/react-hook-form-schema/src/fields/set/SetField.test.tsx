@@ -49,6 +49,7 @@ const schemas = {
 
 const defaultProps: SetFieldProps<any, any, any, any, any, any, any> = {
 	renderParams: {
+		fieldPath: "container.TEST_NAME",
 		fieldSchema: {
 			schemas,
 			getSchema,
@@ -132,6 +133,10 @@ describe("return result of render", () => {
 				},
 			);
 
+			expect(engine.accessors.controller.getProps().name).toBe(
+				"container.TEST_NAME",
+			);
+
 			const renderResult = engine.getCallback("render")({
 				field: {
 					value: fieldValue,
@@ -141,9 +146,12 @@ describe("return result of render", () => {
 			expect(renderResult).toBe(result);
 
 			expect(targetRenderFunction).toHaveBeenCalledTimes(1);
-			expect(targetRenderFunction.mock.calls[0][1]).toEqual(["foo", "bar"]);
+			expect(vi.mocked(targetRenderFunction).mock.calls[0][1]).toEqual([
+				"foo",
+				"bar",
+			]);
 
-			const renderField = targetRenderFunction.mock.calls[0][0];
+			const renderField = vi.mocked(targetRenderFunction).mock.calls[0][0];
 
 			vi.mocked(renderBySchema).mockReturnValue("RENDERED");
 
