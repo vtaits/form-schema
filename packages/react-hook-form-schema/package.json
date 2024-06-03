@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-hook-form-schema",
-  "version": "1.2.0-alpha.2",
+  "version": "1.2.0-alpha.3",
   "description": "Integration of react-hook-form and @vtaits/form-schema",
   "files": [
     "dist",
@@ -100,8 +100,8 @@
     "react-hook-form": "^7.0.0"
   },
   "dependencies": {
-    "@vtaits/form-schema": "^2.3.0-alpha.1",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.2",
+    "@vtaits/form-schema": "^2.3.0-alpha.2",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.3",
     "is-promise": "^4.0.0",
     "use-latest": "^1.2.1"
   },
