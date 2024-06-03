@@ -1,11 +1,15 @@
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
 import {
 	Alert,
+	Button,
+	Card,
 	Checkbox,
 	DatePicker,
+	Flex,
 	Input,
 	Radio,
 	Select,
@@ -138,52 +142,68 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
-		<button type="button" onClick={onClick}>
+		<Button icon={<PlusOutlined />} onClick={onClick} type="link">
 			{children}
-		</button>
+		</Button>
 	),
 
 	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-		<fieldset>
-			{title && <legend>{title}</legend>}
-
+		<Card
+			title={title}
+			extra={
+				handleRemove && (
+					<Button
+						disabled={disabled}
+						icon={<DeleteOutlined />}
+						onClick={handleRemove}
+						shape="circle"
+						type="link"
+					/>
+				)
+			}
+		>
 			{children}
-
-			{handleRemove && (
-				<button disabled={disabled} type="button" onClick={handleRemove}>
-					Remove
-				</button>
-			)}
-		</fieldset>
+		</Card>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label }) => (
-		<div>
-			{label && <label>{label}</label>}
+	renderListWrapper: ({ actions, error, hint, items, label }) => {
+		return (
+			<FieldRow label={label && <label>{label}</label>}>
+				<Flex gap="middle" vertical role="list">
+					{items}
+				</Flex>
 
-			<div role="list">{items}</div>
-
-			{hint && (
-				<p
+				<Flex
+					gap="small"
 					style={{
-						color: "gray",
+						marginTop: 16,
 					}}
 				>
-					{hint}
-				</p>
-			)}
+					{actions}
+				</Flex>
 
-			{actions && <div>{actions}</div>}
+				{hint && (
+					<p
+						style={{
+							color: "gray",
+						}}
+					>
+						{hint}
+					</p>
+				)}
 
-			<p
-				style={{
-					color: "gray",
-				}}
-			>
-				{error}
-			</p>
-		</div>
-	),
+				{error && (
+					<p
+						style={{
+							color: "red",
+						}}
+					>
+						{error}
+					</p>
+				)}
+			</FieldRow>
+		);
+	},
 
 	renderMultiSelect: <OptionType,>({
 		options,

@@ -47,6 +47,7 @@ const schemas: Record<string, any> = {
 		getBlockLabel: (index) => `Block #${index + 1}`,
 		initialItem: "Initial",
 		itemSchema: {
+			label: "Input",
 			type: "input",
 		},
 	},
@@ -65,6 +66,7 @@ const schemas: Record<string, any> = {
 				},
 
 				date: {
+					label: "Date",
 					type: "date",
 				},
 			},

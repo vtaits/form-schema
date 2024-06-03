@@ -45,6 +45,7 @@
   },
   "peerDependencies": {
     "@vkontakte/vkui": "^6.0.0",
+    "@vkontakte/icons": "^2.0.0",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.2",
     "react": "^17.0.0 || ^18.0.0"
   },
@@ -56,6 +57,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitest/coverage-v8": "^1.6.0",
+    "@vkontakte/icons": "^2.118.0",
     "@vkontakte/vkui": "6.0.3",
     "@vtaits/form-schema": "^2.3.0-alpha.1",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.2",

@@ -1,9 +1,14 @@
+import { Icon12Add, Icon16Delete } from "@vkontakte/icons";
 import {
+	Button,
+	CardGrid,
 	Checkbox,
 	ChipsSelect,
+	ContentCard,
 	DateInput,
 	FormItem,
 	FormStatus,
+	IconButton,
 	Input,
 	Radio,
 	Select,
@@ -120,52 +125,80 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
-		<button type="button" onClick={onClick}>
+		<Button before={<Icon12Add />} mode="link" onClick={onClick}>
 			{children}
-		</button>
+		</Button>
 	),
 
 	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-		<fieldset>
-			{title && <legend>{title}</legend>}
+		<CardGrid size="l">
+			<ContentCard
+				header={
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+						}}
+					>
+						<div>{title}</div>
 
-			{children}
-
-			{handleRemove && (
-				<button disabled={disabled} type="button" onClick={handleRemove}>
-					Remove
-				</button>
-			)}
-		</fieldset>
+						{handleRemove && (
+							<IconButton
+								disabled={disabled}
+								label="Удалить"
+								onClick={handleRemove}
+							>
+								<Icon16Delete />
+							</IconButton>
+						)}
+					</div>
+				}
+				text={children}
+			/>
+		</CardGrid>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label }) => (
-		<div>
-			{label && <label>{label}</label>}
+	renderListWrapper: ({ actions, error, hint, items, label }) => {
+		return (
+			<FormItem
+				top={label}
+				bottom={
+					<>
+						{hint && (
+							<p
+								style={{
+									color: "gray",
+								}}
+							>
+								{hint}
+							</p>
+						)}
 
-			<div role="list">{items}</div>
+						{actions && (
+							<div
+								style={{
+									marginTop: "8px",
+								}}
+							>
+								{actions}
+							</div>
+						)}
 
-			{hint && (
-				<p
-					style={{
-						color: "gray",
-					}}
-				>
-					{hint}
-				</p>
-			)}
-
-			{actions && <div>{actions}</div>}
-
-			<p
-				style={{
-					color: "gray",
-				}}
+						<p
+							style={{
+								color: "gray",
+							}}
+						>
+							{error}
+						</p>
+					</>
+				}
 			>
-				{error}
-			</p>
-		</div>
-	),
+				<div role="list">{items}</div>
+			</FormItem>
+		);
+	},
 
 	renderMultiSelect: <OptionType,>({
 		options,

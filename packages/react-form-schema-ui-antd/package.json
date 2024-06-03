@@ -45,11 +45,13 @@
     "prepare": "yarn clean && yarn build"
   },
   "peerDependencies": {
+    "@ant-design/icons": "^5.3.7",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.2",
     "antd": "^5.12.3",
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
+    "@ant-design/icons": "^5.3.7",
     "@biomejs/biome": "^1.7.3",
     "@storybook/addon-docs": "^8.1.5",
     "@storybook/react": "^8.1.5",

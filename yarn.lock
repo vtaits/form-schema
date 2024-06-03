@@ -2323,6 +2323,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/icons-material@npm:^5.15.19":
+  version: 5.15.19
+  resolution: "@mui/icons-material@npm:5.15.19"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.9"
+  peerDependencies:
+    "@mui/material": ^5.0.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/f2a4381b6a0f955d74aa5ac88bb8d38fee384fdff9a8e82c7fb9e596fbc61ccff97883a6c1a3cfbab3253f4d53c3fef21a3b438dfe45de365e842577bc892c08
+  languageName: node
+  linkType: hard
+
 "@mui/material@npm:^5.15.19":
   version: 5.15.19
   resolution: "@mui/material@npm:5.15.19"
@@ -4640,7 +4656,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vkontakte/icons@npm:^2.62.0":
+"@vkontakte/icons@npm:^2.118.0, @vkontakte/icons@npm:^2.62.0":
   version: 2.118.0
   resolution: "@vkontakte/icons@npm:2.118.0"
   dependencies:
@@ -4786,6 +4802,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-antd@workspace:packages/react-form-schema-ui-antd"
   dependencies:
+    "@ant-design/icons": "npm:^5.3.7"
     "@biomejs/biome": "npm:^1.7.3"
     "@storybook/addon-docs": "npm:^8.1.5"
     "@storybook/react": "npm:^8.1.5"
@@ -4813,6 +4830,7 @@ __metadata:
     typescript: "npm:5.4.5"
     vitest: "npm:^1.6.0"
   peerDependencies:
+    "@ant-design/icons": ^5.3.7
     "@vtaits/react-form-schema-base-ui": ^1.0.0-alpha.2
     antd: ^5.12.3
     react: ^17.0.0 || ^18.0.0
@@ -4826,6 +4844,7 @@ __metadata:
     "@biomejs/biome": "npm:^1.7.3"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
+    "@mui/icons-material": "npm:^5.15.19"
     "@mui/material": "npm:^5.15.19"
     "@mui/x-date-pickers": "npm:^7.6.1"
     "@storybook/addon-docs": "npm:^8.1.5"
@@ -4853,6 +4872,7 @@ __metadata:
     typescript: "npm:5.4.5"
     vitest: "npm:^1.6.0"
   peerDependencies:
+    "@mui/icons-material": ^5.15.19
     "@mui/material": ^5.0.0
     "@vtaits/react-form-schema-base-ui": ^1.0.0-alpha.2
     react: ^17.0.0 || ^18.0.0
@@ -4870,6 +4890,7 @@ __metadata:
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^1.6.0"
+    "@vkontakte/icons": "npm:^2.118.0"
     "@vkontakte/vkui": "npm:6.0.3"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.1"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.2"
