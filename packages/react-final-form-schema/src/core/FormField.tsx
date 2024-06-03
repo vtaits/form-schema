@@ -15,7 +15,7 @@ import type { GetFieldType } from "./types";
 export type FormFieldProps<Values extends Record<string, any>, Payload> = {
 	name: string;
 	payload?: Payload;
-	parents?: ParentType<Values>[];
+	parents?: readonly ParentType<Values>[];
 };
 
 export function FormField<

@@ -4,6 +4,7 @@ import { date } from "../fields/date";
 import { datetime } from "../fields/datetime";
 import { dynamic } from "../fields/dynamic";
 import { input } from "../fields/input";
+import { list } from "../fields/list";
 import { radioGroup } from "../fields/radioGroup";
 import { multiSelect, select } from "../fields/select";
 import { set } from "../fields/set";
@@ -16,6 +17,7 @@ export const defaultFieldTypes = {
 	datetime,
 	dynamic,
 	input,
+	list,
 	radioGroup,
 	multiSelect,
 	select,

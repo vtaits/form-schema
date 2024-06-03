@@ -1,6 +1,5 @@
 import isPromise from "is-promise";
 import { expect, test, vi } from "vitest";
-
 import { parse } from "./parse";
 import type {
 	CreateGetFieldSchema,
@@ -14,7 +13,7 @@ type Values = Record<string, any>;
 
 type ParserArgs = Parameters<Parser<any, any, any, any, any>>;
 
-const fieldSchemas: Record<string, unknown> = {
+const fieldSchemas: Record<string | number | symbol, unknown> = {
 	value: {
 		type: "testType",
 	},
@@ -38,10 +37,9 @@ const parents = [
 	},
 ];
 
-const defaultGetFieldSchema: GetFieldSchema<any> = (name: string) =>
-	fieldSchemas[name];
+const defaultGetFieldSchema: GetFieldSchema<any> = (name) => fieldSchemas[name];
 
-test("should return null for falsy values object", () => {
+test("should return empty object for falsy values object", () => {
 	expect(
 		parse({
 			values: null,
@@ -50,7 +48,7 @@ test("should return null for falsy values object", () => {
 			getFieldType: (): FieldType<any, any, any, any, any> => ({}),
 			parents,
 		}),
-	).toEqual(null);
+	).toEqual({});
 });
 
 test("should call default parser", () => {
@@ -92,11 +90,9 @@ test("should call redefined parser", () => {
 		value2: "test2",
 	};
 
-	const parser = vi.fn<ParserArgs, any>(
-		({ values, name }): Values => ({
-			[name]: values[name] + values[name],
-		}),
-	);
+	const parser = vi.fn().mockReturnValue({
+		value: "testtest",
+	});
 
 	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
 		parser,
@@ -116,6 +112,7 @@ test("should call redefined parser", () => {
 
 	expect(parser).toHaveBeenCalledTimes(1);
 	expect(parser).toHaveBeenCalledWith({
+		value: "test",
 		values: rawValues,
 		name: "value",
 		fieldSchema: fieldSchemas.value,
@@ -123,6 +120,46 @@ test("should call redefined parser", () => {
 		getFieldType,
 		parents,
 	});
+});
+
+test("should call single parser", () => {
+	const rawValues: Values = {
+		value: "test",
+		value2: "test2",
+	};
+
+	const parserSingle = vi.fn().mockReturnValue("testtest");
+	const parser = vi.fn();
+
+	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+		parser,
+		parserSingle,
+	});
+
+	expect(
+		parse({
+			values: rawValues,
+			names: ["value"],
+			getFieldSchema: defaultGetFieldSchema,
+			getFieldType,
+			parents,
+		}),
+	).toEqual({
+		value: "testtest",
+	});
+
+	expect(parserSingle).toHaveBeenCalledTimes(1);
+	expect(parserSingle).toHaveBeenCalledWith({
+		value: "test",
+		values: rawValues,
+		name: "value",
+		fieldSchema: fieldSchemas.value,
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(parser).toHaveBeenCalledTimes(0);
 });
 
 test("should call multiple parsers", () => {
@@ -166,6 +203,44 @@ test("should work with async parser", async () => {
 			parser: async ({ values, name }) => ({
 				[name]: values[name] + values[name],
 			}),
+		},
+	};
+
+	const parseResult = parse({
+		values: {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		},
+		names: ["value1", "value2", "value3"],
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType: ({ type }) => fields[type],
+		parents,
+	});
+
+	expect(isPromise(parseResult)).toBe(true);
+
+	const result = await parseResult;
+
+	expect(result).toEqual({
+		value1: "test1",
+		value2: "test2test2",
+		value3: "test3test3",
+	});
+});
+
+test("should work with async single parser", async () => {
+	const fields: Record<string, FieldType<any, any, any, any, any>> = {
+		testType1: {},
+
+		testType2: {
+			parser: ({ values, name }) => ({
+				[name]: values[name] + values[name],
+			}),
+		},
+
+		testType3: {
+			parserSingle: ({ value }) => Promise.resolve(`${value}${value}`),
 		},
 	};
 

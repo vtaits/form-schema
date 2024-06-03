@@ -1,11 +1,15 @@
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
 import {
 	Alert,
+	Button,
+	Card,
 	Checkbox,
 	DatePicker,
+	Flex,
 	Input,
 	Radio,
 	Select,
@@ -136,6 +140,70 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({ inputProps: { ref, size, ...inputProps } = {}, name }) => (
 		<Input name={name} {...inputProps} />
 	),
+
+	renderListAddButton: ({ children, onClick, disabled }) => (
+		<Button icon={<PlusOutlined />} onClick={onClick} type="link">
+			{children}
+		</Button>
+	),
+
+	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
+		<Card
+			title={title}
+			extra={
+				handleRemove && (
+					<Button
+						disabled={disabled}
+						icon={<DeleteOutlined />}
+						onClick={handleRemove}
+						shape="circle"
+						type="link"
+					/>
+				)
+			}
+		>
+			{children}
+		</Card>
+	),
+
+	renderListWrapper: ({ actions, error, hint, items, label }) => {
+		return (
+			<FieldRow label={label && <label>{label}</label>}>
+				<Flex gap="middle" vertical role="list">
+					{items}
+				</Flex>
+
+				<Flex
+					gap="small"
+					style={{
+						marginTop: 16,
+					}}
+				>
+					{actions}
+				</Flex>
+
+				{hint && (
+					<p
+						style={{
+							color: "gray",
+						}}
+					>
+						{hint}
+					</p>
+				)}
+
+				{error && (
+					<p
+						style={{
+							color: "red",
+						}}
+					>
+						{error}
+					</p>
+				)}
+			</FieldRow>
+		);
+	},
 
 	renderMultiSelect: <OptionType,>({
 		options,

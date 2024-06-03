@@ -1,8 +1,12 @@
 import type { ParentType } from "@vtaits/form-schema";
 import { useCallback, useMemo } from "react";
 import type { ReactElement } from "react";
-import type { FieldValues, UseFormReturn } from "react-hook-form";
-
+import {
+	Controller,
+	type FieldValues,
+	type Path,
+	type UseFormReturn,
+} from "react-hook-form";
 import { type RenderParams, renderBySchema } from "../../core";
 import { defaultRender } from "./defaultRender";
 import type { SetSchema } from "./schema";
@@ -36,7 +40,14 @@ export function SetField<
 	Payload,
 	TContext,
 >({
-	renderParams: { fieldSchema, getFieldSchema, getFieldType },
+	renderParams: {
+		fieldPath,
+		fieldSchema,
+		getFieldSchema,
+		getFieldType,
+		name: nameParam,
+		parents,
+	},
 	formResult,
 }: SetFieldProps<
 	FieldSchema,
@@ -47,30 +58,44 @@ export function SetField<
 	Payload,
 	TContext
 >): ReactElement | null {
-	const { schemas, render = defaultRender } =
-		fieldSchema as unknown as SetSchema<FieldSchema>;
+	const {
+		nested,
+		schemas,
+		render = defaultRender,
+	} = fieldSchema as unknown as SetSchema<FieldSchema>;
 
 	const names = useMemo(() => Object.keys(schemas), [schemas]);
 
-	const { getValues } = formResult;
+	const { control, getValues } = formResult;
 
-	const renderField = useCallback(
-		(
-			name: string,
-			payload?: Payload,
-			parents?: readonly ParentType<Values>[],
-		) =>
-			renderBySchema(
-				formResult,
-				getFieldSchema,
-				getFieldType,
-				getValues,
-				name,
-				payload,
-				parents,
-			),
-		[formResult, getFieldSchema, getFieldType, getValues],
+	return (
+		<Controller
+			name={fieldPath as Path<Values>}
+			control={control}
+			render={({ field }) => {
+				const providedParents = nested
+					? [
+							...parents,
+							{
+								name: nameParam,
+								values: field.value,
+							},
+						]
+					: parents;
+
+				const renderField = (childName: string, payload?: Payload) =>
+					renderBySchema(
+						formResult,
+						getFieldSchema,
+						getFieldType,
+						getValues,
+						childName,
+						payload,
+						providedParents,
+					);
+
+				return render(renderField, names) as ReactElement;
+			}}
+		/>
 	);
-
-	return render(renderField, names) as ReactElement;
 }

@@ -1,7 +1,9 @@
 import type {
+	BaseValues,
 	ErrorsSetter,
 	GetFieldSchema,
 	GetFieldType,
+	NameType,
 	ParentType,
 	SetError,
 } from "./types";
@@ -15,14 +17,14 @@ export const defaultFieldErrorsSetter: ErrorsSetter<any, any, any, any, any> =
 
 export type SetFieldErrorsParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
 	setError: SetError<Values>;
 	errors: Errors;
-	names: readonly string[];
+	names: readonly NameType[];
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -33,14 +35,14 @@ export type SetFieldErrorsParams<
 	>;
 	values: SerializedValues;
 	rawValues: Values;
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
 export const setFieldErrors = <
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
 	setError,
@@ -62,7 +64,15 @@ export const setFieldErrors = <
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const errorsSetter = fieldType.errorsSetter || defaultFieldErrorsSetter;
+		const errorsSetter =
+			fieldType.errorsSetter ||
+			(defaultFieldErrorsSetter as ErrorsSetter<
+				FieldSchema,
+				Values,
+				RawValues,
+				SerializedValues,
+				Errors
+			>);
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
 			? fieldType.createGetFieldSchema({
 					fieldSchema,
@@ -81,7 +91,9 @@ export const setFieldErrors = <
 			fieldSchema,
 			getFieldSchema: computedGetFieldSchema,
 			getFieldType,
+			value: values[name as keyof SerializedValues],
 			values,
+			rawValue: rawValues[name as keyof Values],
 			rawValues,
 			parents,
 		});

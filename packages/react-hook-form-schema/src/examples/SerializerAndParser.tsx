@@ -1,12 +1,8 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	type GetFieldType,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
 import { type ReactElement, useState } from "react";
 import { Controller } from "react-hook-form";
 import Select from "react-select";
+import { type FieldType, type GetFieldType, useFormSchema } from "../core";
 
 type Option = {
 	value: number;

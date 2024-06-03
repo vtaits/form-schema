@@ -10,6 +10,7 @@ export default defineConfig({
     'fields_date-base': "src/fields/date-base/index.ts",
     fields_dynamic: "src/fields/dynamic/index.ts",
     fields_input: "src/fields/input/index.ts",
+    fields_list: "src/fields/list/index.ts",
     fields_select: "src/fields/select/index.ts",
     fields_set: "src/fields/set/index.ts",
   },

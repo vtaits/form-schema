@@ -4,6 +4,7 @@ import type { DateSchema } from "../fields/date";
 import type { DateTimeSchema } from "../fields/datetime";
 import type { DynamicSchema } from "../fields/dynamic";
 import type { InputSchema } from "../fields/input";
+import type { ListSchema } from "../fields/list";
 import type { RadioGroupSchema } from "../fields/radioGroup";
 import type { MultiSelectSchema, SelectSchema } from "../fields/select";
 import type { SetSchema } from "../fields/set";
@@ -47,6 +48,9 @@ export type DefaultFieldSchema<
 	  })
 	| (SetSchema<any, Values, Payload> & {
 			type: "set";
+	  })
+	| (ListSchema<any> & {
+			type: "list";
 	  })
 	| (TextAreaSchema & {
 			type: "textarea";

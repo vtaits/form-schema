@@ -1,10 +1,10 @@
 import {
 	type GetFieldSchema,
+	type NameType,
 	parse,
 	serialize,
 	setFieldErrors,
 } from "@vtaits/form-schema";
-import { ARRAY_ERROR } from "final-form";
 import arrayMutators from "final-form-arrays";
 import { Fragment, type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
@@ -172,8 +172,9 @@ const fieldTypes: Record<
 
 		createGetFieldSchema: ({ fieldSchema }) => {
 			const { fields } = fieldSchema as FieldArraySchema;
-			const getChildFieldSchema: GetFieldSchema<FieldSchema> = (name: string) =>
-				fields[name];
+			const getChildFieldSchema: GetFieldSchema<FieldSchema> = (
+				name: NameType,
+			) => fields[name];
 
 			return getChildFieldSchema;
 		},
@@ -362,7 +363,7 @@ const fullSchema: Record<string, FieldSchema> = {
 	},
 };
 
-const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: string) =>
+const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: NameType) =>
 	fullSchema[fieldName];
 
 const names: string[] = ["users"];

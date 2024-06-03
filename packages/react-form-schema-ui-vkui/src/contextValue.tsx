@@ -1,9 +1,14 @@
+import { Icon12Add, Icon16Delete } from "@vkontakte/icons";
 import {
+	Button,
+	CardGrid,
 	Checkbox,
 	ChipsSelect,
+	ContentCard,
 	DateInput,
 	FormItem,
 	FormStatus,
+	IconButton,
 	Input,
 	Radio,
 	Select,
@@ -118,6 +123,82 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({ inputProps: { ref, size, ...inputProps } = {}, name }) => (
 		<Input name={name} {...inputProps} />
 	),
+
+	renderListAddButton: ({ children, onClick, disabled }) => (
+		<Button before={<Icon12Add />} mode="link" onClick={onClick}>
+			{children}
+		</Button>
+	),
+
+	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
+		<CardGrid size="l">
+			<ContentCard
+				header={
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+						}}
+					>
+						<div>{title}</div>
+
+						{handleRemove && (
+							<IconButton
+								disabled={disabled}
+								label="Удалить"
+								onClick={handleRemove}
+							>
+								<Icon16Delete />
+							</IconButton>
+						)}
+					</div>
+				}
+				text={children}
+			/>
+		</CardGrid>
+	),
+
+	renderListWrapper: ({ actions, error, hint, items, label }) => {
+		return (
+			<FormItem
+				top={label}
+				bottom={
+					<>
+						{hint && (
+							<p
+								style={{
+									color: "gray",
+								}}
+							>
+								{hint}
+							</p>
+						)}
+
+						{actions && (
+							<div
+								style={{
+									marginTop: "8px",
+								}}
+							>
+								{actions}
+							</div>
+						)}
+
+						<p
+							style={{
+								color: "gray",
+							}}
+						>
+							{error}
+						</p>
+					</>
+				}
+			>
+				<div role="list">{items}</div>
+			</FormItem>
+		);
+	},
 
 	renderMultiSelect: <OptionType,>({
 		options,

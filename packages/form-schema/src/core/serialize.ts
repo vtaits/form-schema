@@ -1,8 +1,11 @@
 import type {
+	BaseValues,
 	GetFieldSchema,
 	GetFieldType,
+	NameType,
 	ParentType,
 	Serializer,
+	SerializerParams,
 } from "./types";
 
 export const defaultSerializer: Serializer<any, any, any, any, any> = ({
@@ -20,13 +23,13 @@ export const defaultSerializer: Serializer<any, any, any, any, any> = ({
 
 export type SerializeParams<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 > = Readonly<{
 	values: Values;
-	names: readonly string[];
+	names: readonly NameType[];
 	getFieldSchema: GetFieldSchema<FieldSchema>;
 	getFieldType: GetFieldType<
 		FieldSchema,
@@ -35,14 +38,14 @@ export type SerializeParams<
 		SerializedValues,
 		Errors
 	>;
-	parents: readonly ParentType<Values>[];
+	parents: readonly ParentType[];
 }>;
 
-export const serialize = <
+export function serialize<
 	FieldSchema,
-	Values extends Record<string, any>,
-	RawValues extends Record<string, any>,
-	SerializedValues extends Record<string, any>,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
 	Errors extends Record<string, any>,
 >({
 	values,
@@ -56,14 +59,13 @@ export const serialize = <
 	RawValues,
 	SerializedValues,
 	Errors
->): SerializedValues => {
+>): SerializedValues {
 	const res = {} as SerializedValues;
 
 	for (const name of names) {
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const serializer = fieldType.serializer || defaultSerializer;
 		const computedGetFieldSchema = fieldType.createGetFieldSchema
 			? fieldType.createGetFieldSchema({
 					fieldSchema,
@@ -75,18 +77,40 @@ export const serialize = <
 				})
 			: getFieldSchema;
 
-		Object.assign(
-			res,
-			serializer({
-				values,
-				name,
-				fieldSchema,
-				getFieldSchema: computedGetFieldSchema,
-				getFieldType,
-				parents,
-			}),
-		);
+		const params: SerializerParams<
+			FieldSchema,
+			Values,
+			RawValues,
+			SerializedValues,
+			Errors
+		> = {
+			value: values[name as keyof Values],
+			values,
+			name,
+			fieldSchema,
+			getFieldSchema: computedGetFieldSchema,
+			getFieldType,
+			parents,
+		};
+
+		if (fieldType.serializerSingle) {
+			res[name as keyof SerializedValues] = fieldType.serializerSingle(
+				params,
+			) as SerializedValues[keyof SerializedValues];
+		} else {
+			const serializer =
+				fieldType.serializer ||
+				(defaultSerializer as Serializer<
+					FieldSchema,
+					Values,
+					RawValues,
+					SerializedValues,
+					Errors
+				>);
+
+			Object.assign(res, serializer(params));
+		}
 	}
 
 	return res;
-};
+}

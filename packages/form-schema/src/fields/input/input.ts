@@ -15,23 +15,11 @@ export function prepareValue(rawValue: unknown) {
 }
 
 export const input: FieldType<InputSchema> = {
-	serializer: ({ name, values }) => {
-		const value = values[name];
+	serializerSingle: ({ value }) => prepareValue(value),
 
-		return {
-			[name]: prepareValue(value),
-		};
-	},
+	parserSingle: ({ value }) => prepareValue(value),
 
-	parser: ({ name, values }) => {
-		const value = values[name];
-
-		return {
-			[name]: prepareValue(value),
-		};
-	},
-
-	validatorBeforeSubmit: ({ name, setError, values, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
 		const {
 			errorMessages: errorMessagesParam,
 			required,
@@ -45,17 +33,17 @@ export const input: FieldType<InputSchema> = {
 			...errorMessagesParam,
 		};
 
-		const value = prepareValue(values[name]);
+		const strValue = prepareValue(value);
 
 		if (required && !value) {
 			setError(name, parents, errorMessages.required);
 		}
 
-		if (minLength && value.length < minLength) {
+		if (minLength && strValue.length < minLength) {
 			setError(name, parents, errorMessages.minLengthStr(minLength));
 		}
 
-		if (maxLength && value.length > maxLength) {
+		if (maxLength && strValue.length > maxLength) {
 			setError(name, parents, errorMessages.maxLengthStr(maxLength));
 		}
 
@@ -63,7 +51,7 @@ export const input: FieldType<InputSchema> = {
 			const regExp =
 				regExpParam instanceof RegExp ? regExpParam : new RegExp(regExpParam);
 
-			if (!regExp.test(value)) {
+			if (!regExp.test(strValue)) {
 				setError(name, parents, errorMessages.regexp(regExp.toString()));
 			}
 		}

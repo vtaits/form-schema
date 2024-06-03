@@ -30,7 +30,20 @@ export type RenderParams<
 	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
 > = Readonly<{
+	/**
+	 * Current name of the field on the level. For example:
+	 *
+	 * `fullPath === "group.list.0.input"`
+	 * `name === "input"`
+	 */
 	name: string;
+	/**
+	 * Full path to the field from root. For example:
+	 *
+	 * `fullPath === "group.list.0.input"`
+	 * `name === "input"`
+	 */
+	fieldPath: string;
 	fieldSchema: FieldSchema;
 	payload?: Payload;
 	getFieldSchema: GetFieldSchema<FieldSchema>;

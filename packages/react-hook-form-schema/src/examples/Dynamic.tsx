@@ -1,15 +1,8 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	type GetFieldType,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
-import {
-	type DynamicSchema,
-	dynamic,
-} from "@vtaits/react-hook-form-schema/fields/dynamic";
-import { type SetSchema, set } from "@vtaits/react-hook-form-schema/fields/set";
+import type { GetFieldSchema, NameType } from "@vtaits/form-schema";
 import { type ReactElement, useState } from "react";
+import { type FieldType, type GetFieldType, useFormSchema } from "../core";
+import { type DynamicSchema, dynamic } from "../fields/dynamic";
+import { type SetSchema, set } from "../fields/set";
 
 type InputSchema = {
 	type: "input";
@@ -124,7 +117,7 @@ const fullSchema: Record<string, FieldSchema> = {
 	},
 };
 
-const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: string) =>
+const getFieldSchema: GetFieldSchema<FieldSchema> = (fieldName: NameType) =>
 	fullSchema[fieldName];
 
 const names = ["firstName", "lastName", "wow"];

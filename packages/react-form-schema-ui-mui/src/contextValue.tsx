@@ -1,11 +1,18 @@
-import { InputLabel } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormLabel from "@mui/material/FormLabel";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -159,6 +166,75 @@ export function getContextValue(
 				}
 				label={label}
 			/>
+		),
+
+		renderListAddButton: ({ children, onClick, disabled }) => (
+			<Button
+				onClick={onClick}
+				size={muiSize}
+				startIcon={<AddIcon />}
+				variant="text"
+			>
+				{children}
+			</Button>
+		),
+
+		renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
+			<Card>
+				<CardHeader
+					action={
+						handleRemove && (
+							<IconButton
+								aria-label="Remove"
+								disabled={disabled}
+								color="primary"
+								onClick={handleRemove}
+							>
+								<DeleteIcon />
+							</IconButton>
+						)
+					}
+					title={title}
+				/>
+
+				<CardContent>{children}</CardContent>
+			</Card>
+		),
+
+		renderListWrapper: ({ actions, error, hint, items, label }) => (
+			<div>
+				{label && <FormLabel>{label}</FormLabel>}
+
+				<Box
+					role="list"
+					sx={{
+						display: "grid",
+						gap: 2,
+					}}
+				>
+					{items}
+				</Box>
+
+				{hint && (
+					<p
+						style={{
+							color: "gray",
+						}}
+					>
+						{hint}
+					</p>
+				)}
+
+				{actions && <Box marginTop={2}>{actions}</Box>}
+
+				<p
+					style={{
+						color: "gray",
+					}}
+				>
+					{error}
+				</p>
+			</div>
 		),
 
 		renderMultiSelect: <OptionType,>({

@@ -4,73 +4,57 @@ import { DEFAULT_VALUE_KEY } from "./constants";
 import type { MultiSelectSchema } from "./schema";
 
 export const multiSelect: FieldType<MultiSelectSchema> = {
-	serializer: ({
-		name,
-		values,
+	serializerSingle: ({
+		value,
 		fieldSchema: { getOptionValue, valueKey = DEFAULT_VALUE_KEY },
 	}) => {
-		const value = values[name];
-
 		if (!value) {
-			return {
-				[name]: [],
-			};
+			return [];
 		}
 
 		const valueArr = Array.isArray(value) ? value : [value];
 
 		if (getOptionValue) {
-			return {
-				[name]: valueArr.map(getOptionValue),
-			};
+			return valueArr.map(getOptionValue);
 		}
 
-		return {
-			[name]: valueArr.map(
-				(valueItem) => (valueItem as Record<string, string>)[valueKey],
-			),
-		};
+		return valueArr.map(
+			(valueItem) => (valueItem as Record<string, string>)[valueKey],
+		);
 	},
 
-	parser: ({
-		name,
-		values,
+	parserSingle: ({
+		value,
 		fieldSchema: { getOptionValue, options, valueKey = DEFAULT_VALUE_KEY },
 	}) => {
-		const value = values[name];
-
 		if (!value) {
-			return {
-				[name]: [],
-			};
+			return [];
 		}
 
 		const valueArr = Array.isArray(value) ? value : [value];
 
-		return {
-			[name]: options.filter((option) => {
-				if (getOptionValue) {
-					const optionValue = getOptionValue(option);
-
-					return valueArr.some(
-						(valueItem) =>
-							valueItem === optionValue ||
-							getOptionValue(valueItem) === optionValue,
-					);
-				}
-
-				const optionValue = (option as Record<string, string>)[valueKey];
+		return options.filter((option) => {
+			if (getOptionValue) {
+				const optionValue = getOptionValue(option);
 
 				return valueArr.some(
 					(valueItem) =>
 						valueItem === optionValue ||
-						(valueItem as Record<string, string>)[valueKey] === optionValue,
+						getOptionValue(valueItem) === optionValue,
 				);
-			}),
-		};
+			}
+
+			const optionValue = (option as Record<string, string>)[valueKey];
+
+			return valueArr.some(
+				(valueItem) =>
+					valueItem === optionValue ||
+					(valueItem as Record<string, string>)[valueKey] === optionValue,
+			);
+		});
 	},
 
-	validatorBeforeSubmit: ({ name, setError, values, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
 		const {
 			errorMessages: errorMessagesParam,
 			minLength,
@@ -82,8 +66,6 @@ export const multiSelect: FieldType<MultiSelectSchema> = {
 			...defaultErrorMessages,
 			...errorMessagesParam,
 		};
-
-		const value = values[name];
 
 		const valueArr = Array.isArray(value) ? value : [value];
 

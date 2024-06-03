@@ -50,6 +50,7 @@ describe.each([
 				},
 			},
 		],
+		expectedFieldPath: "container.NAME",
 	},
 	{
 		label: "provided parents",
@@ -59,8 +60,9 @@ describe.each([
 				values,
 			},
 		],
+		expectedFieldPath: "NAME",
 	},
-])("$label", ({ parents, expectedParents }) => {
+])("$label", ({ parents, expectedFieldPath, expectedParents }) => {
 	test("render with own `getFieldSchema`", () => {
 		const render = vi.fn().mockReturnValue(renderResult);
 
@@ -83,6 +85,7 @@ describe.each([
 
 		expect(render).toHaveBeenCalledWith(
 			{
+				fieldPath: expectedFieldPath,
 				name,
 				payload,
 				parents: expectedParents,
@@ -125,6 +128,7 @@ describe.each([
 
 		expect(render).toHaveBeenCalledWith(
 			{
+				fieldPath: expectedFieldPath,
 				name,
 				payload,
 				parents: expectedParents,

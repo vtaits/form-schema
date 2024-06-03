@@ -4,11 +4,10 @@ import type {
 	FieldType,
 	GetFieldSchema,
 	GetFieldType,
+	ParentType,
 	ValidatorBeforeSubmit,
 } from "./types";
 import { validateBeforeSubmit } from "./validateBeforeSubmit";
-
-type Values = Record<string, any>;
 
 type ValidatorBeforeSubmitArgs = Parameters<
 	ValidatorBeforeSubmit<any, any, any, any, any>
@@ -16,7 +15,7 @@ type ValidatorBeforeSubmitArgs = Parameters<
 
 const setError = vi.fn();
 
-const parents = [
+const parents: ParentType[] = [
 	{
 		values: {},
 	},
@@ -94,6 +93,7 @@ test("should call redefined validatorBeforeSubmit", () => {
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
 	expect(validatorBeforeSubmit).toHaveBeenCalledWith({
 		setError,
+		value: "test",
 		values: rawValues,
 		name: "value",
 		fieldSchema,
@@ -108,7 +108,7 @@ test("should call redefined validatorBeforeSubmit", () => {
 
 test("should call multiple validators", () => {
 	const fields: Record<
-		string,
+		string | number | symbol,
 		{
 			type: string;
 		}

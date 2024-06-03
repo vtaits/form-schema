@@ -1,19 +1,17 @@
 import { describe, expect, test, vi } from "vitest";
-
 import { defaultSerializer, serialize } from "./serialize";
 import type {
 	CreateGetFieldSchema,
 	FieldType,
 	GetFieldSchema,
 	GetFieldType,
+	ParentType,
 	Serializer,
 } from "./types";
 
-type Values = Record<string, any>;
-
 type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
 
-const parents = [
+const parents: ParentType[] = [
 	{
 		values: {},
 	},
@@ -23,6 +21,7 @@ describe("defaultSerializer", () => {
 	test("get value by name", () => {
 		expect(
 			defaultSerializer({
+				value: "error1",
 				values: {
 					foo: "error1",
 					bar: "error2",
@@ -41,6 +40,7 @@ describe("defaultSerializer", () => {
 	test("return an empty object if there is no value by name", () => {
 		expect(
 			defaultSerializer({
+				value: undefined,
 				values: {
 					bar: "error2",
 				},
@@ -116,6 +116,56 @@ describe("serialize", () => {
 
 		expect(serializer).toHaveBeenCalledTimes(1);
 		expect(serializer).toHaveBeenCalledWith({
+			value: "test",
+			values: rawValues,
+			name: "value",
+			fieldSchema,
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+	});
+
+	test("should call single serializer", () => {
+		const rawValues = {
+			value: "test",
+			value2: "test2",
+		};
+
+		const serializerSingle = vi.fn().mockReturnValue("serialized single");
+		const serializer = vi.fn();
+
+		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+			serializer,
+			serializerSingle,
+		});
+
+		const fieldSchema = {
+			type: "testType",
+			name: "value",
+		};
+
+		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
+
+		expect(
+			serialize({
+				values: rawValues,
+
+				names: ["value"],
+
+				getFieldSchema,
+				getFieldType,
+				parents,
+			}),
+		).toEqual({
+			value: "serialized single",
+		});
+
+		expect(serializer).toHaveBeenCalledTimes(0);
+
+		expect(serializerSingle).toHaveBeenCalledTimes(1);
+		expect(serializerSingle).toHaveBeenCalledWith({
+			value: "test",
 			values: rawValues,
 			name: "value",
 			fieldSchema,
@@ -127,7 +177,7 @@ describe("serialize", () => {
 
 	test("should call multiple serializers", () => {
 		const fields: Record<
-			string,
+			string | number | symbol,
 			{
 				type: string;
 			}

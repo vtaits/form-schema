@@ -8,44 +8,42 @@ import {
 import type { DateSchema } from "./schema";
 
 export const date: FieldType<DateSchema> = {
-	serializer: ({
-		name,
-		values,
+	serializerSingle: ({
+		value,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
 		},
 	}) => {
-		const value = values[name];
-
 		const date = parseValueAndValidate(value, clientDateFormat);
 
-		return {
-			[name]: date ? serializeDate(date, serverDateFormat) : null,
-		};
+		if (date) {
+			return serializeDate(date, serverDateFormat);
+		}
+
+		return null;
 	},
 
-	parser: ({
-		name,
-		values,
+	parserSingle: ({
+		value,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
 		},
 	}) => {
-		const value = values[name];
-
 		const date = parseValueAndValidate(value, serverDateFormat);
 
-		return {
-			[name]: date ? serializeDate(date, clientDateFormat) : null,
-		};
+		if (date) {
+			return serializeDate(date, clientDateFormat);
+		}
+
+		return null;
 	},
 
 	validatorBeforeSubmit: ({
 		name,
 		setError,
-		values,
+		value,
 		fieldSchema,
 		parents,
 		fieldSchema: { clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT },
@@ -57,9 +55,9 @@ export const date: FieldType<DateSchema> = {
 			...errorMessagesParam,
 		};
 
-		const value = parseValueAndValidate(values[name], clientDateFormat);
+		const date = parseValueAndValidate(value, clientDateFormat);
 
-		if (required && !value) {
+		if (required && !date) {
 			setError(name, parents, errorMessages.required);
 		}
 	},

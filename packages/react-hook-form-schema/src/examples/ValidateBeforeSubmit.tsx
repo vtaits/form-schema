@@ -1,10 +1,6 @@
 import type { GetFieldSchema } from "@vtaits/form-schema";
-import {
-	type FieldType,
-	type GetFieldType,
-	useFormSchema,
-} from "@vtaits/react-hook-form-schema";
 import { type ReactElement, useState } from "react";
+import { type FieldType, type GetFieldType, useFormSchema } from "../core";
 
 type InputSchema = {
 	type: "input";

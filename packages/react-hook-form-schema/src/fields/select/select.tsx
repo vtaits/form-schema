@@ -13,7 +13,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { SelectSchema } from "./schema";
 
@@ -24,6 +23,7 @@ type SelectComponentProps = Readonly<{
 
 export function SelectComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: {
 			label,
 			hint,
@@ -35,7 +35,6 @@ export function SelectComponent({
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -46,8 +45,7 @@ export function SelectComponent({
 }: SelectComponentProps): ReactElement {
 	const { renderSelect, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -76,12 +74,12 @@ export function SelectComponent({
 		children: (
 			<Controller
 				control={control}
-				name={name}
+				name={fieldPath}
 				render={({ field }) =>
 					renderSelect({
 						clearable: !required,
 						value: field.value,
-						name,
+						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {

@@ -6,19 +6,6 @@ export function prepareValue(rawValue: unknown) {
 }
 
 export const checkbox: FieldType<CheckboxSchema> = {
-	serializer: ({ name, values }) => {
-		const value = values[name];
-
-		return {
-			[name]: prepareValue(value),
-		};
-	},
-
-	parser: ({ name, values }) => {
-		const value = values[name];
-
-		return {
-			[name]: prepareValue(value),
-		};
-	},
+	serializerSingle: ({ value }) => prepareValue(value),
+	parserSingle: ({ value }) => prepareValue(value),
 };

@@ -13,7 +13,6 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { getFieldName } from "../base";
 import { renderError } from "../base/renderError";
 import type { RadioGroupSchema } from "./schema";
 
@@ -24,6 +23,7 @@ type RadioGroupComponentProps = Readonly<{
 
 export function RadioGroupComponent({
 	renderParams: {
+		fieldPath,
 		fieldSchema: {
 			label,
 			hint,
@@ -34,7 +34,6 @@ export function RadioGroupComponent({
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		name: nameParam,
 		parents,
 	},
 	formResult: {
@@ -45,8 +44,7 @@ export function RadioGroupComponent({
 }: RadioGroupComponentProps): ReactElement {
 	const { renderRadioGroup, renderWrapper } = useUI();
 
-	const name = getFieldName(nameParam, parents);
-	const error = renderError(get(errors, name));
+	const error = renderError(get(errors, fieldPath));
 
 	const wrapperParams = {
 		error,
@@ -75,12 +73,12 @@ export function RadioGroupComponent({
 		children: (
 			<Controller
 				control={control}
-				name={name}
+				name={fieldPath}
 				render={({ field }) =>
 					renderRadioGroup({
 						clearable: !required,
 						value: field.value,
-						name,
+						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {

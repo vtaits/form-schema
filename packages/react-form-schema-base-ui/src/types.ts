@@ -1,5 +1,26 @@
 import type { HTMLProps, ReactNode } from "react";
 
+export type ButtonRenderProps = Readonly<{
+	children?: ReactNode;
+	disabled?: boolean;
+	onClick?: () => void;
+}>;
+
+export type ListItemWrapperRenderProps = Readonly<{
+	children?: ReactNode;
+	disabled?: boolean;
+	handleRemove?: () => void;
+	title?: ReactNode;
+}>;
+
+export type ListWrapperRenderProps = Readonly<{
+	actions?: ReactNode;
+	error?: ReactNode;
+	hint?: ReactNode;
+	items?: ReactNode;
+	label?: ReactNode;
+}>;
+
 export type WrapperRenderProps = Readonly<{
 	children?: ReactNode;
 	error?: ReactNode;
@@ -88,6 +109,9 @@ export type BaseUIContextValue = Readonly<{
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
 	renderInput: (renderProps: InputRenderProps) => ReactNode;
+	renderListAddButton: (renderProps: ButtonRenderProps) => ReactNode;
+	renderListItemWrapper: (renderProps: ListItemWrapperRenderProps) => ReactNode;
+	renderListWrapper: (renderProps: ListWrapperRenderProps) => ReactNode;
 	renderMultiSelect: <OptionType>(
 		renderProps: MultiSelectRenderProps<OptionType>,
 	) => ReactNode;

@@ -1,7 +1,8 @@
 import isPromise from "is-promise";
-
 import {
+	type BaseValues,
 	type FieldType,
+	type ParentType,
 	parse,
 	serialize,
 	setFieldErrors,
@@ -13,11 +14,12 @@ export const set: FieldType<SetSchema<any>> = {
 	createGetFieldSchema: ({ fieldSchema }) => {
 		const { schemas } = fieldSchema;
 
-		return (name: string) => schemas[name];
+		return (name) => schemas[name];
 	},
 
 	serializer: ({
 		name,
+		value,
 		values,
 		fieldSchema,
 		getFieldSchema,
@@ -26,10 +28,10 @@ export const set: FieldType<SetSchema<any>> = {
 	}) => {
 		const { schemas, nested } = fieldSchema;
 
-		const names = Object.keys(schemas);
+		const names = Object.keys(schemas) as (keyof BaseValues)[];
 
 		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
+			const currentValues = (value || {}) as Record<string, unknown>;
 
 			const nextParents = [
 				...parents,
@@ -61,6 +63,7 @@ export const set: FieldType<SetSchema<any>> = {
 
 	parser: ({
 		name,
+		value,
 		values,
 		fieldSchema,
 		getFieldSchema,
@@ -72,9 +75,9 @@ export const set: FieldType<SetSchema<any>> = {
 		const names = Object.keys(schemas);
 
 		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
+			const currentValues = (value || {}) as Record<string, unknown>;
 
-			const nextParents = [
+			const nextParents: ParentType[] = [
 				...parents,
 				{
 					name,
@@ -121,6 +124,7 @@ export const set: FieldType<SetSchema<any>> = {
 	validatorBeforeSubmit: ({
 		name,
 		setError,
+		value,
 		values,
 		fieldSchema,
 		getFieldSchema,
@@ -129,10 +133,10 @@ export const set: FieldType<SetSchema<any>> = {
 	}) => {
 		const { nested, schemas } = fieldSchema;
 
-		const names = Object.keys(schemas);
+		const names = Object.keys(schemas) as (keyof BaseValues)[];
 
 		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
+			const currentValues = (value || {}) as Record<string, unknown>;
 
 			const nextParents = [
 				...parents,
@@ -171,16 +175,18 @@ export const set: FieldType<SetSchema<any>> = {
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
+		value,
 		values,
+		rawValue,
 		rawValues,
 		parents,
 	}) => {
 		const { nested, schemas } = fieldSchema;
 
-		const names = Object.keys(schemas);
+		const names = Object.keys(schemas) as (keyof BaseValues)[];
 
 		if (nested) {
-			const currentValues = (values[name] || {}) as Record<string, unknown>;
+			const currentValues = (value || {}) as Record<string, unknown>;
 
 			const nextParents = [
 				...parents,
@@ -197,7 +203,7 @@ export const set: FieldType<SetSchema<any>> = {
 				getFieldSchema,
 				getFieldType,
 				values: currentValues,
-				rawValues: (rawValues[name] || {}) as Record<string, unknown>,
+				rawValues: (rawValue || {}) as Record<string, unknown>,
 				parents: nextParents,
 			});
 

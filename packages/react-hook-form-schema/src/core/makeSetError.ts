@@ -1,4 +1,4 @@
-import type { ParentType } from "@vtaits/form-schema";
+import type { NameType, ParentType } from "@vtaits/form-schema";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 
 export function makeSetError<Values extends FieldValues>(
@@ -7,8 +7,8 @@ export function makeSetError<Values extends FieldValues>(
 	onError: () => void,
 ) {
 	return (
-		fieldName: string,
-		parents: readonly ParentType<Values>[] | undefined,
+		fieldName: NameType,
+		parents: readonly ParentType[] | undefined,
 		error: unknown,
 	) => {
 		onError();

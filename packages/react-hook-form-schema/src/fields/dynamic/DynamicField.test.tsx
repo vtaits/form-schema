@@ -4,8 +4,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { create } from "react-test-engine-vitest";
 import useLatest from "use-latest";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-
-import type { FieldType } from "../../core";
+import { type FieldType, renderBySchema } from "../../core";
 import { DynamicField } from "./DynamicField";
 import type { DynamicFieldProps } from "./DynamicField";
 
@@ -22,8 +21,10 @@ vi.mock("use-latest");
 vi.mock("../../core");
 
 const watch = vi.fn();
+const getValues = vi.fn();
 
 const formResult = {
+	getValues,
 	watch,
 } as unknown as UseFormReturn<any, any, any>;
 
@@ -49,6 +50,7 @@ const payload = "PAYLOAD";
 
 const defaultProps: DynamicFieldProps<any, any, any, any, any, any, any> = {
 	renderParams: {
+		fieldPath: "container.TEST_NAME",
 		fieldSchema: {
 			getSchema,
 		},
@@ -145,21 +147,11 @@ describe("getSchema", () => {
 		getSchema.mockReturnValue(schema);
 		getFieldType.mockReturnValue(fieldType);
 
+		vi.mocked(renderBySchema).mockReturnValue(<span />);
+
 		const engine = render({});
 
 		expect(engine.checkIsRendered()).toBe(isRendered);
-	});
-});
-
-describe("getFieldType", () => {
-	test("should call `getFieldType` with correct argument", () => {
-		getSchema.mockReturnValue("test");
-		getFieldType.mockReturnValue(fieldType);
-
-		render({});
-
-		expect(getFieldType).toHaveBeenCalledTimes(1);
-		expect(getFieldType).toHaveBeenCalledWith("test");
 	});
 });
 
@@ -170,17 +162,15 @@ describe("render", () => {
 
 		render({});
 
-		expect(renderField).toHaveBeenCalledTimes(1);
-		expect(renderField).toHaveBeenCalledWith(
-			{
-				name,
-				fieldSchema: "test",
-				getFieldSchema,
-				getFieldType,
-				parents,
-				payload,
-			},
+		expect(renderBySchema).toHaveBeenCalledTimes(1);
+		expect(renderBySchema).toHaveBeenCalledWith(
 			formResult,
+			getFieldSchema,
+			getFieldType,
+			getValues,
+			name,
+			payload,
+			parents,
 		);
 	});
 });
