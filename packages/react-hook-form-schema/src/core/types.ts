@@ -34,14 +34,14 @@ export type RenderParams<
 	/**
 	 * Current name of the field on the level. For example:
 	 *
-	 * `fullPath === "group.list.0.input"`
+	 * `fieldPath === "group.list.0.input"`
 	 * `name === "input"`
 	 */
 	name: string;
 	/**
 	 * Full path to the field from root. For example:
 	 *
-	 * `fullPath === "group.list.0.input"`
+	 * `fieldPath === "group.list.0.input"`
 	 * `name === "input"`
 	 */
 	fieldPath: Path<Values>;
