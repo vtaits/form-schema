@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import type { BaseSyntheticEvent } from "react";
 import type {
 	FieldValues,
+	Path,
 	SubmitErrorHandler,
 	UseFormProps,
 	UseFormReturn,
@@ -43,7 +44,7 @@ export type RenderParams<
 	 * `fullPath === "group.list.0.input"`
 	 * `name === "input"`
 	 */
-	fieldPath: string;
+	fieldPath: Path<Values>;
 	fieldSchema: FieldSchema;
 	payload?: Payload;
 	getFieldSchema: GetFieldSchema<FieldSchema>;
