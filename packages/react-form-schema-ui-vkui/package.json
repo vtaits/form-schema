@@ -61,7 +61,7 @@
     "@vkontakte/vkui": "6.0.3",
     "@vtaits/form-schema": "^2.3.0-alpha.2",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.3",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.3",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.4",
     "exports-fallback": "^1.0.1",
     "happy-dom": "^14.12.0",
     "react": "^18.3.1",
