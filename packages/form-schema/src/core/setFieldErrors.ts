@@ -8,12 +8,17 @@ import type {
 	SetError,
 } from "./types";
 
-export const defaultFieldErrorsSetter: ErrorsSetter<any, any, any, any, any> =
-	({ setError, errors, name, parents }) => {
-		if (typeof errors[name] !== "undefined") {
-			setError(name, parents, errors[name]);
-		}
-	};
+export const defaultFieldErrorsSetter: ErrorsSetter<
+	any,
+	any,
+	any,
+	any,
+	any
+> = ({ setError, errors, name, parents }) => {
+	if (typeof errors[name] !== "undefined") {
+		setError(name, parents, errors[name]);
+	}
+};
 
 export type SetFieldErrorsParams<
 	FieldSchema,

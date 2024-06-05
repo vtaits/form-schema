@@ -1,4 +1,5 @@
-import { cleanup, waitFor } from "@testing-library/react";
+import { waitFor } from "@testing-library/dom";
+import { cleanup } from "@testing-library/react";
 import { AccessorQueryType, create } from "react-integration-test-engine";
 import { afterEach, expect, test } from "vitest";
 import { FormError } from "./FormError";

@@ -85,7 +85,7 @@
     "build:proxy_directories": "exports-fallback -gf",
     "test:ts": "tsc",
     "lint": "biome check src",
-    "lint:fix": "biome check src --apply-unsafe",
+    "lint:fix": "biome check src --write --unsafe",
     "format": "biome format src --write",
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
@@ -99,7 +99,7 @@
     "krustykrab": "^1.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
+    "@biomejs/biome": "^1.8.0",
     "@vitest/coverage-v8": "^1.6.0",
     "exports-fallback": "^1.0.1",
     "tsup": "^8.1.0",
