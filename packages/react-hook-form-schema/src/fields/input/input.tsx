@@ -20,7 +20,7 @@ type InputComponentProps = Readonly<{
 export function InputComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { label, hint, inputProps },
+		fieldSchema: { disabled, inputProps, hint, label },
 		parents,
 	},
 	formResult: {
@@ -46,6 +46,7 @@ export function InputComponent({
 				control={control}
 				render={({ field }) =>
 					renderInput({
+						disabled,
 						name: fieldPath,
 						inputProps: {
 							...inputProps,

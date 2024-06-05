@@ -29,6 +29,7 @@ export type WrapperRenderProps = Readonly<{
 }>;
 
 export type BaseFieldRenderProps = Readonly<{
+	disabled?: boolean;
 	name: string;
 	wrapper: WrapperRenderProps;
 }>;

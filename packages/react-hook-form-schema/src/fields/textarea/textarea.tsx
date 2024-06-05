@@ -20,7 +20,7 @@ type TextAreaComponentProps = Readonly<{
 export function TextAreaComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { label, hint, textAreaProps },
+		fieldSchema: { disabled, hint, label, textAreaProps },
 		parents,
 	},
 	formResult: {
@@ -47,6 +47,7 @@ export function TextAreaComponent({
 				control={control}
 				render={({ field }) =>
 					renderTextArea({
+						disabled,
 						name: fieldPath,
 						textAreaProps: {
 							...textAreaProps,

@@ -25,8 +25,9 @@ export function RadioGroupComponent({
 	renderParams: {
 		fieldPath,
 		fieldSchema: {
-			label,
+			disabled,
 			hint,
+			label,
 			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
@@ -77,6 +78,7 @@ export function RadioGroupComponent({
 				render={({ field }) =>
 					renderRadioGroup({
 						clearable: !required,
+						disabled,
 						value: field.value,
 						name: fieldPath,
 						getOptionLabel,

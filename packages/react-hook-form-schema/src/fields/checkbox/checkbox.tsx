@@ -20,7 +20,7 @@ type CheckboxComponentProps = Readonly<{
 export function CheckboxComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { label, hint, checkboxLabel },
+		fieldSchema: { checkboxLabel, disabled, hint, label },
 		parents,
 	},
 	formResult: {
@@ -48,6 +48,7 @@ export function CheckboxComponent({
 				render={({ field }) =>
 					renderCheckbox({
 						children: checkboxLabel,
+						disabled,
 						checked: Boolean(field.value),
 						name: fieldPath,
 						onChange: field.onChange,

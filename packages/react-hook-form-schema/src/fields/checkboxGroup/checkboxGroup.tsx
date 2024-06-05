@@ -25,6 +25,7 @@ export function CheckboxGroupComponent({
 	renderParams: {
 		fieldPath,
 		fieldSchema: {
+			disabled,
 			label,
 			hint,
 			getOptionLabel: getOptionLabelParam,
@@ -75,6 +76,7 @@ export function CheckboxGroupComponent({
 				name={fieldPath}
 				render={({ field }) =>
 					renderCheckboxGroup({
+						disabled,
 						value: field.value,
 						name: fieldPath,
 						getOptionLabel,

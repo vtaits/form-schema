@@ -25,8 +25,9 @@ export function MultiSelectComponent({
 	renderParams: {
 		fieldPath,
 		fieldSchema: {
-			label,
+			disabled,
 			hint,
+			label,
 			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
@@ -77,6 +78,7 @@ export function MultiSelectComponent({
 				name={fieldPath}
 				render={({ field }) =>
 					renderMultiSelect({
+						disabled,
 						value: field.value,
 						name: fieldPath,
 						getOptionLabel,

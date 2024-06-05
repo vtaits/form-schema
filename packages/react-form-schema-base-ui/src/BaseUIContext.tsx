@@ -8,9 +8,10 @@ const DATE_FORMAT = "yyyy-MM-dd";
 const DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
 export const BaseUIContext = createContext<BaseUIContextValue>({
-	renderCheckbox: ({ checked, name, onChange, children }) => (
+	renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
 		<label>
 			<input
+				disabled={disabled}
 				name={name}
 				type="checkbox"
 				checked={checked}
@@ -24,6 +25,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	),
 
 	renderCheckboxGroup: ({
+		disabled,
 		name,
 		value,
 		onChange,
@@ -44,6 +46,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 					return (
 						<label key={optionValue}>
 							<input
+								disabled={disabled}
 								name={name}
 								type="checkbox"
 								checked={checked}
@@ -69,8 +72,9 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		);
 	},
 
-	renderDatePicker: ({ inputProps, onChange, value }) => (
+	renderDatePicker: ({ disabled, inputProps, onChange, value }) => (
 		<input
+			disabled={disabled}
 			{...inputProps}
 			type="date"
 			value={value ? format(value, DATE_FORMAT) : ""}
@@ -94,8 +98,9 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		/>
 	),
 
-	renderDateTimePicker: ({ inputProps, onChange, value }) => (
+	renderDateTimePicker: ({ disabled, inputProps, onChange, value }) => (
 		<input
+			disabled={disabled}
 			{...inputProps}
 			type="datetime-local"
 			value={value ? format(value, DATETIME_FORMAT) : ""}
@@ -140,7 +145,9 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</form>
 	),
 
-	renderInput: ({ inputProps, name }) => <input name={name} {...inputProps} />,
+	renderInput: ({ disabled, inputProps, name }) => (
+		<input name={name} disabled={disabled} {...inputProps} />
+	),
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
 		<button type="button" onClick={onClick}>
@@ -191,6 +198,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	),
 
 	renderMultiSelect: <OptionType,>({
+		disabled,
 		name,
 		options,
 		value,
@@ -204,6 +212,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 		return (
 			<select
+				disabled={disabled}
 				multiple
 				name={name}
 				onChange={(event) => {
@@ -243,6 +252,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	},
 
 	renderRadioGroup: ({
+		disabled,
 		name,
 		value,
 		onChange,
@@ -260,6 +270,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 					return (
 						<label key={optionValue}>
 							<input
+								disabled={disabled}
 								name={name}
 								type="radio"
 								checked={optionValue === selectedValue}
@@ -278,6 +289,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 	renderSelect: ({
 		clearable,
+		disabled,
 		name,
 		options,
 		placeholder,
@@ -287,6 +299,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		getOptionValue,
 	}) => (
 		<select
+			disabled={disabled}
 			name={name}
 			onChange={(event) => {
 				const nextValue = event.target.value;
@@ -313,8 +326,8 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</select>
 	),
 
-	renderTextArea: ({ textAreaProps, name }) => (
-		<textarea name={name} {...textAreaProps} />
+	renderTextArea: ({ disabled, name, textAreaProps }) => (
+		<textarea disabled={disabled} name={name} {...textAreaProps} />
 	),
 
 	renderWrapper: ({ children, error, hint, label }) => (

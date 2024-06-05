@@ -25,6 +25,7 @@ export function SelectComponent({
 	renderParams: {
 		fieldPath,
 		fieldSchema: {
+			disabled,
 			label,
 			hint,
 			required,
@@ -78,6 +79,7 @@ export function SelectComponent({
 				render={({ field }) =>
 					renderSelect({
 						clearable: !required,
+						disabled,
 						value: field.value,
 						name: fieldPath,
 						getOptionLabel,

@@ -19,10 +19,11 @@ import dayjs from "dayjs";
 import { FieldRow } from "./FieldRow";
 
 export const contextValue: BaseUIContextValue = {
-	renderCheckbox: ({ checked, name, onChange, children }) => (
+	renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
 		<Checkbox
-			name={name}
 			checked={checked}
+			disabled={disabled}
+			name={name}
 			onChange={(event) => {
 				onChange(event.target.checked);
 			}}
@@ -32,6 +33,7 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderCheckboxGroup: ({
+		disabled,
 		name,
 		value,
 		onChange,
@@ -52,8 +54,9 @@ export const contextValue: BaseUIContextValue = {
 					return (
 						<div key={optionValue}>
 							<Checkbox
-								name={name}
 								checked={checked}
+								disabled={disabled}
+								name={name}
 								onChange={() => {
 									if (checked) {
 										onChange(
@@ -76,8 +79,9 @@ export const contextValue: BaseUIContextValue = {
 		);
 	},
 
-	renderDatePicker: ({ displayDateFormat, onChange, value }) => (
+	renderDatePicker: ({ disabled, displayDateFormat, onChange, value }) => (
 		<DatePicker
+			disabled={disabled}
 			format={displayDateFormat}
 			value={value ? dayjs(value) : undefined}
 			onChange={(dayjs) => {
@@ -91,8 +95,9 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderDateTimePicker: ({ displayDateFormat, onChange, value }) => (
+	renderDateTimePicker: ({ disabled, displayDateFormat, onChange, value }) => (
 		<DatePicker
+			disabled={disabled}
 			format={displayDateFormat}
 			value={value ? dayjs(value) : undefined}
 			onChange={(dayjs) => {
@@ -137,9 +142,11 @@ export const contextValue: BaseUIContextValue = {
 		</form>
 	),
 
-	renderInput: ({ inputProps: { ref, size, ...inputProps } = {}, name }) => (
-		<Input name={name} {...inputProps} />
-	),
+	renderInput: ({
+		disabled,
+		inputProps: { ref, size, ...inputProps } = {},
+		name,
+	}) => <Input disabled={disabled} name={name} {...inputProps} />,
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
 		<Button
@@ -211,6 +218,7 @@ export const contextValue: BaseUIContextValue = {
 	},
 
 	renderMultiSelect: <OptionType,>({
+		disabled,
 		options,
 		value,
 		onChange,
@@ -218,6 +226,7 @@ export const contextValue: BaseUIContextValue = {
 		getOptionValue,
 	}: MultiSelectRenderProps<OptionType>) => (
 		<Select
+			disabled={disabled}
 			mode="multiple"
 			onChange={(nextSelectValue) => {
 				const nextValue: OptionType[] = [];
@@ -246,6 +255,7 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderRadioGroup: ({
+		disabled,
 		name,
 		value,
 		onChange,
@@ -263,8 +273,9 @@ export const contextValue: BaseUIContextValue = {
 					return (
 						<div key={optionValue}>
 							<Radio
-								name={name}
 								checked={optionValue === selectedValue}
+								disabled={disabled}
+								name={name}
 								onChange={() => {
 									onChange(option);
 								}}
@@ -280,6 +291,7 @@ export const contextValue: BaseUIContextValue = {
 
 	renderSelect: ({
 		clearable,
+		disabled,
 		options,
 		placeholder,
 		value,
@@ -289,6 +301,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => (
 		<Select
 			allowClear={clearable}
+			disabled={disabled}
 			onChange={(nextValue) => {
 				const selectedOption = options.find(
 					(option) => getOptionValue(option) === nextValue,
@@ -309,9 +322,10 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderTextArea: ({
+		disabled,
 		textAreaProps: { ref, size, onResize, ...textAreaProps } = {},
 		name,
-	}) => <Input.TextArea name={name} {...textAreaProps} />,
+	}) => <Input.TextArea disabled={disabled} name={name} {...textAreaProps} />,
 
 	renderWrapper: ({ children, error, hint, label }) => {
 		return (

@@ -30,6 +30,7 @@ export function DateComponent({
 		fieldPath,
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
+			disabled,
 			displayDateFormat,
 			label,
 			hint,
@@ -60,6 +61,7 @@ export function DateComponent({
 				control={control}
 				render={({ field }) =>
 					renderDatePicker({
+						disabled,
 						displayDateFormat,
 						name: fieldPath,
 						inputProps: inputProps || {},

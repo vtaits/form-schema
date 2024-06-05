@@ -21,8 +21,9 @@ import type {
 } from "@vtaits/react-form-schema-base-ui";
 
 export const contextValue: BaseUIContextValue = {
-	renderCheckbox: ({ checked, name, onChange, children }) => (
+	renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
 		<Checkbox
+			disabled={disabled}
 			name={name}
 			checked={checked}
 			onChange={(event) => {
@@ -34,6 +35,7 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderCheckboxGroup: ({
+		disabled,
 		name,
 		value,
 		onChange,
@@ -54,8 +56,9 @@ export const contextValue: BaseUIContextValue = {
 					return (
 						<div key={optionValue}>
 							<Checkbox
-								name={name}
 								checked={checked}
+								disabled={disabled}
+								name={name}
 								onChange={() => {
 									if (checked) {
 										onChange(
@@ -78,15 +81,24 @@ export const contextValue: BaseUIContextValue = {
 		);
 	},
 
-	renderDatePicker: ({ onChange, value }) => (
+	renderDatePicker: ({ disabled, onChange, value }) => (
 		<div style={{ display: "flex" }}>
-			<DateInput value={value || undefined} onChange={onChange} />
+			<DateInput
+				disabled={disabled}
+				value={value || undefined}
+				onChange={onChange}
+			/>
 		</div>
 	),
 
-	renderDateTimePicker: ({ onChange, value }) => (
+	renderDateTimePicker: ({ disabled, onChange, value }) => (
 		<div style={{ display: "flex" }}>
-			<DateInput enableTime value={value || undefined} onChange={onChange} />
+			<DateInput
+				disabled={disabled}
+				enableTime
+				value={value || undefined}
+				onChange={onChange}
+			/>
 		</div>
 	),
 
@@ -120,9 +132,11 @@ export const contextValue: BaseUIContextValue = {
 		</form>
 	),
 
-	renderInput: ({ inputProps: { ref, size, ...inputProps } = {}, name }) => (
-		<Input name={name} {...inputProps} />
-	),
+	renderInput: ({
+		disabled,
+		inputProps: { ref, size, ...inputProps } = {},
+		name,
+	}) => <Input disabled={disabled} name={name} {...inputProps} />,
 
 	renderListAddButton: ({ children, disabled, onClick }) => (
 		<Button
@@ -206,6 +220,7 @@ export const contextValue: BaseUIContextValue = {
 	},
 
 	renderMultiSelect: <OptionType,>({
+		disabled,
 		options,
 		value,
 		onChange,
@@ -213,6 +228,7 @@ export const contextValue: BaseUIContextValue = {
 		getOptionValue,
 	}: MultiSelectRenderProps<OptionType>) => (
 		<ChipsSelect
+			disabled={disabled}
 			onChange={(nextSelectValue) => {
 				const nextValue: OptionType[] = [];
 
@@ -244,6 +260,7 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderRadioGroup: ({
+		disabled,
 		name,
 		value,
 		onChange,
@@ -261,8 +278,9 @@ export const contextValue: BaseUIContextValue = {
 					return (
 						<div key={optionValue}>
 							<Radio
-								name={name}
 								checked={optionValue === selectedValue}
+								disabled={disabled}
+								name={name}
 								onChange={() => {
 									onChange(option);
 								}}
@@ -278,6 +296,7 @@ export const contextValue: BaseUIContextValue = {
 
 	renderSelect: ({
 		clearable,
+		disabled,
 		options,
 		placeholder,
 		value,
@@ -287,6 +306,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => (
 		<Select
 			allowClearButton={clearable}
+			disabled={disabled}
 			onChange={(event) => {
 				const nextValue = event.target.value;
 
@@ -306,10 +326,12 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderTextArea: ({
+		disabled,
 		textAreaProps: { ref, size, onResize, defaultValue, ...textAreaProps } = {},
 		name,
 	}) => (
 		<Textarea
+			disabled={disabled}
 			name={name}
 			{...textAreaProps}
 			defaultValue={defaultValue as string}

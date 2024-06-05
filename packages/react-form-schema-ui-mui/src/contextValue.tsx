@@ -31,11 +31,12 @@ export function getContextValue(
 	muiSize: "small" | "medium",
 ): BaseUIContextValue {
 	return {
-		renderCheckbox: ({ checked, name, onChange, children }) => (
+		renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
 			<FormControlLabel
 				control={
 					<Checkbox
 						checked={checked}
+						disabled={disabled}
 						size={muiSize}
 						name={name}
 						onChange={(event) => {
@@ -48,6 +49,7 @@ export function getContextValue(
 		),
 
 		renderCheckboxGroup: ({
+			disabled,
 			name,
 			value,
 			onChange,
@@ -75,6 +77,7 @@ export function getContextValue(
 										control={
 											<Checkbox
 												checked={checked}
+												disabled={disabled}
 												name={name}
 												onChange={() => {
 													if (checked) {
@@ -102,12 +105,14 @@ export function getContextValue(
 		},
 
 		renderDatePicker: ({
+			disabled,
 			displayDateFormat,
 			onChange,
 			value,
 			wrapper: { label },
 		}) => (
 			<DatePicker
+				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
 				value={value}
@@ -117,12 +122,14 @@ export function getContextValue(
 		),
 
 		renderDateTimePicker: ({
+			disabled,
 			displayDateFormat,
 			onChange,
 			value,
 			wrapper: { label },
 		}) => (
 			<DateTimePicker
+				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
 				value={value}
@@ -152,6 +159,7 @@ export function getContextValue(
 		),
 
 		renderInput: ({
+			disabled,
 			inputProps: { color, ref, size, onChange, ...inputProps } = {},
 			name,
 			wrapper: { label },
@@ -159,6 +167,7 @@ export function getContextValue(
 			<TextField
 				size={muiSize}
 				fullWidth
+				disabled={disabled}
 				name={name}
 				{...inputProps}
 				onChange={
@@ -239,6 +248,7 @@ export function getContextValue(
 		),
 
 		renderMultiSelect: <OptionType,>({
+			disabled,
 			name,
 			options,
 			value,
@@ -261,6 +271,7 @@ export function getContextValue(
 						</InputLabel>
 					)}
 					<Select
+						disabled={disabled}
 						labelId={`${name}/label`}
 						label={label}
 						multiple
@@ -309,6 +320,7 @@ export function getContextValue(
 		},
 
 		renderRadioGroup: ({
+			disabled,
 			name,
 			value,
 			onChange,
@@ -331,6 +343,7 @@ export function getContextValue(
 								<FormControlLabel
 									control={
 										<Radio
+											disabled={disabled}
 											name={name}
 											onChange={() => {
 												onChange(option);
@@ -351,6 +364,7 @@ export function getContextValue(
 
 		renderSelect: ({
 			clearable,
+			disabled,
 			name,
 			options,
 			placeholder,
@@ -370,6 +384,7 @@ export function getContextValue(
 					</InputLabel>
 				)}
 				<Select
+					disabled={disabled}
 					labelId={`${name}/label`}
 					label={label}
 					name={name}
@@ -405,11 +420,13 @@ export function getContextValue(
 		),
 
 		renderTextArea: ({
+			disabled,
 			name,
 			textAreaProps: { color, ref, size, ...textAreaProps } = {},
 			wrapper: { label },
 		}) => (
 			<TextField
+				disabled={disabled}
 				fullWidth
 				multiline
 				name={name}
