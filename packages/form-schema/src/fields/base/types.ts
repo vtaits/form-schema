@@ -8,6 +8,7 @@ export type ErrorMessages = {
 };
 
 export type BaseFieldSchema = {
+	disabled?: boolean;
 	required?: boolean;
 	errorMessages?: Partial<ErrorMessages>;
 };

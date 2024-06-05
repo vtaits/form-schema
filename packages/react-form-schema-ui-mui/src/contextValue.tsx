@@ -168,8 +168,9 @@ export function getContextValue(
 			/>
 		),
 
-		renderListAddButton: ({ children, onClick, disabled }) => (
+		renderListAddButton: ({ children, disabled, onClick }) => (
 			<Button
+				disabled={disabled}
 				onClick={onClick}
 				size={muiSize}
 				startIcon={<AddIcon />}

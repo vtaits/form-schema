@@ -23,6 +23,7 @@ export function ListComponent<FieldSchema>({
 		fieldPath,
 		fieldSchema: {
 			addButtonLabel = "Add",
+			disabled,
 			getBlockLabel,
 			initialItem,
 			label,
@@ -68,6 +69,7 @@ export function ListComponent<FieldSchema>({
 	return renderListWrapper({
 		...wrapperParams,
 		actions: renderListAddButton({
+			disabled,
 			children: addButtonLabel,
 			onClick: () => {
 				append(initialItem || {});
@@ -87,6 +89,7 @@ export function ListComponent<FieldSchema>({
 							undefined,
 							itemParents,
 						),
+						disabled,
 						handleRemove: () => {
 							remove(index);
 							clearErrors(fieldPath);

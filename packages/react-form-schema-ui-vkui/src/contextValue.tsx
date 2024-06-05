@@ -124,8 +124,13 @@ export const contextValue: BaseUIContextValue = {
 		<Input name={name} {...inputProps} />
 	),
 
-	renderListAddButton: ({ children, onClick, disabled }) => (
-		<Button before={<Icon12Add />} mode="link" onClick={onClick}>
+	renderListAddButton: ({ children, disabled, onClick }) => (
+		<Button
+			before={<Icon12Add />}
+			disabled={disabled}
+			mode="link"
+			onClick={onClick}
+		>
 			{children}
 		</Button>
 	),

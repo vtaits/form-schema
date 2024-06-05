@@ -142,7 +142,12 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
-		<Button icon={<PlusOutlined />} onClick={onClick} type="link">
+		<Button
+			disabled={disabled}
+			icon={<PlusOutlined />}
+			onClick={onClick}
+			type="link"
+		>
 			{children}
 		</Button>
 	),
