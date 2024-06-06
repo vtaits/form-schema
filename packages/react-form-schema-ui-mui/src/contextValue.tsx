@@ -161,7 +161,8 @@ export function getContextValue(
 
 		renderInput: ({
 			disabled,
-			inputProps: { color, ref, size, onChange, ...inputProps } = {},
+			inputProps: { color, ref, size, ...inputProps } = {},
+			onChange,
 			options,
 			name,
 			wrapper: { label },
@@ -169,20 +170,16 @@ export function getContextValue(
 			if (options && options.length > 0) {
 				return (
 					<Autocomplete
+						disabled={disabled}
 						freeSolo
+						fullWidth
 						options={options}
+						size={muiSize}
 						renderInput={(params) => (
 							<TextField
-								size={muiSize}
-								fullWidth
-								disabled={disabled}
 								name={name}
 								{...inputProps}
-								onChange={
-									onChange as ChangeEventHandler<
-										HTMLInputElement | HTMLTextAreaElement
-									>
-								}
+								onChange={onChange}
 								label={label}
 								{...params}
 							/>
@@ -198,11 +195,7 @@ export function getContextValue(
 					disabled={disabled}
 					name={name}
 					{...inputProps}
-					onChange={
-						onChange as ChangeEventHandler<
-							HTMLInputElement | HTMLTextAreaElement
-						>
-					}
+					onChange={onChange}
 					label={label}
 				/>
 			);

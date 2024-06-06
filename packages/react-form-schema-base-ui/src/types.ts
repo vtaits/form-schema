@@ -64,6 +64,7 @@ export type InputRenderProps = Readonly<
 		debounceTimeout?: number;
 		options?: readonly string[];
 		inputProps: Partial<HTMLProps<HTMLInputElement>>;
+		onChange: (arg: unknown) => void;
 	}
 >;
 

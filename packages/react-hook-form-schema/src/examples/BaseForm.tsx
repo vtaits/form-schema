@@ -146,7 +146,7 @@ const delay = (ms: number): Promise<void> =>
 		}, ms);
 	});
 
-export function Simple(): ReactElement {
+export function BaseForm(): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any

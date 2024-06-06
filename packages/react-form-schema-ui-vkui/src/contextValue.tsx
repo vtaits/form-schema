@@ -135,6 +135,7 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({
 		disabled,
 		inputProps: { ref, size, ...inputProps } = {},
+		onChange,
 		options,
 		name,
 	}) => {
@@ -148,6 +149,7 @@ export const contextValue: BaseUIContextValue = {
 						list={`${name}-datalist`}
 						name={name}
 						{...inputProps}
+						onChange={onChange}
 					/>
 
 					<datalist id={listId}>
@@ -159,7 +161,14 @@ export const contextValue: BaseUIContextValue = {
 			);
 		}
 
-		return <Input disabled={disabled} name={name} {...inputProps} />;
+		return (
+			<Input
+				disabled={disabled}
+				name={name}
+				{...inputProps}
+				onChange={onChange}
+			/>
+		);
 	},
 
 	renderListAddButton: ({ children, disabled, onClick }) => (

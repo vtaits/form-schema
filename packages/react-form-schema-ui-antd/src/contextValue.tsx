@@ -146,7 +146,8 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({
 		disabled,
 		options,
-		inputProps: { ref, size, ...inputProps } = {},
+		inputProps: { ref, size, onSelect: _onSelect, ...inputProps } = {},
+		onChange,
 		name,
 	}) => {
 		if (options && options.length > 0) {
@@ -162,12 +163,20 @@ export const contextValue: BaseUIContextValue = {
 					disabled={disabled}
 					name={name}
 					{...inputProps}
+					onChange={onChange}
 					style={{ width: "100%" }}
 				/>
 			);
 		}
 
-		return <Input disabled={disabled} name={name} {...inputProps} />;
+		return (
+			<Input
+				disabled={disabled}
+				name={name}
+				{...inputProps}
+				onChange={onChange}
+			/>
+		);
 	},
 
 	renderListAddButton: ({ children, onClick, disabled }) => (

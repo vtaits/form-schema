@@ -51,8 +51,8 @@ export function InputComponent({
 						inputProps: {
 							...inputProps,
 							value: field.value || "",
-							onChange: field.onChange,
 						},
+						onChange: field.onChange,
 						options,
 						wrapper: wrapperParams,
 					}) as ReactElement
