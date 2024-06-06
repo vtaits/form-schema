@@ -93,6 +93,15 @@ export type SelectRenderProps<OptionType> = Readonly<
 	}
 >;
 
+export type TagsRenderProps = Readonly<
+	BaseFieldRenderProps & {
+		createLabel?: ReactNode;
+		onChange: (nextValue: readonly string[]) => void;
+		options?: readonly string[];
+		value: readonly string[];
+	}
+>;
+
 export type TextareaRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		debounceTimeout?: number;
@@ -121,6 +130,7 @@ export type BaseUIContextValue = Readonly<{
 	renderSelect: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
+	renderTags: (renderProps: TagsRenderProps) => ReactNode;
 	renderTextArea: (renderProps: TextareaRenderProps) => ReactNode;
 	renderWrapper: (renderProps: WrapperRenderProps) => ReactNode;
 }>;

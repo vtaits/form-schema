@@ -358,6 +358,31 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
+	renderTags: ({ createLabel, disabled, name, onChange, options, value }) => (
+		<ChipsSelect
+			creatable={
+				(typeof createLabel === "string" && createLabel) || "Create new"
+			}
+			disabled={disabled}
+			name={name}
+			onChange={(nextOptions) => {
+				onChange(nextOptions.map(({ value: option }) => option));
+			}}
+			options={
+				options
+					? options.map((option) => ({
+							value: option,
+							label: option,
+						}))
+					: []
+			}
+			value={value.map((option) => ({
+				value: option,
+				label: option,
+			}))}
+		/>
+	),
+
 	renderTextArea: ({
 		disabled,
 		textAreaProps: { ref, size, onResize, defaultValue, ...textAreaProps } = {},

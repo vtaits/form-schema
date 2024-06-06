@@ -11,6 +11,7 @@ export default defineConfig({
     fields_radioGroup: "src/fields/radioGroup/index.ts",
     fields_set: "src/fields/set/index.ts",
     fields_select: "src/fields/select/index.ts",
+    fields_tags: "src/fields/tags/index.ts",
     fields_textarea: "src/fields/textarea/index.ts",
     form: "src/form/index.ts",
   },

@@ -355,6 +355,17 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</select>
 	),
 
+	renderTags: ({ disabled, name, onChange, value }) => (
+		<input
+			disabled={disabled}
+			name={name}
+			onChange={(event) => {
+				onChange(event.target.value.split(","));
+			}}
+			value={value.join(",")}
+		/>
+	),
+
 	renderTextArea: ({ disabled, name, textAreaProps }) => (
 		<textarea disabled={disabled} name={name} {...textAreaProps} />
 	),

@@ -56,6 +56,11 @@
       "import": "./dist/esm/fields_set.js",
       "types": "./dist/fields_set.d.ts"
     },
+    "./fields/tags": {
+      "require": "./dist/fields_tags.js",
+      "import": "./dist/esm/fields_tags.js",
+      "types": "./dist/fields_tags.d.ts"
+    },
     "./fields/textarea": {
       "require": "./dist/fields_textarea.js",
       "import": "./dist/esm/fields_textarea.js",

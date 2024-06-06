@@ -13,6 +13,7 @@ export default defineConfig({
     fields_list: "src/fields/list/index.ts",
     fields_select: "src/fields/select/index.ts",
     fields_set: "src/fields/set/index.ts",
+    fields_tags: "src/fields/tags/index.ts",
   },
   sourcemap: true,
   format: ['esm', 'cjs'],

@@ -352,6 +352,23 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
+	renderTags: ({ disabled, name, options, onChange, value }) => (
+		<Select
+			disabled={disabled}
+			mode="tags"
+			onChange={onChange}
+			options={
+				options
+					? options.map((option) => ({
+							value: option,
+							label: option,
+						}))
+					: []
+			}
+			style={{ width: "100%" }}
+		/>
+	),
+
 	renderTextArea: ({
 		disabled,
 		textAreaProps: { ref, size, onResize, ...textAreaProps } = {},

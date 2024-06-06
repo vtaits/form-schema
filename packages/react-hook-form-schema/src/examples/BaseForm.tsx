@@ -132,6 +132,12 @@ const schemas: Record<string, any> = {
 		],
 	},
 
+	tags: {
+		type: "tags",
+		label: "Tags",
+		options: ["foo", "bar"],
+	},
+
 	textarea: {
 		type: "textarea",
 		label: "Textarea",

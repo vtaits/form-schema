@@ -175,13 +175,14 @@ export function getContextValue(
 						fullWidth
 						options={options}
 						size={muiSize}
+						onSelect={onChange}
 						renderInput={(params) => (
 							<TextField
 								name={name}
 								{...inputProps}
-								onChange={onChange}
 								label={label}
 								{...params}
+								onChange={onChange}
 							/>
 						)}
 					/>
@@ -441,6 +442,30 @@ export function getContextValue(
 					})}
 				</Select>
 			</FormControl>
+		),
+
+		renderTags: ({
+			disabled,
+			name,
+			onChange,
+			options,
+			value,
+			wrapper: { label },
+		}) => (
+			<Autocomplete
+				disabled={disabled}
+				multiple
+				freeSolo
+				fullWidth
+				options={options || []}
+				size={muiSize}
+				onChange={(_, nextValue) => {
+					onChange(nextValue);
+				}}
+				renderInput={(params) => (
+					<TextField name={name} label={label} {...params} />
+				)}
+			/>
 		),
 
 		renderTextArea: ({

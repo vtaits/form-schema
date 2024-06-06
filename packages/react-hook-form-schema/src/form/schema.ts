@@ -8,6 +8,7 @@ import type { ListSchema } from "../fields/list";
 import type { RadioGroupSchema } from "../fields/radioGroup";
 import type { MultiSelectSchema, SelectSchema } from "../fields/select";
 import type { SetSchema } from "../fields/set";
+import type { TagsSchema } from "../fields/tags";
 import type { TextAreaSchema } from "../fields/textarea";
 
 export type DefaultFieldSchema<
@@ -48,6 +49,9 @@ export type DefaultFieldSchema<
 	  })
 	| (SetSchema<any, Values, Payload> & {
 			type: "set";
+	  })
+	| (TagsSchema & {
+			type: "tags";
 	  })
 	| (ListSchema<any> & {
 			type: "list";
