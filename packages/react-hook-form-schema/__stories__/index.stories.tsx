@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { BaseForm } from '../src/examples/BaseForm';
 import { Dynamic } from '../src/examples/Dynamic';
 import { FieldArray } from '../src/examples/FieldArray';
 import { FormError } from '../src/examples/FormError';
@@ -14,6 +15,12 @@ const meta: Meta = {
 
 export default meta;
 type Story = StoryObj;
+
+export const BaseFormStory: Story = {
+  name: 'Base form',
+  args: {},
+  render: (props) => <BaseForm {...props} />,
+};
 
 export const DynamicStory: Story = {
   name: 'Dynamic fields',

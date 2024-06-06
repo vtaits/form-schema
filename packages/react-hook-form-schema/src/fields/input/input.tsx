@@ -20,7 +20,7 @@ type InputComponentProps = Readonly<{
 export function InputComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, inputProps, hint, label },
+		fieldSchema: { disabled, options, inputProps, hint, label },
 		parents,
 	},
 	formResult: {
@@ -53,6 +53,7 @@ export function InputComponent({
 							value: field.value || "",
 							onChange: field.onChange,
 						},
+						options,
 						wrapper: wrapperParams,
 					}) as ReactElement
 				}

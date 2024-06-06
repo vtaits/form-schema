@@ -1,7 +1,5 @@
 import { Form } from "@vtaits/react-hook-form-schema/form";
-import { Button } from "antd";
 import { type ReactElement, useState } from "react";
-import { AntdProvider } from "..";
 
 const schemas: Record<string, any> = {
 	checkbox: {
@@ -39,8 +37,8 @@ const schemas: Record<string, any> = {
 	input: {
 		type: "input",
 		label: "Input",
-		placeholder: "Input",
 		options: ["foo", "bar"],
+		placeholder: "Input",
 	},
 
 	list: {
@@ -180,16 +178,16 @@ export function Simple(): ReactElement {
 	};
 
 	return (
-		<AntdProvider>
+		<>
 			<Form
 				schemas={schemas}
 				onSubmit={onSubmit}
 				renderActions={({ isSubmitting }) => (
-					<Button type="primary" htmlType="submit" disabled={isSubmitting}>
+					<button type="submit" disabled={isSubmitting}>
 						Submit
-					</Button>
+					</button>
 				)}
-				title="Antd integraion form"
+				title="Base UI form"
 			/>
 
 			{submittedValues && (
@@ -201,6 +199,6 @@ export function Simple(): ReactElement {
 					<pre>{JSON.stringify(submittedValues, null, 2)}</pre>
 				</>
 			)}
-		</AntdProvider>
+		</>
 	);
 }

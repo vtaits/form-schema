@@ -62,6 +62,7 @@ export type FormRenderProps = Readonly<{
 export type InputRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		debounceTimeout?: number;
+		options?: readonly string[];
 		inputProps: Partial<HTMLProps<HTMLInputElement>>;
 	}
 >;

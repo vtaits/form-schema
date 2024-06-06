@@ -145,9 +145,30 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</form>
 	),
 
-	renderInput: ({ disabled, inputProps, name }) => (
-		<input name={name} disabled={disabled} {...inputProps} />
-	),
+	renderInput: ({ disabled, inputProps, options, name }) => {
+		if (options && options.length > 0) {
+			const listId = `${name}-datalist`;
+
+			return (
+				<>
+					<input
+						list={`${name}-datalist`}
+						name={name}
+						disabled={disabled}
+						{...inputProps}
+					/>
+
+					<datalist id={listId}>
+						{options.map((option) => (
+							<option key={option} value={option} />
+						))}
+					</datalist>
+				</>
+			);
+		}
+
+		return <input name={name} disabled={disabled} {...inputProps} />;
+	},
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
 		<button type="button" onClick={onClick}>
