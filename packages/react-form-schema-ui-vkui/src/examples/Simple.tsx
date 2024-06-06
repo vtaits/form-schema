@@ -40,6 +40,7 @@ const schemas: Record<string, any> = {
 		type: "input",
 		label: "Input",
 		placeholder: "Input",
+		options: ["foo", "bar"],
 	},
 
 	list: {

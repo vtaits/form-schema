@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Alert from "@mui/material/Alert";
+import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -160,22 +161,45 @@ export function getContextValue(
 
 		renderInput: ({
 			disabled,
-			inputProps: { color, ref, size, onChange, ...inputProps } = {},
+			inputProps: { color, ref, size, ...inputProps } = {},
+			onChange,
+			options,
 			name,
 			wrapper: { label },
-		}) => (
-			<TextField
-				size={muiSize}
-				fullWidth
-				disabled={disabled}
-				name={name}
-				{...inputProps}
-				onChange={
-					onChange as ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-				}
-				label={label}
-			/>
-		),
+		}) => {
+			if (options && options.length > 0) {
+				return (
+					<Autocomplete
+						disabled={disabled}
+						freeSolo
+						fullWidth
+						options={options}
+						size={muiSize}
+						renderInput={(params) => (
+							<TextField
+								name={name}
+								{...inputProps}
+								onChange={onChange}
+								label={label}
+								{...params}
+							/>
+						)}
+					/>
+				);
+			}
+
+			return (
+				<TextField
+					size={muiSize}
+					fullWidth
+					disabled={disabled}
+					name={name}
+					{...inputProps}
+					onChange={onChange}
+					label={label}
+				/>
+			);
+		},
 
 		renderListAddButton: ({ children, disabled, onClick }) => (
 			<Button

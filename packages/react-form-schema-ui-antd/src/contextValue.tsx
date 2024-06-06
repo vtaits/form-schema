@@ -5,6 +5,7 @@ import type {
 } from "@vtaits/react-form-schema-base-ui";
 import {
 	Alert,
+	AutoComplete,
 	Button,
 	Card,
 	Checkbox,
@@ -144,9 +145,39 @@ export const contextValue: BaseUIContextValue = {
 
 	renderInput: ({
 		disabled,
-		inputProps: { ref, size, ...inputProps } = {},
+		options,
+		inputProps: { ref, size, onSelect: _onSelect, ...inputProps } = {},
+		onChange,
 		name,
-	}) => <Input disabled={disabled} name={name} {...inputProps} />,
+	}) => {
+		if (options && options.length > 0) {
+			const searchValue = String(inputProps.value || "").toLowerCase();
+
+			return (
+				<AutoComplete
+					options={options
+						.filter((option) => option.toLowerCase().includes(searchValue))
+						.map((option) => ({
+							value: option,
+						}))}
+					disabled={disabled}
+					name={name}
+					{...inputProps}
+					onChange={onChange}
+					style={{ width: "100%" }}
+				/>
+			);
+		}
+
+		return (
+			<Input
+				disabled={disabled}
+				name={name}
+				{...inputProps}
+				onChange={onChange}
+			/>
+		);
+	},
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
 		<Button

@@ -135,8 +135,41 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({
 		disabled,
 		inputProps: { ref, size, ...inputProps } = {},
+		onChange,
+		options,
 		name,
-	}) => <Input disabled={disabled} name={name} {...inputProps} />,
+	}) => {
+		if (options && options.length > 0) {
+			const listId = `${name}-datalist`;
+
+			return (
+				<>
+					<Input
+						disabled={disabled}
+						list={`${name}-datalist`}
+						name={name}
+						{...inputProps}
+						onChange={onChange}
+					/>
+
+					<datalist id={listId}>
+						{options.map((option) => (
+							<option key={option} value={option} />
+						))}
+					</datalist>
+				</>
+			);
+		}
+
+		return (
+			<Input
+				disabled={disabled}
+				name={name}
+				{...inputProps}
+				onChange={onChange}
+			/>
+		);
+	},
 
 	renderListAddButton: ({ children, disabled, onClick }) => (
 		<Button
