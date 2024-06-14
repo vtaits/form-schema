@@ -18,7 +18,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
-import TextField, { type TextFieldProps } from "@mui/material/TextField";
+import TextField, {
+	type TextFieldVariants,
+	type TextFieldProps,
+} from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -26,10 +29,10 @@ import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
-import type { ChangeEventHandler } from "react";
 
 export function getContextValue(
 	muiSize: "small" | "medium",
+	variant: TextFieldVariants | undefined,
 ): BaseUIContextValue {
 	return {
 		renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
@@ -118,7 +121,7 @@ export function getContextValue(
 				label={label}
 				value={value}
 				onChange={onChange}
-				slotProps={{ textField: { size: muiSize } }}
+				slotProps={{ textField: { size: muiSize, variant } }}
 			/>
 		),
 
@@ -135,7 +138,7 @@ export function getContextValue(
 				label={label}
 				value={value}
 				onChange={onChange}
-				slotProps={{ textField: { size: muiSize } }}
+				slotProps={{ textField: { size: muiSize, variant } }}
 			/>
 		),
 
@@ -181,6 +184,7 @@ export function getContextValue(
 								name={name}
 								{...inputProps}
 								label={label}
+								variant={variant}
 								{...params}
 								onChange={onChange}
 							/>
@@ -198,6 +202,7 @@ export function getContextValue(
 					{...inputProps}
 					onChange={onChange}
 					label={label}
+					variant={variant}
 				/>
 			);
 		},
@@ -325,6 +330,7 @@ export function getContextValue(
 						}}
 						size={muiSize}
 						value={selectedValuesArr}
+						variant={variant}
 					>
 						{options.map((option) => {
 							const optionValue = getOptionValue(option);
@@ -424,6 +430,7 @@ export function getContextValue(
 					}}
 					size={muiSize}
 					value={value ? getOptionValue(value) : ""}
+					variant={variant}
 				>
 					{clearable && (
 						<MenuItem value="">
@@ -463,7 +470,7 @@ export function getContextValue(
 					onChange(nextValue);
 				}}
 				renderInput={(params) => (
-					<TextField name={name} label={label} {...params} />
+					<TextField name={name} label={label} variant={variant} {...params} />
 				)}
 			/>
 		),
@@ -480,6 +487,7 @@ export function getContextValue(
 				multiline
 				name={name}
 				size={muiSize}
+				variant={variant}
 				{...(textAreaProps as Omit<TextFieldProps, "variant">)}
 				label={label}
 			/>
