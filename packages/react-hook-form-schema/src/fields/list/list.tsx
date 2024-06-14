@@ -4,7 +4,6 @@ import { useUI } from "@vtaits/react-form-schema-base-ui";
 import get from "lodash/get";
 import { Fragment, type ReactElement } from "react";
 import {
-	Controller,
 	type FieldValues,
 	type UseFormReturn,
 	useFieldArray,
@@ -28,6 +27,7 @@ export function ListComponent<FieldSchema>({
 			initialItem,
 			label,
 			hint,
+			renderListItemWrapper: renderListItemWrapperParam,
 		},
 		getFieldSchema,
 		getFieldType,
@@ -39,11 +39,16 @@ export function ListComponent<FieldSchema>({
 		clearErrors,
 		control,
 		formState: { errors },
-		register,
 	},
 }: ListComponentProps<FieldSchema>): ReactElement {
-	const { renderListAddButton, renderListItemWrapper, renderListWrapper } =
-		useUI();
+	const {
+		renderListAddButton,
+		renderListItemWrapper: renderListItemWrapperBase,
+		renderListWrapper,
+	} = useUI();
+
+	const renderListItemWrapper =
+		renderListItemWrapperParam || renderListItemWrapperBase;
 
 	const error = renderError(get(errors, fieldPath));
 
