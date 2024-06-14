@@ -53,8 +53,8 @@
   "devDependencies": {
     "@ant-design/icons": "^5.3.7",
     "@biomejs/biome": "^1.8.1",
-    "@storybook/addon-docs": "^8.1.8",
-    "@storybook/react": "^8.1.8",
+    "@storybook/addon-docs": "^8.1.9",
+    "@storybook/react": "^8.1.9",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/react": "^16.0.0",
     "@types/react": "^18.3.3",
