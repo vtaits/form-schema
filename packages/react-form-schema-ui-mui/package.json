@@ -51,13 +51,13 @@
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.1",
+    "@biomejs/biome": "^1.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
-    "@storybook/addon-docs": "^8.1.9",
-    "@storybook/react": "^8.1.9",
+    "@storybook/addon-docs": "^8.1.10",
+    "@storybook/react": "^8.1.10",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/react": "^16.0.0",
     "@types/react": "^18.3.3",
