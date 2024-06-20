@@ -1,6 +1,7 @@
 import type { ErrorMessages } from "./types";
 
 export const defaultErrorMessages: ErrorMessages = {
+	invalidNumber: "The value should be a valid number",
 	required: "This field is required",
 	minLength: (value) => `This field must contain at least ${value} elements`,
 	minLengthStr: (value) => `This field must contain at least ${value} letters`,

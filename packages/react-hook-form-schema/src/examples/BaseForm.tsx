@@ -41,6 +41,14 @@ const schemas: Record<string, any> = {
 		placeholder: "Input",
 	},
 
+	number: {
+		type: "input",
+		label: "Number",
+		isNumber: true,
+		placeholder: "Numeric input",
+		options: ["123", "456"],
+	},
+
 	list: {
 		type: "list",
 		label: "List",

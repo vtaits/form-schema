@@ -1,4 +1,5 @@
 export type ErrorMessages = {
+	invalidNumber: string;
 	required: string;
 	minLength: (value: number) => string;
 	minLengthStr: (value: number) => string;
