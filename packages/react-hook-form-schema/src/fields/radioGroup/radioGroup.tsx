@@ -27,6 +27,7 @@ export function RadioGroupComponent({
 		fieldSchema: {
 			disabled,
 			hint,
+			autoFocus,
 			label,
 			required,
 			getOptionLabel: getOptionLabelParam,
@@ -35,12 +36,10 @@ export function RadioGroupComponent({
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		parents,
 	},
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: RadioGroupComponentProps): ReactElement {
 	const { renderRadioGroup, renderWrapper } = useUI();
@@ -86,6 +85,7 @@ export function RadioGroupComponent({
 						handleClear: () => {
 							field.onChange(null);
 						},
+						autoFocus,
 						onChange: field.onChange,
 						options,
 						wrapper: wrapperParams,

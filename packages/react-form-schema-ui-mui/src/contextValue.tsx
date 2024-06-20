@@ -35,10 +35,18 @@ export function getContextValue(
 	variant: TextFieldVariants | undefined,
 ): BaseUIContextValue {
 	return {
-		renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
+		renderCheckbox: ({
+			checked,
+			disabled,
+			autoFocus,
+			name,
+			onChange,
+			children,
+		}) => (
 			<FormControlLabel
 				control={
 					<Checkbox
+						autoFocus={autoFocus}
 						checked={checked}
 						disabled={disabled}
 						size={muiSize}
@@ -109,6 +117,7 @@ export function getContextValue(
 		},
 
 		renderDatePicker: ({
+			autoFocus,
 			disabled,
 			displayDateFormat,
 			onChange,
@@ -116,6 +125,7 @@ export function getContextValue(
 			wrapper: { label },
 		}) => (
 			<DatePicker
+				autoFocus={autoFocus}
 				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
@@ -128,11 +138,13 @@ export function getContextValue(
 		renderDateTimePicker: ({
 			disabled,
 			displayDateFormat,
+			autoFocus,
 			onChange,
 			value,
 			wrapper: { label },
 		}) => (
 			<DateTimePicker
+				autoFocus={autoFocus}
 				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
@@ -165,6 +177,7 @@ export function getContextValue(
 		renderInput: ({
 			disabled,
 			inputProps: { color, ref, size, ...inputProps } = {},
+			autoFocus,
 			onChange,
 			options,
 			name,
@@ -173,6 +186,7 @@ export function getContextValue(
 			if (options && options.length > 0) {
 				return (
 					<Autocomplete
+						autoFocus={autoFocus}
 						disabled={disabled}
 						freeSolo
 						fullWidth
@@ -186,6 +200,7 @@ export function getContextValue(
 								label={label}
 								variant={variant}
 								{...params}
+								autoFocus={autoFocus}
 								onChange={onChange}
 							/>
 						)}
@@ -195,6 +210,7 @@ export function getContextValue(
 
 			return (
 				<TextField
+					autoFocus={autoFocus}
 					size={muiSize}
 					fullWidth
 					disabled={disabled}
@@ -453,6 +469,7 @@ export function getContextValue(
 
 		renderTags: ({
 			disabled,
+			autoFocus,
 			name,
 			onChange,
 			options,
@@ -460,12 +477,14 @@ export function getContextValue(
 			wrapper: { label },
 		}) => (
 			<Autocomplete
+				autoFocus={autoFocus}
 				disabled={disabled}
 				multiple
 				freeSolo
 				fullWidth
 				options={options || []}
 				size={muiSize}
+				value={value as string[]}
 				onChange={(_, nextValue) => {
 					onChange(nextValue);
 				}}
@@ -477,11 +496,13 @@ export function getContextValue(
 
 		renderTextArea: ({
 			disabled,
+			autoFocus,
 			name,
 			textAreaProps: { color, ref, size, ...textAreaProps } = {},
 			wrapper: { label },
 		}) => (
 			<TextField
+				autoFocus={autoFocus}
 				disabled={disabled}
 				fullWidth
 				multiline

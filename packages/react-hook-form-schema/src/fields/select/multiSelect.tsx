@@ -27,8 +27,8 @@ export function MultiSelectComponent({
 		fieldSchema: {
 			disabled,
 			hint,
+			autoFocus,
 			label,
-			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
 			options,
@@ -36,12 +36,10 @@ export function MultiSelectComponent({
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		parents,
 	},
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: MultiSelectComponentProps): ReactElement {
 	const { renderMultiSelect, renderWrapper } = useUI();
@@ -86,6 +84,7 @@ export function MultiSelectComponent({
 						handleClear: () => {
 							field.onChange(null);
 						},
+						autoFocus,
 						onChange: field.onChange,
 						options,
 						placeholder,

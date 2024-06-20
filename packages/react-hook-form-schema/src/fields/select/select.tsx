@@ -28,6 +28,7 @@ export function SelectComponent({
 			disabled,
 			label,
 			hint,
+			autoFocus,
 			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
@@ -36,12 +37,10 @@ export function SelectComponent({
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		parents,
 	},
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: SelectComponentProps): ReactElement {
 	const { renderSelect, renderWrapper } = useUI();
@@ -87,6 +86,7 @@ export function SelectComponent({
 						handleClear: () => {
 							field.onChange(null);
 						},
+						autoFocus,
 						onChange: field.onChange,
 						options,
 						placeholder,

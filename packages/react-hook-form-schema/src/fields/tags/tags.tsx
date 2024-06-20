@@ -40,8 +40,7 @@ type TagsComponentProps = Readonly<{
 export function TagsComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, options, hint, label },
-		parents,
+		fieldSchema: { disabled, options, hint, autoFocus, label },
 	},
 	formResult: {
 		control,
@@ -67,6 +66,7 @@ export function TagsComponent({
 				render={({ field }) =>
 					renderTags({
 						disabled,
+						autoFocus,
 						name: fieldPath,
 						value: prepareValue(field.value),
 						onChange: field.onChange,

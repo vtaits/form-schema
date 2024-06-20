@@ -21,8 +21,16 @@ import type {
 } from "@vtaits/react-form-schema-base-ui";
 
 export const contextValue: BaseUIContextValue = {
-	renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
+	renderCheckbox: ({
+		checked,
+		disabled,
+		autoFocus,
+		name,
+		onChange,
+		children,
+	}) => (
 		<Checkbox
+			autoFocus={autoFocus}
 			disabled={disabled}
 			name={name}
 			checked={checked}
@@ -81,9 +89,10 @@ export const contextValue: BaseUIContextValue = {
 		);
 	},
 
-	renderDatePicker: ({ disabled, onChange, value }) => (
+	renderDatePicker: ({ disabled, autoFocus, onChange, value }) => (
 		<div style={{ display: "flex" }}>
 			<DateInput
+				autoFocus={autoFocus}
 				disabled={disabled}
 				value={value || undefined}
 				onChange={onChange}
@@ -91,9 +100,10 @@ export const contextValue: BaseUIContextValue = {
 		</div>
 	),
 
-	renderDateTimePicker: ({ disabled, onChange, value }) => (
+	renderDateTimePicker: ({ disabled, autoFocus, onChange, value }) => (
 		<div style={{ display: "flex" }}>
 			<DateInput
+				autoFocus={autoFocus}
 				disabled={disabled}
 				enableTime
 				value={value || undefined}
@@ -135,6 +145,7 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({
 		disabled,
 		inputProps: { ref, size, ...inputProps } = {},
+		autoFocus,
 		onChange,
 		options,
 		name,
@@ -145,6 +156,7 @@ export const contextValue: BaseUIContextValue = {
 			return (
 				<>
 					<Input
+						autoFocus={autoFocus}
 						disabled={disabled}
 						list={`${name}-datalist`}
 						name={name}
@@ -163,6 +175,7 @@ export const contextValue: BaseUIContextValue = {
 
 		return (
 			<Input
+				autoFocus={autoFocus}
 				disabled={disabled}
 				name={name}
 				{...inputProps}
@@ -254,6 +267,7 @@ export const contextValue: BaseUIContextValue = {
 
 	renderMultiSelect: <OptionType,>({
 		disabled,
+		autoFocus,
 		options,
 		value,
 		onChange,
@@ -261,6 +275,7 @@ export const contextValue: BaseUIContextValue = {
 		getOptionValue,
 	}: MultiSelectRenderProps<OptionType>) => (
 		<ChipsSelect
+			autoFocus={autoFocus}
 			disabled={disabled}
 			onChange={(nextSelectValue) => {
 				const nextValue: OptionType[] = [];
@@ -330,6 +345,7 @@ export const contextValue: BaseUIContextValue = {
 	renderSelect: ({
 		clearable,
 		disabled,
+		autoFocus,
 		options,
 		placeholder,
 		value,
@@ -339,6 +355,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => (
 		<Select
 			allowClearButton={clearable}
+			autoFocus={autoFocus}
 			disabled={disabled}
 			onChange={(event) => {
 				const nextValue = event.target.value;
@@ -358,8 +375,17 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderTags: ({ createLabel, disabled, name, onChange, options, value }) => (
+	renderTags: ({
+		createLabel,
+		disabled,
+		autoFocus,
+		name,
+		onChange,
+		options,
+		value,
+	}) => (
 		<ChipsSelect
+			autoFocus={autoFocus}
 			creatable={
 				(typeof createLabel === "string" && createLabel) || "Create new"
 			}
@@ -385,10 +411,12 @@ export const contextValue: BaseUIContextValue = {
 
 	renderTextArea: ({
 		disabled,
+		autoFocus,
 		textAreaProps: { ref, size, onResize, defaultValue, ...textAreaProps } = {},
 		name,
 	}) => (
 		<Textarea
+			autoFocus={autoFocus}
 			disabled={disabled}
 			name={name}
 			{...textAreaProps}

@@ -31,12 +31,12 @@ export function DateComponent({
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			disabled,
-			displayDateFormat,
+			displayDateFormat = DEFAULT_DISPLAY_DATE_FORMAT,
+			autoFocus,
 			label,
 			hint,
 			inputProps,
 		},
-		parents,
 	},
 	formResult: {
 		control,
@@ -65,6 +65,7 @@ export function DateComponent({
 						displayDateFormat,
 						name: fieldPath,
 						inputProps: inputProps || {},
+						autoFocus,
 						onChange: (nextValue) => {
 							field.onChange(
 								nextValue ? serializeDate(nextValue, clientDateFormat) : null,

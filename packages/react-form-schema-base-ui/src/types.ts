@@ -30,6 +30,7 @@ export type WrapperRenderProps = Readonly<{
 
 export type BaseFieldRenderProps = Readonly<{
 	disabled?: boolean;
+	autoFocus?: boolean;
 	name: string;
 	wrapper: WrapperRenderProps;
 }>;

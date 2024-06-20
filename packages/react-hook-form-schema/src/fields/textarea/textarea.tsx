@@ -20,13 +20,11 @@ type TextAreaComponentProps = Readonly<{
 export function TextAreaComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, hint, label, textAreaProps },
-		parents,
+		fieldSchema: { disabled, hint, autoFocus, label, textAreaProps },
 	},
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: TextAreaComponentProps): ReactElement {
 	const { renderTextArea, renderWrapper } = useUI();
@@ -49,6 +47,7 @@ export function TextAreaComponent({
 					renderTextArea({
 						disabled,
 						name: fieldPath,
+						autoFocus,
 						textAreaProps: {
 							...textAreaProps,
 							value: field.value || "",

@@ -8,7 +8,14 @@ const DATE_FORMAT = "yyyy-MM-dd";
 const DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
 export const BaseUIContext = createContext<BaseUIContextValue>({
-	renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
+	renderCheckbox: ({
+		checked,
+		disabled,
+		autoFocus,
+		name,
+		onChange,
+		children,
+	}) => (
 		<label>
 			<input
 				disabled={disabled}
@@ -72,7 +79,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		);
 	},
 
-	renderDatePicker: ({ disabled, inputProps, onChange, value }) => (
+	renderDatePicker: ({ disabled, inputProps, autoFocus, onChange, value }) => (
 		<input
 			disabled={disabled}
 			{...inputProps}
@@ -98,7 +105,13 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		/>
 	),
 
-	renderDateTimePicker: ({ disabled, inputProps, onChange, value }) => (
+	renderDateTimePicker: ({
+		disabled,
+		inputProps,
+		autoFocus,
+		onChange,
+		value,
+	}) => (
 		<input
 			disabled={disabled}
 			{...inputProps}
@@ -145,7 +158,14 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</form>
 	),
 
-	renderInput: ({ disabled, inputProps, onChange, options, name }) => {
+	renderInput: ({
+		disabled,
+		inputProps,
+		autoFocus,
+		onChange,
+		options,
+		name,
+	}) => {
 		if (options && options.length > 0) {
 			const listId = `${name}-datalist`;
 
@@ -228,6 +248,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 	renderMultiSelect: <OptionType,>({
 		disabled,
+		autoFocus,
 		name,
 		options,
 		value,
@@ -319,6 +340,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	renderSelect: ({
 		clearable,
 		disabled,
+		autoFocus,
 		name,
 		options,
 		placeholder,
@@ -355,7 +377,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</select>
 	),
 
-	renderTags: ({ disabled, name, onChange, value }) => (
+	renderTags: ({ disabled, autoFocus, name, onChange, value }) => (
 		<input
 			disabled={disabled}
 			name={name}
@@ -366,7 +388,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		/>
 	),
 
-	renderTextArea: ({ disabled, name, textAreaProps }) => (
+	renderTextArea: ({ disabled, autoFocus, name, textAreaProps }) => (
 		<textarea disabled={disabled} name={name} {...textAreaProps} />
 	),
 
@@ -388,7 +410,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 			<p
 				style={{
-					color: "gray",
+					color: "red",
 				}}
 			>
 				{error}

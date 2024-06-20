@@ -20,13 +20,11 @@ type CheckboxComponentProps = Readonly<{
 export function CheckboxComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { checkboxLabel, disabled, hint, label },
-		parents,
+		fieldSchema: { checkboxLabel, disabled, hint, autoFocus, label },
 	},
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: CheckboxComponentProps): ReactElement {
 	const { renderCheckbox, renderWrapper } = useUI();
@@ -50,6 +48,7 @@ export function CheckboxComponent({
 						children: checkboxLabel,
 						disabled,
 						checked: Boolean(field.value),
+						autoFocus,
 						name: fieldPath,
 						onChange: field.onChange,
 						wrapper: wrapperParams,

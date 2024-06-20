@@ -39,6 +39,7 @@ const schemas: Record<string, any> = {
 		label: "Input",
 		options: ["foo", "bar"],
 		placeholder: "Input",
+		autoFocus: true,
 	},
 
 	number: {

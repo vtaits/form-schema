@@ -20,8 +20,16 @@ import dayjs from "dayjs";
 import { FieldRow } from "./FieldRow";
 
 export const contextValue: BaseUIContextValue = {
-	renderCheckbox: ({ checked, disabled, name, onChange, children }) => (
+	renderCheckbox: ({
+		checked,
+		disabled,
+		autoFocus,
+		name,
+		onChange,
+		children,
+	}) => (
 		<Checkbox
+			autoFocus={autoFocus}
 			checked={checked}
 			disabled={disabled}
 			name={name}
@@ -80,8 +88,15 @@ export const contextValue: BaseUIContextValue = {
 		);
 	},
 
-	renderDatePicker: ({ disabled, displayDateFormat, onChange, value }) => (
+	renderDatePicker: ({
+		disabled,
+		displayDateFormat,
+		autoFocus,
+		onChange,
+		value,
+	}) => (
 		<DatePicker
+			autoFocus={autoFocus}
 			disabled={disabled}
 			format={displayDateFormat}
 			value={value ? dayjs(value) : undefined}
@@ -96,8 +111,15 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderDateTimePicker: ({ disabled, displayDateFormat, onChange, value }) => (
+	renderDateTimePicker: ({
+		disabled,
+		displayDateFormat,
+		autoFocus,
+		onChange,
+		value,
+	}) => (
 		<DatePicker
+			autoFocus={autoFocus}
 			disabled={disabled}
 			format={displayDateFormat}
 			value={value ? dayjs(value) : undefined}
@@ -147,6 +169,7 @@ export const contextValue: BaseUIContextValue = {
 		disabled,
 		options,
 		inputProps: { ref, size, onSelect: _onSelect, ...inputProps } = {},
+		autoFocus,
 		onChange,
 		name,
 	}) => {
@@ -155,6 +178,7 @@ export const contextValue: BaseUIContextValue = {
 
 			return (
 				<AutoComplete
+					autoFocus={autoFocus}
 					options={options
 						.filter((option) => option.toLowerCase().includes(searchValue))
 						.map((option) => ({
@@ -171,6 +195,7 @@ export const contextValue: BaseUIContextValue = {
 
 		return (
 			<Input
+				autoFocus={autoFocus}
 				disabled={disabled}
 				name={name}
 				{...inputProps}
@@ -250,6 +275,7 @@ export const contextValue: BaseUIContextValue = {
 
 	renderMultiSelect: <OptionType,>({
 		disabled,
+		autoFocus,
 		options,
 		value,
 		onChange,
@@ -257,6 +283,7 @@ export const contextValue: BaseUIContextValue = {
 		getOptionValue,
 	}: MultiSelectRenderProps<OptionType>) => (
 		<Select
+			autoFocus={autoFocus}
 			disabled={disabled}
 			mode="multiple"
 			onChange={(nextSelectValue) => {
@@ -323,6 +350,7 @@ export const contextValue: BaseUIContextValue = {
 	renderSelect: ({
 		clearable,
 		disabled,
+		autoFocus,
 		options,
 		placeholder,
 		value,
@@ -332,6 +360,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => (
 		<Select
 			allowClear={clearable}
+			autoFocus={autoFocus}
 			disabled={disabled}
 			onChange={(nextValue) => {
 				const selectedOption = options.find(
@@ -352,8 +381,9 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderTags: ({ disabled, name, options, onChange, value }) => (
+	renderTags: ({ disabled, autoFocus, options, onChange, value }) => (
 		<Select
+			autoFocus={autoFocus}
 			disabled={disabled}
 			mode="tags"
 			onChange={onChange}
@@ -371,9 +401,17 @@ export const contextValue: BaseUIContextValue = {
 
 	renderTextArea: ({
 		disabled,
+		autoFocus,
 		textAreaProps: { ref, size, onResize, ...textAreaProps } = {},
 		name,
-	}) => <Input.TextArea disabled={disabled} name={name} {...textAreaProps} />,
+	}) => (
+		<Input.TextArea
+			autoFocus={autoFocus}
+			disabled={disabled}
+			name={name}
+			{...textAreaProps}
+		/>
+	),
 
 	renderWrapper: ({ children, error, hint, label }) => {
 		return (

@@ -20,8 +20,7 @@ type InputComponentProps = Readonly<{
 export function InputComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, options, inputProps, hint, label },
-		parents,
+		fieldSchema: { disabled, options, inputProps, hint, autoFocus, label },
 	},
 	formResult: {
 		control,
@@ -52,6 +51,7 @@ export function InputComponent({
 							...inputProps,
 							value: field.value || "",
 						},
+						autoFocus,
 						onChange: field.onChange,
 						options,
 						wrapper: wrapperParams,

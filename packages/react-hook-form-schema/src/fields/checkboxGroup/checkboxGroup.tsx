@@ -28,18 +28,17 @@ export function CheckboxGroupComponent({
 			disabled,
 			label,
 			hint,
+			autoFocus,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
-		parents,
 	},
 	formResult: {
 		control,
 		formState: { errors },
-		register,
 	},
 }: CheckboxGroupComponentProps): ReactElement {
 	const { renderCheckboxGroup, renderWrapper } = useUI();
@@ -77,6 +76,7 @@ export function CheckboxGroupComponent({
 				render={({ field }) =>
 					renderCheckboxGroup({
 						disabled,
+						autoFocus,
 						value: field.value,
 						name: fieldPath,
 						getOptionLabel,
