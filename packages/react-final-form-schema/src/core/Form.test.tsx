@@ -434,8 +434,8 @@ test("should submit with error", async () => {
 
 	vi.mocked(formSchema.serialize).mockReturnValue(serializedValues);
 
-	const onSubmit = vi.fn<[Values, Values], any>(() => rawErrors);
-	const mapErrors = vi.fn<[Errors, Values, Values], any>(() => preparedErrors);
+	const onSubmit = vi.fn().mockReturnValue(rawErrors);
+	const mapErrors = vi.fn().mockReturnValue(preparedErrors);
 
 	const setError = vi.fn();
 

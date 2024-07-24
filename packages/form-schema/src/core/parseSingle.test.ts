@@ -11,8 +11,6 @@ import type {
 
 type Values = Record<string, any>;
 
-type ParserArgs = Parameters<Parser<any, any, any, any, any>>;
-
 const fieldSchemas: Record<string | number | symbol, unknown> = {
 	value: {
 		type: "testType",
@@ -249,7 +247,7 @@ test("should work with async single parser", async () => {
 });
 
 test("should redefine getFieldSchema", () => {
-	const parser = vi.fn<ParserArgs, any>(() => ({}));
+	const parser = vi.fn<Parser<any, any, any, any, any>>(() => ({}));
 
 	const parentGetFieldSchema = vi.fn(() => ({
 		type: "testType",
@@ -258,10 +256,9 @@ test("should redefine getFieldSchema", () => {
 
 	const getFieldSchema = vi.fn();
 
-	const createGetFieldSchema = vi.fn<
-		Parameters<CreateGetFieldSchema<any, any, any, any, any>>,
-		any
-	>(() => getFieldSchema);
+	const createGetFieldSchema = vi
+		.fn<CreateGetFieldSchema<any, any, any, any, any>>()
+		.mockReturnValue(getFieldSchema);
 
 	const getFieldType = vi.fn().mockReturnValue({
 		parser,

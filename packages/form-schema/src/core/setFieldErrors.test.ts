@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { defaultFieldErrorsSetter, setFieldErrors } from "./setFieldErrors";
 import type {
-	BaseValues,
 	CreateGetFieldSchema,
 	ErrorsSetter,
 	FieldType,
@@ -12,8 +11,6 @@ import type {
 } from "./types";
 
 type Values = Record<string, any>;
-
-type ErrorsSetterArgs = Parameters<ErrorsSetter<any, any, any, any, any>>;
 
 const setError = vi.fn();
 
@@ -406,7 +403,9 @@ describe("setFieldErrors", () => {
 	});
 
 	test("should redefine getFieldSchema", () => {
-		const errorsSetter = vi.fn<ErrorsSetterArgs, any>(() => ({}));
+		const errorsSetter = vi.fn<ErrorsSetter<any, any, any, any, any>>(
+			() => ({}),
+		);
 
 		const parentGetFieldSchema = vi.fn(() => ({
 			type: "testType",
@@ -415,10 +414,9 @@ describe("setFieldErrors", () => {
 
 		const getFieldSchema = vi.fn();
 
-		const createGetFieldSchema = vi.fn<
-			Parameters<CreateGetFieldSchema<any, any, any, any, any>>,
-			any
-		>(() => getFieldSchema);
+		const createGetFieldSchema = vi
+			.fn<CreateGetFieldSchema<any, any, any, any, any>>()
+			.mockReturnValue(getFieldSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({
 			errorsSetter,

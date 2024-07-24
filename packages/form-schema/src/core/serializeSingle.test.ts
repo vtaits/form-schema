@@ -9,8 +9,6 @@ import type {
 	Serializer,
 } from "./types";
 
-type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
-
 const parents: ParentType[] = [
 	{
 		values: {},
@@ -179,7 +177,7 @@ describe("serializeSingle", () => {
 	});
 
 	test("should redefine getFieldSchema", () => {
-		const serializer = vi.fn<SerializerArgs, any>(() => ({}));
+		const serializer = vi.fn<Serializer<any, any, any, any, any>>(() => ({}));
 
 		const parentGetFieldSchema = vi.fn().mockReturnValue({
 			type: "testType",
@@ -189,7 +187,7 @@ describe("serializeSingle", () => {
 		const getFieldSchema = vi.fn();
 
 		const createGetFieldSchema = vi
-			.fn<Parameters<CreateGetFieldSchema<any, any, any, any, any>>, any>()
+			.fn<CreateGetFieldSchema<any, any, any, any, any>>()
 			.mockReturnValue(getFieldSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({

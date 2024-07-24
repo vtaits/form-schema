@@ -111,21 +111,21 @@
     "use-latest": "^1.2.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.2",
-    "@storybook/addon-docs": "^8.1.10",
-    "@storybook/react": "^8.1.10",
-    "@testing-library/dom": "^10.1.0",
+    "@biomejs/biome": "^1.8.3",
+    "@storybook/addon-docs": "^8.2.6",
+    "@storybook/react": "^8.2.6",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.0",
-    "@types/lodash": "^4.17.5",
+    "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^2.0.4",
     "exports-fallback": "^1.0.1",
-    "happy-dom": "^14.12.0",
+    "happy-dom": "^14.12.3",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.52.0",
+    "react-hook-form": "^7.52.1",
     "react-integration-test-engine": "^1.5.0",
     "react-is": "^18.3.1",
     "react-select": "^5.8.0",
@@ -133,8 +133,8 @@
     "react-test-engine": "^1.1.2",
     "react-test-engine-vitest": "^1.0.2",
     "react-test-renderer": "^18.3.1",
-    "tsup": "^8.1.0",
+    "tsup": "^8.2.3",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.4"
   }
 }

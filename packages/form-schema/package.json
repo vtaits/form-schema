@@ -104,11 +104,11 @@
     "krustykrab": "^1.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.2",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@biomejs/biome": "^1.8.3",
+    "@vitest/coverage-v8": "^2.0.4",
     "exports-fallback": "^1.0.1",
-    "tsup": "^8.1.0",
+    "tsup": "^8.2.3",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.4"
   }
 }

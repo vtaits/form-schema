@@ -9,10 +9,6 @@ import type {
 } from "./types";
 import { validateBeforeSubmit } from "./validateBeforeSubmit";
 
-type ValidatorBeforeSubmitArgs = Parameters<
-	ValidatorBeforeSubmit<any, any, any, any, any>
->;
-
 const setError = vi.fn();
 
 const parents: ParentType[] = [
@@ -54,7 +50,9 @@ test("should call redefined validatorBeforeSubmit", () => {
 		value2: "test2",
 	};
 
-	const validatorBeforeSubmit = vi.fn<ValidatorBeforeSubmitArgs, any>(
+	const validatorBeforeSubmit = vi.fn<
+		ValidatorBeforeSubmit<any, any, any, any, any>
+	>(
 		({
 			setError,
 			values,
@@ -162,9 +160,9 @@ test("should call multiple validators", () => {
 });
 
 test("should redefine getFieldSchema", () => {
-	const validatorBeforeSubmit = vi.fn<ValidatorBeforeSubmitArgs, any>(
-		() => ({}),
-	);
+	const validatorBeforeSubmit = vi.fn<
+		ValidatorBeforeSubmit<any, any, any, any, any>
+	>(() => ({}));
 
 	const parentGetFieldSchema = vi.fn(() => ({
 		type: "testType",
@@ -174,7 +172,7 @@ test("should redefine getFieldSchema", () => {
 	const getFieldSchema = vi.fn();
 
 	const createGetFieldSchema = vi
-		.fn<Parameters<CreateGetFieldSchema<any, any, any, any, any>>, any>()
+		.fn<CreateGetFieldSchema<any, any, any, any, any>>()
 		.mockReturnValue(getFieldSchema);
 
 	const getFieldType = vi.fn().mockReturnValue({

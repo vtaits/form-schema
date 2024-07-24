@@ -51,23 +51,23 @@
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.2",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.20",
-    "@mui/material": "^5.15.20",
-    "@storybook/addon-docs": "^8.1.10",
-    "@storybook/react": "^8.1.10",
-    "@testing-library/dom": "^10.1.0",
+    "@biomejs/biome": "^1.8.3",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^5.16.4",
+    "@mui/material": "^5.16.4",
+    "@storybook/addon-docs": "^8.2.6",
+    "@storybook/react": "^8.2.6",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^2.0.4",
     "@vtaits/form-schema": "^2.3.0-alpha.4",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.5",
     "@vtaits/react-hook-form-schema": "^1.2.0-alpha.7",
     "exports-fallback": "^1.0.1",
-    "happy-dom": "^14.12.0",
+    "happy-dom": "^14.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-integration-test-engine": "^1.5.0",
@@ -77,12 +77,12 @@
     "react-test-engine": "^1.1.2",
     "react-test-engine-vitest": "^1.0.2",
     "react-test-renderer": "^18.3.1",
-    "tsup": "^8.1.0",
+    "tsup": "^8.2.3",
     "typescript": "5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.4"
   },
   "dependencies": {
-    "@mui/x-date-pickers": "^7.7.0",
+    "@mui/x-date-pickers": "^7.11.0",
     "date-fns": "^3.6.0"
   }
 }

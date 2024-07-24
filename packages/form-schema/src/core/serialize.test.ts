@@ -85,9 +85,11 @@ describe("serialize", () => {
 			value2: "test2",
 		};
 
-		const serializer = vi.fn<SerializerArgs, any>(({ values, name }) => ({
-			[name]: values[name] + values[name],
-		}));
+		const serializer = vi.fn<Serializer<any, any, any, any, any>>(
+			({ values, name }) => ({
+				[name]: values[name] + values[name],
+			}),
+		);
 
 		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
 			serializer,
@@ -227,7 +229,7 @@ describe("serialize", () => {
 	});
 
 	test("should redefine getFieldSchema", () => {
-		const serializer = vi.fn<SerializerArgs, any>(() => ({}));
+		const serializer = vi.fn<Serializer<any, any, any, any, any>>(() => ({}));
 
 		const parentGetFieldSchema = vi.fn(() => ({
 			type: "testType",
@@ -237,7 +239,7 @@ describe("serialize", () => {
 		const getFieldSchema = vi.fn();
 
 		const createGetFieldSchema = vi
-			.fn<Parameters<CreateGetFieldSchema<any, any, any, any, any>>, any>()
+			.fn<CreateGetFieldSchema<any, any, any, any, any>>()
 			.mockReturnValue(getFieldSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({
