@@ -91,6 +91,7 @@ export function getContextValue(
 												checked={checked}
 												disabled={disabled}
 												name={name}
+												value={optionValue}
 												onChange={() => {
 													if (checked) {
 														onChange(
@@ -120,6 +121,7 @@ export function getContextValue(
 			autoFocus,
 			disabled,
 			displayDateFormat,
+			name,
 			onChange,
 			value,
 			wrapper: { label },
@@ -129,6 +131,7 @@ export function getContextValue(
 				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
+				name={name}
 				value={value}
 				onChange={onChange}
 				slotProps={{ textField: { size: muiSize, variant } }}
@@ -139,6 +142,7 @@ export function getContextValue(
 			disabled,
 			displayDateFormat,
 			autoFocus,
+			name,
 			onChange,
 			value,
 			wrapper: { label },
@@ -148,6 +152,7 @@ export function getContextValue(
 				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
+				name={name}
 				value={value}
 				onChange={onChange}
 				slotProps={{ textField: { size: muiSize, variant } }}
@@ -230,13 +235,20 @@ export function getContextValue(
 				size={muiSize}
 				startIcon={<AddIcon />}
 				variant="text"
+				data-testid="@@list/add"
 			>
 				{children}
 			</Button>
 		),
 
-		renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-			<Card>
+		renderListItemWrapper: ({
+			children,
+			disabled,
+			handleRemove,
+			title,
+			name,
+		}) => (
+			<Card data-testid={`@@list-item/${name}`}>
 				<CardHeader
 					action={
 						handleRemove && (
@@ -257,8 +269,8 @@ export function getContextValue(
 			</Card>
 		),
 
-		renderListWrapper: ({ actions, error, hint, items, label }) => (
-			<div>
+		renderListWrapper: ({ actions, error, hint, items, label, name }) => (
+			<div data-testid={`@@list/${name}`}>
 				{label && <FormLabel>{label}</FormLabel>}
 
 				<Box
@@ -514,7 +526,7 @@ export function getContextValue(
 			/>
 		),
 
-		renderWrapper: ({ children, error, hint, label }) => {
+		renderWrapper: ({ children, error, hint }) => {
 			return (
 				<Box marginBottom={2}>
 					{children}

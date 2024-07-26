@@ -210,12 +210,19 @@ export const contextValue: BaseUIContextValue = {
 			icon={<PlusOutlined />}
 			onClick={onClick}
 			type="link"
+			data-testid="@@list/add"
 		>
 			{children}
 		</Button>
 	),
 
-	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
+	renderListItemWrapper: ({
+		children,
+		disabled,
+		handleRemove,
+		name,
+		title,
+	}) => (
 		<Card
 			title={title}
 			extra={
@@ -229,14 +236,18 @@ export const contextValue: BaseUIContextValue = {
 					/>
 				)
 			}
+			data-testid={`@@list-item/${name}`}
 		>
 			{children}
 		</Card>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label }) => {
+	renderListWrapper: ({ actions, error, hint, items, label, name }) => {
 		return (
-			<FieldRow label={label && <label>{label}</label>}>
+			<FieldRow
+				label={label && <label>{label}</label>}
+				data-testid={`@@list/${name}`}
+			>
 				<Flex gap="middle" vertical role="list">
 					{items}
 				</Flex>

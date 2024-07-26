@@ -1,7 +1,7 @@
 {
-  "name": "@vtaits/react-form-schema-base-ui",
-  "version": "1.0.0-alpha.5",
-  "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
+  "name": "@vtaits/react-form-schema-ui-mui-testing-library",
+  "version": "1.0.0-alpha.0",
+  "description": "Helpers for @testing-library/react to test @vtaits/react-form-schema-ui-mui",
   "files": [
     "dist",
     "fields"
@@ -32,47 +32,39 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn build:js && yarn build:proxy_directories",
+    "build": "yarn build:js",
     "build:js": "tsup",
-    "build:proxy_directories": "exports-fallback -gf",
     "test:ts": "tsc",
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",
     "format": "biome format src --write",
-    "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
-    "test:unit:watch": "vitest",
-    "test": "yarn test:unit",
+    "test": "yarn lint && yarn test:ts",
     "prepare": "yarn clean && yarn build"
   },
   "peerDependencies": {
+    "@testing-library/dom": "^10.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.0.0",
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@storybook/addon-docs": "^8.2.6",
-    "@storybook/react": "^8.2.6",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@types/react-is": "^18.3.0",
     "@vitest/coverage-v8": "^2.0.4",
+    "@vtaits/form-schema": "^2.3.0-alpha.4",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.7",
     "exports-fallback": "^1.0.1",
     "happy-dom": "^14.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-integration-test-engine": "^1.5.0",
-    "react-is": "^18.3.1",
-    "react-select": "^5.8.0",
-    "react-shallow-search": "^2.2.0",
-    "react-test-engine": "^1.1.3",
-    "react-test-engine-vitest": "^1.0.3",
-    "react-test-renderer": "^18.3.1",
     "tsup": "^8.2.3",
     "typescript": "5.4.5",
     "vitest": "^2.0.4"
-  },
-  "dependencies": {
-    "date-fns": "^3.6.0"
   }
 }

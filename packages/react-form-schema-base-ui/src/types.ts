@@ -10,6 +10,7 @@ export type ListItemWrapperRenderProps = Readonly<{
 	children?: ReactNode;
 	disabled?: boolean;
 	handleRemove?: () => void;
+	name: string;
 	title?: ReactNode;
 }>;
 
@@ -17,6 +18,7 @@ export type ListWrapperRenderProps = Readonly<{
 	actions?: ReactNode;
 	error?: ReactNode;
 	hint?: ReactNode;
+	name: string;
 	items?: ReactNode;
 	label?: ReactNode;
 }>;

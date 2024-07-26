@@ -199,13 +199,19 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	},
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
-		<button type="button" onClick={onClick}>
+		<button data-testid="@@list/add" type="button" onClick={onClick}>
 			{children}
 		</button>
 	),
 
-	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-		<fieldset>
+	renderListItemWrapper: ({
+		children,
+		disabled,
+		handleRemove,
+		title,
+		name,
+	}) => (
+		<fieldset data-testid={`@@list-item/${name}`}>
 			{title && <legend>{title}</legend>}
 
 			{children}
@@ -218,8 +224,8 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</fieldset>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label }) => (
-		<div>
+	renderListWrapper: ({ actions, error, hint, items, label, name }) => (
+		<div data-testid={`@@list/${name}`}>
 			{label && <label>{label}</label>}
 
 			<div role="list">{items}</div>
