@@ -4004,14 +4004,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vkontakte/icons@npm:^2.127.0, @vkontakte/icons@npm:^2.62.0":
-  version: 2.127.0
-  resolution: "@vkontakte/icons@npm:2.127.0"
+"@vkontakte/icons@npm:^2.128.0, @vkontakte/icons@npm:^2.62.0":
+  version: 2.128.0
+  resolution: "@vkontakte/icons@npm:2.128.0"
   dependencies:
     "@vkontakte/icons-sprite": "npm:2.2.0"
   peerDependencies:
     react: ^16.9.34 || ^17 || ^18
-  checksum: 10c0/cba885f7c938d09bc64fcac656109a057ef4830f810078dcb591cf52842fa77a6b3b03851352038d5f1b34a1827076a4ba875146993f272cb884c22b52d06e17
+  checksum: 10c0/1de1683777db605bf2ece04135f8e1397ff3730faf3bde872fd8344684be84fdf54e23659a64763c3c6edb86ed7ff83c5dc252341d9ccd6240afeb15be566292
   languageName: node
   linkType: hard
 
@@ -4273,7 +4273,7 @@ __metadata:
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^2.0.4"
-    "@vkontakte/icons": "npm:^2.127.0"
+    "@vkontakte/icons": "npm:^2.128.0"
     "@vkontakte/vkui": "npm:6.0.3"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.4"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.5"
