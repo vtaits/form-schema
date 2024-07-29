@@ -3,6 +3,8 @@ import {
 	addListBlock,
 	addTagsValue,
 	queryCheckbox,
+	queryFieldError,
+	queryFormError,
 	queryInput,
 	queryListRoot,
 	queryRadio,
@@ -153,11 +155,14 @@ test("submit filled form", async () => {
 
 	engine.fireEvent("submit");
 
-	const resultNode = await waitFor(() => {
-		return engine.accessors.result.get();
+	await waitFor(() => {
+		expect(engine.accessors.submitButton.get()).toHaveProperty(
+			"disabled",
+			false,
+		);
 	});
 
-	expect(JSON.parse(resultNode.textContent || "")).toEqual({
+	expect(JSON.parse(engine.accessors.result.get().textContent || "")).toEqual({
 		checkbox: true,
 		checkboxGroup: ["value1", "value3"],
 		date: "2020-10-05",
@@ -181,4 +186,49 @@ test("submit filled form", async () => {
 		tags: ["foo", "userPrint"],
 		textarea: "textareaValue",
 	});
+});
+
+test("show form errors", async () => {
+	const engine = render({});
+
+	const form = engine.accessors.form.get();
+
+	engine.fireEvent("submit");
+
+	await waitFor(() => {
+		expect(engine.accessors.submitButton.get()).toHaveProperty(
+			"disabled",
+			false,
+		);
+		expect(queryFieldError(form, "checkbox")).toHaveProperty(
+			"textContent",
+			"This field is required",
+		);
+	});
+
+	for (const fieldName of [
+		"checkbox",
+		"checkboxGroup",
+		"date",
+		"datetime",
+		"input",
+		"number",
+		"list",
+		"setList",
+		"multiSelect",
+		"radioGroup",
+		"select",
+		"tags",
+		"textarea",
+	]) {
+		expect(queryFieldError(form, fieldName)).toHaveProperty(
+			"textContent",
+			"This field is required",
+		);
+	}
+
+	expect(queryFormError(form)).toHaveProperty(
+		"textContent",
+		"There are errors in the form",
+	);
 });

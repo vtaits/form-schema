@@ -55,6 +55,7 @@ export function TagsComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	return renderWrapper({

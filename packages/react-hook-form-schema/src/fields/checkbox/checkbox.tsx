@@ -35,6 +35,7 @@ export function CheckboxComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	return renderWrapper({

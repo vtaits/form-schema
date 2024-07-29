@@ -1,5 +1,5 @@
-import { Form } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useState } from "react";
+import { Form } from "../form";
 
 const schemas: Record<string, any> = {
 	checkbox: {
@@ -177,7 +177,7 @@ export function BaseForm(): ReactElement {
 		const errors: Record<string, any> = {};
 
 		for (const [key, value] of Object.entries(values)) {
-			if (!value) {
+			if (!value || (Array.isArray(value) && value.length === 0)) {
 				errors[key] = "This field is required";
 			}
 		}

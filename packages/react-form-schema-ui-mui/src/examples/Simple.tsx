@@ -179,7 +179,7 @@ export function Simple(): ReactElement {
 		const errors: Record<string, any> = {};
 
 		for (const [key, value] of Object.entries(values)) {
-			if (!value) {
+			if (!value || (Array.isArray(value) && value.length === 0)) {
 				errors[key] = "This field is required";
 			}
 		}

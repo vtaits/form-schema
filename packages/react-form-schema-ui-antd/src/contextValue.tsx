@@ -157,7 +157,7 @@ export const contextValue: BaseUIContextValue = {
 						marginBottom: "20px",
 					}}
 				>
-					<Alert message={error} type="error" />
+					<Alert message={error} type="error" data-testid="@@form/error" />
 				</div>
 			)}
 

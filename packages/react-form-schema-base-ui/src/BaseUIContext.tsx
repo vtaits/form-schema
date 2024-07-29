@@ -149,6 +149,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 						color: "red",
 						fontSize: "1.5em",
 					}}
+					data-testid="@@form/error"
 				>
 					{error}
 				</p>
@@ -235,6 +236,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 					style={{
 						color: "gray",
 					}}
+					data-testid={`@@hint/${name}`}
 				>
 					{hint}
 				</p>
@@ -242,13 +244,16 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 			{actions && <div>{actions}</div>}
 
-			<p
-				style={{
-					color: "gray",
-				}}
-			>
-				{error}
-			</p>
+			{error && (
+				<p
+					style={{
+						color: "red",
+					}}
+					data-testid={`@@error/${name}`}
+				>
+					{error}
+				</p>
+			)}
 		</div>
 	),
 
@@ -398,7 +403,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		<textarea disabled={disabled} name={name} {...textAreaProps} />
 	),
 
-	renderWrapper: ({ children, error, hint, label }) => (
+	renderWrapper: ({ children, error, hint, label, name }) => (
 		<div>
 			{label && <label>{label}</label>}
 
@@ -409,6 +414,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 					style={{
 						color: "gray",
 					}}
+					data-testid={`@@hint/${name}`}
 				>
 					{hint}
 				</p>
@@ -418,6 +424,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 				style={{
 					color: "red",
 				}}
+				data-testid={`@@error/${name}`}
 			>
 				{error}
 			</p>

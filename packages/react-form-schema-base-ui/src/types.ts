@@ -28,6 +28,7 @@ export type WrapperRenderProps = Readonly<{
 	error?: ReactNode;
 	hint?: ReactNode;
 	label?: ReactNode;
+	name?: string;
 }>;
 
 export type BaseFieldRenderProps = Readonly<{

@@ -134,7 +134,9 @@ export const contextValue: BaseUIContextValue = {
 						marginBottom: "20px",
 					}}
 				>
-					<FormStatus mode="error">{error}</FormStatus>
+					<FormStatus mode="error" data-testid="@@form/error">
+						{error}
+					</FormStatus>
 				</div>
 			)}
 

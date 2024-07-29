@@ -61,6 +61,7 @@ export function ListComponent<FieldSchema>({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	const itemParents = [

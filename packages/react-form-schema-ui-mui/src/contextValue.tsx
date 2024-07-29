@@ -171,7 +171,9 @@ export function getContextValue(
 
 				{error && (
 					<Box marginTop={2} marginBottom={2}>
-						<Alert severity="error">{error}</Alert>
+						<Alert severity="error" data-testid="@@form/error">
+							{error}
+						</Alert>
 					</Box>
 				)}
 
@@ -270,7 +272,7 @@ export function getContextValue(
 		),
 
 		renderListWrapper: ({ actions, error, hint, items, label, name }) => (
-			<div data-testid={`@@list/${name}`}>
+			<Box marginBottom={2} data-testid={`@@list/${name}`}>
 				{label && <FormLabel>{label}</FormLabel>}
 
 				<Box
@@ -284,25 +286,17 @@ export function getContextValue(
 				</Box>
 
 				{hint && (
-					<p
-						style={{
-							color: "gray",
-						}}
-					>
-						{hint}
-					</p>
+					<FormHelperText data-testid={`@@hint/${name}`}>{hint}</FormHelperText>
 				)}
 
 				{actions && <Box marginTop={2}>{actions}</Box>}
 
-				<p
-					style={{
-						color: "gray",
-					}}
-				>
-					{error}
-				</p>
-			</div>
+				{error && (
+					<FormHelperText data-testid={`@@error/${name}`} error>
+						{error}
+					</FormHelperText>
+				)}
+			</Box>
 		),
 
 		renderMultiSelect: <OptionType,>({
@@ -526,14 +520,22 @@ export function getContextValue(
 			/>
 		),
 
-		renderWrapper: ({ children, error, hint }) => {
+		renderWrapper: ({ children, error, hint, name }) => {
 			return (
 				<Box marginBottom={2}>
 					{children}
 
-					{hint && <FormHelperText>{hint}</FormHelperText>}
+					{hint && (
+						<FormHelperText data-testid={`@@hint/${name}`}>
+							{hint}
+						</FormHelperText>
+					)}
 
-					{error && <FormHelperText error>{error}</FormHelperText>}
+					{error && (
+						<FormHelperText data-testid={`@@error/${name}`} error>
+							{error}
+						</FormHelperText>
+					)}
 				</Box>
 			);
 		},
