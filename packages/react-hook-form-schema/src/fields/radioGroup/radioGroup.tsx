@@ -50,6 +50,7 @@ export function RadioGroupComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	const getOptionLabel = useMemo(() => {

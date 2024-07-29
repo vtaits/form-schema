@@ -149,6 +149,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 						color: "red",
 						fontSize: "1.5em",
 					}}
+					data-testid="@@form/error"
 				>
 					{error}
 				</p>
@@ -199,13 +200,19 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	},
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
-		<button type="button" onClick={onClick}>
+		<button data-testid="@@list/add" type="button" onClick={onClick}>
 			{children}
 		</button>
 	),
 
-	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-		<fieldset>
+	renderListItemWrapper: ({
+		children,
+		disabled,
+		handleRemove,
+		title,
+		name,
+	}) => (
+		<fieldset data-testid={`@@list-item/${name}`}>
 			{title && <legend>{title}</legend>}
 
 			{children}
@@ -218,8 +225,8 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</fieldset>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label }) => (
-		<div>
+	renderListWrapper: ({ actions, error, hint, items, label, name }) => (
+		<div data-testid={`@@list/${name}`}>
 			{label && <label>{label}</label>}
 
 			<div role="list">{items}</div>
@@ -229,6 +236,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 					style={{
 						color: "gray",
 					}}
+					data-testid={`@@hint/${name}`}
 				>
 					{hint}
 				</p>
@@ -236,13 +244,16 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 			{actions && <div>{actions}</div>}
 
-			<p
-				style={{
-					color: "gray",
-				}}
-			>
-				{error}
-			</p>
+			{error && (
+				<p
+					style={{
+						color: "red",
+					}}
+					data-testid={`@@error/${name}`}
+				>
+					{error}
+				</p>
+			)}
 		</div>
 	),
 
@@ -392,7 +403,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		<textarea disabled={disabled} name={name} {...textAreaProps} />
 	),
 
-	renderWrapper: ({ children, error, hint, label }) => (
+	renderWrapper: ({ children, error, hint, label, name }) => (
 		<div>
 			{label && <label>{label}</label>}
 
@@ -403,6 +414,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 					style={{
 						color: "gray",
 					}}
+					data-testid={`@@hint/${name}`}
 				>
 					{hint}
 				</p>
@@ -412,6 +424,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 				style={{
 					color: "red",
 				}}
+				data-testid={`@@error/${name}`}
 			>
 				{error}
 			</p>

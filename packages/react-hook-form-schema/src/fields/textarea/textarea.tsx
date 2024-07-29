@@ -35,6 +35,7 @@ export function TextAreaComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	return renderWrapper({

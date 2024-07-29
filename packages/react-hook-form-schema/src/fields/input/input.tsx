@@ -35,6 +35,7 @@ export function InputComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	return renderWrapper({

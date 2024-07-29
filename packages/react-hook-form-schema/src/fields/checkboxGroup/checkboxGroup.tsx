@@ -49,6 +49,7 @@ export function CheckboxGroupComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	const getOptionLabel = useMemo(() => {

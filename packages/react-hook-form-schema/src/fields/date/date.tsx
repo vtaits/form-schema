@@ -51,6 +51,7 @@ export function DateComponent({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	return renderWrapper({

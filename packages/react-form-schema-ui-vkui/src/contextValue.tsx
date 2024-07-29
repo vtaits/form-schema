@@ -134,7 +134,9 @@ export const contextValue: BaseUIContextValue = {
 						marginBottom: "20px",
 					}}
 				>
-					<FormStatus mode="error">{error}</FormStatus>
+					<FormStatus mode="error" data-testid="@@form/error">
+						{error}
+					</FormStatus>
 				</div>
 			)}
 
@@ -190,13 +192,20 @@ export const contextValue: BaseUIContextValue = {
 			disabled={disabled}
 			mode="link"
 			onClick={onClick}
+			data-testid="@@list/add"
 		>
 			{children}
 		</Button>
 	),
 
-	renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-		<CardGrid size="l">
+	renderListItemWrapper: ({
+		children,
+		disabled,
+		handleRemove,
+		title,
+		name,
+	}) => (
+		<CardGrid size="l" data-testid={`@@list-item/${name}`}>
 			<ContentCard
 				header={
 					<div
@@ -224,7 +233,7 @@ export const contextValue: BaseUIContextValue = {
 		</CardGrid>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label }) => {
+	renderListWrapper: ({ actions, error, hint, items, label, name }) => {
 		return (
 			<FormItem
 				top={label}
@@ -259,6 +268,7 @@ export const contextValue: BaseUIContextValue = {
 						</p>
 					</>
 				}
+				data-testid={`@@list/${name}`}
 			>
 				<div role="list">{items}</div>
 			</FormItem>

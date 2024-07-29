@@ -145,13 +145,10 @@ export const list: FieldType<ListSchema<any>> = {
 		name,
 		setError,
 		errors,
-		fieldSchema,
 		getFieldSchema,
 		getFieldType,
 		value,
-		values,
 		rawValue,
-		rawValues,
 		parents,
 	}) => {
 		const arrayValue = prepareValue(rawValue);
@@ -165,6 +162,13 @@ export const list: FieldType<ListSchema<any>> = {
 				values: arrayValue,
 			},
 		];
+
+		const currentErrors = errors[name];
+
+		if (typeof currentErrors === "string") {
+			setError(name, parents, currentErrors);
+			return;
+		}
 
 		setFieldErrors({
 			setError,

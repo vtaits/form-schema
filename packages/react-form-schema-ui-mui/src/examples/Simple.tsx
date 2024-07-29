@@ -33,6 +33,7 @@ const schemas: Record<string, any> = {
 
 	datetime: {
 		type: "datetime",
+		serverDateFormat: "yyyy-MM-dd HH:mm",
 	},
 
 	input: {
@@ -85,7 +86,7 @@ const schemas: Record<string, any> = {
 
 	multiSelect: {
 		type: "multiSelect",
-		label: "Mulit select",
+		label: "Multi select",
 		placeholder: "Multi select",
 		options: [
 			{
@@ -173,12 +174,12 @@ export function Simple(): ReactElement {
 	): Promise<Record<string, any> | null> => {
 		setSubmittedValues(null);
 
-		await delay(800);
+		await delay(400);
 
 		const errors: Record<string, any> = {};
 
 		for (const [key, value] of Object.entries(values)) {
-			if (!value) {
+			if (!value || (Array.isArray(value) && value.length === 0)) {
 				errors[key] = "This field is required";
 			}
 		}

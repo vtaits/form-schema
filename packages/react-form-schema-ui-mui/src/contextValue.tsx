@@ -91,6 +91,7 @@ export function getContextValue(
 												checked={checked}
 												disabled={disabled}
 												name={name}
+												value={optionValue}
 												onChange={() => {
 													if (checked) {
 														onChange(
@@ -120,6 +121,7 @@ export function getContextValue(
 			autoFocus,
 			disabled,
 			displayDateFormat,
+			name,
 			onChange,
 			value,
 			wrapper: { label },
@@ -129,6 +131,7 @@ export function getContextValue(
 				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
+				name={name}
 				value={value}
 				onChange={onChange}
 				slotProps={{ textField: { size: muiSize, variant } }}
@@ -139,6 +142,7 @@ export function getContextValue(
 			disabled,
 			displayDateFormat,
 			autoFocus,
+			name,
 			onChange,
 			value,
 			wrapper: { label },
@@ -148,6 +152,7 @@ export function getContextValue(
 				disabled={disabled}
 				format={displayDateFormat}
 				label={label}
+				name={name}
 				value={value}
 				onChange={onChange}
 				slotProps={{ textField: { size: muiSize, variant } }}
@@ -166,7 +171,9 @@ export function getContextValue(
 
 				{error && (
 					<Box marginTop={2} marginBottom={2}>
-						<Alert severity="error">{error}</Alert>
+						<Alert severity="error" data-testid="@@form/error">
+							{error}
+						</Alert>
 					</Box>
 				)}
 
@@ -230,13 +237,20 @@ export function getContextValue(
 				size={muiSize}
 				startIcon={<AddIcon />}
 				variant="text"
+				data-testid="@@list/add"
 			>
 				{children}
 			</Button>
 		),
 
-		renderListItemWrapper: ({ children, disabled, handleRemove, title }) => (
-			<Card>
+		renderListItemWrapper: ({
+			children,
+			disabled,
+			handleRemove,
+			title,
+			name,
+		}) => (
+			<Card data-testid={`@@list-item/${name}`}>
 				<CardHeader
 					action={
 						handleRemove && (
@@ -257,8 +271,8 @@ export function getContextValue(
 			</Card>
 		),
 
-		renderListWrapper: ({ actions, error, hint, items, label }) => (
-			<div>
+		renderListWrapper: ({ actions, error, hint, items, label, name }) => (
+			<Box marginBottom={2} data-testid={`@@list/${name}`}>
 				{label && <FormLabel>{label}</FormLabel>}
 
 				<Box
@@ -272,25 +286,17 @@ export function getContextValue(
 				</Box>
 
 				{hint && (
-					<p
-						style={{
-							color: "gray",
-						}}
-					>
-						{hint}
-					</p>
+					<FormHelperText data-testid={`@@hint/${name}`}>{hint}</FormHelperText>
 				)}
 
 				{actions && <Box marginTop={2}>{actions}</Box>}
 
-				<p
-					style={{
-						color: "gray",
-					}}
-				>
-					{error}
-				</p>
-			</div>
+				{error && (
+					<FormHelperText data-testid={`@@error/${name}`} error>
+						{error}
+					</FormHelperText>
+				)}
+			</Box>
 		),
 
 		renderMultiSelect: <OptionType,>({
@@ -514,14 +520,22 @@ export function getContextValue(
 			/>
 		),
 
-		renderWrapper: ({ children, error, hint, label }) => {
+		renderWrapper: ({ children, error, hint, name }) => {
 			return (
 				<Box marginBottom={2}>
 					{children}
 
-					{hint && <FormHelperText>{hint}</FormHelperText>}
+					{hint && (
+						<FormHelperText data-testid={`@@hint/${name}`}>
+							{hint}
+						</FormHelperText>
+					)}
 
-					{error && <FormHelperText error>{error}</FormHelperText>}
+					{error && (
+						<FormHelperText data-testid={`@@error/${name}`} error>
+							{error}
+						</FormHelperText>
+					)}
 				</Box>
 			);
 		},

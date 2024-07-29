@@ -61,6 +61,7 @@ export function ListComponent<FieldSchema>({
 		error,
 		hint,
 		label,
+		name: fieldPath,
 	};
 
 	const itemParents = [
@@ -99,11 +100,13 @@ export function ListComponent<FieldSchema>({
 							remove(index);
 							clearErrors(fieldPath);
 						},
+						name: `${fieldPath}[${index}]`,
 						title: getBlockLabel?.(index),
 					})}
 				</Fragment>
 			);
 		}),
+		name: fieldPath,
 	}) as ReactElement;
 }
 
