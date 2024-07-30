@@ -1,6 +1,6 @@
 import type { MultiSelectSchema as MultiSelectSchemaBase } from "@vtaits/form-schema/fields/select";
-import type { BaseFieldSchema } from "../base";
+import type { BaseFieldSchema, FormApi } from "../base";
 
 export type CheckboxGroupSchema = Readonly<
-	MultiSelectSchemaBase & BaseFieldSchema
+	MultiSelectSchemaBase<FormApi> & BaseFieldSchema
 >;

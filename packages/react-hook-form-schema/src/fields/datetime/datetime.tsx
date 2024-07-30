@@ -17,6 +17,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { DateTimeSchema } from "./schema";
 
@@ -36,8 +37,10 @@ export function DateTimeComponent({
 			label,
 			hint,
 			inputProps,
+			onChange = undefined,
 		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -60,22 +63,29 @@ export function DateTimeComponent({
 			<Controller
 				name={fieldPath}
 				control={control}
-				render={({ field }) =>
-					renderDateTimePicker({
+				render={({ field }) => {
+					const wrappedOnChange = wrapOnChange(
+						field.onChange,
+						onChange,
+						formResult,
+						field.value,
+					);
+
+					return renderDateTimePicker({
 						disabled,
 						displayDateFormat,
 						name: fieldPath,
 						inputProps: inputProps || {},
 						autoFocus,
 						onChange: (nextValue) => {
-							field.onChange(
+							wrappedOnChange(
 								nextValue ? serializeDate(nextValue, clientDateFormat) : null,
 							);
 						},
 						value: parseValueAndValidate(field.value, clientDateFormat),
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;

@@ -3,6 +3,7 @@ import { defineConfig } from "tsup";
 export default defineConfig({
   entry: {
     core: "src/core/index.ts",
+    fields_base: "src/fields/base/index.ts",
     fields_checkbox: "src/fields/checkbox/index.ts",
     fields_checkboxGroup: "src/fields/checkboxGroup/index.ts",
     fields_dynamic: "src/fields/dynamic/index.ts",

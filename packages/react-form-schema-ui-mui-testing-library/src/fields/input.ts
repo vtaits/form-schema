@@ -30,7 +30,7 @@ export function queryInput(
 	return input;
 }
 
-export function setInputValue(
+export async function setInputValue(
 	container: HTMLElement,
 	name: string,
 	label: string | null,
@@ -49,6 +49,12 @@ export function setInputValue(
 			},
 		});
 	});
+
+	act(() => {
+		fireEvent.blur(input);
+	});
+
+	await waitForClosePopper();
 }
 
 export async function getInputSuggestions(

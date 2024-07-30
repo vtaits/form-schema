@@ -1,6 +1,6 @@
 import type { BaseFieldSchema } from "../base";
 
-export type SelectSchema = BaseFieldSchema & {
+type SelectParams = {
 	options: readonly unknown[];
 	valueKey?: string;
 	labelKey?: string;
@@ -8,7 +8,14 @@ export type SelectSchema = BaseFieldSchema & {
 	getOptionLabel?: (option: unknown) => string;
 };
 
-export type MultiSelectSchema = SelectSchema & {
-	minLength?: number;
-	maxLength?: number;
-};
+export type SelectSchema<FormApi> = BaseFieldSchema<FormApi, unknown> &
+	SelectParams;
+
+export type MultiSelectSchema<FormApi> = BaseFieldSchema<
+	FormApi,
+	readonly unknown[]
+> &
+	SelectParams & {
+		minLength?: number;
+		maxLength?: number;
+	};

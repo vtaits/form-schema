@@ -24,7 +24,7 @@ export function prepareValue(rawValue: unknown) {
 		.filter(Boolean);
 }
 
-export const tags: FieldType<TagsSchema> = {
+export const tags: FieldType<TagsSchema<unknown>> = {
 	serializerSingle: ({ value }) => prepareValue(value),
 
 	parserSingle: ({ value }) => prepareValue(value),

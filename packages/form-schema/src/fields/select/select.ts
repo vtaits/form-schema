@@ -3,7 +3,7 @@ import { type ErrorMessages, defaultErrorMessages } from "../base";
 import { DEFAULT_VALUE_KEY } from "./constants";
 import type { SelectSchema } from "./schema";
 
-export const select: FieldType<SelectSchema> = {
+export const select: FieldType<SelectSchema<unknown>> = {
 	serializerSingle: ({
 		value,
 		name,

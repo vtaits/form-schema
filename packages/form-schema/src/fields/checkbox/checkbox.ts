@@ -5,7 +5,24 @@ export function prepareValue(rawValue: unknown) {
 	return Boolean(rawValue);
 }
 
-export const checkbox: FieldType<CheckboxSchema> = {
-	serializerSingle: ({ value }) => prepareValue(value),
-	parserSingle: ({ value }) => prepareValue(value),
+export const checkbox: FieldType<CheckboxSchema<unknown>> = {
+	serializerSingle: ({ fieldSchema: { isValueInverse }, value }) => {
+		const prevaredValue = prepareValue(value);
+
+		if (isValueInverse) {
+			return !prevaredValue;
+		}
+
+		return prevaredValue;
+	},
+
+	parserSingle: ({ fieldSchema: { isValueInverse }, value }) => {
+		const prevaredValue = prepareValue(value);
+
+		if (isValueInverse) {
+			return !prevaredValue;
+		}
+
+		return prevaredValue;
+	},
 };

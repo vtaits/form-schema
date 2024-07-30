@@ -1,5 +1,5 @@
 import { act, fireEvent, within } from "@testing-library/react";
-import { queryInput, setInputValue } from "./input";
+import { queryInput } from "./input";
 
 export {
 	queryInput as queryTags,
@@ -48,6 +48,14 @@ export function getTagsChips(
 	}
 
 	return [...input.parentNode.querySelectorAll(".MuiChip-root")];
+}
+
+export function getTagsValue(
+	container: HTMLElement,
+	name: string,
+	label: string | null,
+) {
+	return getTagsChips(container, name, label).map((node) => node.textContent);
 }
 
 export function removeTagsChip(

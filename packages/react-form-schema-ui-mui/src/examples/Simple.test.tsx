@@ -106,10 +106,10 @@ test("submit filled form", async () => {
 	toggleCheckbox(form, "checkboxGroup", "Label 1");
 	toggleCheckbox(form, "checkboxGroup", "Label 3");
 
-	setInputValue(form, "date", null, "2020-10-05");
-	setInputValue(form, "datetime", null, "2021-05-10 16:45");
-	setInputValue(form, "input", "Input", "inputValue");
-	setInputValue(form, "number", "Number", "100");
+	await setInputValue(form, "date", null, "2020-10-05");
+	await setInputValue(form, "datetime", null, "2021-05-10 16:45");
+	await setInputValue(form, "input", "Input", "inputValue");
+	await setInputValue(form, "number", "Number", "100");
 
 	addListBlock(form, "list");
 	addListBlock(form, "list");
@@ -119,9 +119,9 @@ test("submit filled form", async () => {
 		expect(queryInput(form, "list.2", "Input")).toBeTruthy();
 	});
 
-	setInputValue(form, "list.0", "Input", "List 0");
-	setInputValue(form, "list.1", "Input", "List 1");
-	setInputValue(form, "list.2", "Input", "List 2");
+	await setInputValue(form, "list.0", "Input", "List 0");
+	await setInputValue(form, "list.1", "Input", "List 1");
+	await setInputValue(form, "list.2", "Input", "List 2");
 
 	removeListBlock(form, "list", 1);
 
@@ -134,9 +134,9 @@ test("submit filled form", async () => {
 	});
 
 	toggleCheckbox(form, "setList.0.checkbox", "Checkbox");
-	setInputValue(form, "setList.0.date", "Date", "2020-08-01");
-	setInputValue(form, "setList.1.date", "Date", "2020-08-02");
-	setInputValue(form, "setList.2.date", "Date", "2020-08-03");
+	await setInputValue(form, "setList.0.date", "Date", "2020-08-01");
+	await setInputValue(form, "setList.1.date", "Date", "2020-08-02");
+	await setInputValue(form, "setList.2.date", "Date", "2020-08-03");
 
 	removeListBlock(form, "setList", 1);
 

@@ -13,6 +13,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { RadioGroupSchema } from "./schema";
 
@@ -32,11 +33,13 @@ export function RadioGroupComponent({
 			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
+			onChange = undefined,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -75,8 +78,15 @@ export function RadioGroupComponent({
 			<Controller
 				control={control}
 				name={fieldPath}
-				render={({ field }) =>
-					renderRadioGroup({
+				render={({ field }) => {
+					const wrappedOnChange = wrapOnChange(
+						field.onChange,
+						onChange,
+						formResult,
+						field.value,
+					);
+
+					return renderRadioGroup({
 						clearable: !required,
 						disabled,
 						value: field.value,
@@ -84,14 +94,14 @@ export function RadioGroupComponent({
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {
-							field.onChange(null);
+							wrappedOnChange(null);
 						},
 						autoFocus,
-						onChange: field.onChange,
+						onChange: wrappedOnChange,
 						options,
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;

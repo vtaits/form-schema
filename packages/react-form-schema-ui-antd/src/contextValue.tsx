@@ -168,13 +168,33 @@ export const contextValue: BaseUIContextValue = {
 	renderInput: ({
 		disabled,
 		options,
-		inputProps: { ref, size, onSelect: _onSelect, ...inputProps } = {},
+		inputProps: {
+			ref,
+			size,
+			defaultValue: _defaultValue,
+			onSelect: _onSelect,
+			...inputProps
+		} = {},
 		autoFocus,
 		onChange,
 		name,
 	}) => {
+		const wrappedOnChange = <
+			Target extends {
+				value: string;
+			},
+			E extends {
+				target: Target;
+			},
+		>(
+			event: E,
+		) => {
+			onChange(event.target.value);
+		};
+
 		if (options && options.length > 0) {
-			const searchValue = String(inputProps.value || "").toLowerCase();
+			const value = String(inputProps.value || "");
+			const searchValue = value.toLowerCase();
 
 			return (
 				<AutoComplete
@@ -187,6 +207,7 @@ export const contextValue: BaseUIContextValue = {
 					disabled={disabled}
 					name={name}
 					{...inputProps}
+					value={value}
 					onChange={onChange}
 					style={{ width: "100%" }}
 				/>
@@ -199,7 +220,7 @@ export const contextValue: BaseUIContextValue = {
 				disabled={disabled}
 				name={name}
 				{...inputProps}
-				onChange={onChange}
+				onChange={wrappedOnChange}
 			/>
 		);
 	},

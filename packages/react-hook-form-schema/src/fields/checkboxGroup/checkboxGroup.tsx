@@ -13,6 +13,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { CheckboxGroupSchema } from "./schema";
 
@@ -31,11 +32,13 @@ export function CheckboxGroupComponent({
 			autoFocus,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
+			onChange = undefined,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -85,7 +88,12 @@ export function CheckboxGroupComponent({
 						handleClear: () => {
 							field.onChange(null);
 						},
-						onChange: field.onChange,
+						onChange: wrapOnChange(
+							field.onChange,
+							onChange,
+							formResult,
+							field.value,
+						),
 						options,
 						wrapper: wrapperParams,
 					}) as ReactElement

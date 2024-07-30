@@ -86,6 +86,7 @@ export function getSelectText(
 		throw new Error(`Input with name "${name}" not found`);
 	}
 
-	return within(input.parentNode as HTMLElement).getByRole("combobox")
-		.textContent;
+	return within(input.parentNode as HTMLElement).getByRole("combobox", {
+		hidden: true,
+	}).textContent;
 }

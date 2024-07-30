@@ -9,6 +9,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { InputSchema } from "./schema";
 
@@ -20,8 +21,17 @@ type InputComponentProps = Readonly<{
 export function InputComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, options, inputProps, hint, autoFocus, label },
+		fieldSchema: {
+			disabled,
+			options,
+			inputProps,
+			hint,
+			autoFocus,
+			label,
+			onChange = undefined,
+		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -53,7 +63,12 @@ export function InputComponent({
 							value: field.value || "",
 						},
 						autoFocus,
-						onChange: field.onChange,
+						onChange: wrapOnChange(
+							field.onChange,
+							onChange,
+							formResult,
+							field.value,
+						),
 						options,
 						wrapper: wrapperParams,
 					}) as ReactElement

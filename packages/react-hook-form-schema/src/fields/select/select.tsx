@@ -13,6 +13,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { SelectSchema } from "./schema";
 
@@ -32,12 +33,14 @@ export function SelectComponent({
 			required,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
+			onChange = undefined,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -76,8 +79,15 @@ export function SelectComponent({
 			<Controller
 				control={control}
 				name={fieldPath}
-				render={({ field }) =>
-					renderSelect({
+				render={({ field }) => {
+					const wrappedOnChange = wrapOnChange(
+						field.onChange,
+						onChange,
+						formResult,
+						field.value,
+					);
+
+					return renderSelect({
 						clearable: !required,
 						disabled,
 						value: field.value,
@@ -85,15 +95,15 @@ export function SelectComponent({
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {
-							field.onChange(null);
+							wrappedOnChange(null);
 						},
 						autoFocus,
-						onChange: field.onChange,
+						onChange: wrappedOnChange,
 						options,
 						placeholder,
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;

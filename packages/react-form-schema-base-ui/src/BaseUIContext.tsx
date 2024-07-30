@@ -177,7 +177,9 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 						name={name}
 						disabled={disabled}
 						{...inputProps}
-						onChange={onChange}
+						onChange={({ target: { value } }) => {
+							onChange(value);
+						}}
 					/>
 
 					<datalist id={listId}>
@@ -194,7 +196,9 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 				name={name}
 				disabled={disabled}
 				{...inputProps}
-				onChange={onChange}
+				onChange={({ target: { value } }) => {
+					onChange(value);
+				}}
 			/>
 		);
 	},

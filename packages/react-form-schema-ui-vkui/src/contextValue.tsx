@@ -152,6 +152,19 @@ export const contextValue: BaseUIContextValue = {
 		options,
 		name,
 	}) => {
+		const wrappedOnChange = <
+			Target extends {
+				value: string;
+			},
+			E extends {
+				target: Target;
+			},
+		>(
+			event: E,
+		) => {
+			onChange(event.target.value);
+		};
+
 		if (options && options.length > 0) {
 			const listId = `${name}-datalist`;
 
@@ -163,7 +176,7 @@ export const contextValue: BaseUIContextValue = {
 						list={`${name}-datalist`}
 						name={name}
 						{...inputProps}
-						onChange={onChange}
+						onChange={wrappedOnChange}
 					/>
 
 					<datalist id={listId}>
@@ -181,7 +194,7 @@ export const contextValue: BaseUIContextValue = {
 				disabled={disabled}
 				name={name}
 				{...inputProps}
-				onChange={onChange}
+				onChange={wrappedOnChange}
 			/>
 		);
 	},

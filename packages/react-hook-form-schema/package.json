@@ -16,6 +16,11 @@
       "require": "./dist/core.js",
       "types": "./dist/core.d.ts"
     },
+    "./fields/base": {
+      "require": "./dist/fields_base.js",
+      "import": "./dist/esm/fields_base.js",
+      "types": "./dist/fields_base.d.ts"
+    },
     "./fields/checkbox": {
       "require": "./dist/fields_checkbox.js",
       "import": "./dist/esm/fields_checkbox.js",

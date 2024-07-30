@@ -1,6 +1,6 @@
 import type { BaseFieldSchema } from "../base";
 
-export type InputSchema = BaseFieldSchema & {
+export type InputSchema<FormApi> = BaseFieldSchema<FormApi, string> & {
 	maxLength?: number;
 	minLength?: number;
 	/**

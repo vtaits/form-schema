@@ -22,7 +22,7 @@ function prepareValue(value: unknown): readonly unknown[] {
 	return [unwrapped];
 }
 
-export const list: FieldType<ListSchema<any>> = {
+export const list: FieldType<ListSchema<unknown, any>> = {
 	createGetFieldSchema: ({ fieldSchema: { itemSchema } }) => {
 		return () => itemSchema;
 	},

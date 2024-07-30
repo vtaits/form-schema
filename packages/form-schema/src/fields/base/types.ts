@@ -8,8 +8,15 @@ export type ErrorMessages = {
 	regexp: (regexp: string) => string;
 };
 
-export type BaseFieldSchema = {
+export type OnChange<FormApi, Value> = (
+	form: FormApi,
+	nextValue: Value,
+	prevValue: Value,
+) => void;
+
+export type BaseFieldSchema<FormApi, Value> = {
 	disabled?: boolean;
 	required?: boolean;
 	errorMessages?: Partial<ErrorMessages>;
+	onChange?: OnChange<FormApi, Value>;
 };

@@ -1,4 +1,6 @@
 import Button from "@mui/material/Button";
+import type { OnChange } from "@vtaits/form-schema/fields/base";
+import type { FormApi } from "@vtaits/react-hook-form-schema/fields/base";
 import {
 	type DefaultFieldSchema,
 	Form,
@@ -53,38 +55,6 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 		isNumber: true,
 		placeholder: "Numeric input",
 		options: ["123", "456"],
-	},
-
-	list: {
-		type: "list",
-		label: "List",
-		getBlockLabel: (index: number) => `Block #${index + 1}`,
-		initialItem: "Initial",
-		itemSchema: {
-			label: "Input",
-			type: "input",
-		},
-	},
-
-	setList: {
-		type: "list",
-		label: "List of sets",
-		getBlockLabel: (index: number) => `Block #${index + 1}`,
-		itemSchema: {
-			type: "set",
-			nested: true,
-			schemas: {
-				checkbox: {
-					type: "checkbox",
-					checkboxLabel: "Checkbox",
-				},
-
-				date: {
-					label: "Date",
-					type: "date",
-				},
-			},
-		},
 	},
 
 	multiSelect: {
@@ -159,6 +129,21 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 	},
 };
 
+const schemasWithClones = Object.entries(schemas).reduce<
+	Record<string, DefaultFieldSchema<unknown>>
+>((res, [fieldName, schema]) => {
+	res[fieldName] = {
+		...(schema as Record<string, unknown>),
+		onChange: (({ setValue }, nextValue) => {
+			setValue(`${fieldName}_cloned`, nextValue);
+		}) satisfies OnChange<FormApi, unknown>,
+	} as DefaultFieldSchema<unknown>;
+
+	res[`${fieldName}_cloned`] = schema;
+
+	return res;
+}, {});
+
 const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => {
 		setTimeout(() => {
@@ -166,41 +151,26 @@ const delay = (ms: number): Promise<void> =>
 		}, ms);
 	});
 
-export function Simple(): ReactElement {
+export function OnChangeExample(): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any
 	> | null>(null);
 
-	const onSubmit = async (
-		values: Record<string, any>,
-	): Promise<Record<string, any> | null> => {
+	const onSubmit = async (values: Record<string, any>): Promise<null> => {
 		setSubmittedValues(null);
 
 		await delay(400);
 
-		const errors: Record<string, any> = {};
+		setSubmittedValues(values);
 
-		for (const [key, value] of Object.entries(values)) {
-			if (!value || (Array.isArray(value) && value.length === 0)) {
-				errors[key] = "This field is required";
-			}
-		}
-
-		if (Object.keys(errors).length === 0) {
-			setSubmittedValues(values);
-			return null;
-		}
-
-		errors.error = "There are errors in the form";
-
-		return errors;
+		return null;
 	};
 
 	return (
 		<>
 			<Form
-				schemas={schemas}
+				schemas={schemasWithClones}
 				onSubmit={onSubmit}
 				renderActions={({ isSubmitting }) => (
 					<Button variant="contained" type="submit" disabled={isSubmitting}>

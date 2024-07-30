@@ -13,6 +13,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { MultiSelectSchema } from "./schema";
 
@@ -31,12 +32,14 @@ export function MultiSelectComponent({
 			label,
 			getOptionLabel: getOptionLabelParam,
 			getOptionValue: getOptionValueParam,
+			onChange = undefined,
 			options,
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -75,23 +78,30 @@ export function MultiSelectComponent({
 			<Controller
 				control={control}
 				name={fieldPath}
-				render={({ field }) =>
-					renderMultiSelect({
+				render={({ field }) => {
+					const wrappedOnChange = wrapOnChange(
+						field.onChange,
+						onChange,
+						formResult,
+						field.value,
+					);
+
+					return renderMultiSelect({
 						disabled,
 						value: field.value,
 						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,
 						handleClear: () => {
-							field.onChange(null);
+							wrappedOnChange([]);
 						},
 						autoFocus,
-						onChange: field.onChange,
+						onChange: wrappedOnChange,
 						options,
 						placeholder,
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;

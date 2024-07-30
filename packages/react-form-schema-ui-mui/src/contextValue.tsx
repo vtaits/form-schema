@@ -29,6 +29,7 @@ import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
+import type { ReactEventHandler } from "react";
 
 export function getContextValue(
 	muiSize: "small" | "medium",
@@ -183,13 +184,26 @@ export function getContextValue(
 
 		renderInput: ({
 			disabled,
-			inputProps: { color, ref, size, ...inputProps } = {},
+			inputProps: { color, ref, size, value, ...inputProps } = {},
 			autoFocus,
 			onChange,
 			options,
 			name,
 			wrapper: { label },
 		}) => {
+			const wrappedOnChange = <
+				Target extends {
+					value: string;
+				},
+				E extends {
+					target: Target;
+				},
+			>(
+				event: E,
+			) => {
+				onChange(event.target.value);
+			};
+
 			if (options && options.length > 0) {
 				return (
 					<Autocomplete
@@ -199,7 +213,8 @@ export function getContextValue(
 						fullWidth
 						options={options}
 						size={muiSize}
-						onSelect={onChange}
+						value={String(value || "")}
+						onSelect={wrappedOnChange as ReactEventHandler<HTMLDivElement>}
 						renderInput={(params) => (
 							<TextField
 								name={name}
@@ -208,7 +223,7 @@ export function getContextValue(
 								variant={variant}
 								{...params}
 								autoFocus={autoFocus}
-								onChange={onChange}
+								onChange={wrappedOnChange}
 							/>
 						)}
 					/>
@@ -223,7 +238,7 @@ export function getContextValue(
 					disabled={disabled}
 					name={name}
 					{...inputProps}
-					onChange={onChange}
+					onChange={wrappedOnChange}
 					label={label}
 					variant={variant}
 				/>

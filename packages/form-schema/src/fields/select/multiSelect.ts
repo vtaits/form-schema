@@ -3,7 +3,7 @@ import { type ErrorMessages, defaultErrorMessages } from "../base";
 import { DEFAULT_VALUE_KEY } from "./constants";
 import type { MultiSelectSchema } from "./schema";
 
-export const multiSelect: FieldType<MultiSelectSchema> = {
+export const multiSelect: FieldType<MultiSelectSchema<unknown>> = {
 	serializerSingle: ({
 		value,
 		fieldSchema: { getOptionValue, valueKey = DEFAULT_VALUE_KEY },

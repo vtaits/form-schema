@@ -9,6 +9,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { TagsSchema } from "./schema";
 
@@ -40,8 +41,16 @@ type TagsComponentProps = Readonly<{
 export function TagsComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, options, hint, autoFocus, label },
+		fieldSchema: {
+			disabled,
+			options,
+			hint,
+			autoFocus,
+			label,
+			onChange = undefined,
+		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -64,17 +73,24 @@ export function TagsComponent({
 			<Controller
 				name={fieldPath}
 				control={control}
-				render={({ field }) =>
-					renderTags({
+				render={({ field }) => {
+					const preparedValue: readonly string[] = prepareValue(field.value);
+
+					return renderTags({
 						disabled,
 						autoFocus,
 						name: fieldPath,
-						value: prepareValue(field.value),
-						onChange: field.onChange,
+						value: preparedValue,
+						onChange: wrapOnChange(
+							field.onChange,
+							onChange,
+							formResult,
+							preparedValue,
+						),
 						options,
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;

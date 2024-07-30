@@ -7,7 +7,7 @@ import {
 } from "./constants";
 import type { DateSchema } from "./schema";
 
-export const date: FieldType<DateSchema> = {
+export const date: FieldType<DateSchema<unknown>> = {
 	serializerSingle: ({
 		value,
 		fieldSchema: {

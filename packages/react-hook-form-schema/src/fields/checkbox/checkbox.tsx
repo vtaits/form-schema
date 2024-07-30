@@ -9,7 +9,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
-import { renderError } from "../base/renderError";
+import { renderError, wrapOnChange } from "../base";
 import type { CheckboxSchema } from "./schema";
 
 type CheckboxComponentProps = Readonly<{
@@ -20,8 +20,16 @@ type CheckboxComponentProps = Readonly<{
 export function CheckboxComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { checkboxLabel, disabled, hint, autoFocus, label },
+		fieldSchema: {
+			checkboxLabel,
+			disabled,
+			hint,
+			autoFocus,
+			label,
+			onChange = undefined,
+		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -44,17 +52,24 @@ export function CheckboxComponent({
 			<Controller
 				name={fieldPath}
 				control={control}
-				render={({ field }) =>
-					renderCheckbox({
+				render={({ field }) => {
+					const booleanValue = Boolean(field.value);
+
+					return renderCheckbox({
 						children: checkboxLabel,
 						disabled,
-						checked: Boolean(field.value),
+						checked: booleanValue,
 						autoFocus,
 						name: fieldPath,
-						onChange: field.onChange,
+						onChange: wrapOnChange(
+							field.onChange,
+							onChange,
+							formResult,
+							booleanValue,
+						),
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;

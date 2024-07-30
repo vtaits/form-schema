@@ -9,6 +9,7 @@ import {
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";
+import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { TextAreaSchema } from "./schema";
 
@@ -20,8 +21,16 @@ type TextAreaComponentProps = Readonly<{
 export function TextAreaComponent({
 	renderParams: {
 		fieldPath,
-		fieldSchema: { disabled, hint, autoFocus, label, textAreaProps },
+		fieldSchema: {
+			disabled,
+			hint,
+			autoFocus,
+			label,
+			onChange = undefined,
+			textAreaProps,
+		},
 	},
+	formResult,
 	formResult: {
 		control,
 		formState: { errors },
@@ -44,8 +53,15 @@ export function TextAreaComponent({
 			<Controller
 				name={fieldPath}
 				control={control}
-				render={({ field }) =>
-					renderTextArea({
+				render={({ field }) => {
+					const wrappedOnChange = wrapOnChange(
+						field.onChange,
+						onChange,
+						formResult,
+						field.value || "",
+					);
+
+					return renderTextArea({
 						disabled,
 						name: fieldPath,
 						autoFocus,
@@ -53,12 +69,12 @@ export function TextAreaComponent({
 							...textAreaProps,
 							value: field.value || "",
 							onChange: (e) => {
-								field.onChange(e.currentTarget.value);
+								wrappedOnChange(e.currentTarget.value);
 							},
 						},
 						wrapper: wrapperParams,
-					}) as ReactElement
-				}
+					}) as ReactElement;
+				}}
 			/>
 		),
 	}) as ReactElement;
