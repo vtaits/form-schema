@@ -184,7 +184,14 @@ export function getContextValue(
 
 		renderInput: ({
 			disabled,
-			inputProps: { color, ref, size, value, ...inputProps } = {},
+			inputProps: {
+				color,
+				ref,
+				size,
+				value,
+				onChange: _onChange,
+				...inputProps
+			} = {},
 			autoFocus,
 			onChange,
 			options,
@@ -214,7 +221,9 @@ export function getContextValue(
 						options={options}
 						size={muiSize}
 						value={String(value || "")}
-						onSelect={wrappedOnChange as ReactEventHandler<HTMLDivElement>}
+						onInputChange={(_event, inputValue) => {
+							onChange(inputValue);
+						}}
 						renderInput={(params) => (
 							<TextField
 								name={name}
@@ -223,7 +232,7 @@ export function getContextValue(
 								variant={variant}
 								{...params}
 								autoFocus={autoFocus}
-								onChange={wrappedOnChange}
+								// onChange={wrappedOnChange}
 							/>
 						)}
 					/>
@@ -238,6 +247,7 @@ export function getContextValue(
 					disabled={disabled}
 					name={name}
 					{...inputProps}
+					value={String(value || "")}
 					onChange={wrappedOnChange}
 					label={label}
 					variant={variant}

@@ -1,10 +1,10 @@
-import { act, fireEvent, within } from "@testing-library/react";
+import { act, fireEvent, waitFor, within } from "@testing-library/react";
+import { waitForClosePopper, waitForOpenPopper } from "./autocompletePopper";
 import { queryInput } from "./input";
 
 export {
 	queryInput as queryTags,
 	getInputSuggestions as getTagsSuggestions,
-	selectInputSuggestion as selectTagsSuggestion,
 } from "./input";
 
 export function addTagsValue(
@@ -56,6 +56,43 @@ export function getTagsValue(
 	label: string | null,
 ) {
 	return getTagsChips(container, name, label).map((node) => node.textContent);
+}
+
+export async function selectTagsSuggestion(
+	container: HTMLElement,
+	name: string,
+	label: string | null,
+	optionText: string,
+) {
+	const input = queryInput(container, name, label);
+
+	if (!input) {
+		throw new Error(`Input with name "${name}" not found`);
+	}
+
+	act(() => {
+		fireEvent.mouseDown(input);
+	});
+
+	const popper = await waitForOpenPopper();
+
+	if (!popper) {
+		throw new Error(`Popper for input with name "${name}" not found`);
+	}
+
+	const option = within(popper as HTMLElement).getByText(optionText);
+
+	act(() => {
+		fireEvent.click(option);
+	});
+
+	await waitFor(() => {
+		if (!getTagsValue(container, name, label).includes(optionText)) {
+			throw new Error(`Value of tags "${name}" should contain "${optionText}"`);
+		}
+	});
+
+	await waitForClosePopper();
 }
 
 export function removeTagsChip(

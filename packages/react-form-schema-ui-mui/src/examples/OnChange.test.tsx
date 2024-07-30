@@ -7,6 +7,7 @@ import {
 	queryInput,
 	queryRadio,
 	queryTextarea,
+	selectInputSuggestion,
 	selectTagsSuggestion,
 	selectValue,
 	setInputValue,
@@ -15,7 +16,7 @@ import {
 	toggleRadio,
 } from "@vtaits/react-form-schema-ui-mui-testing-library";
 import { AccessorQueryType, create } from "react-integration-test-engine";
-import { afterEach, expect, test } from "vitest";
+import { afterEach, expect, test, vi } from "vitest";
 import { MuiProvider } from "../MuiProvider";
 import { OnChangeExample } from "./OnChange";
 
@@ -103,6 +104,16 @@ test("submit filled form", async () => {
 		"inputValue",
 	);
 
+	await selectInputSuggestion(
+		form,
+		"inputWithOptions",
+		"Input with options",
+		"foo",
+	);
+	expect(
+		queryInput(form, "inputWithOptions_cloned", "Input with options"),
+	).toHaveProperty("value", "foo");
+
 	await setInputValue(form, "number", "Number", "100");
 	expect(queryInput(form, "number_cloned", "Number")).toHaveProperty(
 		"value",
@@ -158,6 +169,8 @@ test("submit filled form", async () => {
 		datetime_cloned: "2021-05-10 16:45",
 		input: "inputValue",
 		input_cloned: "inputValue",
+		inputWithOptions: "foo",
+		inputWithOptions_cloned: "foo",
 		multiSelect: ["value1", "value3"],
 		multiSelect_cloned: ["value1", "value3"],
 		number: 100,

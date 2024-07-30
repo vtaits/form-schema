@@ -1,4 +1,4 @@
-import { act, fireEvent, within } from "@testing-library/react";
+import { act, fireEvent, waitFor, within } from "@testing-library/react";
 import { waitForClosePopper, waitForOpenPopper } from "./autocompletePopper";
 
 export function queryInput(
@@ -27,7 +27,7 @@ export function queryInput(
 		return null;
 	}
 
-	return input;
+	return input as HTMLInputElement;
 }
 
 export async function setInputValue(
@@ -115,6 +115,12 @@ export async function selectInputSuggestion(
 
 	act(() => {
 		fireEvent.click(option);
+	});
+
+	await waitFor(() => {
+		if (input.value !== optionText) {
+			throw new Error(`Value of input "${name}" should be "${optionText}"`);
+		}
 	});
 
 	await waitForClosePopper();

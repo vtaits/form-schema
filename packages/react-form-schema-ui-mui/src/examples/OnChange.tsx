@@ -45,8 +45,13 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 		type: "input",
 		label: "Input",
 		placeholder: "Input",
+	},
+
+	inputWithOptions: {
+		type: "input",
+		label: "Input with options",
+		placeholder: "Input with options",
 		options: ["foo", "bar"],
-		autoFocus: true,
 	},
 
 	number: {

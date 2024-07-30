@@ -12,6 +12,7 @@ import {
 	queryTags,
 	queryTextarea,
 	removeListBlock,
+	selectInputSuggestion,
 	selectTagsSuggestion,
 	selectValue,
 	setInputValue,
@@ -109,6 +110,12 @@ test("submit filled form", async () => {
 	await setInputValue(form, "date", null, "2020-10-05");
 	await setInputValue(form, "datetime", null, "2021-05-10 16:45");
 	await setInputValue(form, "input", "Input", "inputValue");
+	await selectInputSuggestion(
+		form,
+		"inputWithOptions",
+		"Input with options",
+		"foo",
+	);
 	await setInputValue(form, "number", "Number", "100");
 
 	addListBlock(form, "list");
@@ -168,6 +175,7 @@ test("submit filled form", async () => {
 		date: "2020-10-05",
 		datetime: "2021-05-10 16:45",
 		input: "inputValue",
+		inputWithOptions: "foo",
 		list: ["List 0", "List 2"],
 		multiSelect: ["value1", "value3"],
 		number: 100,
@@ -212,6 +220,7 @@ test("show form errors", async () => {
 		"date",
 		"datetime",
 		"input",
+		"inputWithOptions",
 		"number",
 		"list",
 		"setList",
