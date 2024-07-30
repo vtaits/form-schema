@@ -4202,7 +4202,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vtaits/react-form-schema-ui-mui-testing-library@npm:^1.0.0-alpha.1, @vtaits/react-form-schema-ui-mui-testing-library@workspace:packages/react-form-schema-ui-mui-testing-library":
+"@vtaits/react-form-schema-ui-mui-testing-library@npm:^1.0.0-alpha.2, @vtaits/react-form-schema-ui-mui-testing-library@workspace:packages/react-form-schema-ui-mui-testing-library":
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-mui-testing-library@workspace:packages/react-form-schema-ui-mui-testing-library"
   dependencies:
@@ -4249,7 +4249,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^2.0.4"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.6"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.7"
-    "@vtaits/react-form-schema-ui-mui-testing-library": "npm:^1.0.0-alpha.1"
+    "@vtaits/react-form-schema-ui-mui-testing-library": "npm:^1.0.0-alpha.2"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.9"
     date-fns: "npm:^3.6.0"
     exports-fallback: "npm:^1.0.1"
