@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-form-schema-ui-mui-testing-library",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "Helpers for @testing-library/react to test @vtaits/react-form-schema-ui-mui",
   "files": [
     "dist",
@@ -55,8 +55,8 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitest/coverage-v8": "^2.0.4",
-    "@vtaits/form-schema": "^2.3.0-alpha.5",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.8",
+    "@vtaits/form-schema": "^2.3.0-alpha.6",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.9",
     "exports-fallback": "^1.0.1",
     "happy-dom": "^14.12.3",
     "react": "^18.3.1",
