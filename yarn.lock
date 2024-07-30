@@ -31,6 +31,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ant-design/cssinjs-utils@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@ant-design/cssinjs-utils@npm:1.0.3"
+  dependencies:
+    "@ant-design/cssinjs": "npm:^1.21.0"
+    "@babel/runtime": "npm:^7.23.2"
+    rc-util: "npm:^5.38.0"
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 10c0/928909125ec88c631577d1ecfdad652e8c1ca948a474605feda0dcd83127d1c401b1c0ec29847062b02f0f6f55d6ff6e22bb82a7c89550c10b21c0192d2065df
+  languageName: node
+  linkType: hard
+
 "@ant-design/cssinjs@npm:^1.21.0":
   version: 1.21.0
   resolution: "@ant-design/cssinjs@npm:1.21.0"
@@ -56,7 +70,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ant-design/icons@npm:^5.3.7, @ant-design/icons@npm:^5.4.0":
+"@ant-design/icons@npm:^5.4.0":
   version: 5.4.0
   resolution: "@ant-design/icons@npm:5.4.0"
   dependencies:
@@ -4164,7 +4178,7 @@ __metadata:
     "@vtaits/form-schema": "npm:^2.3.0-alpha.5"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.6"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.8"
-    antd: "npm:^5.19.3"
+    antd: "npm:^5.19.4"
     dayjs: "npm:^1.11.12"
     exports-fallback: "npm:^1.0.1"
     happy-dom: "npm:^14.12.3"
@@ -4482,13 +4496,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:^5.19.3":
-  version: 5.19.3
-  resolution: "antd@npm:5.19.3"
+"antd@npm:^5.19.4":
+  version: 5.19.4
+  resolution: "antd@npm:5.19.4"
   dependencies:
     "@ant-design/colors": "npm:^7.1.0"
     "@ant-design/cssinjs": "npm:^1.21.0"
-    "@ant-design/icons": "npm:^5.3.7"
+    "@ant-design/cssinjs-utils": "npm:^1.0.3"
+    "@ant-design/icons": "npm:^5.4.0"
     "@ant-design/react-slick": "npm:~1.1.2"
     "@babel/runtime": "npm:^7.24.8"
     "@ctrl/tinycolor": "npm:^3.6.1"
@@ -4537,7 +4552,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 10c0/023ca3597ec55de359736d0d5e31dcbbc7ecc9183b631677ae551c26c964bf1f2bf3aa4dac734562d1ba7e6128aac35261eaa35a1d468fab6dbb401a37f99bba
+  checksum: 10c0/19ba9111a04c7eaa4cb984524c5c9e3b7ac5152a9bab7a25d377473fdd29d49340f68b0b0336355d84038dca920c0391423566508e160389b7d4414f8a2a660f
   languageName: node
   linkType: hard
 
