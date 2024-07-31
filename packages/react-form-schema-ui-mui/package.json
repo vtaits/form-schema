@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-form-schema-ui-mui",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "description": "Mui fields for @vtaits/form-schema",
   "files": [
     "dist",
