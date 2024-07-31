@@ -456,7 +456,7 @@ export function getContextValue(
 					<InputLabel
 						size={muiSize === "small" ? "small" : undefined}
 						id={`${name}/label`}
-						shrink={Boolean(placeholder)}
+						shrink={Boolean(value || value === 0 || placeholder)}
 					>
 						{label}
 					</InputLabel>
@@ -480,11 +480,11 @@ export function getContextValue(
 					variant={variant}
 					displayEmpty
 				>
-					{placeholder && (
+					{placeholder ? (
 						<MenuItem value="">
 							<i>{placeholder}</i>
 						</MenuItem>
-					)}
+					) : null}
 
 					{options.map((option) => {
 						const optionValue = getOptionValue(option);
