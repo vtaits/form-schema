@@ -135,7 +135,7 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 	select: {
 		type: "select",
 		label: "Select",
-		placeholder: "Select",
+		placeholder: "------",
 		options: [
 			{
 				value: "value1",

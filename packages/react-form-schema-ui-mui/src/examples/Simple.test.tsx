@@ -2,6 +2,7 @@ import { cleanup, waitFor } from "@testing-library/react";
 import {
 	addListBlock,
 	addTagsValue,
+	getSelectText,
 	queryCheckbox,
 	queryFieldError,
 	queryFormError,
@@ -91,6 +92,7 @@ test("render fields", () => {
 	expect(queryRadio(form, "radioGroup", "Label 3")).toBeTruthy();
 
 	expect(querySelect(form, "select", "Select")).toBeTruthy();
+	expect(getSelectText(form, "select", "Select")).toBe("------");
 	expect(queryTags(form, "tags", "Tags")).toBeTruthy();
 	expect(queryTextarea(form, "textarea", "Textarea")).toBeTruthy();
 

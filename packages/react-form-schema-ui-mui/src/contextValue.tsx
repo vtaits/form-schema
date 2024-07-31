@@ -441,11 +441,10 @@ export function getContextValue(
 		},
 
 		renderSelect: ({
-			clearable,
 			disabled,
 			name,
 			options,
-			placeholder,
+			placeholder = "",
 			value,
 			onChange,
 			getOptionLabel,
@@ -457,6 +456,7 @@ export function getContextValue(
 					<InputLabel
 						size={muiSize === "small" ? "small" : undefined}
 						id={`${name}/label`}
+						shrink={Boolean(placeholder)}
 					>
 						{label}
 					</InputLabel>
@@ -478,8 +478,9 @@ export function getContextValue(
 					size={muiSize}
 					value={value ? getOptionValue(value) : ""}
 					variant={variant}
+					displayEmpty
 				>
-					{clearable && (
+					{placeholder && (
 						<MenuItem value="">
 							<i>{placeholder}</i>
 						</MenuItem>
