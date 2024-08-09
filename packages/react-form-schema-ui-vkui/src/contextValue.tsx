@@ -272,13 +272,15 @@ export const contextValue: BaseUIContextValue = {
 							</div>
 						)}
 
-						<p
-							style={{
-								color: "gray",
-							}}
-						>
-							{error}
-						</p>
+						{error && (
+							<p
+								style={{
+									color: "red",
+								}}
+							>
+								{error}
+							</p>
+						)}
 					</>
 				}
 				data-testid={`@@list/${name}`}
