@@ -98,7 +98,6 @@
     "prepare": "yarn clean && yarn build"
   },
   "dependencies": {
-    "@types/is-promise": "^2.2.0",
     "date-fns": "^3.6.0",
     "is-promise": "^4.0.0",
     "krustykrab": "^1.0.0"

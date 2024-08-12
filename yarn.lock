@@ -3696,15 +3696,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/is-promise@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@types/is-promise@npm:2.2.0"
-  dependencies:
-    is-promise: "npm:*"
-  checksum: 10c0/2015fd30d067454bac334d6e6a6d3e86e486434d34355c52594b2321ccd4485bb03b3398d49329b3722ce08c4bbdc9e8761eb80d9343b8e77e52c20b4bdbdbfc
-  languageName: node
-  linkType: hard
-
 "@types/lodash@npm:^4.14.167, @types/lodash@npm:^4.17.7":
   version: 4.17.7
   resolution: "@types/lodash@npm:4.17.7"
@@ -4073,7 +4064,6 @@ __metadata:
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
   dependencies:
     "@biomejs/biome": "npm:^1.8.3"
-    "@types/is-promise": "npm:^2.2.0"
     "@vitest/coverage-v8": "npm:^2.0.4"
     date-fns: "npm:^3.6.0"
     exports-fallback: "npm:^1.0.1"
@@ -6922,7 +6912,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-promise@npm:*, is-promise@npm:^4.0.0":
+"is-promise@npm:^4.0.0":
   version: 4.0.0
   resolution: "is-promise@npm:4.0.0"
   checksum: 10c0/ebd5c672d73db781ab33ccb155fb9969d6028e37414d609b115cc534654c91ccd061821d5b987eefaa97cf4c62f0b909bb2f04db88306de26e91bfe8ddc01503
