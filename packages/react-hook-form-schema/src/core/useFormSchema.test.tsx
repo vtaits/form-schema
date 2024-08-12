@@ -1,38 +1,18 @@
 import {
-	type GetFieldSchema,
-	type ParentType,
+	type FieldSchemaBase,
 	parse,
 	serialize,
 	setFieldErrors,
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
-import isPromise from "is-promise";
-import {
-	type BaseSyntheticEvent,
-	useCallback,
-	useDebugValue,
-	useMemo,
-} from "react";
-import {
-	type DefaultValues,
-	type FieldValues,
-	type SubmitErrorHandler,
-	type SubmitHandler,
-	type UseFormReturn,
-	useForm,
-} from "react-hook-form";
+import { useCallback, useDebugValue, useMemo } from "react";
+import { type FieldValues, type UseFormReturn, useForm } from "react-hook-form";
 import { create } from "react-test-engine-vitest";
 import { afterEach, describe, expect, test, vi } from "vitest";
-
 import { CLIENT_ERROR, SERVER_ERROR } from "./constants";
 import { makeSetError } from "./makeSetError";
 import { renderBySchema } from "./renderBySchema";
-import type {
-	MapErrors,
-	OnSubmit,
-	UseFormSchemaParams,
-	UseFormSchemaReturn,
-} from "./types";
+import type { UseFormSchemaParams, UseFormSchemaReturn } from "./types";
 import { useFormSchema } from "./useFormSchema";
 
 vi.mock("react", async () => {
@@ -53,7 +33,7 @@ vi.mock("./renderBySchema");
 const mockedMakeSetError = vi.mocked(makeSetError);
 
 function TestComponent<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,

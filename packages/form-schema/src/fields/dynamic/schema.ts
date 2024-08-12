@@ -1,4 +1,5 @@
 import type {
+	FieldSchemaBase,
 	GetFieldSchema,
 	GetFieldType,
 	ParentType,
@@ -7,12 +8,12 @@ import type {
 
 export type DynamicSchema<
 	FormApi,
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends Record<string, any> = Record<string, any>,
 	RawValues extends Record<string, any> = Record<string, any>,
 	SerializedValues extends Record<string, any> = Record<string, any>,
 	Errors extends Record<string, any> = Record<string, any>,
-> = {
+> = FieldSchemaBase & {
 	/**
 	 * Callback that should return schema of field or `null` if field can't be shown
 	 */

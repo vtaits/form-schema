@@ -1,4 +1,5 @@
 import {
+	type FieldSchemaBase,
 	type GetFieldSchema,
 	type ParentType,
 	parse,
@@ -15,7 +16,6 @@ import {
 	type SubmitHandler,
 	useForm,
 } from "react-hook-form";
-
 import { CLIENT_ERROR, SERVER_ERROR } from "./constants";
 import { makeSetError } from "./makeSetError";
 import { renderBySchema } from "./renderBySchema";
@@ -31,7 +31,7 @@ export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) =>
 export const defaultMapErrors: MapErrors = (errors) => errors;
 
 export function useFormSchema<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,

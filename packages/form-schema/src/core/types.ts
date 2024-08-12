@@ -448,3 +448,26 @@ export type FieldType<
 		Errors
 	>;
 };
+
+export type FieldSchemaBase = {
+	serializer?: Serializer<FieldSchemaBase, BaseValues, BaseValues, BaseValues>;
+	serializerSingle?: SerializerSingle<
+		FieldSchemaBase,
+		BaseValues,
+		BaseValues,
+		BaseValues
+	>;
+	parser?: Parser<FieldSchemaBase, BaseValues, BaseValues, BaseValues>;
+	parserSingle?: ParserSingle<
+		FieldSchemaBase,
+		BaseValues,
+		BaseValues,
+		BaseValues
+	>;
+	validatorBeforeSubmit?: ValidatorBeforeSubmit<
+		FieldSchemaBase,
+		BaseValues,
+		BaseValues,
+		BaseValues
+	>;
+};

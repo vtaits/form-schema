@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { expect, test } from "vitest";
-
 import type { RenderParams } from "../../core";
 import { DynamicField } from "./DynamicField";
 import { dynamic } from "./dynamic";

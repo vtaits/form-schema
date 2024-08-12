@@ -1,8 +1,8 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
+import type { FieldSchemaBase, GetFieldSchema } from "@vtaits/form-schema";
 import { type ReactElement, useState } from "react";
 import { type FieldType, type GetFieldType, useFormSchema } from "../core";
 
-type InputSchema = {
+type InputSchema = FieldSchemaBase & {
 	type: "input";
 	label?: string;
 	placeholder?: string;

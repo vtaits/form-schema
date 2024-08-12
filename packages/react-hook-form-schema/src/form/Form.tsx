@@ -1,4 +1,4 @@
-import type { NameType } from "@vtaits/form-schema";
+import type { FieldSchemaBase, NameType } from "@vtaits/form-schema";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import {
 	type BaseSyntheticEvent,
@@ -128,7 +128,7 @@ export const defaultGetFormError = <Errors extends Record<string, any>>(
 };
 
 export function Form<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,

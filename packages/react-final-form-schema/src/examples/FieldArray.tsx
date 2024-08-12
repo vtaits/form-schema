@@ -1,4 +1,5 @@
 import {
+	type FieldSchemaBase,
 	type GetFieldSchema,
 	type NameType,
 	parse,
@@ -17,7 +18,7 @@ import {
 	type GetFieldType,
 } from "../core";
 
-type FieldArraySchema = {
+type FieldArraySchema = FieldSchemaBase & {
 	type: "array";
 	label: string;
 	fields: Record<string, FieldSchema>;
@@ -104,7 +105,7 @@ function ArrayComponent({
 	);
 }
 
-type InputSchema = {
+type InputSchema = FieldSchemaBase & {
 	type: "input";
 	label?: string;
 	placeholder?: string;

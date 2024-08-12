@@ -1,4 +1,4 @@
-import type { ParentType } from "@vtaits/form-schema";
+import type { FieldSchemaBase, ParentType } from "@vtaits/form-schema";
 import type { FormApi, FormState } from "final-form";
 import {
 	type FC,
@@ -18,6 +18,7 @@ import {
 	useFormSchemaState,
 } from "../../core";
 import { DynamicField } from "./component";
+import type { DynamicSchema } from "./schema";
 
 vi.mock("react", async () => {
 	const actual = (await vi.importActual("react")) as Record<string, unknown>;
@@ -122,7 +123,7 @@ afterEach(() => {
 describe("getSchema", () => {
 	test("should provide form values to `getSchema`", () => {
 		const getSchema = vi.fn();
-		const getFieldSchema = () => null;
+		const getFieldSchema = () => ({});
 		const getFieldType = () => fieldType;
 
 		const values: Record<string, any> = {
@@ -133,7 +134,7 @@ describe("getSchema", () => {
 			{
 				fieldSchema: {
 					getSchema,
-				},
+				} as DynamicSchema<FieldSchemaBase>,
 				name: "test",
 				getFieldSchema,
 				getFieldType,
@@ -162,31 +163,13 @@ describe("getSchema", () => {
 		const engine = render({
 			fieldSchema: {
 				getSchema: () => schema,
-			},
+			} as DynamicSchema<FieldSchemaBase>,
 			name: "test",
-			getFieldSchema: () => null,
+			getFieldSchema: () => ({}),
 			getFieldType: () => fieldType,
 		});
 
 		expect(engine.checkIsRendered()).toBe(isRendered);
-	});
-});
-
-describe("getFieldType", () => {
-	test("should call `getFieldType` with correct argument", () => {
-		const getFieldType = vi.fn().mockReturnValue(fieldType);
-
-		render({
-			fieldSchema: {
-				getSchema: () => "test",
-			},
-			name: "test",
-			getFieldSchema: () => null,
-			getFieldType,
-		});
-
-		expect(getFieldType).toHaveBeenCalledTimes(1);
-		expect(getFieldType).toHaveBeenCalledWith("test");
 	});
 });
 
@@ -198,7 +181,7 @@ describe("render", () => {
 		const wrapper = render({
 			fieldSchema: {
 				getSchema: () => "test",
-			},
+			} as DynamicSchema<FieldSchemaBase>,
 			name: "testName",
 			getFieldSchema,
 			getFieldType,
@@ -231,7 +214,7 @@ describe("callbacks", () => {
 					getSchema: () => "schema",
 					onShow,
 					onHide,
-				},
+				} as DynamicSchema<FieldSchemaBase>,
 			},
 			{
 				useFormSchemaState: {
@@ -265,7 +248,7 @@ describe("callbacks", () => {
 					getSchema: () => "schema",
 					onShow,
 					onHide,
-				},
+				} as DynamicSchema<FieldSchemaBase>,
 			},
 			{
 				useFormSchemaState: {
@@ -299,7 +282,7 @@ describe("callbacks", () => {
 					getSchema: () => null,
 					onShow,
 					onHide,
-				},
+				} as DynamicSchema<FieldSchemaBase>,
 			},
 			{
 				useFormSchemaState: {
@@ -333,7 +316,7 @@ describe("callbacks", () => {
 					getSchema: () => "schema",
 					onShow,
 					onHide,
-				},
+				} as DynamicSchema<FieldSchemaBase>,
 			},
 			{
 				useFormSchemaState: {
@@ -379,7 +362,7 @@ describe("callbacks", () => {
 					getSchema: () => null,
 					onShow,
 					onHide,
-				},
+				} as DynamicSchema<FieldSchemaBase>,
 			},
 			{
 				useFormSchemaState: {

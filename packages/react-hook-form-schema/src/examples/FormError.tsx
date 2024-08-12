@@ -1,12 +1,12 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
+import type { FieldSchemaBase, GetFieldSchema } from "@vtaits/form-schema";
 import type { ReactElement } from "react";
 import { type GetFieldType, useFormSchema } from "../core";
 
-const getFieldType: GetFieldType<unknown> = () => ({
+const getFieldType: GetFieldType<FieldSchemaBase> = () => ({
 	render: () => null,
 });
 
-const getFieldSchema: GetFieldSchema<unknown> = () => null;
+const getFieldSchema: GetFieldSchema<FieldSchemaBase> = () => ({});
 
 const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => {

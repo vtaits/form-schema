@@ -1,5 +1,6 @@
 import type {
 	BaseValues,
+	FieldSchemaBase,
 	GetFieldSchema,
 	GetFieldType,
 	NameType,
@@ -42,7 +43,7 @@ export type SerializeParams<
 }>;
 
 export function serialize<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
 	SerializedValues extends BaseValues,
@@ -93,12 +94,17 @@ export function serialize<
 			parents,
 		};
 
-		if (fieldType.serializerSingle) {
-			res[name as keyof SerializedValues] = fieldType.serializerSingle(
+		const serializerSingle =
+			(fieldSchema.serializerSingle as typeof fieldType.serializerSingle) ||
+			fieldType.serializerSingle;
+
+		if (serializerSingle) {
+			res[name as keyof SerializedValues] = serializerSingle(
 				params,
 			) as SerializedValues[keyof SerializedValues];
 		} else {
 			const serializer =
+				(fieldSchema.serializer as typeof fieldType.serializer) ||
 				fieldType.serializer ||
 				(defaultSerializer as Serializer<
 					FieldSchema,

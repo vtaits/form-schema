@@ -1,5 +1,6 @@
 import {
 	type CreateGetFieldSchemaParams,
+	type FieldSchemaBase,
 	type FieldType,
 	type GetFieldSchema,
 	parse,
@@ -9,9 +10,9 @@ import {
 } from "../../core";
 import type { DynamicSchema } from "./schema";
 
-export const createGetFieldSchema = <
+export function createGetFieldSchema<
 	FormApi,
-	FieldSchema,
+	FieldSchema extends DynamicSchema<any, any>,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
@@ -29,7 +30,7 @@ export const createGetFieldSchema = <
 	RawValues,
 	SerializedValues,
 	Errors
->): GetFieldSchema<FieldSchema> => {
+>): GetFieldSchema<FieldSchema> {
 	const { getSchema } = fieldSchema as DynamicSchema<
 		FormApi,
 		FieldSchema,
@@ -52,7 +53,7 @@ export const createGetFieldSchema = <
 	}
 
 	return () => resultSchema;
-};
+}
 
 export const dynamic: FieldType<DynamicSchema<any, any>> = {
 	createGetFieldSchema,

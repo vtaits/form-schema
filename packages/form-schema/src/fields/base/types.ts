@@ -1,3 +1,5 @@
+import type { FieldSchemaBase } from "../../core";
+
 export type ErrorMessages = {
 	invalidNumber: string;
 	required: string;
@@ -14,7 +16,7 @@ export type OnChange<FormApi, Value> = (
 	prevValue: Value,
 ) => void;
 
-export type BaseFieldSchema<FormApi, Value> = {
+export type BaseFieldSchema<FormApi, Value> = FieldSchemaBase & {
 	disabled?: boolean;
 	required?: boolean;
 	errorMessages?: Partial<ErrorMessages>;

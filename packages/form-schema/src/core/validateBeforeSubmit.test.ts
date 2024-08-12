@@ -95,7 +95,7 @@ test("should call redefined validatorBeforeSubmit with `setError`", () => {
 	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
 });
 
-test("should call redefined validatorBeforeSubmit with `setCurrentError`", () => {
+test("should call redefined validatorBeforeSubmit with `setCurrentError` of field type", () => {
 	const rawValues = {
 		value: "test",
 		value2: "test2",
@@ -131,6 +131,62 @@ test("should call redefined validatorBeforeSubmit with `setCurrentError`", () =>
 
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
 	expect(validatorBeforeSubmit).toHaveBeenCalledWith({
+		setError,
+		setCurrentError: expect.any(Function),
+		value: "test",
+		values: rawValues,
+		name: "value",
+		fieldSchema,
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(setError).toHaveBeenCalledTimes(1);
+	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
+});
+
+test("should call redefined validatorBeforeSubmit with `setCurrentError` of field schema", () => {
+	const rawValues = {
+		value: "test",
+		value2: "test2",
+	};
+
+	const validatorBeforeSubmit = vi.fn();
+
+	const schemaValidatorBeforeSubmit = vi.fn<
+		ValidatorBeforeSubmit<any, any, any, any, any>
+	>(({ setCurrentError, value }) => {
+		setCurrentError(`${value}${value}`);
+	});
+
+	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+		validatorBeforeSubmit,
+	});
+
+	const fieldSchema = {
+		type: "testType",
+		name: "value",
+		validatorBeforeSubmit: schemaValidatorBeforeSubmit,
+	};
+
+	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
+
+	validateBeforeSubmit({
+		setError,
+		values: rawValues,
+
+		names: ["value"],
+
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(0);
+
+	expect(schemaValidatorBeforeSubmit).toHaveBeenCalledTimes(1);
+	expect(schemaValidatorBeforeSubmit).toHaveBeenCalledWith({
 		setError,
 		setCurrentError: expect.any(Function),
 		value: "test",

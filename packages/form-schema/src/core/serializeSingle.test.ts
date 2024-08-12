@@ -38,7 +38,7 @@ describe("serializeSingle", () => {
 		).toBe("test");
 	});
 
-	test("should call redefined serializer", () => {
+	test("should call redefined serializer of the type of the field", () => {
 		const rawValues = {
 			value: "test",
 			value2: "test2",
@@ -81,7 +81,54 @@ describe("serializeSingle", () => {
 		});
 	});
 
-	test("should call single serializer", () => {
+	test("should call redefined serializer of the type of schema field", () => {
+		const rawValues = {
+			value: "test",
+			value2: "test2",
+		};
+
+		const serializer = vi.fn();
+		const schemaSerializer = vi.fn().mockReturnValue({
+			value: "testtest",
+		});
+
+		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+			serializer,
+		});
+
+		const fieldSchema = {
+			type: "testType",
+			name: "value",
+			serializer: schemaSerializer,
+		};
+
+		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
+
+		expect(
+			serializeSingle({
+				values: rawValues,
+				name: "value",
+				getFieldSchema,
+				getFieldType,
+				parents,
+			}),
+		).toBe("testtest");
+
+		expect(serializer).toHaveBeenCalledTimes(0);
+
+		expect(schemaSerializer).toHaveBeenCalledTimes(1);
+		expect(schemaSerializer).toHaveBeenCalledWith({
+			value: "test",
+			values: rawValues,
+			name: "value",
+			fieldSchema,
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+	});
+
+	test("should call single serializer of the type of the field", () => {
 		const rawValues = {
 			value: "test",
 			value2: "test2",
@@ -118,6 +165,57 @@ describe("serializeSingle", () => {
 
 		expect(serializerSingle).toHaveBeenCalledTimes(1);
 		expect(serializerSingle).toHaveBeenCalledWith({
+			value: "test",
+			values: rawValues,
+			name: "value",
+			fieldSchema,
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+	});
+
+	test("should call single serializer of the schema of the field", () => {
+		const rawValues = {
+			value: "test",
+			value2: "test2",
+		};
+
+		const serializerSingle = vi.fn();
+		const serializer = vi.fn();
+
+		const schmaSerializerSingle = vi.fn().mockReturnValue("serialized single");
+
+		const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+			serializer,
+			serializerSingle,
+		});
+
+		const fieldSchema = {
+			type: "testType",
+			name: "value",
+			serializerSingle: schmaSerializerSingle,
+		};
+
+		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
+
+		expect(
+			serializeSingle({
+				values: rawValues,
+
+				name: "value",
+
+				getFieldSchema,
+				getFieldType,
+				parents,
+			}),
+		).toBe("serialized single");
+
+		expect(serializer).toHaveBeenCalledTimes(0);
+		expect(serializerSingle).toHaveBeenCalledTimes(0);
+
+		expect(schmaSerializerSingle).toHaveBeenCalledTimes(1);
+		expect(schmaSerializerSingle).toHaveBeenCalledWith({
 			value: "test",
 			values: rawValues,
 			name: "value",
@@ -176,7 +274,7 @@ describe("serializeSingle", () => {
 		).toBe("test1");
 	});
 
-	test("should redefine getFieldSchema", () => {
+	test("should redefine `getFieldSchema`", () => {
 		const serializer = vi.fn<Serializer<any, any, any, any, any>>(() => ({}));
 
 		const parentGetFieldSchema = vi.fn().mockReturnValue({

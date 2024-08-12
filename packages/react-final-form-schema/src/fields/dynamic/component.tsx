@@ -1,3 +1,4 @@
+import type { FieldSchemaBase } from "@vtaits/form-schema";
 import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import { useForm, useFormState } from "react-final-form";
@@ -10,7 +11,7 @@ import {
 import type { DynamicSchema } from "./schema";
 
 export function DynamicField<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
@@ -22,7 +23,6 @@ export function DynamicField<
 	getFieldSchema,
 	getFieldType,
 	parents,
-	...rest
 }: FieldComponentProps<
 	FieldSchema,
 	Values,
@@ -104,10 +104,6 @@ export function DynamicField<
 	if (!schema) {
 		return null;
 	}
-
-	const fieldType = getFieldType(schema);
-
-	const { component: FieldComponent } = fieldType;
 
 	return <FormField name={name} />;
 }

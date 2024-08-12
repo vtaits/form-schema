@@ -2,6 +2,7 @@ import isPromise from "is-promise";
 import { defaultParser } from "./parse";
 import type {
 	BaseValues,
+	FieldSchemaBase,
 	GetFieldSchema,
 	GetFieldType,
 	NameType,
@@ -29,7 +30,7 @@ export type ParseSingleParams<
 }>;
 
 export function parseSingle<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
 	SerializedValues extends BaseValues,
@@ -72,11 +73,18 @@ export function parseSingle<
 		parents,
 	};
 
-	if (fieldType.parserSingle) {
-		return fieldType.parserSingle(params);
+	const parserSingle =
+		(fieldSchema.parserSingle as typeof fieldType.parserSingle) ||
+		fieldType.parserSingle;
+
+	if (parserSingle) {
+		return parserSingle(params);
 	}
 
-	const parser = fieldType.parser || defaultParser;
+	const parser =
+		(fieldSchema.parser as typeof fieldType.parser) ||
+		fieldType.parser ||
+		defaultParser;
 
 	const parserResult = parser(params);
 

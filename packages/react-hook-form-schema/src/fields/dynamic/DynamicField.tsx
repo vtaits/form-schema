@@ -1,3 +1,4 @@
+import type { FieldSchemaBase } from "@vtaits/form-schema";
 import { useEffect, useRef } from "react";
 import type { ReactElement } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
@@ -26,7 +27,7 @@ export type DynamicFieldProps<
 };
 
 export function DynamicField<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends FieldValues,
 	RawValues extends FieldValues,
 	SerializedValues extends FieldValues,

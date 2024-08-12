@@ -1,6 +1,7 @@
 import isPromise from "is-promise";
 import type {
 	BaseValues,
+	FieldSchemaBase,
 	GetFieldSchema,
 	GetFieldType,
 	NameType,
@@ -44,7 +45,7 @@ export type ParseParams<
 }>;
 
 export function parse<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
 	SerializedValues extends BaseValues,
@@ -92,8 +93,12 @@ export function parse<
 			parents,
 		};
 
-		if (fieldType.parserSingle) {
-			const parsedSingle = fieldType.parserSingle(params);
+		const parserSingle =
+			(fieldSchema.parserSingle as typeof fieldType.parserSingle) ||
+			fieldType.parserSingle;
+
+		if (parserSingle) {
+			const parsedSingle = parserSingle(params);
 
 			if (isPromise(parsedSingle)) {
 				hasPromise = true;
@@ -109,7 +114,10 @@ export function parse<
 				} as Values);
 			}
 		} else {
-			const parser = fieldType.parser || defaultParser;
+			const parser =
+				(fieldSchema.parser as typeof fieldType.parser) ||
+				fieldType.parser ||
+				defaultParser;
 
 			const parserResult = parser(params);
 

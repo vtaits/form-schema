@@ -1,4 +1,4 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
+import type { FieldSchemaBase, GetFieldSchema } from "@vtaits/form-schema";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
 import Select from "react-select";
@@ -17,7 +17,7 @@ type Option = {
 
 type Options = Option[];
 
-type SelectSchema = {
+type SelectSchema = FieldSchemaBase & {
 	type: "select";
 	label?: string;
 	options: Options;

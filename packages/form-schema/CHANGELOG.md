@@ -8,6 +8,7 @@
 - Added `serializeSingle` helper
 - Added `parseSingle` helper
 - Added `value` property for field methods
+- Added built-in parameters to schemas of fields: `serializer`, `serializerSingle`, `parser`, `parserSingle`, `validatorBeforeSubmit`
 
 ## 2.2.0 (27 nov 2023)
 

@@ -1,11 +1,12 @@
 import Button from "@mui/material/Button";
+import type { FieldSchemaBase } from "@vtaits/form-schema";
 import {
 	type DefaultFieldSchema,
 	Form,
 } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useState } from "react";
 
-const schemas: Record<string, DefaultFieldSchema<unknown>> = {
+const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = {
 	checkbox: {
 		type: "checkbox",
 		checkboxLabel: "Checkbox",
@@ -42,14 +43,18 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 	input: {
 		type: "input",
 		label: "Input",
-		placeholder: "Input",
+		inputProps: {
+			placeholder: "Input",
+		},
 		autoFocus: true,
 	},
 
 	inputWithOptions: {
 		type: "input",
 		label: "Input with options",
-		placeholder: "Input with options",
+		inputProps: {
+			placeholder: "Input with options",
+		},
 		options: ["foo", "bar"],
 	},
 
@@ -57,7 +62,9 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 		type: "input",
 		label: "Number",
 		isNumber: true,
-		placeholder: "Numeric input",
+		inputProps: {
+			placeholder: "Numeric input",
+		},
 		options: ["123", "456"],
 	},
 
@@ -161,7 +168,9 @@ const schemas: Record<string, DefaultFieldSchema<unknown>> = {
 	textarea: {
 		type: "textarea",
 		label: "Textarea",
-		placeholder: "Textarea",
+		textAreaProps: {
+			placeholder: "Textarea",
+		},
 	},
 };
 

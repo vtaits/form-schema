@@ -1,4 +1,4 @@
-import type { GetFieldSchema } from "@vtaits/form-schema";
+import type { FieldSchemaBase, GetFieldSchema } from "@vtaits/form-schema";
 import { FORM_ERROR } from "final-form";
 import type { ReactElement, ReactNode } from "react";
 import { Form, type GetFieldType, type MapErrors } from "../core";
@@ -7,11 +7,11 @@ function EmptyComponent(): ReactElement {
 	return <div />;
 }
 
-const getFieldType: GetFieldType<unknown> = () => ({
+const getFieldType: GetFieldType<FieldSchemaBase> = () => ({
 	component: EmptyComponent,
 });
 
-const getFieldSchema: GetFieldSchema<unknown> = () => null;
+const getFieldSchema: GetFieldSchema<FieldSchemaBase> = () => ({});
 
 const names: readonly string[] = [];
 

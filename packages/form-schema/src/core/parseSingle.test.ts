@@ -37,7 +37,7 @@ const parents = [
 
 const defaultGetFieldSchema: GetFieldSchema<any> = (name) => fieldSchemas[name];
 
-test("should return null for falsy values object", () => {
+test("should return `null` for falsy values object", () => {
 	expect(
 		parseSingle({
 			values: null,
@@ -78,7 +78,7 @@ test("should call default parser for empty value", () => {
 	).toBe(null);
 });
 
-test("should call redefined parser", () => {
+test("should call redefined parser of the type of the field", () => {
 	const rawValues: Values = {
 		value: "test",
 		value2: "test2",
@@ -114,7 +114,52 @@ test("should call redefined parser", () => {
 	});
 });
 
-test("should call single parser", () => {
+test("should call redefined parser of the schema of the field", () => {
+	const rawValues: Values = {
+		value: "test",
+		value2: "test2",
+	};
+
+	const parser = vi.fn();
+	const schemaParser = vi.fn().mockReturnValue({
+		value: "testtest",
+	});
+
+	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+		parser,
+	});
+
+	const fieldSchema = {
+		parser: schemaParser,
+	};
+
+	const getFieldSchema = () => fieldSchema;
+
+	expect(
+		parseSingle({
+			values: rawValues,
+			name: "value",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		}),
+	).toBe("testtest");
+
+	expect(parser).toHaveBeenCalledTimes(0);
+
+	expect(schemaParser).toHaveBeenCalledTimes(1);
+	expect(schemaParser).toHaveBeenCalledWith({
+		value: "test",
+		values: rawValues,
+		name: "value",
+		fieldSchema,
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+});
+
+test("should call single parser of the type of the field", () => {
 	const rawValues: Values = {
 		value: "test",
 		value2: "test2",
@@ -145,6 +190,53 @@ test("should call single parser", () => {
 		name: "value",
 		fieldSchema: fieldSchemas.value,
 		getFieldSchema: defaultGetFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(parser).toHaveBeenCalledTimes(0);
+});
+
+test("should call single parser of the schema of the field", () => {
+	const rawValues: Values = {
+		value: "test",
+		value2: "test2",
+	};
+
+	const parserSingle = vi.fn();
+	const schemaParserSingle = vi.fn().mockReturnValue("testtest");
+	const parser = vi.fn();
+
+	const fieldSchema = {
+		parserSingle: schemaParserSingle,
+	};
+
+	const getFieldSchema = () => fieldSchema;
+
+	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+		parser,
+		parserSingle,
+	});
+
+	expect(
+		parseSingle({
+			values: rawValues,
+			name: "value",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		}),
+	).toBe("testtest");
+
+	expect(parserSingle).toHaveBeenCalledTimes(0);
+
+	expect(schemaParserSingle).toHaveBeenCalledTimes(1);
+	expect(schemaParserSingle).toHaveBeenCalledWith({
+		value: "test",
+		values: rawValues,
+		name: "value",
+		fieldSchema,
+		getFieldSchema,
 		getFieldType,
 		parents,
 	});

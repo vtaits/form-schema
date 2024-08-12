@@ -1,11 +1,15 @@
-import type { GetFieldSchema, NameType } from "@vtaits/form-schema";
+import type {
+	FieldSchemaBase,
+	GetFieldSchema,
+	NameType,
+} from "@vtaits/form-schema";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { useField } from "react-final-form";
 import { type FieldType, Form, FormField, type GetFieldType } from "../core";
 import { type DynamicSchema, dynamic } from "../fields/dynamic";
 import { type SetSchema, set } from "../fields/set";
 
-type InputSchema = {
+type InputSchema = FieldSchemaBase & {
 	type: "input";
 	label?: string;
 	placeholder?: string;

@@ -1,5 +1,6 @@
 import type {
 	BaseValues,
+	FieldSchemaBase,
 	GetFieldSchema,
 	GetFieldType,
 	NameType,
@@ -29,7 +30,7 @@ export type ValidateBeforeSubmitParams<
 }>;
 
 export const validateBeforeSubmit = <
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
 	SerializedValues extends BaseValues,
@@ -52,7 +53,9 @@ export const validateBeforeSubmit = <
 		const fieldSchema = getFieldSchema(name);
 		const fieldType = getFieldType(fieldSchema);
 
-		const validatorBeforeSubmit = fieldType.validatorBeforeSubmit;
+		const validatorBeforeSubmit =
+			(fieldSchema.validatorBeforeSubmit as typeof fieldType.validatorBeforeSubmit) ||
+			fieldType.validatorBeforeSubmit;
 
 		if (validatorBeforeSubmit) {
 			const computedGetFieldSchema = fieldType.createGetFieldSchema

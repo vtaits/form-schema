@@ -1,4 +1,5 @@
 import {
+	type FieldSchemaBase,
 	type GetFieldSchema,
 	parse,
 	serialize,
@@ -22,7 +23,7 @@ export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) =>
 export const defaultMapErrors: MapErrors = (errors) => errors;
 
 export function Form<
-	FieldSchema,
+	FieldSchema extends FieldSchemaBase,
 	Values extends Record<string, any>,
 	RawValues extends Record<string, any>,
 	SerializedValues extends Record<string, any>,
