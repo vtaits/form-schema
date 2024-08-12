@@ -263,6 +263,10 @@ export type ValidatorBeforeSubmitParams<
 	 */
 	setError: SetError<Values>;
 	/**
+	 * Function for setting error in the current field
+	 */
+	setCurrentError: (error: unknown) => void;
+	/**
 	 * current runtime value by field name
 	 */
 	value: unknown;
@@ -325,6 +329,10 @@ export type ErrorsSetterParams<
 	 * Function for setting errors
 	 */
 	setError: SetError<Values>;
+	/**
+	 * Function for setting error in the current field
+	 */
+	setCurrentError: (error: unknown) => void;
 	/**
 	 * errors
 	 */

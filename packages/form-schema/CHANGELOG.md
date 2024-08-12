@@ -4,6 +4,7 @@
 
 - Added `serializerSingle` property for field types
 - Added `parserSingle` property for field types
+- Added `setCurrentError` argument to validate functions
 - Added `serializeSingle` helper
 - Added `parseSingle` helper
 - Added `value` property for field methods

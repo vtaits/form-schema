@@ -547,6 +547,7 @@ describe("validatorBeforeSubmit", () => {
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 	const setError = vi.fn();
+	const setCurrentError = vi.fn();
 
 	const { validatorBeforeSubmit } = dynamic;
 
@@ -563,6 +564,7 @@ describe("validatorBeforeSubmit", () => {
 
 		validatorBeforeSubmit({
 			setError,
+			setCurrentError,
 			value: null,
 			values,
 			name: "test",
@@ -589,6 +591,7 @@ describe("validatorBeforeSubmit", () => {
 
 		const result = validatorBeforeSubmit({
 			setError,
+			setCurrentError,
 			value: null,
 			values,
 			name: "test",
@@ -614,6 +617,7 @@ describe("validatorBeforeSubmit", () => {
 
 		validatorBeforeSubmit({
 			setError,
+			setCurrentError,
 			value: null,
 			values,
 			name: "test",
@@ -644,6 +648,7 @@ describe("validatorBeforeSubmit", () => {
 
 		validatorBeforeSubmit({
 			setError,
+			setCurrentError,
 			value: null,
 			values,
 			name: "test",
@@ -657,6 +662,8 @@ describe("validatorBeforeSubmit", () => {
 
 		expect(fieldValidatorBeforeSubmit).toHaveBeenCalledWith({
 			setError,
+			setCurrentError: expect.any(Function),
+			value: undefined,
 			values,
 			name: "test",
 			fieldSchema: childSchema,
@@ -678,6 +685,7 @@ describe("validatorBeforeSubmit", () => {
 
 		const result = validatorBeforeSubmit({
 			setError,
+			setCurrentError,
 			value: null,
 			values,
 			name: "field1",
@@ -697,6 +705,7 @@ describe("errorsSetter", () => {
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 	const setError = vi.fn();
+	const setCurrentError = vi.fn();
 
 	const values = {
 		field1: "value1",
@@ -721,6 +730,7 @@ describe("errorsSetter", () => {
 
 		errorsSetter({
 			setError,
+			setCurrentError,
 			errors,
 			name: "test",
 			fieldSchema: { getSchema },
@@ -750,6 +760,7 @@ describe("errorsSetter", () => {
 
 		const result = errorsSetter({
 			setError,
+			setCurrentError,
 			errors,
 			name: "test",
 			fieldSchema: {
@@ -778,6 +789,7 @@ describe("errorsSetter", () => {
 
 		errorsSetter({
 			setError,
+			setCurrentError,
 			errors,
 			name: "test",
 			fieldSchema: {
@@ -811,6 +823,7 @@ describe("errorsSetter", () => {
 
 		errorsSetter({
 			setError,
+			setCurrentError,
 			errors,
 			name: "field1",
 			fieldSchema: {
@@ -827,6 +840,7 @@ describe("errorsSetter", () => {
 
 		expect(fieldErrorsSetter).toHaveBeenCalledWith({
 			setError,
+			setCurrentError: expect.any(Function),
 			errors,
 			name: "field1",
 			fieldSchema: childSchema,
@@ -850,6 +864,7 @@ describe("errorsSetter", () => {
 
 		errorsSetter({
 			setError,
+			setCurrentError,
 			errors,
 			name: "field1",
 			fieldSchema: {

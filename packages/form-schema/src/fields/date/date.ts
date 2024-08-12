@@ -41,11 +41,9 @@ export const date: FieldType<DateSchema<unknown>> = {
 	},
 
 	validatorBeforeSubmit: ({
-		name,
-		setError,
+		setCurrentError,
 		value,
 		fieldSchema,
-		parents,
 		fieldSchema: { clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT },
 	}) => {
 		const { errorMessages: errorMessagesParam, required } = fieldSchema;
@@ -58,7 +56,7 @@ export const date: FieldType<DateSchema<unknown>> = {
 		const date = parseValueAndValidate(value, clientDateFormat);
 
 		if (required && !date) {
-			setError(name, parents, errorMessages.required);
+			setCurrentError(errorMessages.required);
 		}
 	},
 };

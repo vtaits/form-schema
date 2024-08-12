@@ -68,6 +68,9 @@ export const validateBeforeSubmit = <
 
 			validatorBeforeSubmit({
 				setError,
+				setCurrentError: (error) => {
+					setError(name, parents, error);
+				},
 				value: values[name as keyof Values],
 				values,
 				name,

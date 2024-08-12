@@ -13,6 +13,7 @@ import type {
 type Values = Record<string, any>;
 
 const setError = vi.fn();
+const setCurrentError = vi.fn();
 
 const parents: ParentType[] = [
 	{
@@ -28,6 +29,7 @@ describe("defaultFieldErrorsSetter", () => {
 	test("set error by name", () => {
 		defaultFieldErrorsSetter({
 			setError,
+			setCurrentError,
 			errors: {
 				foo: "error1",
 				bar: "error2",
@@ -50,6 +52,7 @@ describe("defaultFieldErrorsSetter", () => {
 	test("not set error if there is no error by name", () => {
 		defaultFieldErrorsSetter({
 			setError,
+			setCurrentError,
 			errors: {
 				bar: "error2",
 			},
@@ -90,7 +93,7 @@ describe("setFieldErrors", () => {
 		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["test"]);
 	});
 
-	test("should call redefined errors mapper", () => {
+	test("should call redefined errors mapper with `setError`", () => {
 		setFieldErrors({
 			setError,
 			errors: {
@@ -103,18 +106,34 @@ describe("setFieldErrors", () => {
 				name: "value",
 			}),
 			getFieldType: () => ({
-				errorsSetter: ({
-					setError: setErrorCb,
-					errors,
-					name,
-					fieldSchema,
-					getFieldSchema: computedGetFieldSchema,
-					getFieldType,
-					values,
-					rawValues,
-					parents,
-				}) => {
+				errorsSetter: ({ setError: setErrorCb, errors, name, parents }) => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
+				},
+			}),
+			values: {} as Record<string, unknown>,
+			rawValues: {} as Record<string, unknown>,
+			parents,
+		});
+
+		expect(setError).toHaveBeenCalledTimes(1);
+		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["testtest"]);
+	});
+
+	test("should call redefined errors mapper with `setCurrentError`", () => {
+		setFieldErrors({
+			setError,
+			errors: {
+				value: ["test"],
+				value2: ["test2"],
+			} as Record<NameType, string[]>,
+			names: ["value"],
+			getFieldSchema: (): any => ({
+				type: "testType",
+				name: "value",
+			}),
+			getFieldType: () => ({
+				errorsSetter: ({ setCurrentError, errors, name }) => {
+					setCurrentError([errors[name][0] + errors[name][0]]);
 				},
 			}),
 			values: {} as Record<string, unknown>,
@@ -384,6 +403,7 @@ describe("setFieldErrors", () => {
 		expect(errorsSetter).toHaveBeenCalledTimes(1);
 		expect(errorsSetter).toHaveBeenCalledWith({
 			setError,
+			setCurrentError: expect.any(Function),
 			errors: {
 				value: "test",
 			},

@@ -91,6 +91,9 @@ export const setFieldErrors = <
 
 		errorsSetter({
 			setError,
+			setCurrentError: (error) => {
+				setError(name, parents, error);
+			},
 			errors,
 			name,
 			fieldSchema,

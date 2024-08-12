@@ -44,7 +44,7 @@ test("should call default validatorBeforeSubmit", () => {
 	expect(setError).toHaveBeenCalledTimes(0);
 });
 
-test("should call redefined validatorBeforeSubmit", () => {
+test("should call redefined validatorBeforeSubmit with `setError`", () => {
 	const rawValues = {
 		value: "test",
 		value2: "test2",
@@ -52,19 +52,9 @@ test("should call redefined validatorBeforeSubmit", () => {
 
 	const validatorBeforeSubmit = vi.fn<
 		ValidatorBeforeSubmit<any, any, any, any, any>
-	>(
-		({
-			setError,
-			values,
-			name,
-			fieldSchema,
-			getFieldSchema: computedGetFieldSchema,
-			getFieldType,
-			parents,
-		}) => {
-			setError(name, parents, values[name] + values[name]);
-		},
-	);
+	>(({ setError, values, name, parents }) => {
+		setError(name, parents, values[name] + values[name]);
+	});
 
 	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
 		validatorBeforeSubmit,
@@ -91,6 +81,58 @@ test("should call redefined validatorBeforeSubmit", () => {
 	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
 	expect(validatorBeforeSubmit).toHaveBeenCalledWith({
 		setError,
+		setCurrentError: expect.any(Function),
+		value: "test",
+		values: rawValues,
+		name: "value",
+		fieldSchema,
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(setError).toHaveBeenCalledTimes(1);
+	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
+});
+
+test("should call redefined validatorBeforeSubmit with `setCurrentError`", () => {
+	const rawValues = {
+		value: "test",
+		value2: "test2",
+	};
+
+	const validatorBeforeSubmit = vi.fn<
+		ValidatorBeforeSubmit<any, any, any, any, any>
+	>(({ setCurrentError, value }) => {
+		setCurrentError(`${value}${value}`);
+	});
+
+	const getFieldType: GetFieldType<any, any, any, any, any> = () => ({
+		validatorBeforeSubmit,
+	});
+
+	const fieldSchema = {
+		type: "testType",
+		name: "value",
+	};
+
+	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
+
+	validateBeforeSubmit({
+		setError,
+		values: rawValues,
+
+		names: ["value"],
+
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(validatorBeforeSubmit).toHaveBeenCalledTimes(1);
+	expect(validatorBeforeSubmit).toHaveBeenCalledWith({
+		setError,
+		setCurrentError: expect.any(Function),
 		value: "test",
 		values: rawValues,
 		name: "value",

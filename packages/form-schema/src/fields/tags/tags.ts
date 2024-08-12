@@ -29,7 +29,7 @@ export const tags: FieldType<TagsSchema<unknown>> = {
 
 	parserSingle: ({ value }) => prepareValue(value),
 
-	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ setCurrentError, value, fieldSchema }) => {
 		const { errorMessages: errorMessagesParam, required } = fieldSchema;
 
 		const errorMessages: ErrorMessages = {
@@ -40,7 +40,7 @@ export const tags: FieldType<TagsSchema<unknown>> = {
 		const arrayValue = prepareValue(value);
 
 		if (required && arrayValue.length === 0) {
-			setError(name, parents, errorMessages.required);
+			setCurrentError(errorMessages.required);
 		}
 	},
 };

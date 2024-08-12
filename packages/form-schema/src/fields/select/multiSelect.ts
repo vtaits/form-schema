@@ -54,7 +54,7 @@ export const multiSelect: FieldType<MultiSelectSchema<unknown>> = {
 		});
 	},
 
-	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ setCurrentError, value, fieldSchema }) => {
 		const {
 			errorMessages: errorMessagesParam,
 			minLength,
@@ -70,15 +70,15 @@ export const multiSelect: FieldType<MultiSelectSchema<unknown>> = {
 		const valueArr = Array.isArray(value) ? value : [value];
 
 		if (required && valueArr.length === 0) {
-			setError(name, parents, errorMessages.required);
+			setCurrentError(errorMessages.required);
 		}
 
 		if (minLength && valueArr.length < minLength) {
-			setError(name, parents, errorMessages.minLength(minLength));
+			setCurrentError(errorMessages.minLength(minLength));
 		}
 
 		if (maxLength && valueArr.length > maxLength) {
-			setError(name, parents, errorMessages.maxLength(maxLength));
+			setCurrentError(errorMessages.maxLength(maxLength));
 		}
 	},
 };

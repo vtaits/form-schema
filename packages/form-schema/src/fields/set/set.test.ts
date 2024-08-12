@@ -14,6 +14,7 @@ import { set } from "./set";
 vi.mock("../../core");
 
 const setError = vi.fn();
+const setCurrentError = vi.fn();
 const getFieldSchema = vi.fn();
 const getFieldType = vi.fn();
 const values = {
@@ -258,6 +259,7 @@ describe("validatorBeforeSubmit", () => {
 		validatorBeforeSubmit({
 			name,
 			setError,
+			setCurrentError,
 			fieldSchema,
 			getFieldSchema,
 			getFieldType,
@@ -281,6 +283,7 @@ describe("validatorBeforeSubmit", () => {
 		validatorBeforeSubmit({
 			name,
 			setError,
+			setCurrentError,
 			fieldSchema: fieldSchemaNested,
 			getFieldSchema,
 			getFieldType,
@@ -320,6 +323,7 @@ describe("errorsSetter", () => {
 		errorsSetter({
 			name,
 			setError,
+			setCurrentError,
 			fieldSchema,
 			getFieldSchema,
 			getFieldType,
@@ -356,6 +360,7 @@ describe("errorsSetter", () => {
 		errorsSetter({
 			name,
 			setError,
+			setCurrentError,
 			fieldSchema: fieldSchemaNested,
 			getFieldSchema,
 			getFieldType,

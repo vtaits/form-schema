@@ -33,7 +33,7 @@ export const input: FieldType<InputSchema<unknown>> = {
 
 	parserSingle: ({ value }) => prepareValue(value),
 
-	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ setCurrentError, value, fieldSchema }) => {
 		const {
 			errorMessages: errorMessagesParam,
 			isNumber,
@@ -51,19 +51,19 @@ export const input: FieldType<InputSchema<unknown>> = {
 		const strValue = prepareValue(value);
 
 		if (isNumber && strValue && Number.isNaN(Number.parseFloat(strValue))) {
-			setError(name, parents, errorMessages.invalidNumber);
+			setCurrentError(errorMessages.invalidNumber);
 		}
 
 		if (required && !strValue) {
-			setError(name, parents, errorMessages.required);
+			setCurrentError(errorMessages.required);
 		}
 
 		if (minLength && strValue.length < minLength) {
-			setError(name, parents, errorMessages.minLengthStr(minLength));
+			setCurrentError(errorMessages.minLengthStr(minLength));
 		}
 
 		if (maxLength && strValue.length > maxLength) {
-			setError(name, parents, errorMessages.maxLengthStr(maxLength));
+			setCurrentError(errorMessages.maxLengthStr(maxLength));
 		}
 
 		if (regExpParam) {
@@ -71,7 +71,7 @@ export const input: FieldType<InputSchema<unknown>> = {
 				regExpParam instanceof RegExp ? regExpParam : new RegExp(regExpParam);
 
 			if (!regExp.test(strValue)) {
-				setError(name, parents, errorMessages.regexp(regExp.toString()));
+				setCurrentError(errorMessages.regexp(regExp.toString()));
 			}
 		}
 	},

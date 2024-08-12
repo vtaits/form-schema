@@ -45,7 +45,7 @@ export const select: FieldType<SelectSchema<unknown>> = {
 		});
 	},
 
-	validatorBeforeSubmit: ({ name, setError, value, fieldSchema, parents }) => {
+	validatorBeforeSubmit: ({ setCurrentError, value, fieldSchema }) => {
 		const { errorMessages: errorMessagesParam, required } = fieldSchema;
 
 		const errorMessages: ErrorMessages = {
@@ -54,7 +54,7 @@ export const select: FieldType<SelectSchema<unknown>> = {
 		};
 
 		if (required && !value) {
-			setError(name, parents, errorMessages.required);
+			setCurrentError(errorMessages.required);
 		}
 	},
 };

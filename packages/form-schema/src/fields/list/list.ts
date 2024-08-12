@@ -86,8 +86,8 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 	validatorBeforeSubmit: ({
 		value,
 		name,
+		setCurrentError,
 		setError,
-		values,
 		fieldSchema,
 		getFieldSchema,
 		getFieldType,
@@ -109,18 +109,18 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 
 		if (arrayValue.length === 0) {
 			if (required) {
-				setError(name, parents, errorMessages.required);
+				setCurrentError(errorMessages.required);
 			}
 
 			return;
 		}
 
 		if (minLength && arrayValue.length < minLength) {
-			setError(name, parents, errorMessages.minLength(minLength));
+			setCurrentError(errorMessages.minLength(minLength));
 		}
 
 		if (maxLength && arrayValue.length > maxLength) {
-			setError(name, parents, errorMessages.maxLength(maxLength));
+			setCurrentError(errorMessages.maxLength(maxLength));
 		}
 
 		const nextParents: ParentType[] = [
