@@ -397,6 +397,7 @@ export const contextValue: BaseUIContextValue = {
 				label: getOptionLabel(option),
 				value: getOptionValue(option),
 			}))}
+			searchable
 		/>
 	),
 
