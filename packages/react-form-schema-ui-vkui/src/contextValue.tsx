@@ -89,22 +89,24 @@ export const contextValue: BaseUIContextValue = {
 		);
 	},
 
-	renderDatePicker: ({ disabled, autoFocus, onChange, value }) => (
+	renderDatePicker: ({ disabled, autoFocus, name, onChange, value }) => (
 		<div style={{ display: "flex" }}>
 			<DateInput
 				autoFocus={autoFocus}
 				disabled={disabled}
+				name={name}
 				value={value || undefined}
 				onChange={onChange}
 			/>
 		</div>
 	),
 
-	renderDateTimePicker: ({ disabled, autoFocus, onChange, value }) => (
+	renderDateTimePicker: ({ disabled, autoFocus, name, onChange, value }) => (
 		<div style={{ display: "flex" }}>
 			<DateInput
 				autoFocus={autoFocus}
 				disabled={disabled}
+				name={name}
 				enableTime
 				value={value || undefined}
 				onChange={onChange}
