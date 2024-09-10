@@ -100,12 +100,12 @@
   "dependencies": {
     "date-fns": "^3.6.0",
     "is-promise": "^4.0.0",
-    "krustykrab": "^1.0.0"
+    "krustykrab": "^1.0.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@vitest/coverage-v8": "^2.0.5",
-    "exports-fallback": "^1.0.1",
+    "exports-fallback": "^1.0.2",
     "tsup": "^8.2.4",
     "typescript": "5.4.5",
     "vitest": "^2.0.5"
