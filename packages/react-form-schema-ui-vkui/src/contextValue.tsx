@@ -6,6 +6,7 @@ import {
 	ChipsSelect,
 	ContentCard,
 	DateInput,
+	Footnote,
 	FormItem,
 	FormStatus,
 	IconButton,
@@ -279,6 +280,7 @@ export const contextValue: BaseUIContextValue = {
 								style={{
 									color: "red",
 								}}
+								role="alert"
 							>
 								{error}
 							</p>
@@ -454,33 +456,19 @@ export const contextValue: BaseUIContextValue = {
 
 	renderWrapper: ({ children, error, hint, label }) => {
 		return (
-			<FormItem
-				top={label}
-				bottom={
-					<>
-						{hint && (
-							<div
-								style={{
-									color: "gray",
-								}}
-							>
-								{hint}
-							</div>
-						)}
-
-						{error && (
-							<div
-								style={{
-									color: "red",
-								}}
-							>
-								{error}
-							</div>
-						)}
-					</>
-				}
-			>
+			<FormItem top={label} bottom={error} status={error ? "error" : undefined}>
 				{children}
+
+				{hint && (
+					<Footnote
+						style={{
+							color: "gray",
+							paddingTop: 6,
+						}}
+					>
+						{hint}
+					</Footnote>
+				)}
 			</FormItem>
 		);
 	},
