@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-form-schema-ui-antd",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "Antd fields for @vtaits/form-schema",
   "files": [
     "dist",
@@ -46,7 +46,7 @@
   },
   "peerDependencies": {
     "@ant-design/icons": "^5.3.7",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.7",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.8",
     "antd": "^5.12.3",
     "react": "^17.0.0 || ^18.0.0"
   },
@@ -61,8 +61,8 @@
     "@types/react-dom": "^18.3.0",
     "@vitest/coverage-v8": "^2.0.5",
     "@vtaits/form-schema": "^2.3.0-alpha.7",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.7",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.10",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.8",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.11",
     "antd": "^5.20.6",
     "exports-fallback": "^1.0.2",
     "happy-dom": "^15.7.4",
