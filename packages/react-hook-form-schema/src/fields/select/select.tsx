@@ -55,6 +55,7 @@ export function SelectComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	const getOptionLabel = useMemo(() => {

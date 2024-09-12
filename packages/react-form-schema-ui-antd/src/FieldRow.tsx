@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Form, Row } from "antd";
 import type { PropsWithChildren, ReactElement, ReactNode } from "react";
 
 const wrapperStyle = {
@@ -9,6 +9,7 @@ type FieldRowProps = Readonly<
 	PropsWithChildren<{
 		"data-testid"?: string;
 		label?: ReactNode;
+		required?: boolean;
 	}>
 >;
 
@@ -16,18 +17,23 @@ export function FieldRow({
 	children,
 	"data-testid": testId,
 	label,
+	required,
 }: FieldRowProps): ReactElement {
 	return (
-		<div className="ant-form-item" style={wrapperStyle} data-testid={testId}>
-			<Row className="ant-form-item-row">
-				<Col xs={8} className="ant-form-item-label">
-					{label}
-				</Col>
-
-				<Col xs={16} className="ant-form-item-control">
-					{children}
-				</Col>
-			</Row>
-		</div>
+		<Form.Item
+			colon={Boolean(label)}
+			style={wrapperStyle}
+			labelCol={{
+				span: 8,
+			}}
+			wrapperCol={{
+				span: 16,
+			}}
+			label={label || <noscript />}
+			data-testid={testId}
+			required={required}
+		>
+			{children}
+		</Form.Item>
 	);
 }

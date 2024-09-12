@@ -48,6 +48,7 @@ export function TagsComponent({
 			autoFocus,
 			label,
 			onChange = undefined,
+			required,
 		},
 	},
 	formResult,
@@ -65,6 +66,7 @@ export function TagsComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	return renderWrapper({

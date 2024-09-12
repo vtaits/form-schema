@@ -29,6 +29,7 @@ export function InputComponent({
 			autoFocus,
 			label,
 			onChange = undefined,
+			required,
 		},
 	},
 	formResult,
@@ -46,6 +47,7 @@ export function InputComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	return renderWrapper({

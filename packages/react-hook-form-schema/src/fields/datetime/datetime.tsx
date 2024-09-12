@@ -38,6 +38,7 @@ export function DateTimeComponent({
 			hint,
 			inputProps,
 			onChange = undefined,
+			required,
 		},
 	},
 	formResult,
@@ -55,6 +56,7 @@ export function DateTimeComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	return renderWrapper({

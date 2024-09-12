@@ -43,6 +43,7 @@ export function getContextValue(
 			name,
 			onChange,
 			children,
+			wrapper: { required },
 		}) => (
 			<FormControlLabel
 				control={
@@ -55,6 +56,7 @@ export function getContextValue(
 						onChange={(event) => {
 							onChange(event.target.checked);
 						}}
+						required={required}
 					/>
 				}
 				label={children}
@@ -69,7 +71,7 @@ export function getContextValue(
 			options,
 			getOptionLabel,
 			getOptionValue,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => {
 			const selectedValuesSet = new Set(
 				value.map((option) => getOptionValue(option)),
@@ -77,7 +79,7 @@ export function getContextValue(
 
 			return (
 				<FormControl>
-					{label && <FormLabel>{label}</FormLabel>}
+					{label && <FormLabel required={required}>{label}</FormLabel>}
 
 					<div>
 						{options.map((option) => {
@@ -125,7 +127,7 @@ export function getContextValue(
 			name,
 			onChange,
 			value,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => (
 			<DatePicker
 				autoFocus={autoFocus}
@@ -135,7 +137,7 @@ export function getContextValue(
 				name={name}
 				value={value}
 				onChange={onChange}
-				slotProps={{ textField: { size: muiSize, variant } }}
+				slotProps={{ textField: { size: muiSize, variant, required } }}
 			/>
 		),
 
@@ -146,7 +148,7 @@ export function getContextValue(
 			name,
 			onChange,
 			value,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => (
 			<DateTimePicker
 				autoFocus={autoFocus}
@@ -156,7 +158,7 @@ export function getContextValue(
 				name={name}
 				value={value}
 				onChange={onChange}
-				slotProps={{ textField: { size: muiSize, variant } }}
+				slotProps={{ textField: { size: muiSize, variant, required } }}
 			/>
 		),
 
@@ -196,7 +198,7 @@ export function getContextValue(
 			onChange,
 			options,
 			name,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => {
 			const wrappedOnChange = <
 				Target extends {
@@ -232,6 +234,7 @@ export function getContextValue(
 								variant={variant}
 								{...params}
 								autoFocus={autoFocus}
+								required={required}
 								// onChange={wrappedOnChange}
 							/>
 						)}
@@ -250,6 +253,7 @@ export function getContextValue(
 					value={String(value || "")}
 					onChange={wrappedOnChange}
 					label={label}
+					required={required}
 					variant={variant}
 				/>
 			);
@@ -296,9 +300,17 @@ export function getContextValue(
 			</Card>
 		),
 
-		renderListWrapper: ({ actions, error, hint, items, label, name }) => (
+		renderListWrapper: ({
+			actions,
+			error,
+			hint,
+			items,
+			label,
+			name,
+			required,
+		}) => (
 			<Box marginBottom={2} data-testid={`@@list/${name}`}>
-				{label && <FormLabel>{label}</FormLabel>}
+				{label && <FormLabel required={required}>{label}</FormLabel>}
 
 				<Box
 					role="list"
@@ -332,7 +344,7 @@ export function getContextValue(
 			onChange,
 			getOptionLabel,
 			getOptionValue,
-			wrapper: { label },
+			wrapper: { label, required },
 		}: MultiSelectRenderProps<OptionType>) => {
 			const selectedValuesArr = value.map(getOptionValue);
 			const selectedValuesSet = new Set(selectedValuesArr);
@@ -343,6 +355,7 @@ export function getContextValue(
 						<InputLabel
 							id={`${name}/label`}
 							size={muiSize === "small" ? "small" : undefined}
+							required={required}
 						>
 							{label}
 						</InputLabel>
@@ -405,13 +418,13 @@ export function getContextValue(
 			options,
 			getOptionLabel,
 			getOptionValue,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => {
 			const selectedValue = value ? getOptionValue(value) : null;
 
 			return (
 				<FormControl>
-					{label && <FormLabel>{label}</FormLabel>}
+					{label && <FormLabel required={required}>{label}</FormLabel>}
 
 					<RadioGroup value={selectedValue}>
 						{options.map((option) => {
@@ -449,7 +462,7 @@ export function getContextValue(
 			onChange,
 			getOptionLabel,
 			getOptionValue,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => (
 			<FormControl fullWidth>
 				{label && (
@@ -457,6 +470,7 @@ export function getContextValue(
 						size={muiSize === "small" ? "small" : undefined}
 						id={`${name}/label`}
 						shrink={Boolean(value || value === 0 || placeholder)}
+						required={required}
 					>
 						{label}
 					</InputLabel>
@@ -506,7 +520,7 @@ export function getContextValue(
 			onChange,
 			options,
 			value,
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => (
 			<Autocomplete
 				autoFocus={autoFocus}
@@ -521,7 +535,13 @@ export function getContextValue(
 					onChange(nextValue);
 				}}
 				renderInput={(params) => (
-					<TextField name={name} label={label} variant={variant} {...params} />
+					<TextField
+						name={name}
+						label={label}
+						variant={variant}
+						{...params}
+						required={required}
+					/>
 				)}
 			/>
 		),
@@ -531,7 +551,7 @@ export function getContextValue(
 			autoFocus,
 			name,
 			textAreaProps: { color, ref, size, ...textAreaProps } = {},
-			wrapper: { label },
+			wrapper: { label, required },
 		}) => (
 			<TextField
 				autoFocus={autoFocus}
@@ -543,6 +563,7 @@ export function getContextValue(
 				variant={variant}
 				{...(textAreaProps as Omit<TextFieldProps, "variant">)}
 				label={label}
+				required={required}
 			/>
 		),
 

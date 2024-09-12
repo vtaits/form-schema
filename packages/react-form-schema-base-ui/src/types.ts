@@ -21,6 +21,7 @@ export type ListWrapperRenderProps = Readonly<{
 	name: string;
 	items?: ReactNode;
 	label?: ReactNode;
+	required?: boolean;
 }>;
 
 export type WrapperRenderProps = Readonly<{
@@ -29,6 +30,7 @@ export type WrapperRenderProps = Readonly<{
 	hint?: ReactNode;
 	label?: ReactNode;
 	name?: string;
+	required?: boolean;
 }>;
 
 export type BaseFieldRenderProps = Readonly<{

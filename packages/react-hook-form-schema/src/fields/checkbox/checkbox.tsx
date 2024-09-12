@@ -27,6 +27,7 @@ export function CheckboxComponent({
 			autoFocus,
 			label,
 			onChange = undefined,
+			required,
 		},
 	},
 	formResult,
@@ -44,6 +45,7 @@ export function CheckboxComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	return renderWrapper({

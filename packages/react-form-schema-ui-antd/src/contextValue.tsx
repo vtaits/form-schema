@@ -263,11 +263,20 @@ export const contextValue: BaseUIContextValue = {
 		</Card>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label, name }) => {
+	renderListWrapper: ({
+		actions,
+		error,
+		hint,
+		items,
+		label,
+		name,
+		required,
+	}) => {
 		return (
 			<FieldRow
 				label={label && <label>{label}</label>}
 				data-testid={`@@list/${name}`}
+				required={required}
 			>
 				<Flex gap="middle" vertical role="list">
 					{items}
@@ -445,9 +454,9 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderWrapper: ({ children, error, hint, label }) => {
+	renderWrapper: ({ children, error, hint, label, required }) => {
 		return (
-			<FieldRow label={label && <label>{label}</label>}>
+			<FieldRow label={label && <label>{label}</label>} required={required}>
 				{children}
 
 				{hint && (

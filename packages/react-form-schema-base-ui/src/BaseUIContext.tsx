@@ -229,9 +229,30 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		</fieldset>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label, name }) => (
+	renderListWrapper: ({
+		actions,
+		error,
+		hint,
+		items,
+		label,
+		name,
+		required,
+	}) => (
 		<div data-testid={`@@list/${name}`}>
-			{label && <label>{label}</label>}
+			{(label || required) && (
+				<label>
+					{label}{" "}
+					{required && (
+						<span
+							style={{
+								color: "red",
+							}}
+						>
+							*
+						</span>
+					)}
+				</label>
+			)}
 
 			<div role="list">{items}</div>
 
@@ -407,9 +428,22 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		<textarea disabled={disabled} name={name} {...textAreaProps} />
 	),
 
-	renderWrapper: ({ children, error, hint, label, name }) => (
+	renderWrapper: ({ children, error, hint, label, name, required }) => (
 		<div>
-			{label && <label>{label}</label>}
+			{(label || required) && (
+				<label>
+					{label}{" "}
+					{required && (
+						<span
+							style={{
+								color: "red",
+							}}
+						>
+							*
+						</span>
+					)}
+				</label>
+			)}
 
 			{children}
 

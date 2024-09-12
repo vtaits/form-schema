@@ -37,6 +37,7 @@ export function MultiSelectComponent({
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
+			required,
 		},
 	},
 	formResult,
@@ -54,6 +55,7 @@ export function MultiSelectComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	const getOptionLabel = useMemo(() => {

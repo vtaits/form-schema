@@ -31,6 +31,7 @@ export function ListComponent<FieldSchema>({
 			label,
 			hint,
 			renderListItemWrapper: renderListItemWrapperParam,
+			required,
 		},
 		getFieldSchema,
 		getFieldType,
@@ -65,6 +66,7 @@ export function ListComponent<FieldSchema>({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	const itemParents = [

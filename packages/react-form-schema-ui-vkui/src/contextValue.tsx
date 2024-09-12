@@ -249,10 +249,33 @@ export const contextValue: BaseUIContextValue = {
 		</CardGrid>
 	),
 
-	renderListWrapper: ({ actions, error, hint, items, label, name }) => {
+	renderListWrapper: ({
+		actions,
+		error,
+		hint,
+		items,
+		label,
+		name,
+		required,
+	}) => {
 		return (
 			<FormItem
-				top={label}
+				top={
+					label ? (
+						<>
+							{label}{" "}
+							{required && (
+								<span
+									style={{
+										color: "red",
+									}}
+								>
+									*
+								</span>
+							)}
+						</>
+					) : null
+				}
 				bottom={
 					<>
 						{hint && (
@@ -288,6 +311,7 @@ export const contextValue: BaseUIContextValue = {
 					</>
 				}
 				data-testid={`@@list/${name}`}
+				required={required}
 			>
 				<div role="list">{items}</div>
 			</FormItem>
@@ -454,9 +478,29 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderWrapper: ({ children, error, hint, label }) => {
+	renderWrapper: ({ children, error, hint, label, required }) => {
 		return (
-			<FormItem top={label} bottom={error} status={error ? "error" : undefined}>
+			<FormItem
+				top={
+					label ? (
+						<>
+							{label}{" "}
+							{required && (
+								<span
+									style={{
+										color: "red",
+									}}
+								>
+									*
+								</span>
+							)}
+						</>
+					) : null
+				}
+				bottom={error}
+				status={error ? "error" : undefined}
+				required={required}
+			>
 				{children}
 
 				{hint && (

@@ -27,6 +27,7 @@ export function TextAreaComponent({
 			autoFocus,
 			label,
 			onChange = undefined,
+			required,
 			textAreaProps,
 		},
 	},
@@ -45,6 +46,7 @@ export function TextAreaComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	return renderWrapper({

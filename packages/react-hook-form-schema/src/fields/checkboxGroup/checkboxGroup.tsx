@@ -34,6 +34,7 @@ export function CheckboxGroupComponent({
 			getOptionValue: getOptionValueParam,
 			onChange = undefined,
 			options,
+			required,
 			labelKey = DEFAULT_LABEL_KEY,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
@@ -53,6 +54,7 @@ export function CheckboxGroupComponent({
 		hint,
 		label,
 		name: fieldPath,
+		required,
 	};
 
 	const getOptionLabel = useMemo(() => {
