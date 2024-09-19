@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import type { FieldType } from "../../core";
 import { type ErrorMessages, defaultErrorMessages } from "../base";
 import { parseValueAndValidate, serializeDate } from "../date-base";
@@ -13,12 +14,13 @@ export const datetime: FieldType<DateTimeSchema<unknown>> = {
 		fieldSchema: {
 			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
 			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
+			utc,
 		},
 	}) => {
 		const date = parseValueAndValidate(value, clientDateFormat);
 
 		if (date) {
-			return serializeDate(date, serverDateFormat);
+			return serializeDate(utc ? new UTCDate(date) : date, serverDateFormat);
 		}
 
 		return null;

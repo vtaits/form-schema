@@ -1,10 +1,3 @@
-import type { BaseFieldSchema } from "../base";
+import type { DateBaseSchema } from "../date-base";
 
-export type DateSchema<FormApi> = BaseFieldSchema<
-	FormApi,
-	string | number | Date | null
-> & {
-	clientDateFormat?: string;
-	displayDateFormat?: string;
-	serverDateFormat?: string;
-};
+export type DateSchema<FormApi> = DateBaseSchema<FormApi>;

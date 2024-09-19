@@ -457,6 +457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/utc@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@date-fns/utc@npm:2.1.0"
+  checksum: 10c0/3f093e0f748b6e8c3df434e42e168b31762e1674b8313d43907c6a85c6540138a0bec01826eb998142e08a8839d3190a776e4e6bba41fe29073f6a3de206e365
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.12.0":
   version: 11.12.0
   resolution: "@emotion/babel-plugin@npm:11.12.0"
@@ -2814,6 +2821,7 @@ __metadata:
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
   dependencies:
     "@biomejs/biome": "npm:^1.9.1"
+    "@date-fns/utc": "npm:^2.1.0"
     "@vitest/coverage-v8": "npm:^2.1.1"
     date-fns: "npm:^4.1.0"
     exports-fallback: "npm:^1.0.2"
