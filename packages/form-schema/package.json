@@ -11,64 +11,64 @@
   "typings": "dist/core.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/core.d.ts",
       "import": "./dist/esm/core.js",
-      "require": "./dist/core.js",
-      "types": "./dist/core.d.ts"
+      "require": "./dist/core.js"
     },
     "./fields/base": {
-      "require": "./dist/fields_base.js",
+      "types": "./dist/fields_base.d.ts",
       "import": "./dist/esm/fields_base.js",
-      "types": "./dist/fields_base.d.ts"
+      "require": "./dist/fields_base.js"
     },
     "./fields/checkbox": {
-      "require": "./dist/fields_checkbox.js",
+      "types": "./dist/fields_checkbox.d.ts",
       "import": "./dist/esm/fields_checkbox.js",
-      "types": "./dist/fields_checkbox.d.ts"
+      "require": "./dist/fields_checkbox.js"
     },
     "./fields/date": {
-      "require": "./dist/fields_date.js",
+      "types": "./dist/fields_date.d.ts",
       "import": "./dist/esm/fields_date.js",
-      "types": "./dist/fields_date.d.ts"
+      "require": "./dist/fields_date.js"
     },
     "./fields/datetime": {
-      "require": "./dist/fields_datetime.js",
+      "types": "./dist/fields_datetime.d.ts",
       "import": "./dist/esm/fields_datetime.js",
-      "types": "./dist/fields_datetime.d.ts"
+      "require": "./dist/fields_datetime.js"
     },
     "./fields/date-base": {
-      "require": "./dist/fields_date-base.js",
+      "types": "./dist/fields_date-base.d.ts",
       "import": "./dist/esm/fields_date-base.js",
-      "types": "./dist/fields_date-base.d.ts"
+      "require": "./dist/fields_date-base.js"
     },
     "./fields/dynamic": {
-      "require": "./dist/fields_dynamic.js",
+      "types": "./dist/fields_dynamic.d.ts",
       "import": "./dist/esm/fields_dynamic.js",
-      "types": "./dist/fields_dynamic.d.ts"
+      "require": "./dist/fields_dynamic.js"
     },
     "./fields/input": {
-      "require": "./dist/fields_input.js",
+      "types": "./dist/fields_input.d.ts",
       "import": "./dist/esm/fields_input.js",
-      "types": "./dist/fields_input.d.ts"
+      "require": "./dist/fields_input.js"
     },
     "./fields/list": {
-      "require": "./dist/fields_list.js",
+      "types": "./dist/fields_list.d.ts",
       "import": "./dist/esm/fields_list.js",
-      "types": "./dist/fields_list.d.ts"
+      "require": "./dist/fields_list.js"
     },
     "./fields/select": {
-      "require": "./dist/fields_select.js",
+      "types": "./dist/fields_select.d.ts",
       "import": "./dist/esm/fields_select.js",
-      "types": "./dist/fields_select.d.ts"
+      "require": "./dist/fields_select.js"
     },
     "./fields/set": {
-      "require": "./dist/fields_set.js",
+      "types": "./dist/fields_set.d.ts",
       "import": "./dist/esm/fields_set.js",
-      "types": "./dist/fields_set.d.ts"
+      "require": "./dist/fields_set.js"
     },
     "./fields/tags": {
-      "require": "./dist/fields_tags.js",
+      "types": "./dist/fields_tags.d.ts",
       "import": "./dist/esm/fields_tags.js",
-      "types": "./dist/fields_tags.d.ts"
+      "require": "./dist/fields_tags.js"
     }
   },
   "keywords": [
@@ -98,16 +98,16 @@
     "prepare": "yarn clean && yarn build"
   },
   "dependencies": {
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "is-promise": "^4.0.0",
-    "krustykrab": "^1.0.1"
+    "krustykrab": "^1.1.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@vitest/coverage-v8": "^2.0.5",
+    "@biomejs/biome": "^1.9.1",
+    "@vitest/coverage-v8": "^2.1.1",
     "exports-fallback": "^1.0.2",
-    "tsup": "^8.2.4",
+    "tsup": "^8.3.0",
     "typescript": "5.4.5",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.1"
   }
 }

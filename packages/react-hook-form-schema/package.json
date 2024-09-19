@@ -12,69 +12,69 @@
   "typings": "dist/core.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/core.d.ts",
       "import": "./dist/esm/core.js",
-      "require": "./dist/core.js",
-      "types": "./dist/core.d.ts"
+      "require": "./dist/core.js"
     },
     "./fields/base": {
-      "require": "./dist/fields_base.js",
+      "types": "./dist/fields_base.d.ts",
       "import": "./dist/esm/fields_base.js",
-      "types": "./dist/fields_base.d.ts"
+      "require": "./dist/fields_base.js"
     },
     "./fields/checkbox": {
-      "require": "./dist/fields_checkbox.js",
+      "types": "./dist/fields_checkbox.d.ts",
       "import": "./dist/esm/fields_checkbox.js",
-      "types": "./dist/fields_checkbox.d.ts"
+      "require": "./dist/fields_checkbox.js"
     },
     "./fields/checkboxGroup": {
-      "require": "./dist/fields_checkboxGroup.js",
+      "types": "./dist/fields_checkboxGroup.d.ts",
       "import": "./dist/esm/fields_checkboxGroup.js",
-      "types": "./dist/fields_checkboxGroup.d.ts"
+      "require": "./dist/fields_checkboxGroup.js"
     },
     "./fields/dynamic": {
-      "require": "./dist/fields_dynamic.js",
+      "types": "./dist/fields_dynamic.d.ts",
       "import": "./dist/esm/fields_dynamic.js",
-      "types": "./dist/fields_dynamic.d.ts"
+      "require": "./dist/fields_dynamic.js"
     },
     "./fields/input": {
-      "require": "./dist/fields_input.js",
+      "types": "./dist/fields_input.d.ts",
       "import": "./dist/esm/fields_input.js",
-      "types": "./dist/fields_input.d.ts"
+      "require": "./dist/fields_input.js"
     },
     "./fields/list": {
-      "require": "./dist/fields_list.js",
+      "types": "./dist/fields_list.d.ts",
       "import": "./dist/esm/fields_list.js",
-      "types": "./dist/fields_list.d.ts"
+      "require": "./dist/fields_list.js"
     },
     "./fields/radioGroup": {
-      "require": "./dist/fields_radioGroup.js",
+      "types": "./dist/fields_radioGroup.d.ts",
       "import": "./dist/esm/fields_radioGroup.js",
-      "types": "./dist/fields_radioGroup.d.ts"
+      "require": "./dist/fields_radioGroup.js"
     },
     "./fields/select": {
-      "require": "./dist/fields_select.js",
+      "types": "./dist/fields_select.d.ts",
       "import": "./dist/esm/fields_select.js",
-      "types": "./dist/fields_select.d.ts"
+      "require": "./dist/fields_select.js"
     },
     "./fields/set": {
-      "require": "./dist/fields_set.js",
+      "types": "./dist/fields_set.d.ts",
       "import": "./dist/esm/fields_set.js",
-      "types": "./dist/fields_set.d.ts"
+      "require": "./dist/fields_set.js"
     },
     "./fields/tags": {
-      "require": "./dist/fields_tags.js",
+      "types": "./dist/fields_tags.d.ts",
       "import": "./dist/esm/fields_tags.js",
-      "types": "./dist/fields_tags.d.ts"
+      "require": "./dist/fields_tags.js"
     },
     "./fields/textarea": {
-      "require": "./dist/fields_textarea.js",
+      "types": "./dist/fields_textarea.d.ts",
       "import": "./dist/esm/fields_textarea.js",
-      "types": "./dist/fields_textarea.d.ts"
+      "require": "./dist/fields_textarea.js"
     },
     "./form": {
+      "types": "./dist/form.d.ts",
       "import": "./dist/esm/form.js",
-      "require": "./dist/form.js",
-      "types": "./dist/form.d.ts"
+      "require": "./dist/form.js"
     }
   },
   "keywords": [
@@ -116,15 +116,15 @@
     "use-latest": "^1.2.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@storybook/addon-docs": "^8.3.0",
-    "@storybook/react": "^8.3.0",
+    "@biomejs/biome": "^1.9.1",
+    "@storybook/addon-docs": "^8.3.1",
+    "@storybook/react": "^8.3.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
     "@types/lodash": "^4.17.7",
-    "@types/react": "^18.3.5",
+    "@types/react": "^18.3.7",
     "@types/react-dom": "^18.3.0",
-    "@vitest/coverage-v8": "^2.0.5",
+    "@vitest/coverage-v8": "^2.1.1",
     "exports-fallback": "^1.0.2",
     "happy-dom": "^15.7.4",
     "lodash": "^4.17.21",
@@ -138,8 +138,8 @@
     "react-test-engine": "^1.1.3",
     "react-test-engine-vitest": "^1.0.3",
     "react-test-renderer": "^18.3.1",
-    "tsup": "^8.2.4",
+    "tsup": "^8.3.0",
     "typescript": "5.4.5",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.1"
   }
 }

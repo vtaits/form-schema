@@ -240,6 +240,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	}) => (
 		<div data-testid={`@@list/${name}`}>
 			{(label || required) && (
+				// biome-ignore lint/a11y/noLabelWithoutControl: list has no associated input
 				<label>
 					{label}{" "}
 					{required && (
@@ -431,6 +432,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	renderWrapper: ({ children, error, hint, label, name, required }) => (
 		<div>
 			{(label || required) && (
+				// biome-ignore lint/a11y/noLabelWithoutControl: TO DO
 				<label>
 					{label}{" "}
 					{required && (

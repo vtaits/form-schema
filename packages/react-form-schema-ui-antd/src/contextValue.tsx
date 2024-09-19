@@ -274,6 +274,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => {
 		return (
 			<FieldRow
+				// biome-ignore lint/a11y/noLabelWithoutControl: list has no associated input
 				label={label && <label>{label}</label>}
 				data-testid={`@@list/${name}`}
 				required={required}
@@ -456,6 +457,7 @@ export const contextValue: BaseUIContextValue = {
 
 	renderWrapper: ({ children, error, hint, label, required }) => {
 		return (
+			// biome-ignore lint/a11y/noLabelWithoutControl: TO DO
 			<FieldRow label={label && <label>{label}</label>} required={required}>
 				{children}
 
