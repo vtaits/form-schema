@@ -60,7 +60,7 @@
     "@vitest/coverage-v8": "^2.1.1",
     "@vkontakte/icons": "^2.140.0",
     "@vkontakte/vkui": "6.0.3",
-    "@vtaits/form-schema": "^2.3.0-alpha.7",
+    "@vtaits/form-schema": "^2.3.0-alpha.8",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.8",
     "@vtaits/react-hook-form-schema": "^1.2.0-alpha.11",
     "exports-fallback": "^1.0.2",

@@ -2816,7 +2816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vtaits/form-schema@npm:^2.3.0-alpha.7, @vtaits/form-schema@workspace:packages/form-schema":
+"@vtaits/form-schema@npm:^2.3.0-alpha.8, @vtaits/form-schema@workspace:packages/form-schema":
   version: 0.0.0-use.local
   resolution: "@vtaits/form-schema@workspace:packages/form-schema"
   dependencies:
@@ -2846,7 +2846,7 @@ __metadata:
     "@types/react": "npm:^18.3.7"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^2.1.1"
-    "@vtaits/form-schema": "npm:^2.3.0-alpha.7"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.8"
     "@vtaits/react-required-context": "npm:^1.0.1"
     exports-fallback: "npm:^1.0.2"
     final-form: "npm:^4.20.10"
@@ -2923,7 +2923,7 @@ __metadata:
     "@types/react": "npm:^18.3.7"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^2.1.1"
-    "@vtaits/form-schema": "npm:^2.3.0-alpha.7"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.8"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.8"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.11"
     antd: "npm:^5.20.6"
@@ -2962,7 +2962,7 @@ __metadata:
     "@types/react": "npm:^18.3.7"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^2.1.1"
-    "@vtaits/form-schema": "npm:^2.3.0-alpha.7"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.8"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.11"
     exports-fallback: "npm:^1.0.2"
     happy-dom: "npm:^15.7.4"
@@ -2996,7 +2996,7 @@ __metadata:
     "@types/react": "npm:^18.3.7"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^2.1.1"
-    "@vtaits/form-schema": "npm:^2.3.0-alpha.7"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.8"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.8"
     "@vtaits/react-form-schema-ui-mui-testing-library": "npm:^1.0.0-alpha.2"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.11"
@@ -3036,7 +3036,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^2.1.1"
     "@vkontakte/icons": "npm:^2.140.0"
     "@vkontakte/vkui": "npm:6.0.3"
-    "@vtaits/form-schema": "npm:^2.3.0-alpha.7"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.8"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.8"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.11"
     date-fns: "npm:^4.1.0"
@@ -3074,7 +3074,7 @@ __metadata:
     "@types/react": "npm:^18.3.7"
     "@types/react-dom": "npm:^18.3.0"
     "@vitest/coverage-v8": "npm:^2.1.1"
-    "@vtaits/form-schema": "npm:^2.3.0-alpha.7"
+    "@vtaits/form-schema": "npm:^2.3.0-alpha.8"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.8"
     exports-fallback: "npm:^1.0.2"
     happy-dom: "npm:^15.7.4"
