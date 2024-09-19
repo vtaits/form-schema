@@ -12,7 +12,7 @@ import { FormSchemaContext } from "./FormSchemaContext";
 
 import type { GetFieldType } from "./types";
 
-export type FormFieldProps<Values extends Record<string, any>, Payload> = {
+export type FormFieldProps<Values extends Record<string, unknown>, Payload> = {
 	name: string;
 	payload?: Payload;
 	parents?: readonly ParentType<Values>[];

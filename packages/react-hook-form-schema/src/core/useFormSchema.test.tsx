@@ -85,7 +85,15 @@ const render = create(
 		names,
 		getFieldSchema,
 		getFieldType,
-	},
+	} as UseFormSchemaParams<
+		FieldSchemaBase,
+		FieldValues,
+		FieldValues,
+		FieldValues,
+		Record<string, unknown>,
+		unknown,
+		unknown
+	>,
 	{
 		queries: {},
 

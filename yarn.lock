@@ -79,9 +79,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ant-design/icons@npm:^5.4.0, @ant-design/icons@npm:^5.5.0":
-  version: 5.5.0
-  resolution: "@ant-design/icons@npm:5.5.0"
+"@ant-design/icons@npm:^5.4.0, @ant-design/icons@npm:^5.5.1":
+  version: 5.5.1
+  resolution: "@ant-design/icons@npm:5.5.1"
   dependencies:
     "@ant-design/colors": "npm:^7.0.0"
     "@ant-design/icons-svg": "npm:^4.4.0"
@@ -91,7 +91,7 @@ __metadata:
   peerDependencies:
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 10c0/f41e77567d6d666f99c0e9932b82b6ec6c02b40465276947eeddd70b6ca35f536ab9dfc032998307c8d355a1359f57f25d3265abe063ebf5484ac14d33692e8e
+  checksum: 10c0/440493303138ffa595c87043bbd34cd777967a5481a55ea72b38caa1ecf24862d041c84212d064af644069046ca0a7dfb4205724dcea2d95a2723d5d7589b7a0
   languageName: node
   linkType: hard
 
@@ -2820,7 +2820,7 @@ __metadata:
     is-promise: "npm:^4.0.0"
     krustykrab: "npm:^1.1.0"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vitest: "npm:^2.1.1"
   languageName: unknown
   linkType: soft
@@ -2859,7 +2859,7 @@ __metadata:
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     use-latest: "npm:^1.2.1"
     vitest: "npm:^2.1.1"
   peerDependencies:
@@ -2895,7 +2895,7 @@ __metadata:
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vitest: "npm:^2.1.1"
   peerDependencies:
     react: ^17.0.0 || ^18.0.0
@@ -2906,7 +2906,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-antd@workspace:packages/react-form-schema-ui-antd"
   dependencies:
-    "@ant-design/icons": "npm:^5.5.0"
+    "@ant-design/icons": "npm:^5.5.1"
     "@biomejs/biome": "npm:^1.9.1"
     "@storybook/addon-docs": "npm:^8.3.1"
     "@storybook/react": "npm:^8.3.1"
@@ -2932,7 +2932,7 @@ __metadata:
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vitest: "npm:^2.1.1"
   peerDependencies:
     "@ant-design/icons": ^5.3.7
@@ -2961,7 +2961,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vitest: "npm:^2.1.1"
   peerDependencies:
     "@testing-library/dom": ^10.0.0
@@ -3004,7 +3004,7 @@ __metadata:
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vitest: "npm:^2.1.1"
   peerDependencies:
     "@mui/icons-material": ^5.15.19 || ^6.0.0
@@ -3043,7 +3043,7 @@ __metadata:
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vitest: "npm:^2.1.1"
   peerDependencies:
     "@vkontakte/icons": ^2.0.0
@@ -3083,7 +3083,7 @@ __metadata:
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.3.0"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     use-latest: "npm:^1.2.1"
     vitest: "npm:^2.1.1"
   peerDependencies:
@@ -7566,7 +7566,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     storybook: "npm:^8.3.1"
     typedoc: "npm:^0.26.7"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.6.2"
     vite: "npm:^5.4.6"
   languageName: unknown
   linkType: soft
@@ -8291,23 +8291,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.4.5":
-  version: 5.4.5
-  resolution: "typescript@npm:5.4.5"
+"typescript@npm:5.6.2":
+  version: 5.6.2
+  resolution: "typescript@npm:5.6.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/2954022ada340fd3d6a9e2b8e534f65d57c92d5f3989a263754a78aba549f7e6529acc1921913560a4b816c46dce7df4a4d29f9f11a3dc0d4213bb76d043251e
+  checksum: 10c0/3ed8297a8c7c56b7fec282532503d1ac795239d06e7c4966b42d4330c6cf433a170b53bcf93a130a7f14ccc5235de5560df4f1045eb7f3550b46ebed16d3c5e5
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>":
-  version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
+"typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>":
+  version: 5.6.2
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/db2ad2a16ca829f50427eeb1da155e7a45e598eec7b086d8b4e8ba44e5a235f758e606d681c66992230d3fc3b8995865e5fd0b22a2c95486d0b3200f83072ec9
+  checksum: 10c0/94eb47e130d3edd964b76da85975601dcb3604b0c848a36f63ac448d0104e93819d94c8bdf6b07c00120f2ce9c05256b8b6092d23cf5cf1c6fa911159e4d572f
   languageName: node
   linkType: hard
 

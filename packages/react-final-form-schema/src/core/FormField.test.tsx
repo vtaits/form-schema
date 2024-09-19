@@ -1,13 +1,11 @@
 import type { ParentType } from "@vtaits/form-schema";
+import { useContext as useRequiredContext } from "@vtaits/react-required-context";
 import type { FormApi, FormState } from "final-form";
 import { type ReactElement, useContext, useDebugValue, useMemo } from "react";
 import { useForm, useFormState } from "react-final-form";
 import { create } from "react-test-engine-vitest";
 import { afterEach, describe, expect, test, vi } from "vitest";
-
-import { useContext as useRequiredContext } from "@vtaits/react-required-context";
-
-import { FormField } from "./FormField";
+import { FormField, type FormFieldProps } from "./FormField";
 import { FormFieldContext } from "./FormFieldContext";
 import type { FieldComponentProps } from "./types";
 
@@ -67,7 +65,7 @@ const render = create(
 	FormField,
 	{
 		name: "testName",
-	},
+	} as FormFieldProps<Record<string, unknown>, unknown>,
 	{
 		queries: {
 			field: {
