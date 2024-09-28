@@ -9,6 +9,7 @@ export default defineConfig({
     fields_datetime: "src/fields/datetime/index.ts",
     'fields_date-base': "src/fields/date-base/index.ts",
     fields_dynamic: "src/fields/dynamic/index.ts",
+    fields_file: "src/fields/file/index.ts",
     fields_input: "src/fields/input/index.ts",
     fields_list: "src/fields/list/index.ts",
     fields_select: "src/fields/select/index.ts",

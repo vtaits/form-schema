@@ -5,8 +5,10 @@ export type ErrorMessages = {
 	required: string;
 	minLength: (value: number) => string;
 	minLengthStr: (value: number) => string;
+	minLengthFile: (value: number) => string;
 	maxLength: (value: number) => string;
 	maxLengthStr: (value: number) => string;
+	maxLengthFile: (value: number) => string;
 	regexp: (regexp: string) => string;
 };
 
