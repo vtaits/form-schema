@@ -137,16 +137,34 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		/>
 	),
 
-	renderFileInput: ({ accept, disabled, name, onSelectFile }) => (
-		<input
-			accept={accept}
-			disabled={disabled}
-			name={name}
-			type="file"
-			onChange={(event) => {
-				onSelectFile(event.target.files?.[0] || null);
-			}}
-		/>
+	renderFileInput: ({ accept, disabled, name, onSelectFile, selectedFile }) => (
+		<>
+			<input
+				accept={accept}
+				disabled={disabled}
+				name={name}
+				type="file"
+				onChange={(event) => {
+					onSelectFile(event.target.files?.[0] || null);
+					event.target.value = "";
+				}}
+			/>
+
+			{selectedFile && (
+				<p>
+					{selectedFile}{" "}
+					<button
+						disabled={disabled}
+						type="button"
+						onClick={() => {
+							onSelectFile(null);
+						}}
+					>
+						Remove
+					</button>
+				</p>
+			)}
+		</>
 	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (

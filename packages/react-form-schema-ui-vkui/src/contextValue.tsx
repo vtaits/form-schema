@@ -1,4 +1,4 @@
-import { Icon12Add, Icon16Delete } from "@vkontakte/icons";
+import { Icon12Add, Icon16Delete, Icon24Document } from "@vkontakte/icons";
 import {
 	Button,
 	CardGrid,
@@ -6,6 +6,7 @@ import {
 	ChipsSelect,
 	ContentCard,
 	DateInput,
+	File,
 	Footnote,
 	FormItem,
 	FormStatus,
@@ -115,16 +116,44 @@ export const contextValue: BaseUIContextValue = {
 		</div>
 	),
 
-	renderFileInput: ({ accept, children, disabled, name, onSelectFile }) => (
-		<input
-			accept={accept}
-			disabled={disabled}
-			name={name}
-			type="file"
-			onChange={(event) => {
-				onSelectFile(event.target.files?.[0] || null);
-			}}
-		/>
+	renderFileInput: ({
+		accept,
+		children,
+		disabled,
+		name,
+		onSelectFile,
+		selectedFile,
+	}) => (
+		<>
+			<File
+				accept={accept}
+				before={<Icon24Document role="presentation" />}
+				disabled={disabled}
+				name={name}
+				mode="secondary"
+				onChange={(event) => {
+					onSelectFile(event.target.files?.[0] || null);
+					event.target.value = "";
+				}}
+			>
+				{children}
+			</File>
+
+			{selectedFile && (
+				<p>
+					{selectedFile}{" "}
+					<button
+						disabled={disabled}
+						type="button"
+						onClick={() => {
+							onSelectFile(null);
+						}}
+					>
+						Remove
+					</button>
+				</p>
+			)}
+		</>
 	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (

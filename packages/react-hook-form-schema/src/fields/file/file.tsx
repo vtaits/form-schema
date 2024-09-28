@@ -64,22 +64,23 @@ export function FileComponent({
 						field.value,
 					);
 
+					const currentValue = (field.value || {
+						file: null,
+					}) as FileFieldValue;
+
 					return renderFileInput({
 						accept,
 						children: text,
 						disabled,
 						onSelectFile: (nextFile: Blob | null) => {
-							const prevValue = (field.value || {
-								file: null,
-							}) as FileFieldValue;
-
 							wrappedOnChange({
-								...prevValue,
+								...currentValue,
 								file: nextFile,
 								name: nextFile instanceof File ? nextFile.name : undefined,
 							});
 						},
 						name: fieldPath,
+						selectedFile: currentValue?.name,
 						wrapper: wrapperParams,
 					}) as ReactElement;
 				}}

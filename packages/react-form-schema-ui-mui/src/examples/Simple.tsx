@@ -40,6 +40,11 @@ const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = {
 		serverDateFormat: "yyyy-MM-dd HH:mm",
 	},
 
+	file: {
+		type: "file",
+		label: "File",
+	},
+
 	input: {
 		type: "input",
 		label: "Input",
@@ -203,7 +208,10 @@ export function Simple(): ReactElement {
 		}
 
 		if (Object.keys(errors).length === 0) {
-			setSubmittedValues(values);
+			setSubmittedValues({
+				...values,
+				file: values.file?.name,
+			});
 			return null;
 		}
 

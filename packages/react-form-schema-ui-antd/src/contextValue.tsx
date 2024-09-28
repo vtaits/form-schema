@@ -1,4 +1,8 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+	DeleteOutlined,
+	PlusOutlined,
+	UploadOutlined,
+} from "@ant-design/icons";
 import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
@@ -15,6 +19,7 @@ import {
 	Radio,
 	Select,
 	Typography,
+	Upload,
 } from "antd";
 import dayjs from "dayjs";
 import { FieldRow } from "./FieldRow";
@@ -135,16 +140,34 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderFileInput: ({ accept, children, disabled, name, onSelectFile }) => (
-		<input
+	renderFileInput: ({
+		accept,
+		children,
+		disabled,
+		name,
+		onSelectFile,
+		selectedFile,
+	}) => (
+		<Upload
 			accept={accept}
 			disabled={disabled}
 			name={name}
-			type="file"
-			onChange={(event) => {
-				onSelectFile(event.target.files?.[0] || null);
+			onChange={(e) => {
+				onSelectFile(e.file.originFileObj || null);
 			}}
-		/>
+			fileList={
+				selectedFile
+					? [
+							{
+								name: selectedFile,
+								uid: `${Date.now()}`,
+							},
+						]
+					: []
+			}
+		>
+			<Button icon={<UploadOutlined />}>{children}</Button>
+		</Upload>
 	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (

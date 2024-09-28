@@ -70,6 +70,7 @@ export type FileInputRenderProps = Readonly<
 		accept?: string;
 		children?: ReactNode;
 		onSelectFile: (file: Blob | null) => void;
+		selectedFile?: string;
 	}
 >;
 

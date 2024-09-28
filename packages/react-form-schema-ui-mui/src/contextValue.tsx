@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Alert from "@mui/material/Alert";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -23,13 +24,25 @@ import TextField, {
 	type TextFieldProps,
 } from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
-import type { ReactEventHandler } from "react";
+
+const VisuallyHiddenInput = styled("input")({
+	clip: "rect(0 0 0 0)",
+	clipPath: "inset(50%)",
+	height: 1,
+	overflow: "hidden",
+	position: "absolute",
+	bottom: 0,
+	left: 0,
+	whiteSpace: "nowrap",
+	width: 1,
+});
 
 export function getContextValue(
 	muiSize: "small" | "medium",
@@ -162,16 +175,51 @@ export function getContextValue(
 			/>
 		),
 
-		renderFileInput: ({ accept, children, disabled, name, onSelectFile }) => (
-			<input
-				accept={accept}
-				disabled={disabled}
-				name={name}
-				type="file"
-				onChange={(event) => {
-					onSelectFile(event.target.files?.[0] || null);
-				}}
-			/>
+		renderFileInput: ({
+			accept,
+			children,
+			disabled,
+			name,
+			onSelectFile,
+			wrapper: { label },
+			selectedFile,
+		}) => (
+			<>
+				<Button
+					component="label"
+					variant="outlined"
+					size={muiSize}
+					tabIndex={-1}
+					startIcon={<CloudUploadIcon />}
+				>
+					{label || children}
+					<VisuallyHiddenInput
+						accept={accept}
+						disabled={disabled}
+						name={name}
+						type="file"
+						onChange={(event) => {
+							onSelectFile(event.target.files?.[0] || null);
+							event.target.value = "";
+						}}
+					/>
+				</Button>
+
+				{selectedFile && (
+					<p>
+						{selectedFile}{" "}
+						<button
+							disabled={disabled}
+							type="button"
+							onClick={() => {
+								onSelectFile(null);
+							}}
+						>
+							Remove
+						</button>
+					</p>
+				)}
+			</>
 		),
 
 		renderForm: ({ actions, error, fields, formProps, title }) => (
