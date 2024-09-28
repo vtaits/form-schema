@@ -65,6 +65,14 @@ export type FormRenderProps = Readonly<{
 	title?: ReactNode;
 }>;
 
+export type FileInputRenderProps = Readonly<
+	BaseFieldRenderProps & {
+		accept?: string;
+		children?: ReactNode;
+		onSelectFile: (file: Blob | null) => void;
+	}
+>;
+
 export type InputRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		debounceTimeout?: number;
@@ -122,6 +130,7 @@ export type BaseUIContextValue = Readonly<{
 	) => ReactNode;
 	renderDatePicker: (renderProps: DatePickerRenderProps) => ReactNode;
 	renderDateTimePicker: (renderProps: DatePickerRenderProps) => ReactNode;
+	renderFileInput: (renderProps: FileInputRenderProps) => ReactNode;
 	renderForm: (renderProps: FormRenderProps) => ReactNode;
 	renderRadioGroup: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,

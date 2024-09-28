@@ -36,6 +36,11 @@
       "import": "./dist/esm/fields_dynamic.js",
       "require": "./dist/fields_dynamic.js"
     },
+    "./fields/file": {
+      "types": "./dist/fields_file.d.ts",
+      "import": "./dist/esm/fields_file.js",
+      "require": "./dist/fields_file.js"
+    },
     "./fields/input": {
       "types": "./dist/fields_input.d.ts",
       "import": "./dist/esm/fields_input.js",

@@ -162,6 +162,18 @@ export function getContextValue(
 			/>
 		),
 
+		renderFileInput: ({ accept, children, disabled, name, onSelectFile }) => (
+			<input
+				accept={accept}
+				disabled={disabled}
+				name={name}
+				type="file"
+				onChange={(event) => {
+					onSelectFile(event.target.files?.[0] || null);
+				}}
+			/>
+		),
+
 		renderForm: ({ actions, error, fields, formProps, title }) => (
 			<form {...formProps}>
 				{title && (

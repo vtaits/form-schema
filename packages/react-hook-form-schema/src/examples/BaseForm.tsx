@@ -28,10 +28,17 @@ const schemas: Record<string, any> = {
 
 	date: {
 		type: "date",
+		label: "Date",
 	},
 
 	datetime: {
 		type: "datetime",
+		label: "Datetime",
+	},
+
+	file: {
+		type: "file",
+		label: "File",
 	},
 
 	input: {
@@ -183,7 +190,10 @@ export function BaseForm(): ReactElement {
 		}
 
 		if (Object.keys(errors).length === 0) {
-			setSubmittedValues(values);
+			setSubmittedValues({
+				...values,
+				file: values.file?.name,
+			});
 			return null;
 		}
 

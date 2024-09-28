@@ -3,6 +3,7 @@ import type { CheckboxGroupSchema } from "../fields/checkboxGroup";
 import type { DateSchema } from "../fields/date";
 import type { DateTimeSchema } from "../fields/datetime";
 import type { DynamicSchema } from "../fields/dynamic";
+import type { FileSchema } from "../fields/file";
 import type { InputSchema } from "../fields/input";
 import type { ListSchema } from "../fields/list";
 import type { RadioGroupSchema } from "../fields/radioGroup";
@@ -34,6 +35,9 @@ export type DefaultFieldSchema<
 	  })
 	| (DynamicSchema<any, Values, RawValues, SerializedValues, Errors> & {
 			type: "dynamic";
+	  })
+	| (FileSchema & {
+			type: "file";
 	  })
 	| (InputSchema & {
 			type: "input";

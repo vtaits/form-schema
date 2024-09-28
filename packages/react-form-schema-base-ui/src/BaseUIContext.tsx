@@ -137,6 +137,18 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		/>
 	),
 
+	renderFileInput: ({ accept, disabled, name, onSelectFile }) => (
+		<input
+			accept={accept}
+			disabled={disabled}
+			name={name}
+			type="file"
+			onChange={(event) => {
+				onSelectFile(event.target.files?.[0] || null);
+			}}
+		/>
+	),
+
 	renderForm: ({ actions, error, fields, formProps, title }) => (
 		<form {...formProps}>
 			{title && <h1>{title}</h1>}

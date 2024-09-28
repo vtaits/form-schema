@@ -3,6 +3,7 @@ import { checkboxGroup } from "../fields/checkboxGroup";
 import { date } from "../fields/date";
 import { datetime } from "../fields/datetime";
 import { dynamic } from "../fields/dynamic";
+import { file } from "../fields/file";
 import { input } from "../fields/input";
 import { list } from "../fields/list";
 import { radioGroup } from "../fields/radioGroup";
@@ -17,6 +18,7 @@ export const defaultFieldTypes = {
 	date,
 	datetime,
 	dynamic,
+	file,
 	input,
 	list,
 	radioGroup,

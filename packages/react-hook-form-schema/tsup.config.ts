@@ -7,6 +7,7 @@ export default defineConfig({
     fields_checkbox: "src/fields/checkbox/index.ts",
     fields_checkboxGroup: "src/fields/checkboxGroup/index.ts",
     fields_dynamic: "src/fields/dynamic/index.ts",
+    fields_file: "src/fields/file/index.ts",
     fields_input: "src/fields/input/index.ts",
     fields_list: "src/fields/list/index.ts",
     fields_radioGroup: "src/fields/radioGroup/index.ts",
