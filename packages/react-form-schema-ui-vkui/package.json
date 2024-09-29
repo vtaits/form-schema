@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-form-schema-ui-vkui",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "VKUI fields for @vtaits/form-schema",
   "files": [
     "dist"
@@ -46,7 +46,7 @@
   "peerDependencies": {
     "@vkontakte/icons": "^2.0.0",
     "@vkontakte/vkui": "^6.0.0",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.8",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.9",
     "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
@@ -60,9 +60,9 @@
     "@vitest/coverage-v8": "^2.1.1",
     "@vkontakte/icons": "^2.143.0",
     "@vkontakte/vkui": "6.0.3",
-    "@vtaits/form-schema": "^2.3.0-alpha.8",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.8",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.11",
+    "@vtaits/form-schema": "^2.3.0-alpha.9",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.9",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.12",
     "exports-fallback": "^1.0.2",
     "happy-dom": "^15.7.4",
     "react": "^18.3.1",
