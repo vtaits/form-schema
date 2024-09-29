@@ -1,6 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Stack } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
@@ -206,18 +208,20 @@ export function getContextValue(
 				</Button>
 
 				{selectedFile && (
-					<p>
-						{selectedFile}{" "}
-						<button
+					<Stack direction="row" spacing={1} alignItems="center">
+						<AttachFileIcon />
+						{selectedFile}
+						<IconButton
+							aria-label="Remove"
 							disabled={disabled}
-							type="button"
+							color="primary"
 							onClick={() => {
 								onSelectFile(null);
 							}}
 						>
-							Remove
-						</button>
-					</p>
+							<DeleteIcon />
+						</IconButton>
+					</Stack>
 				)}
 			</>
 		),

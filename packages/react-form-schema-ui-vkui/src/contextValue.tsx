@@ -1,4 +1,9 @@
-import { Icon12Add, Icon16Delete, Icon24Document } from "@vkontakte/icons";
+import {
+	Icon12Add,
+	Icon16Attach,
+	Icon16Delete,
+	Icon16DocumentOutline,
+} from "@vkontakte/icons";
 import {
 	Button,
 	CardGrid,
@@ -127,7 +132,7 @@ export const contextValue: BaseUIContextValue = {
 		<>
 			<File
 				accept={accept}
-				before={<Icon24Document role="presentation" />}
+				before={<Icon16DocumentOutline role="presentation" />}
 				disabled={disabled}
 				name={name}
 				mode="secondary"
@@ -140,17 +145,24 @@ export const contextValue: BaseUIContextValue = {
 			</File>
 
 			{selectedFile && (
-				<p>
-					{selectedFile}{" "}
-					<button
+				<p
+					style={{
+						display: "flex",
+						alignItems: "center",
+						gap: "10px",
+					}}
+				>
+					<Icon16Attach />
+					{selectedFile}
+					<IconButton
 						disabled={disabled}
-						type="button"
+						label="Удалить"
 						onClick={() => {
 							onSelectFile(null);
 						}}
 					>
-						Remove
-					</button>
+						<Icon16Delete />
+					</IconButton>
 				</p>
 			)}
 		</>
