@@ -1,5 +1,4 @@
-import type { ParentType } from "@vtaits/form-schema";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import type { ReactElement } from "react";
 import {
 	Controller,
@@ -7,12 +6,16 @@ import {
 	type Path,
 	type UseFormReturn,
 } from "react-hook-form";
-import { type RenderParams, renderBySchema } from "../../core";
+import {
+	type FieldSchemaWithRenderBase,
+	type RenderParams,
+	renderBySchema,
+} from "../../core";
 import { defaultRender } from "./defaultRender";
 import type { SetSchema } from "./schema";
 
 export type SetFieldProps<
-	FieldSchema,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues,
 	RawValues extends FieldValues,
 	SerializedValues extends FieldValues,
@@ -32,7 +35,7 @@ export type SetFieldProps<
 };
 
 export function SetField<
-	FieldSchema,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues,
 	RawValues extends FieldValues,
 	SerializedValues extends FieldValues,
@@ -61,7 +64,7 @@ export function SetField<
 	const {
 		nested,
 		schemas,
-		render = defaultRender,
+		renderSet = defaultRender,
 	} = fieldSchema as unknown as SetSchema<FieldSchema>;
 
 	const names = useMemo(() => Object.keys(schemas), [schemas]);
@@ -94,7 +97,7 @@ export function SetField<
 						providedParents,
 					);
 
-				return render(renderField, names) as ReactElement;
+				return renderSet(renderField, names) as ReactElement;
 			}}
 		/>
 	);

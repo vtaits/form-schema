@@ -124,7 +124,7 @@ describe("return result of render", () => {
 						fieldSchema: {
 							...defaultProps.renderParams.fieldSchema,
 							nested,
-							render: renderFunction,
+							renderSet: renderFunction,
 						},
 					},
 				},

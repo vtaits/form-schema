@@ -1,5 +1,4 @@
 import {
-	type FieldSchemaBase,
 	type GetFieldSchema,
 	type ParentType,
 	parse,
@@ -20,6 +19,7 @@ import { CLIENT_ERROR, SERVER_ERROR } from "./constants";
 import { makeSetError } from "./makeSetError";
 import { renderBySchema } from "./renderBySchema";
 import type {
+	FieldSchemaWithRenderBase,
 	MapErrors,
 	OnSubmit,
 	UseFormSchemaParams,
@@ -31,7 +31,7 @@ export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) =>
 export const defaultMapErrors: MapErrors = (errors) => errors;
 
 export function useFormSchema<
-	FieldSchema extends FieldSchemaBase,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,

@@ -6,6 +6,7 @@ import { FieldArray } from '../src/examples/FieldArray';
 import { FormError } from '../src/examples/FormError';
 import { SerializerAndParser } from '../src/examples/SerializerAndParser';
 import { Simple } from '../src/examples/Simple';
+import { RedefineRender } from '../src/examples/RedefineRender';
 import { ValidateBeforeSubmit } from '../src/examples/ValidateBeforeSubmit';
 
 const meta: Meta = {
@@ -56,4 +57,10 @@ export const ValidateBeforeSubmitStory: Story = {
   name: 'Validate before submit',
   args: {},
   render: (props) => <ValidateBeforeSubmit {...props} />
+};
+
+export const RedefineRenderStory: Story = {
+  name: 'Redefine render',
+  args: {},
+  render: (props) => <RedefineRender {...props} />
 };

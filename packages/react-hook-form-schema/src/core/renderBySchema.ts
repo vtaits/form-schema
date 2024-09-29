@@ -2,10 +2,10 @@ import type { GetFieldSchema, ParentType } from "@vtaits/form-schema";
 import type { ReactNode } from "react";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { getFieldPath } from "./getFieldPath";
-import type { GetFieldType } from "./types";
+import type { FieldSchemaWithRenderBase, GetFieldType } from "./types";
 
 export function renderBySchema<
-	FieldSchema,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,
@@ -32,7 +32,11 @@ export function renderBySchema<
 	const fieldSchema = getFieldSchema(name);
 	const fieldType = getFieldType(fieldSchema);
 
-	const { render, createGetFieldSchema } = fieldType;
+	const { createGetFieldSchema } = fieldType;
+
+	const render =
+		(fieldSchema.render as unknown as typeof fieldType.render) ||
+		fieldType.render;
 
 	const values = getValues() as Values;
 

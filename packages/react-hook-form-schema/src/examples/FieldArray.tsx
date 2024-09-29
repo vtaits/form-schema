@@ -18,6 +18,7 @@ import {
 	useFieldArray,
 } from "react-hook-form";
 import {
+	type FieldSchemaWithRenderBase,
 	type FieldType,
 	type GetFieldType,
 	type RenderParams,
@@ -25,7 +26,7 @@ import {
 	useFormSchema,
 } from "../core";
 
-type FieldArraySchema = FieldSchemaBase & {
+type FieldArraySchema = FieldSchemaWithRenderBase & {
 	type: "array";
 	label: string;
 	fields: Record<string, FieldSchema>;
@@ -34,7 +35,7 @@ type FieldArraySchema = FieldSchemaBase & {
 };
 
 export type ArrayComponentProps<
-	FieldSchema,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues,
 	RawValues extends FieldValues,
 	SerializedValues extends FieldValues,
@@ -54,7 +55,7 @@ export type ArrayComponentProps<
 };
 
 function ArrayComponent<
-	FieldSchema,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues,
 	RawValues extends FieldValues,
 	SerializedValues extends FieldValues,
@@ -73,7 +74,8 @@ function ArrayComponent<
 	Payload,
 	TContext
 >): ReactElement {
-	const { label, names, initialValues } = fieldSchema as FieldArraySchema;
+	const { label, names, initialValues } =
+		fieldSchema as unknown as FieldArraySchema;
 
 	const errors = formResult.formState.errors[name];
 

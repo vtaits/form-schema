@@ -12,7 +12,11 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { CLIENT_ERROR, SERVER_ERROR } from "./constants";
 import { makeSetError } from "./makeSetError";
 import { renderBySchema } from "./renderBySchema";
-import type { UseFormSchemaParams, UseFormSchemaReturn } from "./types";
+import type {
+	FieldSchemaWithRenderBase,
+	UseFormSchemaParams,
+	UseFormSchemaReturn,
+} from "./types";
 import { useFormSchema } from "./useFormSchema";
 
 vi.mock("react", async () => {
@@ -33,7 +37,7 @@ vi.mock("./renderBySchema");
 const mockedMakeSetError = vi.mocked(makeSetError);
 
 function TestComponent<
-	FieldSchema extends FieldSchemaBase,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,

@@ -1,4 +1,6 @@
 import type {
+	BaseValues,
+	FieldSchemaBase,
 	FieldType as FieldTypeBase,
 	GetFieldSchema,
 	ParentType,
@@ -85,6 +87,18 @@ export type FieldType<
 		) => ReactNode;
 	}
 >;
+
+export type FieldSchemaWithRenderBase = FieldSchemaBase & {
+	render?: (
+		renderParams: RenderParams<
+			FieldSchemaWithRenderBase,
+			BaseValues,
+			BaseValues,
+			BaseValues
+		>,
+		formResult: UseFormReturn<BaseValues, any, BaseValues>,
+	) => ReactNode;
+};
 
 export type GetFieldType<
 	FieldSchema,

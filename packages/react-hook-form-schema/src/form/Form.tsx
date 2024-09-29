@@ -1,4 +1,4 @@
-import type { FieldSchemaBase, NameType } from "@vtaits/form-schema";
+import type { NameType } from "@vtaits/form-schema";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import {
 	type BaseSyntheticEvent,
@@ -10,6 +10,7 @@ import {
 } from "react";
 import type { DefaultValues, FieldValues } from "react-hook-form";
 import {
+	type FieldSchemaWithRenderBase,
 	type FieldType,
 	type OnSubmit,
 	type RenderField,
@@ -128,7 +129,7 @@ export const defaultGetFormError = <Errors extends Record<string, any>>(
 };
 
 export function Form<
-	FieldSchema extends FieldSchemaBase,
+	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues = FieldValues,
 	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,
