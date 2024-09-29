@@ -5,6 +5,7 @@ import {
 	getSelectText,
 	queryCheckbox,
 	queryFieldError,
+	queryFileInput,
 	queryFormError,
 	queryInput,
 	queryListRoot,
@@ -13,6 +14,7 @@ import {
 	queryTags,
 	queryTextarea,
 	removeListBlock,
+	selectFile,
 	selectInputSuggestion,
 	selectTagsSuggestion,
 	selectValue,
@@ -79,6 +81,7 @@ test("render fields", () => {
 
 	expect(queryInput(form, "date")).toBeTruthy();
 	expect(queryInput(form, "datetime")).toBeTruthy();
+	expect(queryFileInput(form, "file")).toBeTruthy();
 	expect(queryInput(form, "input")).toBeTruthy();
 	expect(queryInput(form, "number")).toBeTruthy();
 
@@ -111,6 +114,9 @@ test("submit filled form", async () => {
 
 	await setInputValue(form, "date", null, "2020-10-05");
 	await setInputValue(form, "datetime", null, "2021-05-10 16:45");
+
+	selectFile(form, "file", null, "test.txt");
+
 	await setInputValue(form, "input", "Input", "inputValue");
 	await selectInputSuggestion(
 		form,
@@ -176,6 +182,7 @@ test("submit filled form", async () => {
 		checkboxGroup: ["value1", "value3"],
 		date: "2020-10-05",
 		datetime: "2021-05-10 16:45",
+		file: "test.txt",
 		input: "inputValue",
 		inputWithOptions: "foo",
 		list: ["List 0", "List 2"],

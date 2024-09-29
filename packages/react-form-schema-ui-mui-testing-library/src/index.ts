@@ -1,5 +1,6 @@
 export * from "./fields/checkbox";
 export * from "./fields/field";
+export * from "./fields/file";
 export * from "./fields/list";
 export * from "./fields/input";
 export * from "./fields/radio";

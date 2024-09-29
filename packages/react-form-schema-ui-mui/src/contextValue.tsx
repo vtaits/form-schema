@@ -208,9 +208,16 @@ export function getContextValue(
 				</Button>
 
 				{selectedFile && (
-					<Stack direction="row" spacing={1} alignItems="center">
+					<Stack
+						direction="row"
+						spacing={1}
+						alignItems="center"
+						data-testid="file"
+					>
 						<AttachFileIcon />
-						{selectedFile}
+
+						<span data-testid="filename">{selectedFile}</span>
+
 						<IconButton
 							aria-label="Remove"
 							disabled={disabled}
