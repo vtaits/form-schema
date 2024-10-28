@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/react-form-schema-ui-vkui",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "VKUI fields for @vtaits/form-schema",
   "files": [
     "dist"
