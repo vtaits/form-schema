@@ -1141,15 +1141,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^2.0.8":
-  version: 2.1.0
-  resolution: "@floating-ui/react-dom@npm:2.1.0"
+"@floating-ui/react-dom@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "@floating-ui/react-dom@npm:2.1.2"
   dependencies:
     "@floating-ui/dom": "npm:^1.0.0"
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 10c0/9ee44dfeb27f585fb1e0114cbe37c72ff5d34149900f4f3013f6b0abf8c3365eab13286c360f97fbe0c44bb91a745e7a4c18b82d111990b45a7a7796dc55e461
+  checksum: 10c0/e855131c74e68cab505f7f44f92cd4e2efab1c125796db3116c54c0859323adae4bf697bf292ee83ac77b9335a41ad67852193d7aeace90aa2e1c4a640cafa60
   languageName: node
   linkType: hard
 
@@ -2381,12 +2381,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/helpers@npm:^0.5.0, @swc/helpers@npm:^0.5.12, @swc/helpers@npm:^0.5.3":
-  version: 0.5.12
-  resolution: "@swc/helpers@npm:0.5.12"
+"@swc/helpers@npm:^0.5.0, @swc/helpers@npm:^0.5.12, @swc/helpers@npm:^0.5.13":
+  version: 0.5.13
+  resolution: "@swc/helpers@npm:0.5.13"
   dependencies:
     tslib: "npm:^2.4.0"
-  checksum: 10c0/44693c0f34d772d63f3a6fb461964ec583055549a96df9790afec125b2ba06929a63cf9a165a9aaf22317779f460f8caafa94458b70d5cb2bc057b6ba9b5d02c
+  checksum: 10c0/b9df578401fc62405da9a6c31e79e447a2fd90f68b25b1daee12f2caf2821991bb89106f0397bc1acb4c4d84a8ce079d04b60b65f534496952e3bf8c9a52f40f
   languageName: node
   linkType: hard
 
@@ -2956,7 +2956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vkontakte/icons@npm:^2.151.0, @vkontakte/icons@npm:^2.62.0":
+"@vkontakte/icons@npm:^2.115.0, @vkontakte/icons@npm:^2.151.0":
   version: 2.151.0
   resolution: "@vkontakte/icons@npm:2.151.0"
   dependencies:
@@ -2967,42 +2967,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vkontakte/vkjs@npm:^1.1.1":
-  version: 1.1.2
-  resolution: "@vkontakte/vkjs@npm:1.1.2"
+"@vkontakte/vkjs@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@vkontakte/vkjs@npm:1.3.0"
   dependencies:
     "@swc/helpers": "npm:^0.5.0"
-  checksum: 10c0/9a7df4f4a001f5ea65009d2b103ef1032a2a65899ffa20bd2890407534ad9eec00525ccde027d047d0a9f1801d0b6f6f2612c4bb1db604addc581830c26d5210
+    clsx: "npm:^2.1.1"
+  checksum: 10c0/9fba217f9074c99d120053072bb36bf8d7efd5405189d2bb11b7cafd424410900f8a058ad5127cc63a8e02c8b8296c6e09cf03e157da390d46734ad794f68a3c
   languageName: node
   linkType: hard
 
-"@vkontakte/vkui-floating-ui@npm:^0.1.2":
-  version: 0.1.5
-  resolution: "@vkontakte/vkui-floating-ui@npm:0.1.5"
+"@vkontakte/vkui-floating-ui@npm:^0.2.1":
+  version: 0.2.4
+  resolution: "@vkontakte/vkui-floating-ui@npm:0.2.4"
   dependencies:
-    "@floating-ui/react-dom": "npm:^2.0.8"
-    "@swc/helpers": "npm:^0.5.3"
+    "@floating-ui/react-dom": "npm:^2.1.2"
+    "@swc/helpers": "npm:^0.5.13"
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 10c0/ab814137f0344b1162e52437dc796188cc4991e9b2bc58745e82d7286c96770bc568003561c6219a23ece970bc76727c00f873aacf08d964d6ec3b2693df57e1
+  checksum: 10c0/4ceb3c38f1c798a079d791721030a073bcbf0dc64feffa84cece9ae310467f0ffa52af9337ed5239b51b548ef6fc0cf4d664acc76fd425c72ddde9d6d6ea643c
   languageName: node
   linkType: hard
 
-"@vkontakte/vkui@npm:6.0.3":
-  version: 6.0.3
-  resolution: "@vkontakte/vkui@npm:6.0.3"
+"@vkontakte/vkui@npm:6.7.3":
+  version: 6.7.3
+  resolution: "@vkontakte/vkui@npm:6.7.3"
   dependencies:
-    "@swc/helpers": "npm:^0.5.3"
-    "@vkontakte/icons": "npm:^2.62.0"
-    "@vkontakte/vkjs": "npm:^1.1.1"
-    "@vkontakte/vkui-floating-ui": "npm:^0.1.2"
-    dayjs: "npm:^1.11.10"
-    mitt: "npm:^3.0.1"
+    "@swc/helpers": "npm:^0.5.13"
+    "@vkontakte/icons": "npm:^2.115.0"
+    "@vkontakte/vkjs": "npm:^1.3.0"
+    "@vkontakte/vkui-floating-ui": "npm:^0.2.1"
+    date-fns: "npm:^3.6.0"
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: 10c0/8cce2d6417ffab7d3a4284297bafec95d76d493ab64065a7d396221620ac3d387cf1d9330c2ce3e94eddd5eb6655e79757eaf3986fb5a5baf7f86ae31ae2cbca
+  checksum: 10c0/27020ac19551c1c73f9205c49708ac54e584f591ec43989d47f1f051568b27e8f0848a08eb9c4763e946dbd29aef51287bd6b4d5892ee9c07ce60c3658518da6
   languageName: node
   linkType: hard
 
@@ -3225,7 +3225,7 @@ __metadata:
     "@types/react-dom": "npm:^18.3.1"
     "@vitest/coverage-v8": "npm:^2.1.4"
     "@vkontakte/icons": "npm:^2.151.0"
-    "@vkontakte/vkui": "npm:6.0.3"
+    "@vkontakte/vkui": "npm:6.7.3"
     "@vtaits/form-schema": "npm:^2.3.0-alpha.9"
     "@vtaits/react-form-schema-base-ui": "npm:^1.0.0-alpha.9"
     "@vtaits/react-hook-form-schema": "npm:^1.2.0-alpha.12"
@@ -4046,6 +4046,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 10c0/0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^4.1.0":
   version: 4.1.0
   resolution: "date-fns@npm:4.1.0"
@@ -4053,7 +4060,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.10, dayjs@npm:^1.11.11, dayjs@npm:^1.11.13":
+"dayjs@npm:^1.11.11, dayjs@npm:^1.11.13":
   version: 1.11.13
   resolution: "dayjs@npm:1.11.13"
   checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
@@ -6254,13 +6261,6 @@ __metadata:
     minipass: "npm:^3.0.0"
     yallist: "npm:^4.0.0"
   checksum: 10c0/64fae024e1a7d0346a1102bb670085b17b7f95bf6cfdf5b128772ec8faf9ea211464ea4add406a3a6384a7d87a0cd1a96263692134323477b4fb43659a6cab78
-  languageName: node
-  linkType: hard
-
-"mitt@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "mitt@npm:3.0.1"
-  checksum: 10c0/3ab4fdecf3be8c5255536faa07064d05caa3dd332bd318ff02e04621f7b3069ca1de9106cfe8e7ced675abfc2bec2ce4c4ef321c4a1bb1fb29df8ae090741913
   languageName: node
   linkType: hard
 

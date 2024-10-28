@@ -1,165 +1,6 @@
-import { type ReactElement, useState } from "react";
-import { Form } from "../form";
-
-const schemas: Record<string, any> = {
-	checkbox: {
-		type: "checkbox",
-		checkboxLabel: "Checkbox",
-	},
-
-	checkboxGroup: {
-		type: "checkboxGroup",
-		label: "Checkbox group",
-		options: [
-			{
-				value: "value1",
-				label: "Label 1",
-			},
-			{
-				value: "value2",
-				label: "Label 2",
-			},
-			{
-				value: "value3",
-				label: "Label 3",
-			},
-		],
-	},
-
-	date: {
-		type: "date",
-		label: "Date",
-	},
-
-	datetime: {
-		type: "datetime",
-		label: "Datetime",
-	},
-
-	file: {
-		type: "file",
-		label: "File",
-	},
-
-	input: {
-		type: "input",
-		label: "Input",
-		options: ["foo", "bar"],
-		placeholder: "Input",
-		autoFocus: true,
-	},
-
-	number: {
-		type: "input",
-		label: "Number",
-		isNumber: true,
-		placeholder: "Numeric input",
-		options: ["123", "456"],
-	},
-
-	list: {
-		type: "list",
-		label: "List",
-		getBlockLabel: (index: number) => `Block #${index + 1}`,
-		initialItem: "Initial",
-		itemSchema: {
-			label: "Input",
-			type: "input",
-		},
-	},
-
-	setList: {
-		type: "list",
-		label: "List of sets",
-		getBlockLabel: (index: number) => `Block #${index + 1}`,
-		itemSchema: {
-			type: "set",
-			nested: true,
-			schemas: {
-				checkbox: {
-					type: "checkbox",
-					checkboxLabel: "Checkbox",
-				},
-
-				date: {
-					label: "Date",
-					type: "date",
-				},
-			},
-		},
-	},
-
-	multiSelect: {
-		type: "multiSelect",
-		label: "Mulit select",
-		placeholder: "Multi select",
-		options: [
-			{
-				value: "value1",
-				label: "Label 1",
-			},
-			{
-				value: "value2",
-				label: "Label 2",
-			},
-			{
-				value: "value3",
-				label: "Label 3",
-			},
-		],
-	},
-
-	radioGroup: {
-		type: "radioGroup",
-		label: "Radio group",
-		options: [
-			{
-				value: "value1",
-				label: "Label 1",
-			},
-			{
-				value: "value2",
-				label: "Label 2",
-			},
-			{
-				value: "value3",
-				label: "Label 3",
-			},
-		],
-	},
-
-	select: {
-		type: "select",
-		label: "Select",
-		placeholder: "Select",
-		options: [
-			{
-				value: "value1",
-				label: "Label 1",
-			},
-			{
-				value: "value2",
-				label: "Label 2",
-			},
-			{
-				value: "value3",
-				label: "Label 3",
-			},
-		],
-	},
-
-	tags: {
-		type: "tags",
-		label: "Tags",
-		options: ["foo", "bar"],
-	},
-
-	textarea: {
-		type: "textarea",
-		label: "Textarea",
-		placeholder: "Textarea",
-	},
-};
+import type { FieldSchemaBase } from "@vtaits/form-schema";
+import { type ReactElement, useMemo, useState } from "react";
+import { type DefaultFieldSchema, Form } from "../form";
 
 const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => {
@@ -168,11 +9,207 @@ const delay = (ms: number): Promise<void> =>
 		}, ms);
 	});
 
-export function BaseForm(): ReactElement {
+export function BaseForm({
+	required,
+}: {
+	required: boolean;
+}): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any
 	> | null>(null);
+
+	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
+		() => ({
+			checkbox: {
+				type: "checkbox",
+				checkboxLabel: "Checkbox",
+				required,
+			},
+
+			checkboxGroup: {
+				type: "checkboxGroup",
+				label: "Checkbox group",
+				options: [
+					{
+						value: "value1",
+						label: "Label 1",
+					},
+					{
+						value: "value2",
+						label: "Label 2",
+					},
+					{
+						value: "value3",
+						label: "Label 3",
+					},
+				],
+				required,
+			},
+
+			date: {
+				type: "date",
+				label: "Date",
+				required,
+			},
+
+			datetime: {
+				type: "datetime",
+				label: "Datetime",
+				required,
+			},
+
+			file: {
+				type: "file",
+				label: "File",
+				required,
+			},
+
+			input: {
+				type: "input",
+				label: "Input",
+				inputProps: {
+					placeholder: "Input",
+				},
+				autoFocus: true,
+				required,
+			},
+
+			inputWithOptions: {
+				type: "input",
+				label: "Input with options",
+				inputProps: {
+					placeholder: "Input with options",
+				},
+				options: ["foo", "bar"],
+				required,
+			},
+
+			number: {
+				type: "input",
+				label: "Number",
+				isNumber: true,
+				inputProps: {
+					placeholder: "Numeric input",
+				},
+				options: ["123", "456"],
+				required,
+			},
+
+			list: {
+				type: "list",
+				label: "List",
+				getBlockLabel: (index: number) => `Block #${index + 1}`,
+				initialItem: "Initial",
+				itemSchema: {
+					label: "Input",
+					type: "input",
+				},
+				required,
+			},
+
+			setList: {
+				type: "list",
+				label: "List of sets",
+				getBlockLabel: (index: number) => `Block #${index + 1}`,
+				itemSchema: {
+					type: "set",
+					nested: true,
+					schemas: {
+						checkbox: {
+							type: "checkbox",
+							checkboxLabel: "Checkbox",
+						},
+
+						date: {
+							label: "Date",
+							type: "date",
+						},
+					},
+				},
+				required,
+			},
+
+			multiSelect: {
+				type: "multiSelect",
+				label: "Mulit select",
+				placeholder: "Multi select",
+				options: [
+					{
+						value: "value1",
+						label: "Label 1",
+					},
+					{
+						value: "value2",
+						label: "Label 2",
+					},
+					{
+						value: "value3",
+						label: "Label 3",
+					},
+				],
+				required,
+			},
+
+			radioGroup: {
+				type: "radioGroup",
+				label: "Radio group",
+				options: [
+					{
+						value: "value1",
+						label: "Label 1",
+					},
+					{
+						value: "value2",
+						label: "Label 2",
+					},
+					{
+						value: "value3",
+						label: "Label 3",
+					},
+				],
+				required,
+			},
+
+			select: {
+				type: "select",
+				label: "Select",
+				placeholder: "Select",
+				options: [
+					{
+						value: "value1",
+						label: "Label 1",
+					},
+					{
+						value: "value2",
+						label: "Label 2",
+					},
+					{
+						value: "value3",
+						label: "Label 3",
+					},
+				],
+				required,
+			},
+
+			tags: {
+				type: "tags",
+				label: "Tags",
+				options: ["foo", "bar"],
+				required,
+			},
+
+			textarea: {
+				type: "textarea",
+				label: "Textarea",
+				textAreaProps: {
+					placeholder: "Textarea",
+				},
+				required,
+			},
+		}),
+		[required],
+	);
 
 	const onSubmit = async (
 		values: Record<string, any>,

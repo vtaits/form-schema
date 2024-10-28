@@ -19,7 +19,9 @@ type Story = StoryObj;
 
 export const BaseFormStory: Story = {
   name: 'Base form',
-  args: {},
+  args: {
+    required: false,
+  },
   render: (props) => <BaseForm {...props} />,
 };
 

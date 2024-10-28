@@ -12,6 +12,8 @@ type Story = StoryObj;
 
 export const SimpleStory: Story = {
   name: 'Simple',
-  args: {},
+  args: {
+    required: false,
+  },
   render: (props) => <Simple {...props} />,
 };
