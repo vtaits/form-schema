@@ -384,6 +384,7 @@ export function getContextValue(
 				{label && <FormLabel required={required}>{label}</FormLabel>}
 
 				<Box
+					// biome-ignore lint/a11y/useSemanticElements: avoid excess styles
 					role="list"
 					sx={{
 						display: "grid",
