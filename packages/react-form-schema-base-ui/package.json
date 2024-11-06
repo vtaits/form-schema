@@ -58,7 +58,7 @@
     "@types/react-is": "^18.3.0",
     "@vitest/coverage-v8": "^2.1.4",
     "exports-fallback": "^1.0.2",
-    "happy-dom": "^15.10.1",
+    "happy-dom": "^15.10.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-integration-test-engine": "^1.5.0",
