@@ -30,7 +30,9 @@ import { Simple } from "./Simple";
 
 const render = create(
 	Simple,
-	{},
+	{
+		required: false,
+	},
 	{
 		queries: {
 			form: {
