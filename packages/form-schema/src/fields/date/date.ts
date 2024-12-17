@@ -12,11 +12,16 @@ export const date: FieldType<DateSchema<unknown>> = {
 	serializerSingle: ({
 		value,
 		fieldSchema: {
-			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
-			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
+			clientDateFormat: clientDateFormatParam,
+			serverDateFormat: serverDateFormatParam,
 			utc,
 		},
 	}) => {
+		const clientDateFormat =
+			clientDateFormatParam || DEFAULT_CLIENT_DATE_FORMAT;
+		const serverDateFormat =
+			serverDateFormatParam || DEFAULT_SERVER_DATE_FORMAT;
+
 		const date = parseValueAndValidate(value, clientDateFormat);
 
 		if (date) {
@@ -29,10 +34,15 @@ export const date: FieldType<DateSchema<unknown>> = {
 	parserSingle: ({
 		value,
 		fieldSchema: {
-			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
-			serverDateFormat = DEFAULT_SERVER_DATE_FORMAT,
+			clientDateFormat: clientDateFormatParam,
+			serverDateFormat: serverDateFormatParam,
 		},
 	}) => {
+		const clientDateFormat =
+			clientDateFormatParam || DEFAULT_CLIENT_DATE_FORMAT;
+		const serverDateFormat =
+			serverDateFormatParam || DEFAULT_SERVER_DATE_FORMAT;
+
 		const date = parseValueAndValidate(value, serverDateFormat);
 
 		if (date) {
@@ -46,8 +56,11 @@ export const date: FieldType<DateSchema<unknown>> = {
 		setCurrentError,
 		value,
 		fieldSchema,
-		fieldSchema: { clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT },
+		fieldSchema: { clientDateFormat: clientDateFormatParam },
 	}) => {
+		const clientDateFormat =
+			clientDateFormatParam || DEFAULT_CLIENT_DATE_FORMAT;
+
 		const { errorMessages: errorMessagesParam, required } = fieldSchema;
 
 		const errorMessages: ErrorMessages = {
