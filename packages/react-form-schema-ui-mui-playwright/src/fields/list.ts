@@ -11,7 +11,9 @@ export function getListRoot(
 		});
 
 		return listLabel.locator("..", {
-			has: name ? container.getByTestId(`@@list/${name}`) : undefined,
+			has: name
+				? listLabel.page().locator("..").getByTestId(`@@list/${name}`)
+				: undefined,
 		});
 	}
 

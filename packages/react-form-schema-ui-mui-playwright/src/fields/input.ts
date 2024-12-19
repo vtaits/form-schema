@@ -11,11 +11,13 @@ export function getInput(
 			exact,
 		});
 
-		const input = inputLabel.locator("..").getByRole("textbox");
+		const input = inputLabel.locator("..").locator("input");
 
 		if (name) {
 			return input.filter({
-				has: name ? container.locator(`input[name="${name}"]`) : undefined,
+				has: name
+					? inputLabel.page().locator("..").locator(`input[name="${name}"]`)
+					: undefined,
 			});
 		}
 
@@ -29,11 +31,21 @@ export function getInputWrapper(
 	container: Page | Locator,
 	options: IFieldOptions,
 ) {
-	return getInput(container, options).locator("..").locator("..");
+	return getInput(container, options).locator("..").locator("..").locator("..");
+}
+
+export function getInputWithSuggestionsWrapper(
+	container: Page | Locator,
+	options: IFieldOptions,
+) {
+	return getInput(container, options)
+		.locator("..")
+		.locator("..")
+		.locator("..")
+		.locator("..");
 }
 
 export async function setInputValue(
-	page: Page,
 	container: Page | Locator,
 	options: IFieldOptions,
 	value: string,
@@ -44,11 +56,10 @@ export async function setInputValue(
 
 	await input.blur();
 
-	await waitForClosePopper(page);
+	await waitForClosePopper(input.page());
 }
 
 export async function checkInputSuggestions(
-	page: Page,
 	container: Page | Locator,
 	options: IFieldOptions,
 	check: (optionList: Locator) => Promise<void>,
@@ -57,7 +68,7 @@ export async function checkInputSuggestions(
 
 	await input.focus();
 
-	const popper = await waitForOpenPopper(page);
+	const popper = await waitForOpenPopper(input.page());
 
 	const optionList = popper.getByRole("option");
 
@@ -65,11 +76,10 @@ export async function checkInputSuggestions(
 
 	await input.blur();
 
-	await waitForClosePopper(page);
+	await waitForClosePopper(input.page());
 }
 
 export async function selectInputSuggestion(
-	page: Page,
 	container: Page | Locator,
 	options: IFieldOptions,
 	optionText: string,
@@ -78,7 +88,7 @@ export async function selectInputSuggestion(
 
 	await input.dispatchEvent("mousedown");
 
-	const popper = await waitForOpenPopper(page);
+	const popper = await waitForOpenPopper(input.page());
 
 	const option = popper.getByText(optionText);
 
@@ -86,5 +96,5 @@ export async function selectInputSuggestion(
 
 	await expect(input).toHaveValue(optionText);
 
-	await waitForClosePopper(page);
+	await waitForClosePopper(input.page());
 }

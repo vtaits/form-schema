@@ -14,7 +14,9 @@ export function getTextarea(
 
 		if (name) {
 			return input.filter({
-				has: name ? container.locator(`textarea[name="${name}"]`) : undefined,
+				has: name
+					? inputLabel.page().locator("..").locator(`textarea[name="${name}"]`)
+					: undefined,
 			});
 		}
 
@@ -28,15 +30,18 @@ export function getTextareaWrapper(
 	container: Page | Locator,
 	options: IFieldOptions,
 ) {
-	return getTextarea(container, options).locator("..").locator("..");
+	return getTextarea(container, options)
+		.locator("..")
+		.locator("..")
+		.locator("..");
 }
 
-export function setTextareaValue(
+export async function setTextareaValue(
 	container: Page | Locator,
 	options: IFieldOptions,
 	value: string,
 ) {
 	const textarea = getTextarea(container, options);
 
-	textarea.fill(value);
+	await textarea.fill(value);
 }

@@ -61,6 +61,7 @@ export function Simple({
 				type: "datetime",
 				label: "Datetime",
 				required,
+				serverDateFormat: "yyyy-MM-dd HH:mm",
 			},
 
 			file: {
@@ -136,7 +137,7 @@ export function Simple({
 
 			multiSelect: {
 				type: "multiSelect",
-				label: "Mulit select",
+				label: "Multi select",
 				placeholder: "Multi select",
 				options: [
 					{

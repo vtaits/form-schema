@@ -1,8 +1,6 @@
 import type { FieldSchemaBase } from "@vtaits/form-schema";
 import type { DateTimeSchema } from "@vtaits/react-hook-form-schema/fields/datetime";
-import {
-	type DefaultFieldSchema,
-} from "@vtaits/react-hook-form-schema/form";
+import type { DefaultFieldSchema } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useMemo } from "react";
 import { FormExample } from "./FormExample";
 
@@ -17,10 +15,5 @@ export function DatetimeStoryComponent(schema: DateTimeSchema): ReactElement {
 		[schema],
 	);
 
-	return (
-			<FormExample
-				schemas={schemas}
-				title="Datetime field"
-			/>
-	);
+	return <FormExample schemas={schemas} title="Datetime field" />;
 }

@@ -4,7 +4,7 @@ import {
 	type DefaultFieldSchema,
 	Form,
 } from "@vtaits/react-hook-form-schema/form";
-import { Fragment, type ReactElement, ReactNode, useState } from "react";
+import { Fragment, type ReactElement, type ReactNode, useState } from "react";
 
 const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => {
@@ -16,7 +16,7 @@ const delay = (ms: number): Promise<void> =>
 type IFormExampleProps = Readonly<{
 	schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>>;
 	title: ReactNode;
-}>
+}>;
 
 export function FormExample({
 	schemas,
@@ -38,18 +38,13 @@ export function FormExample({
 			<Form
 				schemas={schemas}
 				onSubmit={onSubmit}
-				renderFields={({
-					renderField,
-					names,
-				}) => (
+				renderFields={({ renderField, names }) => (
 					<div data-testid="fields">
 						{names.map((fieldName) => (
-						<Fragment key={fieldName}>
-							{renderField(fieldName)}
-						</Fragment>
-					))}
+							<Fragment key={fieldName}>{renderField(fieldName)}</Fragment>
+						))}
 					</div>
-	)}
+				)}
 				renderActions={({ isSubmitting }) => (
 					<Button variant="contained" type="submit" disabled={isSubmitting}>
 						Submit

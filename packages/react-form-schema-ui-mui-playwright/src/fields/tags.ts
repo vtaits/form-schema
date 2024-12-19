@@ -5,7 +5,7 @@ import type { IFieldOptions } from "./types";
 
 export {
 	getInput as getTags,
-	getInputWrapper as getTagsWrapper,
+	getInputWithSuggestionsWrapper as getTagsWrapper,
 	checkInputSuggestions as checkTagsSuggestions,
 } from "./input";
 

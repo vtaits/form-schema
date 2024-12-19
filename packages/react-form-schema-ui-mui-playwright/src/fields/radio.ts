@@ -10,11 +10,13 @@ export function getRadioInput(
 			exact,
 		});
 
-		const input = radioLabel.locator("..").getByRole("radio");
+		const input = radioLabel.locator("..").locator('input[type="radio"]');
 
 		if (name) {
 			return input.filter({
-				has: name ? container.locator(`input[name="${name}"]`) : undefined,
+				has: name
+					? radioLabel.page().locator("..").locator(`input[name="${name}"]`)
+					: undefined,
 			});
 		}
 
@@ -40,7 +42,5 @@ export async function toggleRadio(
 ) {
 	const radio = getRadioInput(container, options);
 
-	const icon = radio.locator("..").locator("svg");
-
-	await icon.click();
+	await radio.click();
 }

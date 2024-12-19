@@ -14,7 +14,9 @@ export function getCheckboxInput(
 
 		if (name) {
 			return input.filter({
-				has: name ? container.locator(`input[name="${name}"]`) : undefined,
+				has: name
+					? checkboxLabel.page().locator("..").locator(`input[name="${name}"]`)
+					: undefined,
 			});
 		}
 
@@ -40,7 +42,5 @@ export async function toggleCheckbox(
 ) {
 	const checkboxInput = getCheckboxInput(container, options);
 
-	const icon = checkboxInput.locator("..").locator("svg");
-
-	await icon.click();
+	await checkboxInput.click();
 }

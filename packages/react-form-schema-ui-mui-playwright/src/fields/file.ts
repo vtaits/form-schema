@@ -1,125 +1,69 @@
-import { act, fireEvent, within } from "@testing-library/react";
+import type { Locator, Page } from "@playwright/test";
+import type { IFieldOptions } from "./types";
 
-function makeFile(name: string) {
-	const content = "test content";
-	const options = { type: "text/plain" };
-
-	const blob = new Blob([content], options);
-
-	return new File([blob], name, options);
-}
-
-export function queryFileInputWrapper(
-	container: HTMLElement,
-	name: string,
-	label?: string | null,
+export function getFileInput(
+	container: Page | Locator,
+	{ label, name, exact }: IFieldOptions,
 ) {
-	const input = container.querySelector(`input[type="file"][name="${name}"]`);
-
-	if (!input) {
-		return null;
-	}
-
-	const fieldWrapper = input.closest(".MuiBox-root");
-
-	if (!fieldWrapper) {
-		return null;
-	}
-
-	if (
-		label &&
-		!within(fieldWrapper as HTMLElement).queryByText(label, {
-			selector: "label",
-		})
-	) {
-		return null;
-	}
-
-	return fieldWrapper as HTMLElement;
-}
-
-export function queryFileInput(
-	container: HTMLElement,
-	name: string,
-	label?: string | null,
-) {
-	const input = container.querySelector(`input[type="file"][name="${name}"]`);
-
-	if (!input) {
-		return null;
-	}
-
-	const fieldWrapper = input.closest(".MuiBox-root");
-
-	if (!fieldWrapper) {
-		return null;
-	}
-
-	if (
-		label &&
-		!within(fieldWrapper as HTMLElement).queryByText(label, {
-			selector: "label",
-		})
-	) {
-		return null;
-	}
-
-	return input as HTMLInputElement;
-}
-
-export function selectFile(
-	container: HTMLElement,
-	name: string,
-	label: string | null | undefined,
-	fileName: string,
-) {
-	const fileInput = queryFileInput(container, name, label);
-
-	if (!fileInput) {
-		throw new Error(`File input with name "${name}" not found`);
-	}
-
-	const file = makeFile(fileName);
-
-	act(() => {
-		fireEvent.change(fileInput, {
-			target: {
-				files: [file],
-			},
+	if (label) {
+		const inputLabel = container.getByText(label, {
+			exact,
 		});
-	});
-}
 
-export async function querySelectedFileName(
-	container: HTMLElement,
-	name: string,
-	label?: string | null,
-) {
-	const fieldWrapper = queryFileInputWrapper(container, name, label);
+		const input = inputLabel.locator(
+			name ? `input[type="file"][name="${name}"]` : 'input[type="file"]',
+		);
 
-	if (!fieldWrapper) {
-		return null;
+		return input;
 	}
 
-	return within(fieldWrapper).queryByTestId("filename");
+	return container.locator(`input[type="file"][name="${name}"]`);
+}
+
+export function getFileInputWrapper(
+	container: Page | Locator,
+	options: IFieldOptions,
+) {
+	const input = getFileInput(container, options);
+
+	const fieldWrapper = input.locator("..");
+
+	return fieldWrapper;
+}
+
+export async function selectFile(
+	container: Page | Locator,
+	options: IFieldOptions,
+	filePath: string,
+) {
+	const fileInput = getFileInput(container, options);
+
+	const page = fileInput.page();
+
+	const fileChooserPromise = page.waitForEvent("filechooser");
+	await fileInput.locator("..").click();
+	const fileChooser = await fileChooserPromise;
+	await fileChooser.setFiles(filePath);
+}
+
+export function getSelectedFileName(
+	container: Page | Locator,
+	options: IFieldOptions,
+) {
+	const fieldWrapper = getFileInputWrapper(container, options);
+
+	return fieldWrapper.getByTestId("filename");
 }
 
 export async function removeFile(
-	container: HTMLElement,
-	name: string,
-	label?: string | null,
+	container: Page | Locator,
+	options: IFieldOptions,
 ) {
-	const fieldWrapper = queryFileInputWrapper(container, name, label);
+	const fieldWrapper = getFileInputWrapper(container, options);
 
-	if (!fieldWrapper) {
-		throw new Error(`File input with name "${name}" not found`);
-	}
+	const file = fieldWrapper.getByTestId("file");
 
-	const file = within(fieldWrapper).getByTestId("file");
+	const removeButton = file.getByLabel("Remove");
 
-	const removeButton = within(file).getByLabelText("Remove");
-
-	act(() => {
-		fireEvent.click(removeButton);
-	});
+	await removeButton.click();
 }

@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 import type { CheckboxSchema } from "@vtaits/react-hook-form-schema/fields/checkbox";
 import type { CheckboxGroupSchema } from "@vtaits/react-hook-form-schema/fields/checkboxGroup";
 import type { DateSchema } from "@vtaits/react-hook-form-schema/fields/date";
+import type { DateTimeSchema } from "@vtaits/react-hook-form-schema/fields/datetime";
 import { MuiProvider } from "../..";
 import { CheckboxStoryComponent } from "./Checkbox";
 import { CheckboxGroupStoryComponent } from "./CheckboxGroup";
 import { DateStoryComponent } from "./Date";
-import type { DateTimeSchema } from "@vtaits/react-hook-form-schema/fields/datetime";
 import { DatetimeStoryComponent } from "./Datetime";
 
 const meta: Meta<typeof MuiProvider> = {
@@ -66,9 +66,9 @@ export const DateStory: StoryObj<DateSchema> = {
 		required: false,
 		label: "Date",
 		disabled: false,
-		clientDateFormat: '',
-		displayDateFormat: '',
-		serverDateFormat: '',
+		clientDateFormat: "",
+		displayDateFormat: "",
+		serverDateFormat: "",
 		utc: false,
 	},
 	render: (schema) => (
@@ -84,9 +84,9 @@ export const DatetimeStory: StoryObj<DateTimeSchema> = {
 		required: false,
 		label: "Datetime",
 		disabled: false,
-		clientDateFormat: '',
-		displayDateFormat: '',
-		serverDateFormat: '',
+		clientDateFormat: "",
+		displayDateFormat: "",
+		serverDateFormat: "",
 		utc: false,
 	},
 	render: (schema) => (

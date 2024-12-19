@@ -1,8 +1,7 @@
-import { act, fireEvent, within } from "@testing-library/react";
+import type { Locator, Page } from "@playwright/test";
 import { waitForCloseSelect, waitForOpenSelect } from "./autocompleteSelect";
-import { getInput } from "./input";
-import { Locator, Page } from "@playwright/test";
-import { IFieldOptions } from "./types";
+import { getInput, getInputWrapper } from "./input";
+import type { IFieldOptions } from "./types";
 
 export {
 	getInput as getSelect,
@@ -18,6 +17,9 @@ export async function checkSelectSuggestions(
 
 	await input.click();
 
+	const nameAttr = await input.getAttribute("name");
+	const name = nameAttr || "";
+
 	const selectList = await waitForOpenSelect(input.page(), name);
 
 	const optionList = selectList.getByRole("option");
@@ -26,13 +28,7 @@ export async function checkSelectSuggestions(
 
 	await input.click();
 
-	act(() => {
-		fireEvent.click(input);
-	});
-
 	await waitForCloseSelect(input.page(), name);
-
-	return options;
 }
 
 export async function selectValue(
@@ -41,46 +37,62 @@ export async function selectValue(
 	optionText: string,
 ) {
 	const input = getInput(container, options);
+	const nameAttr = await input.getAttribute("name");
+	const name = nameAttr || "";
 
-	const fieldWrapper = input.closest(".MuiBox-root");
+	const fieldWrapper = getInputWrapper(container, options);
 
-	if (!fieldWrapper) {
-		return;
-	}
-
-	const openButton = within(fieldWrapper as HTMLElement).getByRole("combobox", {
-		hidden: true,
+	const openButton = fieldWrapper.getByRole("combobox", {
+		includeHidden: true,
 	});
 
-	act(() => {
-		fireEvent.mouseDown(openButton);
-	});
+	await openButton.dispatchEvent("mousedown");
 
-	const selectList = await waitForOpenSelect(name);
+	const selectList = await waitForOpenSelect(input.page(), name);
 
-	if (!selectList) {
-		throw new Error(`select list "${name}" is not found`);
-	}
+	const option = selectList.getByText(optionText);
 
-	const option = within(selectList as HTMLElement).getByText(optionText);
-
-	act(() => {
-		fireEvent.click(option);
-	});
+	await option.click();
 }
 
-export function getSelectText(
-	container: HTMLElement,
-	name: string,
-	label: string | null,
+export async function selectMulipleValue(
+	container: Page | Locator,
+	options: IFieldOptions,
+	optionTexts: readonly string[],
 ) {
-	const input = queryInput(container, name, label);
+	const input = getInput(container, options);
+	const nameAttr = await input.getAttribute("name");
+	const name = nameAttr || "";
 
-	if (!input?.parentNode) {
-		throw new Error(`Input with name "${name}" not found`);
+	const fieldWrapper = getInputWrapper(container, options);
+
+	const openButton = fieldWrapper.getByRole("combobox", {
+		includeHidden: true,
+	});
+
+	await openButton.dispatchEvent("mousedown");
+
+	const selectList = await waitForOpenSelect(input.page(), name);
+
+	for (const optionText of optionTexts) {
+		const option = selectList.getByText(optionText);
+		await option.click();
 	}
 
-	return within(input.parentNode as HTMLElement).getByRole("combobox", {
-		hidden: true,
-	}).textContent;
+	await input.page().keyboard.press("Escape");
+}
+
+export async function getSelectText(
+	container: Page | Locator,
+	options: IFieldOptions,
+) {
+	const fieldWrapper = getInputWrapper(container, options);
+
+	const combobox = fieldWrapper.getByRole("combobox", {
+		includeHidden: true,
+	});
+
+	const textContent = await combobox.textContent();
+
+	return textContent;
 }
