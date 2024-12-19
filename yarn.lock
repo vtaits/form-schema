@@ -2794,6 +2794,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vtaits/react-form-schema-ui-mui-playwright@workspace:packages/react-form-schema-ui-mui-playwright":
+  version: 0.0.0-use.local
+  resolution: "@vtaits/react-form-schema-ui-mui-playwright@workspace:packages/react-form-schema-ui-mui-playwright"
+  dependencies:
+    "@biomejs/biome": "npm:^1.9.4"
+    "@playwright/test": "npm:^1.49.1"
+    tsup: "npm:^8.3.5"
+    typescript: "npm:5.6.3"
+  peerDependencies:
+    "@playwright/test": ^1.0.0
+  languageName: unknown
+  linkType: soft
+
 "@vtaits/react-form-schema-ui-mui-testing-library@npm:^1.0.0-alpha.3, @vtaits/react-form-schema-ui-mui-testing-library@workspace:packages/react-form-schema-ui-mui-testing-library":
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-mui-testing-library@workspace:packages/react-form-schema-ui-mui-testing-library"
