@@ -15,7 +15,7 @@
     "format": "yarn workspaces foreach --all run format",
     "test:unit": "yarn workspaces foreach --all run test:unit",
     "test:ts": "yarn workspaces foreach --all run test:ts",
-    "test": "yarn lint && yarn test:ts && yarn test:unit",
+    "test": "yarn lint && yarn test:ts && yarn test:unit && yarn test:e2e",
     "test:e2e": "playwright test",
     "test:e2e:dev": "playwright test --ui",
     "upload:docs": "gh-pages -d docs",

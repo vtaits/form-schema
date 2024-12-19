@@ -35,10 +35,12 @@ const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = {
 
 	date: {
 		type: "date",
+		label: "Date",
 	},
 
 	datetime: {
 		type: "datetime",
+		label: "Datetime",
 		serverDateFormat: "yyyy-MM-dd HH:mm",
 	},
 

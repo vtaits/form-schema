@@ -31,12 +31,9 @@ export const SimpleStory: Story = {
 
 export const OnChangeStory: Story = {
 	name: "Handle field change",
-	args: {
-		required: false,
-	},
-	render: ({ required, ...rest }) => (
-		<MuiProvider {...rest}>
-			<OnChangeExample required={required} />
+	render: (params) => (
+		<MuiProvider {...params}>
+			<OnChangeExample />
 		</MuiProvider>
 	),
 };
