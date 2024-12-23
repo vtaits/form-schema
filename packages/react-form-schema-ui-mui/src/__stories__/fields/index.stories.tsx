@@ -17,13 +17,18 @@ const meta: Meta<typeof MuiProvider> = {
 export default meta;
 type Story = StoryObj;
 
-export const CheckboxStory: StoryObj<CheckboxSchema> = {
+export const CheckboxStory: StoryObj<
+	CheckboxSchema & {
+		formValue?: unknown;
+	}
+> = {
 	name: "Checkbox",
 	args: {
 		required: false,
 		checkboxLabel: "Checkbox",
 		disabled: false,
 		isValueInverse: false,
+		formValue: undefined,
 	},
 	render: (schema) => (
 		<MuiProvider>
@@ -32,7 +37,11 @@ export const CheckboxStory: StoryObj<CheckboxSchema> = {
 	),
 };
 
-export const CheckboxGroupStory: StoryObj<CheckboxGroupSchema> = {
+export const CheckboxGroupStory: StoryObj<
+	CheckboxGroupSchema & {
+		formValue?: unknown;
+	}
+> = {
 	name: "Checkbox group",
 	args: {
 		label: "Checkbox group",
@@ -52,6 +61,7 @@ export const CheckboxGroupStory: StoryObj<CheckboxGroupSchema> = {
 		],
 		disabled: false,
 		required: false,
+		formValue: undefined,
 	},
 	render: (schema) => (
 		<MuiProvider>

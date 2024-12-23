@@ -1,37 +1,23 @@
 import { expect, test } from "@playwright/test";
 import {
-	addListBlock,
 	addTagsValue,
 	getCheckboxInput,
-	setDateInputValue,
-	getCheckboxWrapper,
-	getFieldError,
-	getFileInput,
-	getFormError,
 	getInput,
-	getInputWithSuggestionsWrapper,
-	getInputWrapper,
-	getListRoot,
 	getRadioInput,
-	getSelect,
 	getSelectText,
-	getSelectWrapper,
-	getTags,
 	getTagsValue,
-	getTagsWrapper,
 	getTextarea,
-	getTextareaWrapper,
-	removeListBlock,
-	selectFile,
 	selectInputSuggestion,
 	selectMulipleValue,
 	selectTagsSuggestion,
 	selectValue,
+	setDateInputValue,
 	setInputValue,
 	setTextareaValue,
 	toggleCheckbox,
 	toggleRadio,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
+import { getSubmitButton, parseSubmitValues } from "./utils";
 
 test.beforeEach(async ({ page }) => {
 	await page.goto(
@@ -237,13 +223,13 @@ test("submit filled form", async ({ page }) => {
 		}),
 	).toHaveValue("textareaValue");
 
-	await page.getByText("Submit", { exact: true }).click();
+	await getSubmitButton(page).click();
 
-	await expect(page.getByText("Submit", { exact: true })).toBeEnabled();
+	await expect(getSubmitButton(page)).toBeEnabled();
 
-	const resText = await page.locator("#storybook-root pre").textContent();
+	const res = await parseSubmitValues(page);
 
-	expect(JSON.parse(resText || "")).toEqual({
+	expect(res).toEqual({
 		checkbox: true,
 		checkbox_cloned: true,
 		checkboxGroup: ["value1", "value3"],

@@ -4,18 +4,40 @@ import type { DefaultFieldSchema } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useMemo } from "react";
 import { FormExample } from "./FormExample";
 
-export function CheckboxGroupStoryComponent(
-	schema: CheckboxGroupSchema,
-): ReactElement {
+export function CheckboxGroupStoryComponent({
+	formValue,
+	label,
+	disabled,
+	required,
+	options,
+}: CheckboxGroupSchema & {
+	formValue?: unknown;
+}): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
 		() => ({
 			checkboxGroup: {
 				type: "checkboxGroup",
-				...schema,
+				label,
+				disabled,
+				required,
+				options,
 			},
 		}),
-		[schema],
+		[label, disabled, required, options],
 	);
 
-	return <FormExample schemas={schemas} title="Checkbox group field" />;
+	const defaultValues = useMemo(
+		() => ({
+			checkboxGroup: formValue,
+		}),
+		[formValue],
+	);
+
+	return (
+		<FormExample
+			defaultValues={defaultValues}
+			schemas={schemas}
+			title="Checkbox group field"
+		/>
+	);
 }

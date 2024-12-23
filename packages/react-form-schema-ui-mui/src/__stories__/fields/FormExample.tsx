@@ -16,10 +16,12 @@ const delay = (ms: number): Promise<void> =>
 type IFormExampleProps = Readonly<{
 	schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>>;
 	title: ReactNode;
+	defaultValues?: Record<string, unknown>;
 }>;
 
 export function FormExample({
 	schemas,
+	defaultValues,
 	title,
 }: IFormExampleProps): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
@@ -36,6 +38,7 @@ export function FormExample({
 	return (
 		<>
 			<Form
+				defaultValues={defaultValues}
 				schemas={schemas}
 				onSubmit={onSubmit}
 				renderFields={({ renderField, names }) => (
@@ -50,7 +53,7 @@ export function FormExample({
 						Submit
 					</Button>
 				)}
-				title="Datetime field"
+				title={title}
 			/>
 
 			{submittedValues && (

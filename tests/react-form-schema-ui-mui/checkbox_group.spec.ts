@@ -6,17 +6,17 @@ import {
 import { getSubmitButton, parseSubmitValues } from "./utils";
 
 const BASE_URL =
-	"http://localhost:6006/iframe.html?id=react-form-schema-ui-mui-fields--checkbox-story";
+	"http://localhost:6006/iframe.html?id=react-form-schema-ui-mui-fields--checkbox-group-story";
 
 test.describe("screenshots", () => {
 	for (const disabled of [false, true]) {
 		for (const required of [false, true]) {
-			for (const checked of [false, true]) {
-				const paramsStr = `disabled=${disabled},required=${required},checked=${checked}`;
+			for (const value of ["", "formValue.0:value1;formValue.1:value3"]) {
+				const paramsStr = `disabled=${disabled},required=${required},value=${value}`;
 
 				test(paramsStr, async ({ page }) => {
 					await page.goto(
-						`${BASE_URL}&args=${encodeURIComponent(`disabled:!${disabled};required:!${required};formValue:!${checked}`)}`,
+						`${BASE_URL}&args=${encodeURIComponent(`disabled:!${disabled};required:!${required};${value}`)}`,
 					);
 
 					await expect(page.getByTestId("fields")).toHaveScreenshot(
@@ -28,14 +28,22 @@ test.describe("screenshots", () => {
 	}
 });
 
-const checkboxOptions = {
-	label: "Checkbox",
+const label1Options = {
+	label: "Label 1",
+};
+
+const label2Options = {
+	label: "Label 2",
+};
+
+const label3Options = {
+	label: "Label 3",
 };
 
 test("change and submit correct value", async ({ page }) => {
 	await page.goto(BASE_URL);
 
-	// submit initially unchecked
+	// submit initially empty
 
 	await getSubmitButton(page).click();
 
@@ -45,15 +53,18 @@ test("change and submit correct value", async ({ page }) => {
 		const res = await parseSubmitValues(page);
 
 		expect(res).toEqual({
-			checkbox: false,
+			checkboxGroup: [],
 		});
 	}
 
-	// check
+	// change
 
-	await toggleCheckbox(page, checkboxOptions);
+	await toggleCheckbox(page, label1Options);
+	await toggleCheckbox(page, label3Options);
 
-	await expect(getCheckboxInput(page, checkboxOptions)).toBeChecked();
+	await expect(getCheckboxInput(page, label1Options)).toBeChecked();
+	await expect(getCheckboxInput(page, label2Options)).not.toBeChecked();
+	await expect(getCheckboxInput(page, label3Options)).toBeChecked();
 
 	// submit checked
 
@@ -65,15 +76,17 @@ test("change and submit correct value", async ({ page }) => {
 		const res = await parseSubmitValues(page);
 
 		expect(res).toEqual({
-			checkbox: true,
+			checkboxGroup: ["value1", "value3"],
 		});
 	}
 
 	// uncheck
 
-	await toggleCheckbox(page, checkboxOptions);
+	await toggleCheckbox(page, label1Options);
 
-	await expect(getCheckboxInput(page, checkboxOptions)).not.toBeChecked();
+	await expect(getCheckboxInput(page, label1Options)).not.toBeChecked();
+	await expect(getCheckboxInput(page, label2Options)).not.toBeChecked();
+	await expect(getCheckboxInput(page, label3Options)).toBeChecked();
 
 	// submit unchecked
 
@@ -85,7 +98,7 @@ test("change and submit correct value", async ({ page }) => {
 		const res = await parseSubmitValues(page);
 
 		expect(res).toEqual({
-			checkbox: false,
+			checkboxGroup: ["value3"],
 		});
 	}
 });

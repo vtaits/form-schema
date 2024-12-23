@@ -3,6 +3,22 @@ import { type ErrorMessages, defaultErrorMessages } from "../base";
 import { DEFAULT_VALUE_KEY } from "./constants";
 import type { MultiSelectSchema } from "./schema";
 
+function parseValueArray(value: unknown) {
+	if (value === null || value === undefined) {
+		return [];
+	}
+
+	if (Array.isArray(value)) {
+		return value;
+	}
+
+	if (typeof value === "object") {
+		return Object.values(value);
+	}
+
+	return [value];
+}
+
 export const multiSelect: FieldType<MultiSelectSchema<unknown>> = {
 	serializerSingle: ({
 		value,
@@ -27,11 +43,7 @@ export const multiSelect: FieldType<MultiSelectSchema<unknown>> = {
 		value,
 		fieldSchema: { getOptionValue, options, valueKey = DEFAULT_VALUE_KEY },
 	}) => {
-		if (!value) {
-			return [];
-		}
-
-		const valueArr = Array.isArray(value) ? value : [value];
+		const valueArr = parseValueArray(value);
 
 		return options.filter((option) => {
 			if (getOptionValue) {

@@ -43,6 +43,7 @@
     "@vitejs/plugin-react-swc": "^3.7.2",
     "@vtaits/react-form-schema-ui-mui-playwright": "workspace:^",
     "gh-pages": "^6.2.0",
+    "krustykrab": "^1.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "rimraf": "^6.0.1",

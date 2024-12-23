@@ -31,6 +31,7 @@ import {
 	toggleCheckbox,
 	toggleRadio,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
+import { getSubmitButton, parseSubmitValues } from "./utils";
 
 test.beforeEach(async ({ page }) => {
 	await page.goto(
@@ -170,7 +171,7 @@ test("render fields", async ({ page }) => {
 		}),
 	).toBeVisible();
 
-	await expect(page.getByText("Submit", { exact: true })).toBeEnabled();
+	await expect(getSubmitButton(page)).toBeEnabled();
 });
 
 test("submit filled form", async ({ page }) => {
@@ -411,13 +412,13 @@ test("submit filled form", async ({ page }) => {
 		"textareaValue",
 	);
 
-	await page.getByText("Submit", { exact: true }).click();
+	await getSubmitButton(page).click();
 
-	await expect(page.getByText("Submit", { exact: true })).toBeEnabled();
+	await expect(getSubmitButton(page)).toBeEnabled();
 
-	const resText = await page.locator("#storybook-root pre").textContent();
+	const res = await parseSubmitValues(page);
 
-	expect(JSON.parse(resText || "")).toEqual({
+	expect(res).toEqual({
 		checkbox: true,
 		checkboxGroup: ["value1", "value3"],
 		date: "2020-10-05",
@@ -448,9 +449,9 @@ test("submit filled form", async ({ page }) => {
 test("show form errors", async ({ page }) => {
 	const form = page.locator("form");
 
-	await page.getByText("Submit", { exact: true }).click();
+	await getSubmitButton(page).click();
 
-	await expect(page.getByText("Submit", { exact: true })).toBeEnabled();
+	await expect(getSubmitButton(page)).toBeEnabled();
 
 	for (const field of [
 		getCheckboxWrapper(form, {

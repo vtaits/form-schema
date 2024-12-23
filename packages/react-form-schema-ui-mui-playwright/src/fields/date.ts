@@ -1,16 +1,19 @@
-import { Locator, Page } from '@playwright/test';
-import { IFieldOptions } from './types';
-import { getInput } from './input';
+import type { Locator, Page } from "@playwright/test";
+import { getInput } from "./input";
+import type { IFieldOptions } from "./types";
 
-export {getInput as getDateInput, getInputWrapper as getDateInputWrapper } from './input';
+export {
+	getInput as getDateInput,
+	getInputWrapper as getDateInputWrapper,
+} from "./input";
 
 export async function setDateInputValue(
-  container: Page | Locator,
+	container: Page | Locator,
 	options: IFieldOptions,
 	value: string,
 ) {
-  const input = getInput(container, options);
+	const input = getInput(container, options);
 
-  await input.click();
-  await input.fill(value);
+	await input.click();
+	await input.fill(value);
 }
