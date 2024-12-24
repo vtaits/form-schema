@@ -7,7 +7,7 @@ import { FormExample } from "./FormExample";
 export function DatetimeStoryComponent(schema: DateTimeSchema): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
 		() => ({
-			checkbox: {
+			datetime: {
 				...schema,
 				type: "datetime",
 			},

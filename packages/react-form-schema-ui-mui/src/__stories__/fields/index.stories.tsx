@@ -15,7 +15,6 @@ const meta: Meta<typeof MuiProvider> = {
 };
 
 export default meta;
-type Story = StoryObj;
 
 export const CheckboxStory: StoryObj<
 	CheckboxSchema & {
@@ -70,7 +69,14 @@ export const CheckboxGroupStory: StoryObj<
 	),
 };
 
-export const DateStory: StoryObj<DateSchema> = {
+export const DateStory: StoryObj<
+	DateSchema & {
+		formValue?: unknown;
+		clientDateFormat: string;
+		displayDateFormat: string;
+		serverDateFormat: string;
+	}
+> = {
 	name: "Date",
 	args: {
 		required: false,
@@ -80,6 +86,7 @@ export const DateStory: StoryObj<DateSchema> = {
 		displayDateFormat: "",
 		serverDateFormat: "",
 		utc: false,
+		formValue: undefined,
 	},
 	render: (schema) => (
 		<MuiProvider>
@@ -98,6 +105,7 @@ export const DatetimeStory: StoryObj<DateTimeSchema> = {
 		displayDateFormat: "",
 		serverDateFormat: "",
 		utc: false,
+		formValue: undefined,
 	},
 	render: (schema) => (
 		<MuiProvider>

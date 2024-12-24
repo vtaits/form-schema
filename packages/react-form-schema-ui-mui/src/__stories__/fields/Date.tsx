@@ -4,16 +4,54 @@ import type { DefaultFieldSchema } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useMemo } from "react";
 import { FormExample } from "./FormExample";
 
-export function DateStoryComponent(schema: DateSchema): ReactElement {
+export function DateStoryComponent({
+	required,
+	label,
+	disabled,
+	clientDateFormat,
+	displayDateFormat,
+	serverDateFormat,
+	utc,
+	formValue,
+}: DateSchema & {
+	formValue?: unknown;
+}): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
 		() => ({
-			checkbox: {
-				...schema,
+			date: {
 				type: "date",
+				required,
+				label,
+				disabled,
+				clientDateFormat,
+				displayDateFormat,
+				serverDateFormat,
+				utc,
 			},
 		}),
-		[schema],
+		[
+			required,
+			label,
+			disabled,
+			clientDateFormat,
+			displayDateFormat,
+			serverDateFormat,
+			utc,
+		],
 	);
 
-	return <FormExample schemas={schemas} title="Date field" />;
+	const defaultValues = useMemo(
+		() => ({
+			date: formValue,
+		}),
+		[formValue],
+	);
+
+	return (
+		<FormExample
+			defaultValues={defaultValues}
+			schemas={schemas}
+			title="Date field"
+		/>
+	);
 }
