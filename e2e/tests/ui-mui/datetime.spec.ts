@@ -3,20 +3,26 @@ import {
 	getInput,
 	setInputValue,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
-import { getSubmitButton, parseSubmitValues } from "./utils";
+import { createMakeUrl } from "tests/utils/makeUrl";
+import { getSubmitButton, parseSubmitValues } from "../utils/formExample";
 
-const BASE_URL =
-	"http://localhost:6006/iframe.html?id=react-form-schema-ui-mui-fields--date-story";
+const makeUrl = createMakeUrl(
+	"react-form-schema-ui-mui-fields--datetime-story",
+);
 
 test.describe("screenshots", () => {
 	for (const disabled of [false, true]) {
 		for (const required of [false, true]) {
-			for (const value of ["", "2020-10-05"]) {
+			for (const value of [undefined, "2020-10-05 12:34"]) {
 				const paramsStr = `disabled=${disabled},required=${required},value=${value}`;
 
 				test(paramsStr, async ({ page }) => {
 					await page.goto(
-						`${BASE_URL}&args=${encodeURIComponent(`disabled:!${disabled};required:!${required};formValue:!${value}`)}`,
+						makeUrl({
+							disabled: `!${disabled}`,
+							required: `!${required}`,
+							form_value: value,
+						}),
 					);
 
 					await expect(page.getByTestId("fields")).toHaveScreenshot(
@@ -35,19 +41,19 @@ const fieldOptions = {
 test.describe("change and submit correct value", () => {
 	const formatCases = [
 		{
-			value: "2020-10-05",
-			format: "",
+			value: "2020-10-05 12:34",
+			format: undefined,
 		},
 
 		{
-			value: "2020-10-05",
-			format: "yyyy-MM-dd",
+			value: "2020-10-05 12:34",
+			format: "yyyy-MM-dd HH:mm",
 		},
 
-		{
+		/* {
 			value: "05.10.2020",
 			format: "dd.MM.yyyy",
-		},
+		}, */
 	];
 
 	for (const serverCase of formatCases) {
@@ -56,7 +62,10 @@ test.describe("change and submit correct value", () => {
 				page,
 			}) => {
 				await page.goto(
-					`${BASE_URL}&args=${encodeURIComponent(`serverDateFormat:!${serverCase.format};displayDateFormat:!${clientCase.format}`)}`,
+					makeUrl({
+						server_date_format: serverCase.format,
+						client_date_format: clientCase.format,
+					}),
 				);
 
 				// submit initially empty

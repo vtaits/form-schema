@@ -6,22 +6,19 @@ import { FormExample } from "./FormExample";
 
 export function CheckboxStoryComponent({
 	formValue,
-	label,
-	disabled,
-	required,
-}: CheckboxSchema & {
+	schema,
+}: {
+	schema: CheckboxSchema;
 	formValue?: unknown;
 }): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
 		() => ({
 			checkbox: {
-				label,
-				disabled,
-				required,
+				...schema,
 				type: "checkbox",
 			},
 		}),
-		[label, disabled, required],
+		[schema],
 	);
 
 	const defaultValues = useMemo(

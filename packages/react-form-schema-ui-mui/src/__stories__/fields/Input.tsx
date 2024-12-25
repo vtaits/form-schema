@@ -1,21 +1,21 @@
 import type { FieldSchemaBase } from "@vtaits/form-schema";
-import type { DateSchema } from "@vtaits/react-hook-form-schema/fields/date";
+import type { InputSchema } from "@vtaits/react-hook-form-schema/fields/input";
 import type { DefaultFieldSchema } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useMemo } from "react";
 import { FormExample } from "./FormExample";
 
-export function DateStoryComponent({
+export function InputStoryComponent({
 	schema,
 	formValue,
 }: {
-	schema: DateSchema;
+	schema: InputSchema;
 	formValue?: unknown;
 }): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
 		() => ({
-			date: {
+			input: {
+				type: "input",
 				...schema,
-				type: "date",
 			},
 		}),
 		[schema],
@@ -23,7 +23,7 @@ export function DateStoryComponent({
 
 	const defaultValues = useMemo(
 		() => ({
-			date: formValue,
+			input: formValue,
 		}),
 		[formValue],
 	);
@@ -32,7 +32,7 @@ export function DateStoryComponent({
 		<FormExample
 			defaultValues={defaultValues}
 			schemas={schemas}
-			title="Date field"
+			title="Input field"
 		/>
 	);
 }

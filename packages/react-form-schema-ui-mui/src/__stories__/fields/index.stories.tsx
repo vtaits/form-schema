@@ -8,6 +8,7 @@ import { CheckboxStoryComponent } from "./Checkbox";
 import { CheckboxGroupStoryComponent } from "./CheckboxGroup";
 import { DateStoryComponent } from "./Date";
 import { DatetimeStoryComponent } from "./Datetime";
+import { InputStoryComponent } from "./Input";
 
 const meta: Meta<typeof MuiProvider> = {
 	title: "react-form-schema-ui-mui/fields",
@@ -16,29 +17,49 @@ const meta: Meta<typeof MuiProvider> = {
 
 export default meta;
 
-export const CheckboxStory: StoryObj<
-	CheckboxSchema & {
-		formValue?: unknown;
-	}
-> = {
+export const CheckboxStory: StoryObj<{
+	required: boolean;
+	checkbox_label: string;
+	disabled: boolean;
+	is_value_inverse: boolean;
+	form_value: undefined;
+}> = {
 	name: "Checkbox",
 	args: {
 		required: false,
-		checkboxLabel: "Checkbox",
+		checkbox_label: "Checkbox",
 		disabled: false,
-		isValueInverse: false,
-		formValue: undefined,
+		is_value_inverse: false,
+		form_value: undefined,
 	},
-	render: (schema) => (
+	render: ({
+		required,
+		checkbox_label: checkboxLabel,
+		disabled,
+		is_value_inverse: isValueInverse,
+		form_value: formValue,
+	}) => (
 		<MuiProvider>
-			<CheckboxStoryComponent {...schema} />
+			<CheckboxStoryComponent
+				schema={{
+					required,
+					checkboxLabel,
+					disabled,
+					isValueInverse,
+				}}
+				formValue={formValue}
+			/>
 		</MuiProvider>
 	),
 };
 
 export const CheckboxGroupStory: StoryObj<
 	CheckboxGroupSchema & {
-		formValue?: unknown;
+		label: string;
+		options: unknown;
+		disabled: boolean;
+		required: boolean;
+		form_value?: unknown;
 	}
 > = {
 	name: "Checkbox group",
@@ -60,56 +81,155 @@ export const CheckboxGroupStory: StoryObj<
 		],
 		disabled: false,
 		required: false,
-		formValue: undefined,
+		form_value: undefined,
 	},
-	render: (schema) => (
+	render: ({ label, options, disabled, required, form_value: formValue }) => (
 		<MuiProvider>
-			<CheckboxGroupStoryComponent {...schema} />
+			<CheckboxGroupStoryComponent
+				schema={{
+					label,
+					options,
+					disabled,
+					required,
+				}}
+				formValue={formValue}
+			/>
 		</MuiProvider>
 	),
 };
 
-export const DateStory: StoryObj<
-	DateSchema & {
-		formValue?: unknown;
-		clientDateFormat: string;
-		displayDateFormat: string;
-		serverDateFormat: string;
-	}
-> = {
+export const DateStory: StoryObj<{
+	required: boolean;
+	label: string;
+	disabled: boolean;
+	client_date_format: string;
+	display_date_format: string;
+	server_date_format: string;
+	utc: boolean;
+	form_value?: unknown;
+}> = {
 	name: "Date",
 	args: {
 		required: false,
 		label: "Date",
 		disabled: false,
-		clientDateFormat: "",
-		displayDateFormat: "",
-		serverDateFormat: "",
+		client_date_format: "",
+		display_date_format: "",
+		server_date_format: "",
 		utc: false,
-		formValue: undefined,
+		form_value: undefined,
 	},
-	render: (schema) => (
+	render: ({
+		required,
+		label,
+		disabled,
+		client_date_format: clientDateFormat,
+		display_date_format: displayDateFormat,
+		server_date_format: serverDateFormat,
+		utc,
+		form_value: formValue,
+	}) => (
 		<MuiProvider>
-			<DateStoryComponent {...schema} />
+			<DateStoryComponent
+				schema={{
+					required,
+					label,
+					disabled,
+					clientDateFormat,
+					displayDateFormat,
+					serverDateFormat,
+					utc,
+				}}
+				formValue={formValue}
+			/>
 		</MuiProvider>
 	),
 };
 
-export const DatetimeStory: StoryObj<DateTimeSchema> = {
+export const DatetimeStory: StoryObj<{
+	required: boolean;
+	label: string;
+	disabled: boolean;
+	client_date_format: string;
+	display_date_format: string;
+	server_date_format: string;
+	utc: boolean;
+	form_value?: unknown;
+}> = {
 	name: "Datetime",
 	args: {
 		required: false,
 		label: "Datetime",
 		disabled: false,
-		clientDateFormat: "",
-		displayDateFormat: "",
-		serverDateFormat: "",
+		client_date_format: "",
+		display_date_format: "",
+		server_date_format: "",
 		utc: false,
-		formValue: undefined,
+		form_value: undefined,
 	},
-	render: (schema) => (
+	render: ({
+		required,
+		label,
+		disabled,
+		client_date_format: clientDateFormat,
+		display_date_format: displayDateFormat,
+		server_date_format: serverDateFormat,
+		utc,
+		form_value: formValue,
+	}) => (
 		<MuiProvider>
-			<DatetimeStoryComponent {...schema} />
+			<DatetimeStoryComponent
+				schema={{
+					required,
+					label,
+					disabled,
+					clientDateFormat,
+					displayDateFormat,
+					serverDateFormat,
+					utc,
+				}}
+				formValue={formValue}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const InputStory: StoryObj<{
+	required: boolean;
+	label: string;
+	disabled: boolean;
+	is_number: boolean;
+	form_value?: unknown;
+	options?: readonly string[];
+}> = {
+	name: "Input",
+	args: {
+		required: false,
+		label: "Input",
+		disabled: false,
+		is_number: false,
+		form_value: undefined,
+		options: undefined,
+	},
+	render: ({
+		required,
+		label,
+		is_number: isNumber,
+		disabled,
+		form_value: formValue,
+		options,
+	}) => (
+		<MuiProvider>
+			<InputStoryComponent
+				schema={{
+					required,
+					isNumber,
+					label,
+					disabled,
+					options,
+				}}
+				formValue={formValue}
+			/>
 		</MuiProvider>
 	),
 };

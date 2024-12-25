@@ -3,20 +3,32 @@ import {
 	getCheckboxInput,
 	toggleCheckbox,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
-import { getSubmitButton, parseSubmitValues } from "./utils";
+import { createMakeUrl } from "tests/utils/makeUrl";
+import { getSubmitButton, parseSubmitValues } from "../utils/formExample";
 
-const BASE_URL =
-	"http://localhost:6006/iframe.html?id=react-form-schema-ui-mui-fields--checkbox-group-story";
+const makeUrl = createMakeUrl(
+	"react-form-schema-ui-mui-fields--checkbox-group-story",
+);
 
 test.describe("screenshots", () => {
 	for (const disabled of [false, true]) {
 		for (const required of [false, true]) {
-			for (const value of ["", "formValue.0:value1;formValue.1:value3"]) {
-				const paramsStr = `disabled=${disabled},required=${required},value=${value}`;
+			for (const value of [
+				{ label: "empty", value: {} },
+				{
+					label: "[value1,value3]",
+					value: { "form_value.0": "value1", "form_value.1": "value3" },
+				},
+			]) {
+				const paramsStr = `disabled=${disabled},required=${required},value=${value.label}`;
 
 				test(paramsStr, async ({ page }) => {
 					await page.goto(
-						`${BASE_URL}&args=${encodeURIComponent(`disabled:!${disabled};required:!${required};${value}`)}`,
+						makeUrl({
+							disabled: `!${disabled}`,
+							required: `!${required}`,
+							...value.value,
+						}),
 					);
 
 					await expect(page.getByTestId("fields")).toHaveScreenshot(
@@ -41,7 +53,7 @@ const label3Options = {
 };
 
 test("change and submit correct value", async ({ page }) => {
-	await page.goto(BASE_URL);
+	await page.goto(makeUrl({}));
 
 	// submit initially empty
 

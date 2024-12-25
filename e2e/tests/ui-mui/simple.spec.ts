@@ -31,7 +31,7 @@ import {
 	toggleCheckbox,
 	toggleRadio,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
-import { getSubmitButton, parseSubmitValues } from "./utils";
+import { getSubmitButton, parseSubmitValues } from "../utils/formExample";
 
 test.beforeEach(async ({ page }) => {
 	await page.goto(

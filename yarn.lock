@@ -2794,7 +2794,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vtaits/react-form-schema-ui-mui-playwright@workspace:^, @vtaits/react-form-schema-ui-mui-playwright@workspace:packages/react-form-schema-ui-mui-playwright":
+"@vtaits/react-form-schema-ui-mui-playwright@workspace:packages/react-form-schema-ui-mui-playwright":
   version: 0.0.0-use.local
   resolution: "@vtaits/react-form-schema-ui-mui-playwright@workspace:packages/react-form-schema-ui-mui-playwright"
   dependencies:
@@ -6786,7 +6786,6 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@biomejs/biome": "npm:^1.9.4"
-    "@playwright/test": "npm:^1.49.1"
     "@storybook/addon-essentials": "npm:^8.4.7"
     "@storybook/addon-interactions": "npm:^8.4.7"
     "@storybook/addon-links": "npm:^8.4.7"
@@ -6799,7 +6798,6 @@ __metadata:
     "@storybook/testing-library": "npm:^0.2.2"
     "@types/node": "npm:^22.10.2"
     "@vitejs/plugin-react-swc": "npm:^3.7.2"
-    "@vtaits/react-form-schema-ui-mui-playwright": "workspace:^"
     gh-pages: "npm:^6.2.0"
     krustykrab: "npm:^1.1.0"
     react: "npm:^19.0.0"
