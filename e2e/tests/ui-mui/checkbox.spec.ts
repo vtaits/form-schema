@@ -67,7 +67,7 @@ test.describe("change and submit correct value", () => {
 				}),
 			);
 
-			if (testCase.rawIsInverse) {
+			if (testCase.isValueInverse) {
 				await expect(getCheckboxInput(page, checkboxOptions)).toBeChecked();
 			} else {
 				await expect(getCheckboxInput(page, checkboxOptions)).not.toBeChecked();
@@ -83,7 +83,7 @@ test.describe("change and submit correct value", () => {
 				const res = await parseSubmitValues(page);
 
 				expect(res).toEqual({
-					checkbox: !testCase.isValueInverse,
+					checkbox: false,
 				});
 			}
 
@@ -91,7 +91,7 @@ test.describe("change and submit correct value", () => {
 
 			await toggleCheckbox(page, checkboxOptions);
 
-			if (testCase.rawIsInverse) {
+			if (testCase.isValueInverse) {
 				await expect(getCheckboxInput(page, checkboxOptions)).not.toBeChecked();
 			} else {
 				await expect(getCheckboxInput(page, checkboxOptions)).toBeChecked();
@@ -107,7 +107,7 @@ test.describe("change and submit correct value", () => {
 				const res = await parseSubmitValues(page);
 
 				expect(res).toEqual({
-					checkbox: testCase.isValueInverse,
+					checkbox: true,
 				});
 			}
 
@@ -115,7 +115,7 @@ test.describe("change and submit correct value", () => {
 
 			await toggleCheckbox(page, checkboxOptions);
 
-			if (testCase.rawIsInverse) {
+			if (testCase.isValueInverse) {
 				await expect(getCheckboxInput(page, checkboxOptions)).toBeChecked();
 			} else {
 				await expect(getCheckboxInput(page, checkboxOptions)).not.toBeChecked();
@@ -131,7 +131,7 @@ test.describe("change and submit correct value", () => {
 				const res = await parseSubmitValues(page);
 
 				expect(res).toEqual({
-					checkbox: !testCase.isValueInverse,
+					checkbox: false,
 				});
 			}
 		});

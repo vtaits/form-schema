@@ -93,7 +93,7 @@ export function getContextValue(
 			);
 
 			return (
-				<FormControl>
+				<FormControl data-testid={`@@checkboxGroup/${name}`}>
 					{label && <FormLabel required={required}>{label}</FormLabel>}
 
 					<div>

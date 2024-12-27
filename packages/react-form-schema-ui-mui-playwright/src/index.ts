@@ -1,4 +1,5 @@
 export * from "./fields/checkbox";
+export * from "./fields/checkboxGroup";
 export * from "./fields/date";
 export * from "./fields/field";
 export * from "./fields/file";

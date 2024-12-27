@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 import {
 	addListBlock,
 	addTagsValue,
+	getCheckboxGroupWrapper,
 	getCheckboxInput,
 	getCheckboxWrapper,
 	getFieldError,
@@ -458,7 +459,10 @@ test("show form errors", async ({ page }) => {
 			name: "checkbox",
 			label: "Checkbox",
 		}),
-		// "checkboxGroup",
+		getCheckboxGroupWrapper(form, {
+			name: "checkboxGroup",
+			label: "Checkbox group",
+		}),
 		getInputWrapper(form, {
 			name: "date",
 			label: "Date",

@@ -1,10 +1,16 @@
 import { expect, test } from "@playwright/test";
 import {
+	getCheckboxGroupWrapper,
 	getCheckboxInput,
+	getFieldError,
 	toggleCheckbox,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
 import { createMakeUrl } from "tests/utils/makeUrl";
-import { getSubmitButton, parseSubmitValues } from "../utils/formExample";
+import {
+	getResult,
+	getSubmitButton,
+	parseSubmitValues,
+} from "../utils/formExample";
 
 const makeUrl = createMakeUrl(
 	"react-form-schema-ui-mui-fields--checkbox-group-story",
@@ -113,4 +119,118 @@ test("change and submit correct value", async ({ page }) => {
 			checkboxGroup: ["value3"],
 		});
 	}
+});
+
+const checboxGroupOptions = {
+	label: "Checkbox group",
+	name: "checkboxGroup",
+};
+
+test.describe("validation", () => {
+	test("required", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				required: "!true",
+			}),
+		);
+
+		await getSubmitButton(page).click();
+
+		await expect(getResult(page)).not.toBeVisible();
+		await expect(
+			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+		).toHaveText("This field is required");
+
+		// set a correct value and submit agait
+		await toggleCheckbox(page, label1Options);
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				checkboxGroup: ["value1"],
+			});
+		}
+	});
+
+	test("minLenght", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				min_length: "2",
+			}),
+		);
+
+		await toggleCheckbox(page, label1Options);
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		await expect(
+			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+		).toHaveText("This field must contain at least 2 elements");
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await toggleCheckbox(page, label3Options);
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				checkboxGroup: ["value1", "value3"],
+			});
+		}
+	});
+
+	test("maxLenght", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				max_length: "1",
+			}),
+		);
+
+		await toggleCheckbox(page, label1Options);
+		await toggleCheckbox(page, label3Options);
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		await expect(
+			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+		).toHaveText("This field must contain no more than 1 elements");
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await toggleCheckbox(page, label1Options);
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				checkboxGroup: ["value3"],
+			});
+		}
+	});
 });

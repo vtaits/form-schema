@@ -6,4 +6,4 @@ COPY playwright.config.ts tsconfig.json dev.sh ./
 RUN chmod +x dev.sh
 RUN npx playwright install chromium firefox
 
-CMD npm run test
+CMD ["npm", "test"]

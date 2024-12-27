@@ -1,10 +1,16 @@
 import { expect, test } from "@playwright/test";
 import {
+	getFieldError,
 	getInput,
+	getInputWrapper,
 	setInputValue,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
 import { createMakeUrl } from "tests/utils/makeUrl";
-import { getSubmitButton, parseSubmitValues } from "../utils/formExample";
+import {
+	getResult,
+	getSubmitButton,
+	parseSubmitValues,
+} from "../utils/formExample";
 
 const makeUrl = createMakeUrl(
 	"react-form-schema-ui-mui-fields--datetime-story",
@@ -35,12 +41,13 @@ test.describe("screenshots", () => {
 });
 
 const fieldOptions = {
-	label: "Date",
+	label: "Datetime",
 };
 
 test.describe("change and submit correct value", () => {
 	const formatCases = [
-		{
+		// https://github.com/storybookjs/storybook/issues/30140
+		/* {
 			value: "2020-10-05 12:34",
 			format: undefined,
 		},
@@ -50,10 +57,15 @@ test.describe("change and submit correct value", () => {
 			format: "yyyy-MM-dd HH:mm",
 		},
 
-		/* {
+		{
 			value: "05.10.2020",
 			format: "dd.MM.yyyy",
 		}, */
+
+		{
+			value: "2020-10-05 1234",
+			format: "yyyy-MM-dd HHmm",
+		},
 	];
 
 	for (const serverCase of formatCases) {
@@ -126,4 +138,32 @@ test.describe("change and submit correct value", () => {
 			});
 		}
 	}
+});
+
+test.describe("validation", () => {
+	test("required", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				required: "!true",
+			}),
+		);
+
+		await getSubmitButton(page).click();
+
+		// default html form validation
+		await page.waitForTimeout(1000);
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await setInputValue(page, fieldOptions, "2020-10-05 12:34");
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getInputWrapper(page, fieldOptions)),
+		).not.toBeVisible();
+
+		await expect(getResult(page)).toBeVisible();
+	});
 });

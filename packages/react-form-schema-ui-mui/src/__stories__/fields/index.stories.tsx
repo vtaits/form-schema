@@ -59,6 +59,8 @@ export const CheckboxGroupStory: StoryObj<
 		options: unknown;
 		disabled: boolean;
 		required: boolean;
+		min_length?: number;
+		max_length?: number;
 		form_value?: unknown;
 	}
 > = {
@@ -79,15 +81,27 @@ export const CheckboxGroupStory: StoryObj<
 				label: "Label 3",
 			},
 		],
+		min_length: undefined,
+		max_length: undefined,
 		disabled: false,
 		required: false,
 		form_value: undefined,
 	},
-	render: ({ label, options, disabled, required, form_value: formValue }) => (
+	render: ({
+		label,
+		options,
+		disabled,
+		min_length: minLength,
+		max_length: maxLength,
+		required,
+		form_value: formValue,
+	}) => (
 		<MuiProvider>
 			<CheckboxGroupStoryComponent
 				schema={{
 					label,
+					minLength,
+					maxLength,
 					options,
 					disabled,
 					required,
@@ -199,6 +213,9 @@ export const InputStory: StoryObj<{
 	label: string;
 	disabled: boolean;
 	is_number: boolean;
+	min_length?: number;
+	max_length?: number;
+	reg_exp?: string;
 	form_value?: unknown;
 	options?: readonly string[];
 }> = {
@@ -206,8 +223,11 @@ export const InputStory: StoryObj<{
 	args: {
 		required: false,
 		label: "Input",
+		reg_exp: "",
 		disabled: false,
 		is_number: false,
+		min_length: undefined,
+		max_length: undefined,
 		form_value: undefined,
 		options: undefined,
 	},
@@ -216,7 +236,10 @@ export const InputStory: StoryObj<{
 		label,
 		is_number: isNumber,
 		disabled,
+		min_length: minLength,
+		max_length: maxLength,
 		form_value: formValue,
+		reg_exp: regExp,
 		options,
 	}) => (
 		<MuiProvider>
@@ -224,9 +247,12 @@ export const InputStory: StoryObj<{
 				schema={{
 					required,
 					isNumber,
+					minLength,
+					maxLength,
+					regExp,
 					label,
 					disabled,
-					options,
+					options: options ? Object.values(options) : undefined,
 				}}
 				formValue={formValue}
 			/>

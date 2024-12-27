@@ -1,10 +1,16 @@
 import { expect, test } from "@playwright/test";
 import {
+	getFieldError,
 	getInput,
+	getInputWrapper,
 	selectInputSuggestion,
 	setInputValue,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
-import { getSubmitButton, parseSubmitValues } from "tests/utils/formExample";
+import {
+	getResult,
+	getSubmitButton,
+	parseSubmitValues,
+} from "tests/utils/formExample";
 import { createMakeUrl } from "tests/utils/makeUrl";
 
 const makeUrl = createMakeUrl("react-form-schema-ui-mui-fields--input-story");
@@ -35,14 +41,12 @@ test.describe("screenshots", () => {
 
 const inputOptions = {
 	label: "Input",
-	exact: true,
+	name: "input",
 };
 
 test.describe("change and submit correct value", () => {
 	test("default input", async ({ page }) => {
 		await page.goto(makeUrl({}));
-
-		await expect(page.locator(".sb-loader").nth(0)).not.toBeVisible();
 
 		await expect(getInput(page, inputOptions)).toHaveValue("");
 
@@ -108,8 +112,6 @@ test.describe("change and submit correct value", () => {
 			}),
 		);
 
-		await expect(page.locator(".sb-loader").nth(0)).not.toBeVisible();
-
 		await expect(getInput(page, inputOptions)).toHaveValue("");
 
 		// submit initially empty
@@ -170,12 +172,10 @@ test.describe("change and submit correct value", () => {
 	test("default with options", async ({ page }) => {
 		await page.goto(
 			makeUrl({
-				"options.0": "test1",
-				"options.1": "test2",
+				"options[0]": "test1",
+				"options[1]": "test2",
 			}),
 		);
-
-		await expect(page.locator(".sb-loader").nth(0)).not.toBeVisible();
 
 		await expect(getInput(page, inputOptions)).toHaveValue("");
 
@@ -238,12 +238,10 @@ test.describe("change and submit correct value", () => {
 		await page.goto(
 			makeUrl({
 				is_number: "!true",
-				"options.0": "123",
-				"options.1": "456",
+				"options[0]": "123",
+				"options[1]": "456",
 			}),
 		);
-
-		await expect(page.locator(".sb-loader").nth(0)).not.toBeVisible();
 
 		await expect(getInput(page, inputOptions)).toHaveValue("");
 
@@ -298,6 +296,189 @@ test.describe("change and submit correct value", () => {
 
 			expect(res).toEqual({
 				input: null,
+			});
+		}
+	});
+});
+
+test.describe("validation", () => {
+	test("required", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				required: "!true",
+			}),
+		);
+
+		await getSubmitButton(page).click();
+
+		// default html form validation
+		await page.waitForTimeout(1000);
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await setInputValue(page, inputOptions, "abc");
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getInputWrapper(page, inputOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				input: "abc",
+			});
+		}
+	});
+
+	test("minLenght", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				min_length: "5",
+			}),
+		);
+
+		await setInputValue(page, inputOptions, "1234");
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+			"This field must contain at least 5 letters",
+		);
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await setInputValue(page, inputOptions, "abcdef");
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getInputWrapper(page, inputOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				input: "abcdef",
+			});
+		}
+	});
+
+	test("maxLenght", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				max_length: "5",
+			}),
+		);
+
+		await setInputValue(page, inputOptions, "123456");
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+			"This field must contain no more than 5 letters",
+		);
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await setInputValue(page, inputOptions, "abc");
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getInputWrapper(page, inputOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				input: "abc",
+			});
+		}
+	});
+
+	test("number", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				is_number: "!true",
+			}),
+		);
+
+		await setInputValue(page, inputOptions, "abc");
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+			"The value should be a valid number",
+		);
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await setInputValue(page, inputOptions, "123");
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getInputWrapper(page, inputOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				input: 123,
+			});
+		}
+	});
+
+	test("regExp", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				// TO DO: more complex regexp after fix https://github.com/storybookjs/storybook/issues/30140
+				reg_exp: "test",
+			}),
+		);
+
+		await setInputValue(page, inputOptions, "abc");
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+			"The value should satisfy the regular expression /test/",
+		);
+
+		await expect(getResult(page)).not.toBeVisible();
+
+		// set a correct value and submit agait
+		await setInputValue(page, inputOptions, "test123");
+
+		await getSubmitButton(page).click();
+
+		await expect(
+			getFieldError(getInputWrapper(page, inputOptions)),
+		).not.toBeVisible();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				input: "test123",
 			});
 		}
 	});
