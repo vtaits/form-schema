@@ -6,7 +6,7 @@
   "scripts": {
     "start": "storybook dev -p 6006",
     "build:storybook": "storybook build",
-    "preview:storybook": "http-server -o storybook-static -p 6006",
+    "preview:storybook": "http-server storybook-static -p 6006",
     "postinstall": "yarn build",
     "clean": "yarn workspaces foreach --all -pt run clean",
     "build": "yarn workspaces foreach --all -pt run build",
