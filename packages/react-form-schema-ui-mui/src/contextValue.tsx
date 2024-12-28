@@ -495,7 +495,7 @@ export function getContextValue(
 			const selectedValue = value ? getOptionValue(value) : null;
 
 			return (
-				<FormControl>
+				<FormControl data-testid={`@@radioGroup/${name}`}>
 					{label && <FormLabel required={required}>{label}</FormLabel>}
 
 					<RadioGroup value={selectedValue}>

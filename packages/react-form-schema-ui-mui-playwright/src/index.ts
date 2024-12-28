@@ -6,6 +6,7 @@ export * from "./fields/file";
 export * from "./fields/list";
 export * from "./fields/input";
 export * from "./fields/radio";
+export * from "./fields/radioGroup";
 export * from "./fields/select";
 export * from "./fields/tags";
 export * from "./fields/textarea";

@@ -68,7 +68,7 @@ test.describe("change and submit correct value", () => {
 				await page.goto(
 					makeUrl({
 						server_date_format: serverCase.format,
-						client_date_format: clientCase.format,
+						display_date_format: clientCase.format,
 					}),
 				);
 

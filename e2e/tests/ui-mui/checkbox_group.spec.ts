@@ -121,7 +121,7 @@ test("change and submit correct value", async ({ page }) => {
 	}
 });
 
-const checboxGroupOptions = {
+const checkboxGroupOptions = {
 	label: "Checkbox group",
 	name: "checkboxGroup",
 };
@@ -138,7 +138,7 @@ test.describe("validation", () => {
 
 		await expect(getResult(page)).not.toBeVisible();
 		await expect(
-			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+			getFieldError(getCheckboxGroupWrapper(page, checkboxGroupOptions)),
 		).toHaveText("This field is required");
 
 		// set a correct value and submit agait
@@ -147,7 +147,7 @@ test.describe("validation", () => {
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+			getFieldError(getCheckboxGroupWrapper(page, checkboxGroupOptions)),
 		).not.toBeVisible();
 
 		{
@@ -173,7 +173,7 @@ test.describe("validation", () => {
 		await expect(getSubmitButton(page)).toBeEnabled();
 
 		await expect(
-			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+			getFieldError(getCheckboxGroupWrapper(page, checkboxGroupOptions)),
 		).toHaveText("This field must contain at least 2 elements");
 
 		await expect(getResult(page)).not.toBeVisible();
@@ -184,7 +184,7 @@ test.describe("validation", () => {
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+			getFieldError(getCheckboxGroupWrapper(page, checkboxGroupOptions)),
 		).not.toBeVisible();
 
 		{
@@ -211,7 +211,7 @@ test.describe("validation", () => {
 		await expect(getSubmitButton(page)).toBeEnabled();
 
 		await expect(
-			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+			getFieldError(getCheckboxGroupWrapper(page, checkboxGroupOptions)),
 		).toHaveText("This field must contain no more than 1 elements");
 
 		await expect(getResult(page)).not.toBeVisible();
@@ -222,7 +222,7 @@ test.describe("validation", () => {
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getCheckboxGroupWrapper(page, checboxGroupOptions)),
+			getFieldError(getCheckboxGroupWrapper(page, checkboxGroupOptions)),
 		).not.toBeVisible();
 
 		{

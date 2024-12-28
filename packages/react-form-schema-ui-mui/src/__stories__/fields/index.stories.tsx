@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { CheckboxSchema } from "@vtaits/react-hook-form-schema/fields/checkbox";
-import type { CheckboxGroupSchema } from "@vtaits/react-hook-form-schema/fields/checkboxGroup";
-import type { DateSchema } from "@vtaits/react-hook-form-schema/fields/date";
-import type { DateTimeSchema } from "@vtaits/react-hook-form-schema/fields/datetime";
 import { MuiProvider } from "../..";
 import { CheckboxStoryComponent } from "./Checkbox";
 import { CheckboxGroupStoryComponent } from "./CheckboxGroup";
 import { DateStoryComponent } from "./Date";
 import { DatetimeStoryComponent } from "./Datetime";
 import { InputStoryComponent } from "./Input";
+import { RadioGroupStoryComponent } from "./RadioGroup";
 
 const meta: Meta<typeof MuiProvider> = {
 	title: "react-form-schema-ui-mui/fields",
@@ -53,17 +50,15 @@ export const CheckboxStory: StoryObj<{
 	),
 };
 
-export const CheckboxGroupStory: StoryObj<
-	CheckboxGroupSchema & {
-		label: string;
-		options: unknown;
-		disabled: boolean;
-		required: boolean;
-		min_length?: number;
-		max_length?: number;
-		form_value?: unknown;
-	}
-> = {
+export const CheckboxGroupStory: StoryObj<{
+	label: string;
+	options: readonly unknown[];
+	disabled: boolean;
+	required: boolean;
+	min_length?: number;
+	max_length?: number;
+	form_value?: unknown;
+}> = {
 	name: "Checkbox group",
 	args: {
 		label: "Checkbox group",
@@ -102,6 +97,49 @@ export const CheckboxGroupStory: StoryObj<
 					label,
 					minLength,
 					maxLength,
+					options,
+					disabled,
+					required,
+				}}
+				formValue={formValue}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const RadioGroupStory: StoryObj<{
+	label: string;
+	options: readonly unknown[];
+	disabled: boolean;
+	required: boolean;
+	form_value?: unknown;
+}> = {
+	name: "Radio group",
+	args: {
+		label: "Radio group",
+		options: [
+			{
+				value: "value1",
+				label: "Label 1",
+			},
+			{
+				value: "value2",
+				label: "Label 2",
+			},
+			{
+				value: "value3",
+				label: "Label 3",
+			},
+		],
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({ label, options, disabled, required, form_value: formValue }) => (
+		<MuiProvider>
+			<RadioGroupStoryComponent
+				schema={{
+					label,
 					options,
 					disabled,
 					required,
