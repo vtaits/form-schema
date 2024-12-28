@@ -612,7 +612,11 @@ export function getContextValue(
 						label={label}
 						variant={variant}
 						{...params}
-						required={required}
+						slotProps={{
+							inputLabel: {
+								required,
+							},
+						}}
 					/>
 				)}
 			/>

@@ -5,7 +5,10 @@ import { CheckboxGroupStoryComponent } from "./CheckboxGroup";
 import { DateStoryComponent } from "./Date";
 import { DatetimeStoryComponent } from "./Datetime";
 import { InputStoryComponent } from "./Input";
+import { MultiSelectStoryComponent } from "./MultiSelect";
 import { RadioGroupStoryComponent } from "./RadioGroup";
+import { SelectStoryComponent } from "./Select";
+import { TagsStoryComponent } from "./Tags";
 
 const meta: Meta<typeof MuiProvider> = {
 	title: "react-form-schema-ui-mui/fields",
@@ -293,6 +296,146 @@ export const InputStory: StoryObj<{
 					options: options ? Object.values(options) : undefined,
 				}}
 				formValue={formValue}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const SelectStory: StoryObj<{
+	label: string;
+	options: readonly unknown[];
+	placeholder?: string;
+	disabled: boolean;
+	required: boolean;
+	form_value?: unknown;
+}> = {
+	name: "Select",
+	args: {
+		label: "Select",
+		placeholder: "Select",
+		options: [
+			{
+				value: "value1",
+				label: "Label 1",
+			},
+			{
+				value: "value2",
+				label: "Label 2",
+			},
+			{
+				value: "value3",
+				label: "Label 3",
+			},
+		],
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({
+		label,
+		options,
+		disabled,
+		placeholder,
+		required,
+		form_value: formValue,
+	}) => (
+		<MuiProvider>
+			<SelectStoryComponent
+				schema={{
+					label,
+					options,
+					placeholder,
+					disabled,
+					required,
+				}}
+				formValue={formValue}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const MultiSelectStory: StoryObj<{
+	label: string;
+	options: readonly unknown[];
+	disabled: boolean;
+	required: boolean;
+	min_length?: number;
+	max_length?: number;
+	form_value?: unknown;
+}> = {
+	name: "Multi select",
+	args: {
+		label: "Multi select",
+		options: [
+			{
+				value: "value1",
+				label: "Label 1",
+			},
+			{
+				value: "value2",
+				label: "Label 2",
+			},
+			{
+				value: "value3",
+				label: "Label 3",
+			},
+		],
+		min_length: undefined,
+		max_length: undefined,
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({
+		label,
+		options,
+		disabled,
+		min_length: minLength,
+		max_length: maxLength,
+		required,
+		form_value: formValue,
+	}) => (
+		<MuiProvider>
+			<MultiSelectStoryComponent
+				schema={{
+					label,
+					minLength,
+					maxLength,
+					options,
+					disabled,
+					required,
+				}}
+				formValue={formValue}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const TagsStory: StoryObj<{
+	label: string;
+	options: readonly string[];
+	disabled: boolean;
+	required: boolean;
+	form_value?: unknown;
+}> = {
+	name: "Tags",
+	args: {
+		label: "Tags",
+		options: ["foo", "bar", "baz"],
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({ label, options, disabled, required, form_value: formValue }) => (
+		<MuiProvider>
+			<TagsStoryComponent
+				schema={{
+					label,
+					options: options ? Object.values(options) : undefined,
+					disabled,
+					required,
+				}}
+				formValue={formValue ? Object.values(formValue) : undefined}
 			/>
 		</MuiProvider>
 	),

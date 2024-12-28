@@ -13,6 +13,7 @@ import {
 	getInputWithSuggestionsWrapper,
 	getInputWrapper,
 	getListRoot,
+	getRadioGroupWrapper,
 	getRadioInput,
 	getSelect,
 	getSelectText,
@@ -496,7 +497,10 @@ test("show form errors", async ({ page }) => {
 			name: "multiSelect",
 			label: "Multi select",
 		}),
-		// "radioGroup",
+		getRadioGroupWrapper(form, {
+			name: "radioGroup",
+			label: "Radio group",
+		}),
 		getSelectWrapper(form, {
 			name: "select",
 			label: "Select",
