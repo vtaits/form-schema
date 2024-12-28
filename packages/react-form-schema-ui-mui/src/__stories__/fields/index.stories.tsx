@@ -4,11 +4,13 @@ import { CheckboxStoryComponent } from "./Checkbox";
 import { CheckboxGroupStoryComponent } from "./CheckboxGroup";
 import { DateStoryComponent } from "./Date";
 import { DatetimeStoryComponent } from "./Datetime";
+import { FileStoryComponent } from "./File";
 import { InputStoryComponent } from "./Input";
 import { MultiSelectStoryComponent } from "./MultiSelect";
 import { RadioGroupStoryComponent } from "./RadioGroup";
 import { SelectStoryComponent } from "./Select";
 import { TagsStoryComponent } from "./Tags";
+import { TextareaStoryComponent } from "./Textarea";
 
 const meta: Meta<typeof MuiProvider> = {
 	title: "react-form-schema-ui-mui/fields",
@@ -301,6 +303,51 @@ export const InputStory: StoryObj<{
 	),
 };
 
+export const TextareaStory: StoryObj<{
+	required: boolean;
+	label: string;
+	disabled: boolean;
+	is_number: boolean;
+	min_length?: number;
+	max_length?: number;
+	reg_exp?: string;
+	form_value?: unknown;
+}> = {
+	name: "Textarea",
+	args: {
+		required: false,
+		label: "Textarea",
+		reg_exp: "",
+		disabled: false,
+		min_length: undefined,
+		max_length: undefined,
+		form_value: undefined,
+	},
+	render: ({
+		required,
+		label,
+		disabled,
+		min_length: minLength,
+		max_length: maxLength,
+		form_value: formValue,
+		reg_exp: regExp,
+	}) => (
+		<MuiProvider>
+			<TextareaStoryComponent
+				schema={{
+					required,
+					minLength,
+					maxLength,
+					regExp,
+					label,
+					disabled,
+				}}
+				formValue={formValue}
+			/>
+		</MuiProvider>
+	),
+};
+
 export const SelectStory: StoryObj<{
 	label: string;
 	options: readonly unknown[];
@@ -432,6 +479,50 @@ export const TagsStory: StoryObj<{
 				schema={{
 					label,
 					options: options ? Object.values(options) : undefined,
+					disabled,
+					required,
+				}}
+				formValue={formValue ? Object.values(formValue) : undefined}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const FileStory: StoryObj<{
+	label: string;
+	disabled: boolean;
+	required: boolean;
+	accept?: string;
+	min_size?: number;
+	max_size?: number;
+	form_value?: unknown;
+}> = {
+	name: "File",
+	args: {
+		label: "File",
+		accept: "",
+		min_size: undefined,
+		max_size: undefined,
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({
+		label,
+		accept,
+		min_size: minSize,
+		max_size: maxSize,
+		disabled,
+		required,
+		form_value: formValue,
+	}) => (
+		<MuiProvider>
+			<FileStoryComponent
+				schema={{
+					label,
+					accept,
+					minSize,
+					maxSize,
 					disabled,
 					required,
 				}}

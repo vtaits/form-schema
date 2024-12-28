@@ -88,7 +88,7 @@ export const file: FieldType<FileSchema<unknown>> = {
 				setCurrentError(errorMessages.minLengthFile(minSize));
 			}
 
-			if (maxSize && maxSize > fileValue.size) {
+			if (maxSize && fileValue.size > maxSize) {
 				setCurrentError(errorMessages.maxLengthFile(maxSize));
 			}
 		}

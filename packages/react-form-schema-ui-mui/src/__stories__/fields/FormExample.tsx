@@ -31,7 +31,17 @@ export function FormExample({
 
 	const onSubmit = async (values: Record<string, any>) => {
 		await delay(400);
-		setSubmittedValues(values);
+		setSubmittedValues(
+			Object.fromEntries(
+				Object.entries(values).map(([key, value]) => {
+					if (value instanceof File) {
+						return [key, value.name];
+					}
+
+					return [key, value];
+				}),
+			),
+		);
 		return null;
 	};
 

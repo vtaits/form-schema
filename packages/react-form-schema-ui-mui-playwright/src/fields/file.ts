@@ -26,7 +26,7 @@ export function getFileInputWrapper(
 ) {
 	const input = getFileInput(container, options);
 
-	const fieldWrapper = input.locator("..");
+	const fieldWrapper = input.locator("..").locator("..");
 
 	return fieldWrapper;
 }

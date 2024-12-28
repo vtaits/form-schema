@@ -39,7 +39,7 @@ test.describe("screenshots", () => {
 	}
 });
 
-const inputOptions = {
+const fieldOptions = {
 	label: "Input",
 	name: "input",
 };
@@ -48,7 +48,7 @@ test.describe("change and submit correct value", () => {
 	test("default input", async ({ page }) => {
 		await page.goto(makeUrl({}));
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit initially empty
 
@@ -66,9 +66,9 @@ test.describe("change and submit correct value", () => {
 
 		// change
 
-		await setInputValue(page, inputOptions, "Test");
+		await setInputValue(page, fieldOptions, "Test");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("Test");
+		await expect(getInput(page, fieldOptions)).toHaveValue("Test");
 
 		// submit changed
 
@@ -86,9 +86,9 @@ test.describe("change and submit correct value", () => {
 
 		// clear
 
-		await setInputValue(page, inputOptions, "");
+		await setInputValue(page, fieldOptions, "");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit empty
 
@@ -112,7 +112,7 @@ test.describe("change and submit correct value", () => {
 			}),
 		);
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit initially empty
 
@@ -130,9 +130,9 @@ test.describe("change and submit correct value", () => {
 
 		// change
 
-		await setInputValue(page, inputOptions, "1234");
+		await setInputValue(page, fieldOptions, "1234");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("1234");
+		await expect(getInput(page, fieldOptions)).toHaveValue("1234");
 
 		// submit changed
 
@@ -150,9 +150,9 @@ test.describe("change and submit correct value", () => {
 
 		// clear
 
-		await setInputValue(page, inputOptions, "");
+		await setInputValue(page, fieldOptions, "");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit empty
 
@@ -177,7 +177,7 @@ test.describe("change and submit correct value", () => {
 			}),
 		);
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit initially empty
 
@@ -195,9 +195,9 @@ test.describe("change and submit correct value", () => {
 
 		// change
 
-		await selectInputSuggestion(page, inputOptions, "test1");
+		await selectInputSuggestion(page, fieldOptions, "test1");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("test1");
+		await expect(getInput(page, fieldOptions)).toHaveValue("test1");
 
 		// submit changed
 
@@ -215,9 +215,9 @@ test.describe("change and submit correct value", () => {
 
 		// clear
 
-		await setInputValue(page, inputOptions, "");
+		await setInputValue(page, fieldOptions, "");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit empty
 
@@ -243,7 +243,7 @@ test.describe("change and submit correct value", () => {
 			}),
 		);
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit initially empty
 
@@ -261,9 +261,9 @@ test.describe("change and submit correct value", () => {
 
 		// change
 
-		await selectInputSuggestion(page, inputOptions, "456");
+		await selectInputSuggestion(page, fieldOptions, "456");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("456");
+		await expect(getInput(page, fieldOptions)).toHaveValue("456");
 
 		// submit changed
 
@@ -281,9 +281,9 @@ test.describe("change and submit correct value", () => {
 
 		// clear
 
-		await setInputValue(page, inputOptions, "");
+		await setInputValue(page, fieldOptions, "");
 
-		await expect(getInput(page, inputOptions)).toHaveValue("");
+		await expect(getInput(page, fieldOptions)).toHaveValue("");
 
 		// submit empty
 
@@ -317,12 +317,12 @@ test.describe("validation", () => {
 		await expect(getResult(page)).not.toBeVisible();
 
 		// set a correct value and submit agait
-		await setInputValue(page, inputOptions, "abc");
+		await setInputValue(page, fieldOptions, "abc");
 
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getInputWrapper(page, inputOptions)),
+			getFieldError(getInputWrapper(page, fieldOptions)),
 		).not.toBeVisible();
 
 		{
@@ -341,25 +341,25 @@ test.describe("validation", () => {
 			}),
 		);
 
-		await setInputValue(page, inputOptions, "1234");
+		await setInputValue(page, fieldOptions, "1234");
 
 		await getSubmitButton(page).click();
 
 		await expect(getSubmitButton(page)).toBeEnabled();
 
-		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+		await expect(getFieldError(getInputWrapper(page, fieldOptions))).toHaveText(
 			"This field must contain at least 5 letters",
 		);
 
 		await expect(getResult(page)).not.toBeVisible();
 
 		// set a correct value and submit agait
-		await setInputValue(page, inputOptions, "abcdef");
+		await setInputValue(page, fieldOptions, "abcdef");
 
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getInputWrapper(page, inputOptions)),
+			getFieldError(getInputWrapper(page, fieldOptions)),
 		).not.toBeVisible();
 
 		{
@@ -378,25 +378,25 @@ test.describe("validation", () => {
 			}),
 		);
 
-		await setInputValue(page, inputOptions, "123456");
+		await setInputValue(page, fieldOptions, "123456");
 
 		await getSubmitButton(page).click();
 
 		await expect(getSubmitButton(page)).toBeEnabled();
 
-		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+		await expect(getFieldError(getInputWrapper(page, fieldOptions))).toHaveText(
 			"This field must contain no more than 5 letters",
 		);
 
 		await expect(getResult(page)).not.toBeVisible();
 
 		// set a correct value and submit agait
-		await setInputValue(page, inputOptions, "abc");
+		await setInputValue(page, fieldOptions, "abc");
 
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getInputWrapper(page, inputOptions)),
+			getFieldError(getInputWrapper(page, fieldOptions)),
 		).not.toBeVisible();
 
 		{
@@ -415,25 +415,25 @@ test.describe("validation", () => {
 			}),
 		);
 
-		await setInputValue(page, inputOptions, "abc");
+		await setInputValue(page, fieldOptions, "abc");
 
 		await getSubmitButton(page).click();
 
 		await expect(getSubmitButton(page)).toBeEnabled();
 
-		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+		await expect(getFieldError(getInputWrapper(page, fieldOptions))).toHaveText(
 			"The value should be a valid number",
 		);
 
 		await expect(getResult(page)).not.toBeVisible();
 
 		// set a correct value and submit agait
-		await setInputValue(page, inputOptions, "123");
+		await setInputValue(page, fieldOptions, "123");
 
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getInputWrapper(page, inputOptions)),
+			getFieldError(getInputWrapper(page, fieldOptions)),
 		).not.toBeVisible();
 
 		{
@@ -453,25 +453,25 @@ test.describe("validation", () => {
 			}),
 		);
 
-		await setInputValue(page, inputOptions, "abc");
+		await setInputValue(page, fieldOptions, "abc");
 
 		await getSubmitButton(page).click();
 
 		await expect(getSubmitButton(page)).toBeEnabled();
 
-		await expect(getFieldError(getInputWrapper(page, inputOptions))).toHaveText(
+		await expect(getFieldError(getInputWrapper(page, fieldOptions))).toHaveText(
 			"The value should satisfy the regular expression /test/",
 		);
 
 		await expect(getResult(page)).not.toBeVisible();
 
 		// set a correct value and submit agait
-		await setInputValue(page, inputOptions, "test123");
+		await setInputValue(page, fieldOptions, "test123");
 
 		await getSubmitButton(page).click();
 
 		await expect(
-			getFieldError(getInputWrapper(page, inputOptions)),
+			getFieldError(getInputWrapper(page, fieldOptions)),
 		).not.toBeVisible();
 
 		{
