@@ -6,9 +6,11 @@ import { DateStoryComponent } from "./Date";
 import { DatetimeStoryComponent } from "./Datetime";
 import { FileStoryComponent } from "./File";
 import { InputStoryComponent } from "./Input";
+import { ListOfSetsStoryComponent } from "./ListOfSets";
 import { MultiSelectStoryComponent } from "./MultiSelect";
 import { RadioGroupStoryComponent } from "./RadioGroup";
 import { SelectStoryComponent } from "./Select";
+import { SimpleListStoryComponent } from "./SimpleList";
 import { TagsStoryComponent } from "./Tags";
 import { TextareaStoryComponent } from "./Textarea";
 
@@ -523,6 +525,94 @@ export const FileStory: StoryObj<{
 					accept,
 					minSize,
 					maxSize,
+					disabled,
+					required,
+				}}
+				formValue={formValue ? Object.values(formValue) : undefined}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const SimpleListStory: StoryObj<{
+	label: string;
+	disabled: boolean;
+	required: boolean;
+	initial_item?: string;
+	min_length?: number;
+	max_length?: number;
+	form_value?: unknown;
+}> = {
+	name: "Simple list",
+	args: {
+		label: "List",
+		min_length: undefined,
+		max_length: undefined,
+		initial_item: undefined,
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({
+		label,
+		initial_item: initialItem,
+		min_length: minLength,
+		max_length: maxLength,
+		disabled,
+		required,
+		form_value: formValue,
+	}) => (
+		<MuiProvider>
+			<SimpleListStoryComponent
+				schema={{
+					label,
+					initialItem,
+					minLength,
+					maxLength,
+					disabled,
+					required,
+				}}
+				formValue={formValue ? Object.values(formValue) : undefined}
+			/>
+		</MuiProvider>
+	),
+};
+
+export const ListOfSetsStory: StoryObj<{
+	label: string;
+	disabled: boolean;
+	required: boolean;
+	initial_item?: string;
+	min_length?: number;
+	max_length?: number;
+	form_value?: unknown;
+}> = {
+	name: "List of sets",
+	args: {
+		label: "List",
+		min_length: undefined,
+		max_length: undefined,
+		initial_item: undefined,
+		disabled: false,
+		required: false,
+		form_value: undefined,
+	},
+	render: ({
+		label,
+		initial_item: initialItem,
+		min_length: minLength,
+		max_length: maxLength,
+		disabled,
+		required,
+		form_value: formValue,
+	}) => (
+		<MuiProvider>
+			<ListOfSetsStoryComponent
+				schema={{
+					label,
+					initialItem,
+					minLength,
+					maxLength,
 					disabled,
 					required,
 				}}

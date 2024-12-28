@@ -102,6 +102,8 @@ test("change and submit correct value", async ({ page }) => {
 	}
 });
 
+test.fixme("accept", () => {});
+
 test.describe("validation", () => {
 	test("required", async ({ page }) => {
 		await page.goto(
