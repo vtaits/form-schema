@@ -39,7 +39,7 @@ export function ListOfSetsStoryComponent({
 
 	const defaultValues = useMemo(
 		() => ({
-			input: formValue,
+			list: formValue,
 		}),
 		[formValue],
 	);
