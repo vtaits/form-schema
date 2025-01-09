@@ -30,6 +30,10 @@ export function getListBlock(
 	return listRoot.locator(`> [role="list"] > div`).nth(index);
 }
 
+export function getListBlockTitle(listBlock: Locator) {
+	return listBlock.locator("> .MuiCardHeader-root .MuiTypography-root");
+}
+
 export function getListAddButton(
 	container: Page | Locator,
 	options: IFieldOptions,

@@ -6,9 +6,11 @@ import { FormExample } from "./FormExample";
 
 export function SimpleListStoryComponent({
 	schema,
+	nestedFieldRequired,
 	formValue,
 }: {
 	schema: Omit<ListSchema<unknown>, "itemSchema">;
+	nestedFieldRequired: boolean;
 	formValue?: unknown;
 }): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
@@ -19,11 +21,12 @@ export function SimpleListStoryComponent({
 				itemSchema: {
 					label: "Input",
 					type: "input",
+					required: nestedFieldRequired,
 				},
 				...schema,
 			},
 		}),
-		[schema],
+		[nestedFieldRequired, schema],
 	);
 
 	const defaultValues = useMemo(
@@ -37,7 +40,7 @@ export function SimpleListStoryComponent({
 		<FormExample
 			defaultValues={defaultValues}
 			schemas={schemas}
-			title="List of sets field"
+			title="Simple list field"
 		/>
 	);
 }

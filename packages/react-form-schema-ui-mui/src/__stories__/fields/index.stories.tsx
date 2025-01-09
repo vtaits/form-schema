@@ -538,6 +538,7 @@ export const SimpleListStory: StoryObj<{
 	label: string;
 	disabled: boolean;
 	required: boolean;
+	nested_field_required: boolean;
 	initial_item?: string;
 	min_length?: number;
 	max_length?: number;
@@ -551,6 +552,7 @@ export const SimpleListStory: StoryObj<{
 		initial_item: undefined,
 		disabled: false,
 		required: false,
+		nested_field_required: false,
 		form_value: undefined,
 	},
 	render: ({
@@ -558,6 +560,7 @@ export const SimpleListStory: StoryObj<{
 		initial_item: initialItem,
 		min_length: minLength,
 		max_length: maxLength,
+		nested_field_required: nestedFieldRequired,
 		disabled,
 		required,
 		form_value: formValue,
@@ -572,6 +575,7 @@ export const SimpleListStory: StoryObj<{
 					disabled,
 					required,
 				}}
+				nestedFieldRequired={nestedFieldRequired}
 				formValue={formValue ? Object.values(formValue) : undefined}
 			/>
 		</MuiProvider>

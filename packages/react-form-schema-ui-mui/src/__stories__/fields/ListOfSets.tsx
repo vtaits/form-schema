@@ -48,7 +48,7 @@ export function ListOfSetsStoryComponent({
 		<FormExample
 			defaultValues={defaultValues}
 			schemas={schemas}
-			title="Simple list field"
+			title="List of sets field"
 		/>
 	);
 }
