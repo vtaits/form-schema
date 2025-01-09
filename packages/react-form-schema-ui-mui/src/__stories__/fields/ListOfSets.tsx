@@ -6,9 +6,11 @@ import { FormExample } from "./FormExample";
 
 export function ListOfSetsStoryComponent({
 	schema,
+	nestedFieldRequired,
 	formValue,
 }: {
 	schema: Omit<ListSchema<unknown>, "itemSchema">;
+	nestedFieldRequired: boolean;
 	formValue?: unknown;
 }): ReactElement {
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
@@ -28,13 +30,15 @@ export function ListOfSetsStoryComponent({
 						date: {
 							label: "Date",
 							type: "date",
+							required: nestedFieldRequired,
+							clientDateFormat: "yyyy-MM-dd",
 						},
 					},
 				},
 				...schema,
 			},
 		}),
-		[schema],
+		[nestedFieldRequired, schema],
 	);
 
 	const defaultValues = useMemo(

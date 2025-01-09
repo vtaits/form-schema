@@ -589,6 +589,7 @@ export const ListOfSetsStory: StoryObj<{
 	initial_item?: string;
 	min_length?: number;
 	max_length?: number;
+	nested_field_required: boolean;
 	form_value?: unknown;
 }> = {
 	name: "List of sets",
@@ -596,6 +597,7 @@ export const ListOfSetsStory: StoryObj<{
 		label: "List",
 		min_length: undefined,
 		max_length: undefined,
+		nested_field_required: false,
 		initial_item: undefined,
 		disabled: false,
 		required: false,
@@ -606,6 +608,7 @@ export const ListOfSetsStory: StoryObj<{
 		initial_item: initialItem,
 		min_length: minLength,
 		max_length: maxLength,
+		nested_field_required: nestedFieldRequired,
 		disabled,
 		required,
 		form_value: formValue,
@@ -620,6 +623,7 @@ export const ListOfSetsStory: StoryObj<{
 					disabled,
 					required,
 				}}
+				nestedFieldRequired={nestedFieldRequired}
 				formValue={formValue ? Object.values(formValue) : undefined}
 			/>
 		</MuiProvider>
