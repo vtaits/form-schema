@@ -8,7 +8,7 @@
     "start:storybook:e2e": "yarn build && yarn build:storybook && yarn preview:storybook",
     "build:storybook": "storybook build",
     "preview:storybook": "http-server storybook-static -p 6006",
-    "postinstall": "yarn build",
+    "postinstall": "yarn build && make build_e2e",
     "clean": "yarn workspaces foreach --all -pt run clean",
     "build": "yarn workspaces foreach --all -pt run build",
     "lint:e2e": "biome check e2e/tests",
