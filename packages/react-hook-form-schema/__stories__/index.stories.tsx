@@ -25,10 +25,16 @@ export const BaseFormStory: Story = {
   render: (props) => <BaseForm {...props} />,
 };
 
-export const DynamicStory: Story = {
+export const DynamicStory: StoryObj<{
+  default_values?: Record<string, unknown>,
+}> = {
   name: 'Dynamic fields',
-  args: {},
-  render: (props) => <Dynamic {...props} />,
+  args: {
+    default_values: undefined,
+  },
+  render: ({
+    default_values: defaultValues
+  }) => <Dynamic defaultValues={defaultValues} />,
 };
 
 export const FieldArrayStory: Story = {

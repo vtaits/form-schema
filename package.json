@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "start": "storybook dev -p 6006",
+    "start:storybook:e2e": "yarn build && yarn build:storybook && yarn preview:storybook",
     "build:storybook": "storybook build",
     "preview:storybook": "http-server storybook-static -p 6006",
     "postinstall": "yarn build",
