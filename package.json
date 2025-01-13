@@ -18,7 +18,7 @@
     "format": "yarn workspaces foreach --all run format",
     "test:unit": "yarn workspaces foreach --all run test:unit",
     "test:ts": "yarn workspaces foreach --all run test:ts",
-    "test": "yarn lint && yarn test:ts && yarn test:unit && yarn test:e2e",
+    "test": "yarn lint && yarn test:ts && yarn test:unit && make test_e2e",
     "upload:docs": "gh-pages -d docs",
     "build:docs": "typedoc ./docs-entry.ts",
     "deploy:docs": "yarn build:docs && yarn upload:docs",
