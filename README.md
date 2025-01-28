@@ -10,7 +10,7 @@ A set of utilities for easy work with form values and errors.
 
 ### Local development
 
-- `yarn build` - build add the packages
+- `yarn build` - build all the packages
 
 - `yarn lint:fix` - autofix linter errors
 
