@@ -132,7 +132,7 @@ export function BaseForm({
 
 			multiSelect: {
 				type: "multiSelect",
-				label: "Mulit select",
+				label: "Multi select",
 				placeholder: "Multi select",
 				options: [
 					{
