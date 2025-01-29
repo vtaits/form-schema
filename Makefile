@@ -9,7 +9,6 @@ test_e2e:
 	-v ./e2e/tests:/app/tests \
 	-v ./e2e/results:/app/results \
 	-v ./packages/react-form-schema-ui-mui-playwright/dist:/app/@vtaits/react-form-schema-ui-mui-playwright \
-	-u $(shell id -u):$(shell id -g) \
 	--network="host" \
 	form-schema-e2e
 
@@ -20,7 +19,6 @@ dev_e2e:
 	-v ./e2e/tests:/app/tests \
 	-v ./e2e/results:/app/results \
 	-v ./packages/react-form-schema-ui-mui-playwright/dist:/app/@vtaits/react-form-schema-ui-mui-playwright \
-	-u $(shell id -u):$(shell id -g) \
 	--network="host" \
 	-p 5900:5900 \
 	--entrypoint ./dev.sh \
