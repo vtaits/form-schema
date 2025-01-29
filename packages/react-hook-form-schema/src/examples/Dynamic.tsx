@@ -133,7 +133,11 @@ const delay = (ms: number): Promise<void> =>
 		}, ms);
 	});
 
-export function Dynamic(): ReactElement {
+export function Dynamic({
+	defaultValues,
+}: {
+	defaultValues?: Record<string, unknown>;
+}): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any
@@ -156,6 +160,7 @@ export function Dynamic(): ReactElement {
 		handleSubmit,
 		renderField,
 	} = useFormSchema({
+		defaultValues,
 		getFieldSchema,
 		getFieldType,
 		names,

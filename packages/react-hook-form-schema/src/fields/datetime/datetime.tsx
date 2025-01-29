@@ -30,9 +30,9 @@ export function DateTimeComponent({
 	renderParams: {
 		fieldPath,
 		fieldSchema: {
-			clientDateFormat = DEFAULT_CLIENT_DATE_FORMAT,
+			clientDateFormat: clientDateFormatParam,
 			disabled,
-			displayDateFormat = DEFAULT_DISPLAY_DATE_FORMAT,
+			displayDateFormat: displayDateFormatParam,
 			autoFocus,
 			label,
 			hint,
@@ -58,6 +58,10 @@ export function DateTimeComponent({
 		name: fieldPath,
 		required,
 	};
+
+	const clientDateFormat = clientDateFormatParam || DEFAULT_CLIENT_DATE_FORMAT;
+	const displayDateFormat =
+		displayDateFormatParam || DEFAULT_DISPLAY_DATE_FORMAT;
 
 	return renderWrapper({
 		...wrapperParams,

@@ -31,6 +31,16 @@
       "import": "./dist/esm/fields_checkboxGroup.js",
       "require": "./dist/fields_checkboxGroup.js"
     },
+    "./fields/date": {
+      "types": "./dist/fields_date.d.ts",
+      "import": "./dist/esm/fields_date.js",
+      "require": "./dist/fields_date.js"
+    },
+    "./fields/datetime": {
+      "types": "./dist/fields_datetime.d.ts",
+      "import": "./dist/esm/fields_datetime.js",
+      "require": "./dist/fields_datetime.js"
+    },
     "./fields/dynamic": {
       "types": "./dist/fields_dynamic.d.ts",
       "import": "./dist/esm/fields_dynamic.js",

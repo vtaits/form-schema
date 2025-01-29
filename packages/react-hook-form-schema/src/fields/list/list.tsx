@@ -23,11 +23,11 @@ type ListComponentProps<FieldSchema> = Readonly<{
 export function ListComponent<FieldSchema>({
 	renderParams: {
 		fieldPath,
+		fieldSchema,
 		fieldSchema: {
 			addButtonLabel = "Add",
 			disabled,
 			getBlockLabel,
-			initialItem,
 			label,
 			hint,
 			renderListItemWrapper: renderListItemWrapperParam,
@@ -83,7 +83,11 @@ export function ListComponent<FieldSchema>({
 			disabled,
 			children: addButtonLabel,
 			onClick: () => {
-				append(initialItem || {});
+				append(
+					Object.hasOwn(fieldSchema, "initialItem")
+						? fieldSchema.initialItem
+						: {},
+				);
 				clearErrors(fieldPath);
 			},
 		}),

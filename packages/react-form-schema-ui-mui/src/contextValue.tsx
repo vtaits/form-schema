@@ -93,7 +93,7 @@ export function getContextValue(
 			);
 
 			return (
-				<FormControl>
+				<FormControl data-testid={`@@checkboxGroup/${name}`}>
 					{label && <FormLabel required={required}>{label}</FormLabel>}
 
 					<div>
@@ -495,7 +495,7 @@ export function getContextValue(
 			const selectedValue = value ? getOptionValue(value) : null;
 
 			return (
-				<FormControl>
+				<FormControl data-testid={`@@radioGroup/${name}`}>
 					{label && <FormLabel required={required}>{label}</FormLabel>}
 
 					<RadioGroup value={selectedValue}>
@@ -612,7 +612,11 @@ export function getContextValue(
 						label={label}
 						variant={variant}
 						{...params}
-						required={required}
+						slotProps={{
+							inputLabel: {
+								required,
+							},
+						}}
 					/>
 				)}
 			/>

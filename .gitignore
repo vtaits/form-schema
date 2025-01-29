@@ -14,3 +14,9 @@ es
 ts
 node_modules
 *.log
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+storybook-static
