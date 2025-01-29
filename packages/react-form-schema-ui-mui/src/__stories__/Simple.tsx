@@ -60,7 +60,6 @@ export function Simple({
 			datetime: {
 				type: "datetime",
 				label: "Datetime",
-				serverDateFormat: "yyyy-MM-dd HH:mm",
 				required,
 				serverDateFormat: "yyyy-MM-dd HH:mm",
 			},

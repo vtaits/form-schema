@@ -1,13 +1,172 @@
 import { format } from "date-fns/format";
 import { isValid } from "date-fns/isValid";
 import { parse } from "date-fns/parse";
-import { createContext } from "react";
-import type { BaseUIContextValue, MultiSelectRenderProps } from "./types";
+import { type ReactNode, createContext, useCallback, useMemo } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
+import { useSelectAsyncPaginate } from "use-select-async-paginate";
+import type {
+	AsyncMultiSelectRenderProps,
+	BaseUIContextValue,
+	MultiSelectRenderProps,
+} from "./types";
 
 const DATE_FORMAT = "yyyy-MM-dd";
 const DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
+function AsyncOptions<OptionType, Additional>({
+	initialAdditional,
+	additional,
+	getOptionLabel,
+	getOptionValue,
+	loadOptions,
+	selectedValuesSet,
+	render,
+}: {
+	initialAdditional?: Additional;
+	additional?: Additional;
+	getOptionLabel: (option: OptionType) => string;
+	getOptionValue: (option: OptionType) => string;
+	loadOptions: LoadOptions<OptionType, Additional>;
+	selectedValuesSet?: Set<string>;
+	render: (children: {
+		getOptionByValue: (value: string) => OptionType | null;
+		children: ReactNode;
+	}) => ReactNode;
+}) {
+	const [currentCache, _model] = useSelectAsyncPaginate({
+		initialAdditional,
+		additional,
+		loadOptions,
+	});
+
+	const { options } = currentCache;
+
+	const getOptionByValue = useCallback(
+		(value: string) =>
+			options.find((option) => getOptionValue(option) === value) || null,
+		[getOptionValue, options],
+	);
+
+	const children = useMemo(
+		() =>
+			options.map((option) => {
+				const optionValue = getOptionValue(option);
+
+				return (
+					<option
+						selected={
+							selectedValuesSet ? selectedValuesSet.has(optionValue) : undefined
+						}
+						key={optionValue}
+						value={optionValue}
+					>
+						{getOptionLabel(option)}
+					</option>
+				);
+			}),
+		[getOptionLabel, getOptionValue, options, selectedValuesSet],
+	);
+
+	return render({
+		children,
+		getOptionByValue,
+	});
+}
+
 export const BaseUIContext = createContext<BaseUIContextValue>({
+	renderAsyncSelect: ({
+		clearable,
+		disabled,
+		autoFocus,
+		name,
+		initialAdditional,
+		additional,
+		loadOptions,
+		placeholder,
+		value,
+		onChange,
+		getOptionLabel,
+		getOptionValue,
+	}) => (
+		<AsyncOptions
+			initialAdditional={initialAdditional}
+			additional={additional}
+			getOptionLabel={getOptionLabel}
+			getOptionValue={getOptionValue}
+			loadOptions={loadOptions}
+			render={({ children, getOptionByValue }) => (
+				<select
+					disabled={disabled}
+					name={name}
+					onChange={(event) => {
+						const nextValue = event.target.value;
+
+						const selectedOption = getOptionByValue(nextValue);
+
+						onChange(selectedOption);
+					}}
+					value={value ? getOptionValue(value) : ""}
+				>
+					{clearable && <option value="">{placeholder}</option>}
+
+					{children}
+				</select>
+			)}
+		/>
+	),
+
+	renderAsyncMultiSelect: <OptionType, Additional>({
+		disabled,
+		autoFocus,
+		name,
+		initialAdditional,
+		additional,
+		loadOptions,
+		value,
+		onChange,
+		getOptionLabel,
+		getOptionValue,
+	}: AsyncMultiSelectRenderProps<OptionType, Additional>) => {
+		const selectedValuesSet = new Set(
+			value.map((option) => getOptionValue(option)),
+		);
+
+		return (
+			<AsyncOptions
+				initialAdditional={initialAdditional}
+				additional={additional}
+				getOptionLabel={getOptionLabel}
+				getOptionValue={getOptionValue}
+				loadOptions={loadOptions}
+				selectedValuesSet={selectedValuesSet}
+				render={({ children, getOptionByValue }) => (
+					<select
+						disabled={disabled}
+						multiple
+						name={name}
+						onChange={(event) => {
+							const nextValue: OptionType[] = [];
+
+							for (const option of Array.from(event.target.options)) {
+								if (option.selected) {
+									const selectedOption = getOptionByValue(option.value);
+
+									if (selectedOption) {
+										nextValue.push(selectedOption);
+									}
+								}
+							}
+
+							onChange(nextValue);
+						}}
+					>
+						{children}
+					</select>
+				)}
+			/>
+		);
+	},
+
 	renderCheckbox: ({
 		checked,
 		disabled,

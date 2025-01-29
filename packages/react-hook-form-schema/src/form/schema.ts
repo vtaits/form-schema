@@ -1,3 +1,7 @@
+import type {
+	AsyncMultiSelectSchema,
+	AsyncSelectSchema,
+} from "../fields/asyncSelect";
 import type { CheckboxSchema } from "../fields/checkbox";
 import type { CheckboxGroupSchema } from "../fields/checkboxGroup";
 import type { DateSchema } from "../fields/date";
@@ -21,6 +25,12 @@ export type DefaultFieldSchema<
 	Payload = any,
 > =
 	| FieldSchema
+	| (AsyncMultiSelectSchema & {
+			type: "asyncMultiSelect";
+	  })
+	| (AsyncSelectSchema & {
+			type: "asyncSelect";
+	  })
 	| (CheckboxSchema & {
 			type: "checkbox";
 	  })

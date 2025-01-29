@@ -25,6 +25,20 @@ import dayjs from "dayjs";
 import { FieldRow } from "./FieldRow";
 
 export const contextValue: BaseUIContextValue = {
+	renderAsyncSelect: () => (
+		<Alert
+			type="warning"
+			message="Async select is currently not supported for Antd"
+		/>
+	),
+
+	renderAsyncMultiSelect: () => (
+		<Alert
+			type="warning"
+			message="Async multi select is currently not supported for Antd"
+		/>
+	),
+
 	renderCheckbox: ({
 		checked,
 		disabled,

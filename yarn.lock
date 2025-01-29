@@ -242,7 +242,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.1, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.22.5, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.23.9, @babel/runtime@npm:^7.24.4, @babel/runtime@npm:^7.24.7, @babel/runtime@npm:^7.24.8, @babel/runtime@npm:^7.25.7, @babel/runtime@npm:^7.26.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.1, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.22.5, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.23.6, @babel/runtime@npm:^7.23.9, @babel/runtime@npm:^7.24.4, @babel/runtime@npm:^7.24.7, @babel/runtime@npm:^7.24.8, @babel/runtime@npm:^7.25.7, @babel/runtime@npm:^7.26.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
   version: 7.26.7
   resolution: "@babel/runtime@npm:7.26.7"
   dependencies:
@@ -2508,6 +2508,7 @@ __metadata:
     exports-fallback: "npm:^1.0.2"
     is-promise: "npm:^4.0.0"
     krustykrab: "npm:^1.1.0"
+    select-async-paginate-model: "npm:^1.0.0-alpha.0"
     tsup: "npm:^8.3.6"
     typescript: "npm:5.6.3"
     vitest: "npm:^3.0.4"
@@ -2580,8 +2581,10 @@ __metadata:
     react-test-engine: "npm:^1.1.3"
     react-test-engine-vitest: "npm:^1.0.3"
     react-test-renderer: "npm:^19.0.0"
+    select-async-paginate-model: "npm:^1.0.0-alpha.0"
     tsup: "npm:^8.3.6"
     typescript: "npm:5.6.3"
+    use-select-async-paginate: "npm:^1.0.0-alpha.0"
     vitest: "npm:^3.0.4"
   peerDependencies:
     react: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -4751,7 +4754,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"krustykrab@npm:^1.1.0":
+"krustykrab@npm:^1.0.0, krustykrab@npm:^1.1.0":
   version: 1.1.0
   resolution: "krustykrab@npm:1.1.0"
   checksum: 10c0/f42c7b26dcf1259b9132820698cb3caaa7f427f6e1c9691897a426c32fa6d32e8e2ae0efeafdb5a3427253b434c7e3d4032d3a6f2ee2b436e0077664891f12c8
@@ -6431,6 +6434,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"redux-thunk@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "redux-thunk@npm:2.4.2"
+  peerDependencies:
+    redux: ^4
+  checksum: 10c0/e202d6ef7dfa7df08ed24cb221aa89d6c84dbaa7d65fe90dbd8e826d0c10d801f48388f9a7598a4fd970ecbc93d335014570a61ca7bc8bf569eab5de77b31a3c
+  languageName: node
+  linkType: hard
+
+"redux@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "redux@npm:4.2.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.9.2"
+  checksum: 10c0/136d98b3d5dbed1cd6279c8c18a6a74c416db98b8a432a46836bdd668475de6279a2d4fd9d1363f63904e00f0678a8a3e7fa532c897163340baf1e71bb42c742
+  languageName: node
+  linkType: hard
+
 "regenerator-runtime@npm:^0.14.0":
   version: 0.14.1
   resolution: "regenerator-runtime@npm:0.14.1"
@@ -6708,6 +6729,17 @@ __metadata:
   version: 3.0.1
   resolution: "secure-compare@npm:3.0.1"
   checksum: 10c0/af3102f3f555d917c8ffff7a5f6f00f70195708f4faf82d48794485c9f3cb365cee0dd4da6b4e53e8964f172970bce6069b6101ba3ce8c309bff54f460d1f650
+  languageName: node
+  linkType: hard
+
+"select-async-paginate-model@npm:^1.0.0-alpha.0":
+  version: 1.0.0-alpha.0
+  resolution: "select-async-paginate-model@npm:1.0.0-alpha.0"
+  dependencies:
+    krustykrab: "npm:^1.0.0"
+    redux: "npm:^4.2.1"
+    redux-thunk: "npm:^2.4.2"
+  checksum: 10c0/5dd1931e11bcadecabc3cb9f850eb0bccce1012a4518b86eaa4c7129486b977773987c5e0ba956df0af30d4e09b739b21143e4475b444f6c5fd6945385df5c44
   languageName: node
   linkType: hard
 
@@ -7463,6 +7495,16 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/067c648814ad0c1f1e89d2d0e496254b05c4bed6a34e23045b4413824222aab08fd803c59a42852acc16830c17567d03f8c90af0a62be2f4e4b931454d079798
+  languageName: node
+  linkType: hard
+
+"use-select-async-paginate@npm:^1.0.0-alpha.0":
+  version: 1.0.0-alpha.0
+  resolution: "use-select-async-paginate@npm:1.0.0-alpha.0"
+  peerDependencies:
+    react: ^18.0.0
+    select-async-paginate-model: ^1.0.0-alpha.0
+  checksum: 10c0/1515c79429daf66e0c7939e567e7367c5570beb19f2339a968bc2ffa214d46d4417f0ad3266af2844716e600a6abd1ef21a35eec13532fc7d317ea91ee883627
   languageName: node
   linkType: hard
 

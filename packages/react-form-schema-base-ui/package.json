@@ -73,6 +73,8 @@
     "vitest": "^3.0.4"
   },
   "dependencies": {
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "select-async-paginate-model": "^1.0.0-alpha.0",
+    "use-select-async-paginate": "^1.0.0-alpha.0"
   }
 }

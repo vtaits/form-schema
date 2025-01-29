@@ -28,6 +28,18 @@ import type {
 } from "@vtaits/react-form-schema-base-ui";
 
 export const contextValue: BaseUIContextValue = {
+	renderAsyncSelect: () => (
+		<FormStatus mode="default">
+			Async select is currently not supported for VKUI
+		</FormStatus>
+	),
+
+	renderAsyncMultiSelect: () => (
+		<FormStatus mode="default">
+			Async multi select is currently not supported for VKUI
+		</FormStatus>
+	),
+
 	renderCheckbox: ({
 		checked,
 		disabled,

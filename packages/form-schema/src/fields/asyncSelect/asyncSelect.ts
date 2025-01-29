@@ -1,9 +1,9 @@
 import type { FieldType } from "../../core";
 import { type ErrorMessages, defaultErrorMessages } from "../base";
 import { DEFAULT_VALUE_KEY } from "./constants";
-import type { SelectSchema } from "./schema";
+import type { AsyncSelectSchema } from "./schema";
 
-export const select: FieldType<SelectSchema<unknown>> = {
+export const asyncSelect: FieldType<AsyncSelectSchema<unknown>> = {
 	serializerSingle: ({
 		value,
 		fieldSchema: { getOptionValue, valueKey = DEFAULT_VALUE_KEY },
@@ -19,28 +19,16 @@ export const select: FieldType<SelectSchema<unknown>> = {
 		return (value as Record<string, string>)[valueKey];
 	},
 
-	parserSingle: ({
-		value,
-		fieldSchema: { getOptionValue, options, valueKey = DEFAULT_VALUE_KEY },
-	}) => {
+	parserSingle: ({ value, fieldSchema: { loadSingleOption } }) => {
 		if (!value) {
 			return null;
 		}
 
-		return options.find((option) => {
-			if (getOptionValue) {
-				const optionValue = getOptionValue(option);
+		if (loadSingleOption) {
+			return loadSingleOption(value);
+		}
 
-				return value === optionValue || getOptionValue(value) === optionValue;
-			}
-
-			const optionValue = (option as Record<string, string>)[valueKey];
-
-			return (
-				value === optionValue ||
-				(value as Record<string, string>)[valueKey] === optionValue
-			);
-		});
+		return value;
 	},
 
 	validatorBeforeSubmit: ({ setCurrentError, value, fieldSchema }) => {

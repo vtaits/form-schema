@@ -1,3 +1,4 @@
+import { asyncMultiSelect, asyncSelect } from "../fields/asyncSelect";
 import { checkbox } from "../fields/checkbox";
 import { checkboxGroup } from "../fields/checkboxGroup";
 import { date } from "../fields/date";
@@ -13,6 +14,8 @@ import { tags } from "../fields/tags";
 import { textarea } from "../fields/textarea";
 
 export const defaultFieldTypes = {
+	asyncMultiSelect,
+	asyncSelect,
 	checkbox,
 	checkboxGroup,
 	date,

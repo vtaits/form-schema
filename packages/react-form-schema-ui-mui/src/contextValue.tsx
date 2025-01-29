@@ -51,6 +51,18 @@ export function getContextValue(
 	variant: TextFieldVariants | undefined,
 ): BaseUIContextValue {
 	return {
+		renderAsyncSelect: () => (
+			<Alert severity="warning">
+				Async select is currently not supported for MUI
+			</Alert>
+		),
+
+		renderAsyncMultiSelect: () => (
+			<Alert severity="warning">
+				Async multi select is currently not supported for MUI
+			</Alert>
+		),
+
 		renderCheckbox: ({
 			checked,
 			disabled,

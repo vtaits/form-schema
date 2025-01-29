@@ -15,6 +15,11 @@
       "import": "./dist/esm/core.js",
       "require": "./dist/core.js"
     },
+    "./fields/asyncSelect": {
+      "types": "./dist/fields_asyncSelect.d.ts",
+      "import": "./dist/esm/fields_asyncSelect.js",
+      "require": "./dist/fields_asyncSelect.js"
+    },
     "./fields/base": {
       "types": "./dist/fields_base.d.ts",
       "import": "./dist/esm/fields_base.js",
@@ -106,7 +111,8 @@
     "@date-fns/utc": "^2.1.0",
     "date-fns": "^4.1.0",
     "is-promise": "^4.0.0",
-    "krustykrab": "^1.1.0"
+    "krustykrab": "^1.1.0",
+    "select-async-paginate-model": "^1.0.0-alpha.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

@@ -1,4 +1,5 @@
 import type { HTMLProps, ReactNode } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
 
 export type ButtonRenderProps = Readonly<{
 	children?: ReactNode;
@@ -108,6 +109,35 @@ export type SelectRenderProps<OptionType> = Readonly<
 	}
 >;
 
+export type AsyncMultiSelectRenderProps<OptionType, Additional> = Readonly<
+	BaseFieldRenderProps & {
+		initialAdditional?: Additional;
+		additional?: Additional;
+		loadOptions: LoadOptions<OptionType, Additional>;
+		placeholder?: string;
+		handleClear: () => void;
+		value: readonly OptionType[];
+		onChange: (nextValue: readonly OptionType[]) => void;
+		getOptionLabel: (option: OptionType) => string;
+		getOptionValue: (option: OptionType) => string;
+	}
+>;
+
+export type AsyncSelectRenderProps<OptionType, Additional> = Readonly<
+	BaseFieldRenderProps & {
+		clearable?: boolean;
+		initialAdditional?: Additional;
+		additional?: Additional;
+		loadOptions: LoadOptions<OptionType, Additional>;
+		placeholder?: string;
+		handleClear: () => void;
+		value: OptionType | null | undefined;
+		onChange: (nextValue: OptionType | null | undefined) => void;
+		getOptionLabel: (option: OptionType) => string;
+		getOptionValue: (option: OptionType) => string;
+	}
+>;
+
 export type TagsRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		createLabel?: ReactNode;
@@ -125,6 +155,12 @@ export type TextareaRenderProps = Readonly<
 >;
 
 export type BaseUIContextValue = Readonly<{
+	renderAsyncMultiSelect: <OptionType, Additional>(
+		renderProps: AsyncMultiSelectRenderProps<OptionType, Additional>,
+	) => ReactNode;
+	renderAsyncSelect: <OptionType, Additional>(
+		renderProps: AsyncSelectRenderProps<OptionType, Additional>,
+	) => ReactNode;
 	renderCheckbox: (renderProps: CheckboxRenderProps) => ReactNode;
 	renderCheckboxGroup: <OptionType>(
 		renderProps: MultiSelectRenderProps<OptionType>,

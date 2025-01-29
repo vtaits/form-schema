@@ -16,6 +16,11 @@
       "import": "./dist/esm/core.js",
       "require": "./dist/core.js"
     },
+    "./fields/asyncSelect": {
+      "types": "./dist/fields_asyncSelect.d.ts",
+      "import": "./dist/esm/fields_asyncSelect.js",
+      "require": "./dist/fields_asyncSelect.js"
+    },
     "./fields/base": {
       "types": "./dist/fields_base.d.ts",
       "import": "./dist/esm/fields_base.js",
