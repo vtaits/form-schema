@@ -17,6 +17,12 @@ or
 npm install react-hook-form @vtaits/react-hook-form-schema --save
 ```
 
+or
+
+```bash
+bun add react-hook-form @vtaits/react-hook-form-schema
+```
+
 ## Examples
 
 - [All features](https://codesandbox.io/s/ldk9np)

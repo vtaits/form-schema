@@ -39,14 +39,7 @@ export const asyncMultiSelect: FieldType<AsyncMultiSelectSchema<unknown>> = {
 		);
 	},
 
-	parserSingle: ({
-		value,
-		fieldSchema: {
-			getOptionValue,
-			loadSingleOption,
-			valueKey = DEFAULT_VALUE_KEY,
-		},
-	}) => {
+	parserSingle: ({ value, fieldSchema: { loadSingleOption } }) => {
 		const valueArr = parseValueArray(value);
 
 		return Promise.all(

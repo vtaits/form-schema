@@ -1,28 +1,29 @@
 {
+  "type": "module",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
     "start": "storybook dev -p 6006",
-    "start:storybook:e2e": "yarn build && yarn build:storybook && yarn preview:storybook",
+    "start:storybook:e2e": "bun run build && bun run build:storybook && bun run preview:storybook",
     "build:storybook": "storybook build",
     "preview:storybook": "http-server storybook-static -p 6006",
-    "postinstall": "yarn build && make build_e2e",
-    "clean": "yarn workspaces foreach --all -pt run clean",
-    "build": "yarn workspaces foreach --all -pt run build",
+    "postinstall": "bun run build && make build_e2e",
+    "clean": "bun --filter='*' run run clean",
+    "build": "bun ./scripts/build.ts",
     "lint:e2e": "biome check e2e/tests",
     "lint:e2e:fix": "biome check e2e/tests --write --unsafe",
-    "lint": "yarn lint:e2e && yarn workspaces foreach --all run lint",
-    "lint:fix": "yarn lint:e2e:fix && yarn workspaces foreach --all run lint:fix",
-    "format": "yarn workspaces foreach --all run format",
-    "test:unit": "yarn workspaces foreach --all run test:unit",
-    "test:ts": "yarn workspaces foreach --all run test:ts",
-    "test": "yarn lint && yarn test:ts && yarn test:unit && make test_e2e",
+    "lint": "bun run lint:e2e && bun --filter='*' run lint",
+    "lint:fix": "bun run lint:e2e:fix && bun --filter='*' run lint:fix",
+    "format": "bun --filter='*' run format",
+    "test:unit": "bun --filter='*' run test:unit",
+    "test:ts": "bun --filter='*' run test:ts",
+    "test": "bun run lint && bun run test:ts && bun run test:unit && make test_e2e",
     "upload:docs": "gh-pages -d docs",
     "build:docs": "typedoc ./docs-entry.ts",
-    "deploy:docs": "yarn build:docs && yarn upload:docs",
-    "validate": "yarn test && yarn build"
+    "deploy:docs": "bun run build:docs && bun run upload:docs",
+    "validate": "bun run test && bun run build"
   },
   "repository": "git@github.com:vtaits/form-schema.git",
   "author": "Vadim Taits <taizvadim@gmail.com>",
@@ -50,7 +51,8 @@
     "storybook": "^8.5.2",
     "typedoc": "^0.27.6",
     "typescript": "5.6.3",
-    "vite": "^6.0.11"
+    "vite": "^6.0.11",
+    "@types/bun": "latest"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -43,7 +43,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn build:js && yarn build:proxy_directories",
+    "build": "bun run build:js && bun run build:proxy_directories",
     "build:js": "tsup",
     "build:proxy_directories": "exports-fallback -gf",
     "test:ts": "tsc",
@@ -52,8 +52,8 @@
     "format": "biome format src --write",
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
-    "test": "yarn test:unit",
-    "prepare": "yarn clean && yarn build"
+    "test": "bun run test:unit",
+    "prepare": "bun run clean && bun run build"
   },
   "peerDependencies": {
     "final-form": "^4.0.0",

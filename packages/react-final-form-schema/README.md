@@ -17,6 +17,12 @@ or
 npm install final-form react-final-form @vtaits/react-final-form-schema --save
 ```
 
+or
+
+```bash
+bun add final-form react-final-form @vtaits/react-final-form-schema
+```
+
 ## Examples
 
 - [All features](https://codesandbox.io/s/meddo)

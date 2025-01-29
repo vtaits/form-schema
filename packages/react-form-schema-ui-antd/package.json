@@ -32,7 +32,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn build:js && yarn build:proxy_directories",
+    "build": "bun run build:js && bun run build:proxy_directories",
     "build:js": "tsup",
     "build:proxy_directories": "exports-fallback -gf",
     "test:ts": "tsc",
@@ -40,8 +40,8 @@
     "lint:fix": "biome check src --write --unsafe",
     "format": "biome format src --write",
     "test:unit": "",
-    "test": "yarn lint && yarn test:ts",
-    "prepare": "yarn clean && yarn build"
+    "test": "bun run lint && bun run test:ts",
+    "prepare": "bun run clean && bun run build"
   },
   "peerDependencies": {
     "@ant-design/icons": "^5.3.7",

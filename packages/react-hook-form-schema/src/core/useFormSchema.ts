@@ -60,7 +60,7 @@ export function useFormSchema<
 
 	const parsedDefaultValues = useMemo(() => {
 		if (typeof defaultValues === "function") {
-			const asyncDefaultValues = defaultValues;
+			const asyncDefaultValues = defaultValues as () => Promise<RawValues>;
 
 			return () =>
 				asyncDefaultValues().then(

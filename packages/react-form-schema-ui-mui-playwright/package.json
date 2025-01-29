@@ -32,14 +32,14 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn build:js",
+    "build": "bun run build:js",
     "build:js": "tsup",
     "test:ts": "tsc",
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",
     "format": "biome format src --write",
-    "test": "yarn lint && yarn test:ts",
-    "prepare": "yarn clean && yarn build"
+    "test": "bun run lint && bun run test:ts",
+    "prepare": "bun run clean && bun run build"
   },
   "peerDependencies": {
     "@playwright/test": "^1.0.0"

@@ -21,6 +21,12 @@ or
 npm install @vtaits/form-schema --save
 ```
 
+or
+
+```bash
+bun add @vtaits/form-schema
+```
+
 ## Concept
 
 There are next entities:

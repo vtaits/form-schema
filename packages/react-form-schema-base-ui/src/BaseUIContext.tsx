@@ -34,6 +34,7 @@ function AsyncOptions<OptionType, Additional>({
 	}) => ReactNode;
 }) {
 	const [currentCache, _model] = useSelectAsyncPaginate({
+		autoload: true,
 		initialAdditional,
 		additional,
 		loadOptions,
@@ -43,7 +44,8 @@ function AsyncOptions<OptionType, Additional>({
 
 	const getOptionByValue = useCallback(
 		(value: string) =>
-			options.find((option) => getOptionValue(option) === value) || null,
+			options.find((option) => String(getOptionValue(option)) === value) ||
+			null,
 		[getOptionValue, options],
 	);
 
@@ -128,7 +130,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		getOptionValue,
 	}: AsyncMultiSelectRenderProps<OptionType, Additional>) => {
 		const selectedValuesSet = new Set(
-			value.map((option) => getOptionValue(option)),
+			(value || []).map((option) => getOptionValue(option)),
 		);
 
 		return (
@@ -200,7 +202,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		getOptionValue,
 	}) => {
 		const selectedValuesSet = new Set(
-			value.map((option) => getOptionValue(option)),
+			(value || []).map((option) => getOptionValue(option)),
 		);
 
 		return (
@@ -483,7 +485,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		getOptionValue,
 	}: MultiSelectRenderProps<OptionType>) => {
 		const selectedValuesSet = new Set(
-			value.map((option) => getOptionValue(option)),
+			(value || []).map((option) => getOptionValue(option)),
 		);
 
 		return (
