@@ -16,13 +16,18 @@ for (let i = 0; i < 50; ++i) {
 	});
 }
 
+const delay = (ms: number): Promise<void> =>
+	new Promise((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, ms);
+	});
+
 export const loadOptions: LoadOptions<unknown, unknown> = async (
 	search,
 	prevOptions,
 ) => {
-	await new Promise((resolve) => {
-		setTimeout(resolve, 300);
-	});
+	await delay(300);
 
 	let filteredOptions: OptionType[];
 	if (!search) {
@@ -46,13 +51,6 @@ export const loadOptions: LoadOptions<unknown, unknown> = async (
 		hasMore,
 	};
 };
-
-const delay = (ms: number): Promise<void> =>
-	new Promise((resolve) => {
-		setTimeout(() => {
-			resolve();
-		}, ms);
-	});
 
 export function BaseForm({
 	required,

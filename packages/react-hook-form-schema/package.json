@@ -157,7 +157,7 @@
     "react-shallow-search": "^2.2.0",
     "select-async-paginate-model": "^1.0.0-alpha.0",
     "tsup": "^8.3.6",
-    "typescript": "5.6.3",
+    "typescript": "5.7.3",
     "vitest": "^3.0.4"
   }
 }

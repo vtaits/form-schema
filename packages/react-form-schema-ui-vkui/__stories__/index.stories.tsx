@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import '@vkontakte/vkui/dist/vkui.css';
 
 import { Simple } from '../src/examples/Simple';
+import {
+  AdaptivityProvider,
+  ConfigProvider,
+  AppRoot,
+} from '@vkontakte/vkui';
 
 const meta: Meta = {
   title: 'react-form-schema-ui-vkui',
@@ -16,5 +20,13 @@ export const SimpleStory: Story = {
   args: {
     required: false,
   },
-  render: (props) => <Simple {...props} />,
+  render: (props) => (
+    <ConfigProvider>
+    <AdaptivityProvider>
+    <AppRoot>
+      <Simple {...props} />
+    </AppRoot>
+    </AdaptivityProvider>
+    </ConfigProvider>
+  ),
 };

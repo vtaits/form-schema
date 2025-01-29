@@ -8,8 +8,10 @@ import {
 	Button,
 	CardGrid,
 	Checkbox,
+	type ChipOption,
 	ChipsSelect,
 	ContentCard,
+	type CustomSelectOptionInterface,
 	DateInput,
 	File,
 	Footnote,
@@ -26,18 +28,77 @@ import type {
 	BaseUIContextValue,
 	MultiSelectRenderProps,
 } from "@vtaits/react-form-schema-base-ui";
+import type { LoadOptions } from "select-async-paginate-model";
+import {
+	ChipsAsyncPaginate,
+	CustomAsyncPaginate,
+} from "select-async-paginate-vkui";
 
 export const contextValue: BaseUIContextValue = {
-	renderAsyncSelect: () => (
-		<FormStatus mode="default">
-			Async select is currently not supported for VKUI
-		</FormStatus>
+	renderAsyncSelect: ({
+		clearable,
+		disabled,
+		autoFocus,
+		additional,
+		initialAdditional,
+		loadOptions,
+		placeholder,
+		value,
+		onChange,
+		getOptionLabel,
+		getOptionValue,
+	}) => (
+		<CustomAsyncPaginate
+			allowClearButton={clearable}
+			autoFocus={autoFocus}
+			disabled={disabled}
+			onChange={(_, nextValue) => {
+				// const selectedOption = options.find(
+				// 	(option) => getOptionValue(option) === nextValue,
+				// );
+				// onChange(selectedOption);
+			}}
+			placeholder={placeholder}
+			value={value ? getOptionValue(value) : ""}
+			additional={additional}
+			initialAdditional={initialAdditional}
+			loadOptions={
+				loadOptions as unknown as LoadOptions<
+					CustomSelectOptionInterface,
+					unknown
+				>
+			}
+			searchable
+		/>
 	),
 
-	renderAsyncMultiSelect: () => (
-		<FormStatus mode="default">
-			Async multi select is currently not supported for VKUI
-		</FormStatus>
+	renderAsyncMultiSelect: ({
+		disabled,
+		autoFocus,
+		additional,
+		initialAdditional,
+		loadOptions,
+		value,
+		onChange,
+		getOptionLabel,
+		getOptionValue,
+	}) => (
+		<ChipsAsyncPaginate
+			autoFocus={autoFocus}
+			disabled={disabled}
+			onChange={onChange as unknown as (nextValue: ChipOption[]) => void}
+			value={
+				value
+					? value.map((option) => ({
+							label: getOptionLabel(option),
+							value: getOptionValue(option),
+						}))
+					: []
+			}
+			additional={additional}
+			initialAdditional={initialAdditional}
+			loadOptions={loadOptions as unknown as LoadOptions<ChipOption, unknown>}
+		/>
 	),
 
 	renderCheckbox: ({
@@ -71,7 +132,7 @@ export const contextValue: BaseUIContextValue = {
 		getOptionValue,
 	}) => {
 		const selectedValuesSet = new Set(
-			value.map((option) => getOptionValue(option)),
+			(value || []).map((option) => getOptionValue(option)),
 		);
 
 		return (
@@ -288,7 +349,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => (
 		<CardGrid size="l" data-testid={`@@list-item/${name}`}>
 			<ContentCard
-				header={
+				title={
 					<div
 						style={{
 							display: "flex",
@@ -309,7 +370,7 @@ export const contextValue: BaseUIContextValue = {
 						)}
 					</div>
 				}
-				text={children}
+				description={children}
 			/>
 		</CardGrid>
 	),
@@ -506,7 +567,7 @@ export const contextValue: BaseUIContextValue = {
 						}))
 					: []
 			}
-			value={value.map((option) => ({
+			value={(value || []).map((option) => ({
 				value: option,
 				label: option,
 			}))}

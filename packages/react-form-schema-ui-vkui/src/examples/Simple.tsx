@@ -5,7 +5,21 @@ import {
 	Form,
 } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useMemo, useState } from "react";
+import type { LoadOptions } from "select-async-paginate-model";
 import { VKUIProvider } from "..";
+
+type OptionType = {
+	value: number;
+	label: string;
+};
+
+const options: OptionType[] = [];
+for (let i = 0; i < 50; ++i) {
+	options.push({
+		value: i + 1,
+		label: `Option ${i + 1}`,
+	});
+}
 
 const delay = (ms: number): Promise<void> =>
 	new Promise((resolve) => {
@@ -13,6 +27,35 @@ const delay = (ms: number): Promise<void> =>
 			resolve();
 		}, ms);
 	});
+
+export const loadOptions: LoadOptions<unknown, unknown> = async (
+	search,
+	prevOptions,
+) => {
+	await delay(300);
+
+	let filteredOptions: OptionType[];
+	if (!search) {
+		filteredOptions = options;
+	} else {
+		const searchLower = search.toLowerCase();
+
+		filteredOptions = options.filter(({ label }) =>
+			label.toLowerCase().includes(searchLower),
+		);
+	}
+
+	const hasMore = filteredOptions.length > prevOptions.length + 10;
+	const slicedOptions = filteredOptions.slice(
+		prevOptions.length,
+		prevOptions.length + 10,
+	);
+
+	return {
+		options: slicedOptions,
+		hasMore,
+	};
+};
 
 export function Simple({
 	required,
@@ -26,6 +69,22 @@ export function Simple({
 
 	const schemas: Record<string, DefaultFieldSchema<FieldSchemaBase>> = useMemo(
 		() => ({
+			asyncMultiSelect: {
+				type: "asyncMultiSelect",
+				label: "Async multi select",
+				placeholder: "Async multi select",
+				loadOptions,
+				required,
+			},
+
+			asyncSelect: {
+				type: "asyncSelect",
+				label: "Async select",
+				placeholder: "Async select",
+				loadOptions,
+				required,
+			},
+
 			checkbox: {
 				type: "checkbox",
 				checkboxLabel: "Checkbox",
