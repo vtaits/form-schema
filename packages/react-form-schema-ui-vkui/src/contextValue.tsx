@@ -243,7 +243,7 @@ export const contextValue: BaseUIContextValue = {
 	),
 
 	renderForm: ({ actions, error, fields, formProps, title }) => (
-		<form className="ant-form ant-form-horizontal" {...formProps}>
+		<form {...formProps}>
 			{title && (
 				<Title
 					level="3"
