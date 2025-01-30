@@ -1,1 +1,0 @@
-export { VKUIProvider } from "./VKUIProvider";

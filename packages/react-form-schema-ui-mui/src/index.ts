@@ -1,1 +1,0 @@
-export { MuiProvider } from "./MuiProvider";
