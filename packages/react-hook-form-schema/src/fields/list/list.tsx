@@ -4,8 +4,8 @@
 import type { FieldType as FieldTypeBase } from "@vtaits/form-schema";
 import { list as listBase } from "@vtaits/form-schema/fields/list";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
-import get from "lodash/get";
 import { Fragment, type ReactElement } from "react";
+import { get } from "react-hook-form";
 import {
 	type FieldValues,
 	type UseFormReturn,

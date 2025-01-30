@@ -5,8 +5,8 @@ import {
 	asyncSelect as asyncSelectBase,
 } from "@vtaits/form-schema/fields/asyncSelect";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
-import get from "lodash/get";
 import { type ReactElement, useMemo } from "react";
+import { get } from "react-hook-form";
 import {
 	Controller,
 	type FieldValues,

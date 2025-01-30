@@ -9,8 +9,8 @@ import {
 	datetime as datetimeBase,
 } from "@vtaits/form-schema/fields/datetime";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
-import get from "lodash/get";
 import type { ReactElement } from "react";
+import { get } from "react-hook-form";
 import {
 	Controller,
 	type FieldValues,

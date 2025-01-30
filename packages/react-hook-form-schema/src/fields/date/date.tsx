@@ -9,8 +9,8 @@ import {
 	serializeDate,
 } from "@vtaits/form-schema/fields/date-base";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
-import get from "lodash/get";
 import type { ReactElement } from "react";
+import { get } from "react-hook-form";
 import {
 	Controller,
 	type FieldValues,

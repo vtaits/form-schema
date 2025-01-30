@@ -7,8 +7,8 @@ import {
 	serialize,
 	setFieldErrors,
 } from "@vtaits/form-schema";
-import get from "lodash/get";
 import { Fragment, type ReactElement, useState } from "react";
+import { get } from "react-hook-form";
 import {
 	type ArrayPath,
 	type FieldArray as FieldArrayType,
