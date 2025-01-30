@@ -1,4 +1,4 @@
-import type { HTMLProps, ReactNode } from "react";
+import type { HTMLProps, ReactNode, RefObject } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 
 export type ButtonRenderProps = Readonly<{
@@ -113,6 +113,7 @@ export type AsyncMultiSelectRenderProps<OptionType, Additional> = Readonly<
 	BaseFieldRenderProps & {
 		initialAdditional?: Additional;
 		additional?: Additional;
+		optionsCacheRef: RefObject<Record<string, OptionType>>;
 		loadOptions: LoadOptions<OptionType, Additional>;
 		placeholder?: string;
 		handleClear: () => void;
@@ -128,6 +129,7 @@ export type AsyncSelectRenderProps<OptionType, Additional> = Readonly<
 		clearable?: boolean;
 		initialAdditional?: Additional;
 		additional?: Additional;
+		optionsCacheRef: RefObject<Record<string, OptionType>>;
 		loadOptions: LoadOptions<OptionType, Additional>;
 		placeholder?: string;
 		handleClear: () => void;

@@ -29,7 +29,6 @@ function AsyncOptions<OptionType, Additional>({
 	loadOptions: LoadOptions<OptionType, Additional>;
 	selectedValuesSet?: Set<string>;
 	render: (children: {
-		getOptionByValue: (value: string) => OptionType | null;
 		children: ReactNode;
 	}) => ReactNode;
 }) {
@@ -41,13 +40,6 @@ function AsyncOptions<OptionType, Additional>({
 	});
 
 	const { options } = currentCache;
-
-	const getOptionByValue = useCallback(
-		(value: string) =>
-			options.find((option) => String(getOptionValue(option)) === value) ||
-			null,
-		[getOptionValue, options],
-	);
 
 	const children = useMemo(
 		() =>
@@ -71,7 +63,6 @@ function AsyncOptions<OptionType, Additional>({
 
 	return render({
 		children,
-		getOptionByValue,
 	});
 }
 
@@ -83,6 +74,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		name,
 		initialAdditional,
 		additional,
+		optionsCacheRef,
 		loadOptions,
 		placeholder,
 		value,
@@ -96,14 +88,14 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 			getOptionLabel={getOptionLabel}
 			getOptionValue={getOptionValue}
 			loadOptions={loadOptions}
-			render={({ children, getOptionByValue }) => (
+			render={({ children }) => (
 				<select
 					disabled={disabled}
 					name={name}
 					onChange={(event) => {
 						const nextValue = event.target.value;
 
-						const selectedOption = getOptionByValue(nextValue);
+						const selectedOption = optionsCacheRef.current[nextValue];
 
 						onChange(selectedOption);
 					}}
@@ -123,6 +115,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		name,
 		initialAdditional,
 		additional,
+		optionsCacheRef,
 		loadOptions,
 		value,
 		onChange,
@@ -141,7 +134,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 				getOptionValue={getOptionValue}
 				loadOptions={loadOptions}
 				selectedValuesSet={selectedValuesSet}
-				render={({ children, getOptionByValue }) => (
+				render={({ children }) => (
 					<select
 						disabled={disabled}
 						multiple
@@ -151,7 +144,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 							for (const option of Array.from(event.target.options)) {
 								if (option.selected) {
-									const selectedOption = getOptionByValue(option.value);
+									const selectedOption = optionsCacheRef.current[option.value];
 
 									if (selectedOption) {
 										nextValue.push(selectedOption);

@@ -16,6 +16,7 @@ import type { FieldType, RenderParams } from "../../core";
 import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { AsyncSelectSchema } from "./schema";
+import { useCachingLoadOptions } from "./useCachingLoadOptions";
 
 type AsyncSelectComponentProps = Readonly<{
 	renderParams: RenderParams<AsyncSelectSchema, any, any, any, any, any>;
@@ -76,6 +77,11 @@ export function SelectComponent({
 		return (option: unknown) => (option as Record<string, string>)[valueKey];
 	}, [getOptionValueParam, valueKey]);
 
+	const [optionsCacheRef, loadOptionsProxy] = useCachingLoadOptions(
+		loadOptions,
+		getOptionValue,
+	);
+
 	return renderWrapper({
 		...wrapperParams,
 		children: (
@@ -104,7 +110,8 @@ export function SelectComponent({
 						onChange: wrappedOnChange,
 						additional,
 						initialAdditional,
-						loadOptions,
+						optionsCacheRef,
+						loadOptions: loadOptionsProxy,
 						placeholder,
 						wrapper: wrapperParams,
 					}) as ReactElement;

@@ -41,11 +41,11 @@ export const contextValue: BaseUIContextValue = {
 		autoFocus,
 		additional,
 		initialAdditional,
+		optionsCacheRef,
 		loadOptions,
 		placeholder,
 		value,
 		onChange,
-		getOptionLabel,
 		getOptionValue,
 	}) => (
 		<CustomAsyncPaginate
@@ -53,10 +53,11 @@ export const contextValue: BaseUIContextValue = {
 			autoFocus={autoFocus}
 			disabled={disabled}
 			onChange={(_, nextValue) => {
-				// const selectedOption = options.find(
-				// 	(option) => getOptionValue(option) === nextValue,
-				// );
-				// onChange(selectedOption);
+				const selectedOption =
+					typeof nextValue === "string" || typeof nextValue === "number"
+						? optionsCacheRef.current[nextValue]
+						: null;
+				onChange(selectedOption);
 			}}
 			placeholder={placeholder}
 			value={value ? getOptionValue(value) : ""}

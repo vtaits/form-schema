@@ -6,7 +6,7 @@ import {
 } from "@vtaits/form-schema/fields/asyncSelect";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import get from "lodash/get";
-import { type ReactElement, useMemo } from "react";
+import { type ReactElement, useMemo, useRef } from "react";
 import {
 	Controller,
 	type FieldValues,
@@ -16,6 +16,7 @@ import type { FieldType, RenderParams } from "../../core";
 import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { AsyncMultiSelectSchema } from "./schema";
+import { useCachingLoadOptions } from "./useCachingLoadOptions";
 
 type AsyncMultiSelectComponentProps = Readonly<{
 	renderParams: RenderParams<AsyncMultiSelectSchema, any, any, any, any, any>;
@@ -76,6 +77,11 @@ export function AsyncMultiSelectComponent({
 		return (option: unknown) => (option as Record<string, string>)[valueKey];
 	}, [getOptionValueParam, valueKey]);
 
+	const [optionsCacheRef, loadOptionsProxy] = useCachingLoadOptions(
+		loadOptions,
+		getOptionValue,
+	);
+
 	return renderWrapper({
 		...wrapperParams,
 		children: (
@@ -103,7 +109,8 @@ export function AsyncMultiSelectComponent({
 						onChange: wrappedOnChange,
 						additional,
 						initialAdditional,
-						loadOptions,
+						optionsCacheRef,
+						loadOptions: loadOptionsProxy,
 						placeholder,
 						wrapper: wrapperParams,
 					}) as ReactElement;
