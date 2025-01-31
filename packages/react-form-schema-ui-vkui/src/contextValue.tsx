@@ -434,6 +434,7 @@ export const contextValue: BaseUIContextValue = {
 		disabled,
 		autoFocus,
 		options,
+		optionsCacheRef,
 		value,
 		onChange,
 		getOptionLabel,
@@ -446,9 +447,7 @@ export const contextValue: BaseUIContextValue = {
 				const nextValue: OptionType[] = [];
 
 				for (const selectedChip of nextSelectValue) {
-					const selectedOption = options.find(
-						(option) => getOptionValue(option) === selectedChip.value,
-					);
+					const selectedOption = optionsCacheRef.current[selectedChip.value];
 
 					if (selectedOption) {
 						nextValue.push(selectedOption);
@@ -512,6 +511,7 @@ export const contextValue: BaseUIContextValue = {
 		disabled,
 		autoFocus,
 		options,
+		optionsCacheRef,
 		placeholder,
 		value,
 		onChange,
@@ -525,9 +525,7 @@ export const contextValue: BaseUIContextValue = {
 			onChange={(event) => {
 				const nextValue = event.target.value;
 
-				const selectedOption = options.find(
-					(option) => getOptionValue(option) === nextValue,
-				);
+				const selectedOption = optionsCacheRef.current[nextValue];
 
 				onChange(selectedOption);
 			}}

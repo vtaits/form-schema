@@ -373,6 +373,7 @@ export const contextValue: BaseUIContextValue = {
 		disabled,
 		autoFocus,
 		options,
+		optionsCacheRef,
 		value,
 		onChange,
 		getOptionLabel,
@@ -386,9 +387,7 @@ export const contextValue: BaseUIContextValue = {
 				const nextValue: OptionType[] = [];
 
 				for (const optionValue of nextSelectValue) {
-					const selectedOption = options.find(
-						(option) => getOptionValue(option) === optionValue,
-					);
+					const selectedOption = optionsCacheRef.current[optionValue];
 
 					if (selectedOption) {
 						nextValue.push(selectedOption);
@@ -448,6 +447,7 @@ export const contextValue: BaseUIContextValue = {
 		disabled,
 		autoFocus,
 		options,
+		optionsCacheRef,
 		placeholder,
 		value,
 		onChange,
@@ -459,9 +459,7 @@ export const contextValue: BaseUIContextValue = {
 			autoFocus={autoFocus}
 			disabled={disabled}
 			onChange={(nextValue) => {
-				const selectedOption = options.find(
-					(option) => getOptionValue(option) === nextValue,
-				);
+				const selectedOption = optionsCacheRef.current[nextValue];
 
 				onChange(selectedOption);
 			}}

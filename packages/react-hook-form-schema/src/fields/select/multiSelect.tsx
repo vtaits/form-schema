@@ -16,6 +16,7 @@ import type { FieldType, RenderParams } from "../../core";
 import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { MultiSelectSchema } from "./schema";
+import { useOptionsCache } from "./useOptionsCache";
 
 type MultiSelectComponentProps = Readonly<{
 	renderParams: RenderParams<MultiSelectSchema, any, any, any, any, any>;
@@ -74,6 +75,8 @@ export function MultiSelectComponent({
 		return (option: unknown) => (option as Record<string, string>)[valueKey];
 	}, [getOptionValueParam, valueKey]);
 
+	const optionsCacheRef = useOptionsCache(options, getOptionValue);
+
 	return renderWrapper({
 		...wrapperParams,
 		children: (
@@ -100,6 +103,7 @@ export function MultiSelectComponent({
 						autoFocus,
 						onChange: wrappedOnChange,
 						options,
+						optionsCacheRef,
 						placeholder,
 						wrapper: wrapperParams,
 					}) as ReactElement;

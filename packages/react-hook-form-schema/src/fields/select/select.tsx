@@ -16,6 +16,7 @@ import type { FieldType, RenderParams } from "../../core";
 import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
 import type { SelectSchema } from "./schema";
+import { useOptionsCache } from "./useOptionsCache";
 
 type SelectComponentProps = Readonly<{
 	renderParams: RenderParams<SelectSchema, any, any, any, any, any>;
@@ -74,6 +75,8 @@ export function SelectComponent({
 		return (option: unknown) => (option as Record<string, string>)[valueKey];
 	}, [getOptionValueParam, valueKey]);
 
+	const optionsCacheRef = useOptionsCache(options, getOptionValue);
+
 	return renderWrapper({
 		...wrapperParams,
 		children: (
@@ -101,6 +104,7 @@ export function SelectComponent({
 						autoFocus,
 						onChange: wrappedOnChange,
 						options,
+						optionsCacheRef,
 						placeholder,
 						wrapper: wrapperParams,
 					}) as ReactElement;

@@ -87,12 +87,13 @@ export type InputRenderProps = Readonly<
 export type MultiSelectRenderProps<OptionType> = Readonly<
 	BaseFieldRenderProps & {
 		options: readonly OptionType[];
+		optionsCacheRef: RefObject<Record<string, OptionType>>;
 		placeholder?: string;
 		handleClear: () => void;
 		value: readonly OptionType[];
 		onChange: (nextValue: readonly OptionType[]) => void;
 		getOptionLabel: (option: OptionType) => string;
-		getOptionValue: (option: OptionType) => string;
+		getOptionValue: (option: OptionType) => string | number;
 	}
 >;
 
@@ -100,12 +101,13 @@ export type SelectRenderProps<OptionType> = Readonly<
 	BaseFieldRenderProps & {
 		clearable?: boolean;
 		options: readonly OptionType[];
+		optionsCacheRef: RefObject<Record<string, OptionType>>;
 		placeholder?: string;
 		handleClear: () => void;
 		value: OptionType | null | undefined;
 		onChange: (nextValue: OptionType | null | undefined) => void;
 		getOptionLabel: (option: OptionType) => string;
-		getOptionValue: (option: OptionType) => string;
+		getOptionValue: (option: OptionType) => string | number;
 	}
 >;
 
@@ -120,7 +122,7 @@ export type AsyncMultiSelectRenderProps<OptionType, Additional> = Readonly<
 		value: readonly OptionType[];
 		onChange: (nextValue: readonly OptionType[]) => void;
 		getOptionLabel: (option: OptionType) => string;
-		getOptionValue: (option: OptionType) => string;
+		getOptionValue: (option: OptionType) => string | number;
 	}
 >;
 
@@ -136,7 +138,7 @@ export type AsyncSelectRenderProps<OptionType, Additional> = Readonly<
 		value: OptionType | null | undefined;
 		onChange: (nextValue: OptionType | null | undefined) => void;
 		getOptionLabel: (option: OptionType) => string;
-		getOptionValue: (option: OptionType) => string;
+		getOptionValue: (option: OptionType) => string | number;
 	}
 >;
 

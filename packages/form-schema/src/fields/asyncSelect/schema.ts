@@ -8,7 +8,7 @@ type AsyncSelectParams<OptionType, Additional> = {
 	additional?: Additional;
 	valueKey?: string;
 	labelKey?: string;
-	getOptionValue?: (option: unknown) => string;
+	getOptionValue?: (option: unknown) => string | number;
 	getOptionLabel?: (option: unknown) => string;
 };
 

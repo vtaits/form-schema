@@ -3,7 +3,7 @@ import type { LoadOptions } from "select-async-paginate-model";
 
 export function useCachingLoadOptions<OptionType, Additional>(
 	loadOptions: LoadOptions<OptionType, Additional>,
-	getOptionValue: (option: OptionType) => string,
+	getOptionValue: (option: OptionType) => string | number,
 ) {
 	const optionsCacheRef = useRef<Record<string, OptionType>>({});
 

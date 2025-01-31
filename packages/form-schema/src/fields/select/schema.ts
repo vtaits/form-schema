@@ -4,7 +4,7 @@ type SelectParams = {
 	options: readonly unknown[];
 	valueKey?: string;
 	labelKey?: string;
-	getOptionValue?: (option: unknown) => string;
+	getOptionValue?: (option: unknown) => string | number;
 	getOptionLabel?: (option: unknown) => string;
 };
 

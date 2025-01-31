@@ -15,6 +15,7 @@ import {
 import type { FieldType, RenderParams } from "../../core";
 import { wrapOnChange } from "../base";
 import { renderError } from "../base/renderError";
+import { useOptionsCache } from "../select";
 import type { CheckboxGroupSchema } from "./schema";
 
 type CheckboxGroupComponentProps = Readonly<{
@@ -73,6 +74,8 @@ export function CheckboxGroupComponent({
 		return (option: unknown) => (option as Record<string, string>)[valueKey];
 	}, [getOptionValueParam, valueKey]);
 
+	const optionsCacheRef = useOptionsCache(options, getOptionValue);
+
 	return renderWrapper({
 		...wrapperParams,
 		children: (
@@ -97,6 +100,7 @@ export function CheckboxGroupComponent({
 							field.value,
 						),
 						options,
+						optionsCacheRef,
 						wrapper: wrapperParams,
 					}) as ReactElement
 				}

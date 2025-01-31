@@ -25,9 +25,9 @@ function AsyncOptions<OptionType, Additional>({
 	initialAdditional?: Additional;
 	additional?: Additional;
 	getOptionLabel: (option: OptionType) => string;
-	getOptionValue: (option: OptionType) => string;
+	getOptionValue: (option: OptionType) => string | number;
 	loadOptions: LoadOptions<OptionType, Additional>;
-	selectedValuesSet?: Set<string>;
+	selectedValuesSet?: Set<string | number>;
 	render: (children: {
 		children: ReactNode;
 	}) => ReactNode;
@@ -472,6 +472,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		autoFocus,
 		name,
 		options,
+		optionsCacheRef,
 		value,
 		onChange,
 		getOptionLabel,
@@ -491,10 +492,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 					for (const option of Array.from(event.target.options)) {
 						if (option.selected) {
-							const optionValue = option.value;
-							const selectedOption = options.find(
-								(option) => getOptionValue(option) === optionValue,
-							);
+							const selectedOption = optionsCacheRef.current[option.value];
 
 							if (selectedOption) {
 								nextValue.push(selectedOption);
@@ -564,6 +562,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		autoFocus,
 		name,
 		options,
+		optionsCacheRef,
 		placeholder,
 		value,
 		onChange,
@@ -576,9 +575,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 			onChange={(event) => {
 				const nextValue = event.target.value;
 
-				const selectedOption = options.find(
-					(option) => getOptionValue(option) === nextValue,
-				);
+				const selectedOption = optionsCacheRef.current[nextValue];
 
 				onChange(selectedOption);
 			}}

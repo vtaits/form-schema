@@ -424,6 +424,7 @@ export function getContextValue(
 			disabled,
 			name,
 			options,
+			optionsCacheRef,
 			value,
 			onChange,
 			getOptionLabel,
@@ -461,9 +462,7 @@ export function getContextValue(
 							const nextValue: OptionType[] = [];
 
 							for (const optionValue of selectedValues) {
-								const selectedOption = options.find(
-									(option) => getOptionValue(option) === optionValue,
-								);
+								const selectedOption = optionsCacheRef.current[optionValue];
 
 								if (selectedOption) {
 									nextValue.push(selectedOption);
@@ -541,6 +540,7 @@ export function getContextValue(
 			disabled,
 			name,
 			options,
+			optionsCacheRef,
 			placeholder = "",
 			value,
 			onChange,
@@ -567,9 +567,7 @@ export function getContextValue(
 					onChange={(event) => {
 						const nextValue = event.target.value;
 
-						const selectedOption = options.find(
-							(option) => getOptionValue(option) === nextValue,
-						);
+						const selectedOption = optionsCacheRef.current[nextValue];
 
 						onChange(selectedOption);
 					}}
