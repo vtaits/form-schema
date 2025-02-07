@@ -14,17 +14,15 @@ export function prepareValue(rawValue: unknown) {
 	}
 
 	if (fileValue.hasPreviousFile) {
-		return null;
+		return undefined;
 	}
 
-	return undefined;
+	return null;
 }
 
 export const file: FieldType<FileSchema<unknown>> = {
 	serializerSingle: ({ value }) => {
-		const strValue = prepareValue(value);
-
-		return strValue;
+		return prepareValue(value);
 	},
 
 	parserSingle: ({ value }) => {

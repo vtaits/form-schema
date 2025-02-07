@@ -46,60 +46,132 @@ const fieldOptions = {
 	name: "file",
 };
 
-test("change and submit correct value", async ({ page }) => {
-	await page.goto(makeUrl({}));
+test.describe("change and submit correct value", () => {
+	test("initial empty", async ({ page }) => {
+		await page.goto(makeUrl({}));
 
-	await expect(getSelectedFileName(page, fieldOptions)).not.toBeVisible();
+		await expect(getSelectedFileName(page, fieldOptions)).not.toBeVisible();
 
-	// submit initially empty
+		// submit initially null
 
-	await getSubmitButton(page).click();
+		await getSubmitButton(page).click();
 
-	await expect(getSubmitButton(page)).toBeEnabled();
+		await expect(getSubmitButton(page)).toBeEnabled();
 
-	{
-		const res = await parseSubmitValues(page);
+		{
+			const res = await parseSubmitValues(page);
 
-		expect(res).toEqual({});
-	}
+			expect(res).toEqual({
+				file: null,
+			});
+		}
 
-	// change
+		// change
 
-	await selectFile(page, fieldOptions, path.join(__dirname, "test.txt"));
+		await selectFile(page, fieldOptions, path.join(__dirname, "test.txt"));
 
-	await expect(getSelectedFileName(page, fieldOptions)).toHaveText("test.txt");
+		await expect(getSelectedFileName(page, fieldOptions)).toHaveText(
+			"test.txt",
+		);
 
-	// submit changed
+		// submit changed
 
-	await getSubmitButton(page).click();
+		await getSubmitButton(page).click();
 
-	await expect(getSubmitButton(page)).toBeEnabled();
+		await expect(getSubmitButton(page)).toBeEnabled();
 
-	{
-		const res = await parseSubmitValues(page);
+		{
+			const res = await parseSubmitValues(page);
 
-		expect(res).toEqual({
-			file: "test.txt",
-		});
-	}
+			expect(res).toEqual({
+				file: "test.txt",
+			});
+		}
 
-	// clear
+		// clear
 
-	await removeFile(page, fieldOptions);
+		await removeFile(page, fieldOptions);
 
-	await expect(getSelectedFileName(page, fieldOptions)).not.toBeVisible();
+		await expect(getSelectedFileName(page, fieldOptions)).not.toBeVisible();
 
-	// submit empty
+		// submit empty
 
-	await getSubmitButton(page).click();
+		await getSubmitButton(page).click();
 
-	await expect(getSubmitButton(page)).toBeEnabled();
+		await expect(getSubmitButton(page)).toBeEnabled();
 
-	{
-		const res = await parseSubmitValues(page);
+		{
+			const res = await parseSubmitValues(page);
 
-		expect(res).toEqual({});
-	}
+			expect(res).toEqual({
+				file: null,
+			});
+		}
+	});
+
+	test("initial filled", async ({ page }) => {
+		await page.goto(
+			makeUrl({
+				form_value: "test",
+			}),
+		);
+
+		await expect(getSelectedFileName(page, fieldOptions)).not.toBeVisible();
+
+		// submit initially empty
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({});
+		}
+
+		// change
+
+		await selectFile(page, fieldOptions, path.join(__dirname, "test.txt"));
+
+		await expect(getSelectedFileName(page, fieldOptions)).toHaveText(
+			"test.txt",
+		);
+
+		// submit changed
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				file: "test.txt",
+			});
+		}
+
+		// clear
+
+		await removeFile(page, fieldOptions);
+
+		await expect(getSelectedFileName(page, fieldOptions)).not.toBeVisible();
+
+		// submit empty
+
+		await getSubmitButton(page).click();
+
+		await expect(getSubmitButton(page)).toBeEnabled();
+
+		{
+			const res = await parseSubmitValues(page);
+
+			expect(res).toEqual({
+				file: null,
+			});
+		}
+	});
 });
 
 test.fixme("accept", () => {});

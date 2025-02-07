@@ -528,7 +528,7 @@ export const FileStory: StoryObj<{
 					disabled,
 					required,
 				}}
-				formValue={formValue ? Object.values(formValue) : undefined}
+				formValue={formValue}
 			/>
 		</MuiProvider>
 	),

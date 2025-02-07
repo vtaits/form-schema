@@ -73,11 +73,19 @@ export function FileComponent({
 						children: text,
 						disabled,
 						onSelectFile: (nextFile: Blob | null) => {
-							wrappedOnChange({
-								...currentValue,
-								file: nextFile,
-								name: nextFile instanceof File ? nextFile.name : undefined,
-							});
+							wrappedOnChange(
+								nextFile
+									? {
+											...currentValue,
+											file: nextFile,
+											name:
+												nextFile instanceof File ? nextFile.name : undefined,
+										}
+									: {
+											file: null,
+											hasPreviousFile: false,
+										},
+							);
 						},
 						name: fieldPath,
 						selectedFile: currentValue?.name,
