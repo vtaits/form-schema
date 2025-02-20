@@ -9,7 +9,7 @@ import {
 	CardGrid,
 	Checkbox,
 	type ChipOption,
-	ChipsSelect,
+	unstable_ChipsSelect as ChipsSelect,
 	ContentCard,
 	type CustomSelectOptionInterface,
 	DateInput,
@@ -32,7 +32,7 @@ import type { LoadOptions } from "select-async-paginate-model";
 import {
 	ChipsAsyncPaginate,
 	CustomAsyncPaginate,
-} from "select-async-paginate-vkui";
+} from "select-async-paginate-vkui-v5";
 
 export const contextValue: BaseUIContextValue = {
 	renderAsyncSelect: ({
@@ -52,7 +52,9 @@ export const contextValue: BaseUIContextValue = {
 			allowClearButton={clearable}
 			autoFocus={autoFocus}
 			disabled={disabled}
-			onChange={(_, nextValue) => {
+			onChange={(event) => {
+				const nextValue = event.target.value;
+
 				const selectedOption =
 					typeof nextValue === "string" || typeof nextValue === "number"
 						? optionsCacheRef.current[nextValue]
