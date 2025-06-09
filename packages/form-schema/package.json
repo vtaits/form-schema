@@ -1,6 +1,6 @@
 {
   "name": "@vtaits/form-schema",
-  "version": "2.3.0-alpha.12",
+  "version": "2.3.0-alpha.13",
   "description": "Serialization and parsing form values by schema",
   "files": [
     "dist",
