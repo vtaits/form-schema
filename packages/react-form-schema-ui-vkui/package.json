@@ -45,29 +45,28 @@
   "peerDependencies": {
     "@vkontakte/icons": "^2.0.0",
     "@vkontakte/vkui": "^5.0.0",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.11",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.12",
     "react": "^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/addon-docs": "^8.5.8",
-    "@storybook/react": "^8.5.8",
+    "@storybook/react-vite": "^9.0.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vkontakte/icons": "^2.166.0",
     "@vkontakte/vkui": "^5.10.2",
-    "@vtaits/form-schema": "^2.3.0-alpha.12",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.11",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.16",
+    "@vtaits/form-schema": "^2.3.0-alpha.13",
+    "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.12",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.17",
     "exports-fallback": "^1.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "select-async-paginate-model": "^1.0.0-alpha.0",
+    "select-async-paginate-model": "^1.0.0-alpha.1",
     "tsup": "^8.3.6",
     "typescript": "5.7.3"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
-    "select-async-paginate-vkui-v5": "^1.0.0"
+    "select-async-paginate-vkui-v5": "^1.0.1"
   }
 }

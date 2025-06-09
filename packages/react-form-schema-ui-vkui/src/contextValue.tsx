@@ -352,7 +352,7 @@ export const contextValue: BaseUIContextValue = {
 	}) => (
 		<CardGrid size="l" data-testid={`@@list-item/${name}`}>
 			<ContentCard
-				title={
+				header={
 					<div
 						style={{
 							display: "flex",
@@ -373,7 +373,7 @@ export const contextValue: BaseUIContextValue = {
 						)}
 					</div>
 				}
-				description={children}
+				text={children}
 			/>
 		</CardGrid>
 	),
@@ -541,20 +541,10 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
-	renderTags: ({
-		createLabel,
-		disabled,
-		autoFocus,
-		name,
-		onChange,
-		options,
-		value,
-	}) => (
+	renderTags: ({ disabled, autoFocus, name, onChange, options, value }) => (
 		<ChipsSelect
 			autoFocus={autoFocus}
-			creatable={
-				(typeof createLabel === "string" && createLabel) || "Create new"
-			}
+			creatable
 			disabled={disabled}
 			name={name}
 			onChange={(nextOptions) => {
@@ -578,7 +568,7 @@ export const contextValue: BaseUIContextValue = {
 	renderTextArea: ({
 		disabled,
 		autoFocus,
-		textAreaProps: { ref, size, onResize, defaultValue, ...textAreaProps } = {},
+		textAreaProps: { ref, size, defaultValue, ...textAreaProps } = {},
 		name,
 	}) => (
 		<Textarea
