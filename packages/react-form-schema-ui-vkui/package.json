@@ -50,8 +50,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/addon-docs": "^8.5.8",
-    "@storybook/react": "^8.5.8",
+    "@storybook/react-vite": "^9.0.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vkontakte/icons": "^2.166.0",
@@ -62,12 +61,12 @@
     "exports-fallback": "^1.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "select-async-paginate-model": "^1.0.0-alpha.0",
+    "select-async-paginate-model": "^1.0.0-alpha.1",
     "tsup": "^8.3.6",
     "typescript": "5.7.3"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
-    "select-async-paginate-vkui": "^1.0.0-alpha.1"
+    "select-async-paginate-vkui": "^1.0.0-alpha.2"
   }
 }

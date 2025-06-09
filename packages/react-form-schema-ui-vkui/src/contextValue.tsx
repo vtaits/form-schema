@@ -576,7 +576,7 @@ export const contextValue: BaseUIContextValue = {
 	renderTextArea: ({
 		disabled,
 		autoFocus,
-		textAreaProps: { ref, size, onResize, defaultValue, ...textAreaProps } = {},
+		textAreaProps: { ref, size, defaultValue, ...textAreaProps } = {},
 		name,
 	}) => (
 		<Textarea

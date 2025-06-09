@@ -52,8 +52,7 @@
   "devDependencies": {
     "@ant-design/icons": "^5.6.1",
     "@biomejs/biome": "^1.9.4",
-    "@storybook/addon-docs": "^8.5.8",
-    "@storybook/react": "^8.5.8",
+    "@storybook/react-vite": "^9.0.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vtaits/form-schema": "^2.3.0-alpha.12",

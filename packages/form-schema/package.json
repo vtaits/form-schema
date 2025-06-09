@@ -112,7 +112,7 @@
     "date-fns": "^4.1.0",
     "is-promise": "^4.0.0",
     "krustykrab": "^1.1.0",
-    "select-async-paginate-model": "^1.0.0-alpha.0"
+    "select-async-paginate-model": "^1.0.0-alpha.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

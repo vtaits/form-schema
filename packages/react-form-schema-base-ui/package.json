@@ -49,8 +49,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/addon-docs": "^8.5.8",
-    "@storybook/react": "^8.5.8",
+    "@storybook/react-vite": "^9.0.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitest/coverage-v8": "^3.0.6",
@@ -65,7 +64,7 @@
   },
   "dependencies": {
     "date-fns": "^4.1.0",
-    "select-async-paginate-model": "^1.0.0-alpha.0",
-    "use-select-async-paginate": "^1.0.0-alpha.0"
+    "select-async-paginate-model": "^1.0.0-alpha.1",
+    "use-select-async-paginate": "^1.0.0-alpha.2"
   }
 }

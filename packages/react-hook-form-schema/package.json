@@ -137,8 +137,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@storybook/addon-docs": "^8.5.8",
-    "@storybook/react": "^8.5.8",
+    "@storybook/react-vite": "^9.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.10",
@@ -153,7 +152,7 @@
     "react-is": "^19.0.0",
     "react-select": "^5.10.0",
     "react-shallow-search": "^2.2.0",
-    "select-async-paginate-model": "^1.0.0-alpha.0",
+    "select-async-paginate-model": "^1.0.0-alpha.1",
     "tsup": "^8.3.6",
     "typescript": "5.7.3",
     "vitest": "^3.0.6"

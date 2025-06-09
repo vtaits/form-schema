@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MuiProvider } from "../..";
 import { CheckboxStoryComponent } from "./Checkbox";
 import { CheckboxGroupStoryComponent } from "./CheckboxGroup";
