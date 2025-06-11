@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "@vtaits/react-form-schema-ui-vkui",
   "version": "1.0.0-alpha.11",
   "description": "VKUI fields for @vtaits/form-schema",
@@ -6,13 +7,12 @@
     "dist"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
+  "module": "./dist/index.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "keywords": [
@@ -31,9 +31,7 @@
   "author": "Vadim Taits <taizvadim@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "bun run build:js && bun run build:proxy_directories",
-    "build:js": "tsup",
-    "build:proxy_directories": "exports-fallback -gf",
+    "build": "tsup",
     "test:ts": "tsc",
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",
@@ -58,7 +56,6 @@
     "@vtaits/form-schema": "^2.3.0-alpha.13",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.12",
     "@vtaits/react-hook-form-schema": "^1.2.0-alpha.17",
-    "exports-fallback": "^1.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "select-async-paginate-model": "^1.0.0-alpha.1",

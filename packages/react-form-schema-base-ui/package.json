@@ -1,19 +1,18 @@
 {
+  "type": "module",
   "name": "@vtaits/react-form-schema-base-ui",
   "version": "1.0.0-alpha.12",
   "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
   "files": [
-    "dist",
-    "fields"
+    "dist"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
+  "module": "./dist/index.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "keywords": [
@@ -32,9 +31,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "bun run build:js && bun run build:proxy_directories",
-    "build:js": "tsup",
-    "build:proxy_directories": "exports-fallback -gf",
+    "build": "tsup",
     "test:ts": "tsc",
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",
@@ -53,7 +50,6 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitest/coverage-v8": "^3.0.6",
-    "exports-fallback": "^1.0.2",
     "happy-dom": "^17.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

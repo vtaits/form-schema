@@ -1,19 +1,18 @@
 {
+  "type": "module",
   "name": "@vtaits/react-form-schema-ui-mui",
   "version": "1.0.0-alpha.12",
   "description": "Mui fields for @vtaits/form-schema",
   "files": [
-    "dist",
-    "fields"
+    "dist"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
+  "module": "./dist/index.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "keywords": [

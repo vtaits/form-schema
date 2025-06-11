@@ -22,7 +22,6 @@ export default defineConfig({
     utils: "src/utils/index.ts",
   },
   sourcemap: true,
-  format: ['esm', 'cjs'],
+  format: ['esm'],
   dts: true,
-  legacyOutput: true,
 });

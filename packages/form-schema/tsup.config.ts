@@ -18,7 +18,6 @@ export default defineConfig({
     fields_tags: "src/fields/tags/index.ts",
   },
   sourcemap: true,
-  format: ['esm', 'cjs'],
+  format: ['esm'],
   dts: true,
-  legacyOutput: true,
 });

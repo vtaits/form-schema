@@ -1,84 +1,70 @@
 {
+  "type": "module",
   "name": "@vtaits/form-schema",
   "version": "2.3.0-alpha.13",
   "description": "Serialization and parsing form values by schema",
   "files": [
-    "dist",
-    "fields"
+    "dist"
   ],
   "main": "./dist/core.js",
-  "module": "./dist/esm/core.js",
+  "module": "./dist/core.js",
   "typings": "dist/core.d.ts",
   "exports": {
     ".": {
       "types": "./dist/core.d.ts",
-      "import": "./dist/esm/core.js",
-      "require": "./dist/core.js"
+      "import": "./dist/core.js"
     },
     "./fields/asyncSelect": {
       "types": "./dist/fields_asyncSelect.d.ts",
-      "import": "./dist/esm/fields_asyncSelect.js",
-      "require": "./dist/fields_asyncSelect.js"
+      "import": "./dist/fields_asyncSelect.js"
     },
     "./fields/base": {
       "types": "./dist/fields_base.d.ts",
-      "import": "./dist/esm/fields_base.js",
-      "require": "./dist/fields_base.js"
+      "import": "./dist/fields_base.js"
     },
     "./fields/checkbox": {
       "types": "./dist/fields_checkbox.d.ts",
-      "import": "./dist/esm/fields_checkbox.js",
-      "require": "./dist/fields_checkbox.js"
+      "import": "./dist/fields_checkbox.js"
     },
     "./fields/date": {
       "types": "./dist/fields_date.d.ts",
-      "import": "./dist/esm/fields_date.js",
-      "require": "./dist/fields_date.js"
+      "import": "./dist/fields_date.js"
     },
     "./fields/datetime": {
       "types": "./dist/fields_datetime.d.ts",
-      "import": "./dist/esm/fields_datetime.js",
-      "require": "./dist/fields_datetime.js"
+      "import": "./dist/fields_datetime.js"
     },
     "./fields/date-base": {
       "types": "./dist/fields_date-base.d.ts",
-      "import": "./dist/esm/fields_date-base.js",
-      "require": "./dist/fields_date-base.js"
+      "import": "./dist/fields_date-base.js"
     },
     "./fields/dynamic": {
       "types": "./dist/fields_dynamic.d.ts",
-      "import": "./dist/esm/fields_dynamic.js",
-      "require": "./dist/fields_dynamic.js"
+      "import": "./dist/fields_dynamic.js"
     },
     "./fields/file": {
       "types": "./dist/fields_file.d.ts",
-      "import": "./dist/esm/fields_file.js",
-      "require": "./dist/fields_file.js"
+      "import": "./dist/fields_file.js"
     },
     "./fields/input": {
       "types": "./dist/fields_input.d.ts",
-      "import": "./dist/esm/fields_input.js",
-      "require": "./dist/fields_input.js"
+      "import": "./dist/fields_input.js"
     },
     "./fields/list": {
       "types": "./dist/fields_list.d.ts",
-      "import": "./dist/esm/fields_list.js",
-      "require": "./dist/fields_list.js"
+      "import": "./dist/fields_list.js"
     },
     "./fields/select": {
       "types": "./dist/fields_select.d.ts",
-      "import": "./dist/esm/fields_select.js",
-      "require": "./dist/fields_select.js"
+      "import": "./dist/fields_select.js"
     },
     "./fields/set": {
       "types": "./dist/fields_set.d.ts",
-      "import": "./dist/esm/fields_set.js",
-      "require": "./dist/fields_set.js"
+      "import": "./dist/fields_set.js"
     },
     "./fields/tags": {
       "types": "./dist/fields_tags.d.ts",
-      "import": "./dist/esm/fields_tags.js",
-      "require": "./dist/fields_tags.js"
+      "import": "./dist/fields_tags.js"
     }
   },
   "keywords": [
@@ -95,9 +81,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "bun run build:js && bun run build:proxy_directories",
-    "build:js": "tsup",
-    "build:proxy_directories": "exports-fallback -gf",
+    "build": "tsup",
     "test:ts": "tsc",
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",

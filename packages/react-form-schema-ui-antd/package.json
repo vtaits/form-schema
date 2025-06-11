@@ -1,10 +1,10 @@
 {
+  "type": "module",
   "name": "@vtaits/react-form-schema-ui-antd",
   "version": "1.0.0-alpha.10",
   "description": "Antd fields for @vtaits/form-schema",
   "files": [
-    "dist",
-    "fields"
+    "dist"
   ],
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
@@ -32,9 +32,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "bun run build:js && bun run build:proxy_directories",
-    "build:js": "tsup",
-    "build:proxy_directories": "exports-fallback -gf",
+    "build": "tsup",
     "test:ts": "tsc",
     "lint": "biome check src",
     "lint:fix": "biome check src --write --unsafe",
@@ -59,7 +57,6 @@
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.12",
     "@vtaits/react-hook-form-schema": "^1.2.0-alpha.17",
     "antd": "5.24.1",
-    "exports-fallback": "^1.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tsup": "^8.3.6",
