@@ -16,15 +16,13 @@ import type { SetSchema } from "../fields/set";
 import type { TagsSchema } from "../fields/tags";
 import type { TextAreaSchema } from "../fields/textarea";
 
-export type DefaultFieldSchema<
-	FieldSchema,
+export type BuiltInFieldSchema<
 	Values extends Record<string, any> = Record<string, any>,
 	RawValues extends Record<string, any> = Record<string, any>,
 	SerializedValues extends Record<string, any> = Record<string, any>,
 	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
 > =
-	| FieldSchema
 	| (AsyncMultiSelectSchema & {
 			type: "asyncMultiSelect";
 	  })
@@ -73,3 +71,14 @@ export type DefaultFieldSchema<
 	| (TextAreaSchema & {
 			type: "textarea";
 	  });
+
+export type DefaultFieldSchema<
+	FieldSchema,
+	Values extends Record<string, any> = Record<string, any>,
+	RawValues extends Record<string, any> = Record<string, any>,
+	SerializedValues extends Record<string, any> = Record<string, any>,
+	Errors extends Record<string, any> = Record<string, any>,
+	Payload = any,
+> =
+	| FieldSchema
+	| BuiltInFieldSchema<Values, RawValues, SerializedValues, Errors, Payload>;

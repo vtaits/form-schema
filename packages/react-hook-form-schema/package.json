@@ -5,7 +5,8 @@
   "files": [
     "dist",
     "fields",
-    "form"
+    "form",
+    "utils"
   ],
   "main": "./dist/core.js",
   "module": "./dist/esm/core.js",
@@ -95,6 +96,11 @@
       "types": "./dist/form.d.ts",
       "import": "./dist/esm/form.js",
       "require": "./dist/form.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/esm/utils.js",
+      "require": "./dist/utils.js"
     }
   },
   "keywords": [

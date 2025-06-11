@@ -19,6 +19,7 @@ export default defineConfig({
     fields_tags: "src/fields/tags/index.ts",
     fields_textarea: "src/fields/textarea/index.ts",
     form: "src/form/index.ts",
+    utils: "src/utils/index.ts",
   },
   sourcemap: true,
   format: ['esm', 'cjs'],
