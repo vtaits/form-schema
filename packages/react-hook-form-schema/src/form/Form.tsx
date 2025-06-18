@@ -14,6 +14,7 @@ import {
 	type FieldType,
 	type OnSubmit,
 	type RenderField,
+	type UseFormSchemaReturn,
 	useFormSchema,
 } from "../core";
 import { renderError } from "../fields/base/renderError";
@@ -26,8 +27,18 @@ type AsyncDefaultValues<TFieldValues> = (
 
 export type RenderProps<
 	Values extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
+	TContext = any,
 > = Readonly<{
+	formApi: UseFormSchemaReturn<
+		Values,
+		SerializedValues,
+		Errors,
+		Payload,
+		TContext
+	>;
 	names: readonly string[];
 	isSubmitting: boolean;
 	renderField: RenderField<Values, Payload>;
@@ -36,8 +47,14 @@ export type RenderProps<
 
 export function defaultRenderFields<
 	Values extends FieldValues = FieldValues,
+	SerializedValues extends FieldValues = FieldValues,
+	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
->({ names, renderField }: RenderProps<Values, Payload>) {
+	TContext = any,
+>({
+	names,
+	renderField,
+}: RenderProps<Values, SerializedValues, Errors, Payload, TContext>) {
 	return (
 		<>
 			{names.map((name) => (
@@ -93,11 +110,27 @@ export type FormProps<
 	/**
 	 *
 	 */
-	renderActions?: (renderProps: RenderProps<Values, Payload>) => ReactNode;
+	renderActions?: (
+		renderProps: RenderProps<
+			Values,
+			SerializedValues,
+			Errors,
+			Payload,
+			TContext
+		>,
+	) => ReactNode;
 	/**
 	 *
 	 */
-	renderFields?: (renderProps: RenderProps<Values, Payload>) => ReactNode;
+	renderFields?: (
+		renderProps: RenderProps<
+			Values,
+			SerializedValues,
+			Errors,
+			Payload,
+			TContext
+		>,
+	) => ReactNode;
 	/**
 	 *
 	 */
@@ -211,17 +244,19 @@ export function Form<
 		[fieldTypes],
 	);
 
-	const {
-		formState: { errors, isSubmitting },
-		handleSubmit,
-		renderField,
-		setError,
-	} = useFormSchema({
+	const formApi = useFormSchema({
 		defaultValues,
 		getFieldSchema,
 		getFieldType,
 		names,
 	});
+
+	const {
+		formState: { errors, isSubmitting },
+		handleSubmit,
+		renderField,
+		setError,
+	} = formApi;
 
 	const onSubmit = useCallback<OnSubmit<Values, SerializedValues, Errors>>(
 		async (
@@ -255,7 +290,14 @@ export function Form<
 
 	const submitHandler = handleSubmit(onSubmit);
 
-	const renderProps: RenderProps<Values, Payload> = {
+	const renderProps: RenderProps<
+		Values,
+		SerializedValues,
+		Errors,
+		Payload,
+		TContext
+	> = {
+		formApi,
 		names,
 		onSubmit: submitHandler,
 		renderField,
