@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@vtaits/react-form-schema-ui-mui",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "description": "Mui fields for @vtaits/form-schema",
   "files": [
     "dist"
@@ -58,7 +58,7 @@
     "@types/react-dom": "^19.0.4",
     "@vtaits/form-schema": "^2.3.0-alpha.13",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.12",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.17",
+    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tsup": "^8.3.6",
