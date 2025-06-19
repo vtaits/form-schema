@@ -11,8 +11,6 @@ import type {
 
 type Values = Record<string, any>;
 
-type ParserArgs = Parameters<Parser<any, any, any, any, any>>;
-
 const fieldSchemas: Record<string | number | symbol, unknown> = {
 	value: {
 		type: "testType",

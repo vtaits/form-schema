@@ -1,7 +1,7 @@
 import { format } from "date-fns/format";
 import { isValid } from "date-fns/isValid";
 import { parse } from "date-fns/parse";
-import { type ReactNode, createContext, useCallback, useMemo } from "react";
+import { createContext, type ReactNode, useMemo } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 import { useSelectAsyncPaginate } from "use-select-async-paginate";
 import type {
@@ -28,9 +28,7 @@ function AsyncOptions<OptionType, Additional>({
 	getOptionValue: (option: OptionType) => string | number;
 	loadOptions: LoadOptions<OptionType, Additional>;
 	selectedValuesSet?: Set<string | number>;
-	render: (children: {
-		children: ReactNode;
-	}) => ReactNode;
+	render: (children: { children: ReactNode }) => ReactNode;
 }) {
 	const [currentCache, _model] = useSelectAsyncPaginate({
 		autoload: true,
@@ -90,6 +88,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 			loadOptions={loadOptions}
 			render={({ children }) => (
 				<select
+					autoFocus={autoFocus}
 					disabled={disabled}
 					name={name}
 					onChange={(event) => {
@@ -136,6 +135,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 				selectedValuesSet={selectedValuesSet}
 				render={({ children }) => (
 					<select
+						autoFocus={autoFocus}
 						disabled={disabled}
 						multiple
 						name={name}
@@ -172,6 +172,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	}) => (
 		<label>
 			<input
+				autoFocus={autoFocus}
 				disabled={disabled}
 				name={name}
 				type="checkbox"
@@ -235,6 +236,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 	renderDatePicker: ({ disabled, inputProps, autoFocus, onChange, value }) => (
 		<input
+			autoFocus={autoFocus}
 			disabled={disabled}
 			{...inputProps}
 			type="date"
@@ -267,6 +269,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		value,
 	}) => (
 		<input
+			autoFocus={autoFocus}
 			disabled={disabled}
 			{...inputProps}
 			type="datetime-local"
@@ -357,6 +360,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 			return (
 				<>
 					<input
+						autoFocus={autoFocus}
 						list={`${name}-datalist`}
 						name={name}
 						disabled={disabled}
@@ -388,7 +392,12 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	},
 
 	renderListAddButton: ({ children, onClick, disabled }) => (
-		<button data-testid="@@list/add" type="button" onClick={onClick}>
+		<button
+			disabled={disabled}
+			data-testid="@@list/add"
+			type="button"
+			onClick={onClick}
+		>
 			{children}
 		</button>
 	),
@@ -484,6 +493,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 		return (
 			<select
+				autoFocus={autoFocus}
 				disabled={disabled}
 				multiple
 				name={name}
@@ -570,6 +580,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		getOptionValue,
 	}) => (
 		<select
+			autoFocus={autoFocus}
 			disabled={disabled}
 			name={name}
 			onChange={(event) => {
@@ -597,6 +608,7 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 
 	renderTags: ({ disabled, autoFocus, name, onChange, value }) => (
 		<input
+			autoFocus={autoFocus}
 			disabled={disabled}
 			name={name}
 			onChange={(event) => {
@@ -607,7 +619,12 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 	),
 
 	renderTextArea: ({ disabled, autoFocus, name, textAreaProps }) => (
-		<textarea disabled={disabled} name={name} {...textAreaProps} />
+		<textarea
+			autoFocus={autoFocus}
+			disabled={disabled}
+			name={name}
+			{...textAreaProps}
+		/>
 	),
 
 	renderWrapper: ({ children, error, hint, label, name, required }) => (

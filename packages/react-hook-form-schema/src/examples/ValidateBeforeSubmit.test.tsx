@@ -6,8 +6,8 @@ import {
 	create,
 } from "react-integration-test-engine";
 import { afterEach, expect, test } from "vitest";
-import { ValidateBeforeSubmit } from "./ValidateBeforeSubmit";
 import { changeInput } from "./testing/scenarios";
+import { ValidateBeforeSubmit } from "./ValidateBeforeSubmit";
 
 const animalRequiredField: AccessorParamsType = {
 	query: AccessorQueryType.Text,

@@ -1,15 +1,15 @@
 import type { FieldType as FieldTypeBase } from "@vtaits/form-schema";
 import {
+	asyncSelect as asyncSelectBase,
 	DEFAULT_LABEL_KEY,
 	DEFAULT_VALUE_KEY,
-	asyncSelect as asyncSelectBase,
 } from "@vtaits/form-schema/fields/asyncSelect";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import { type ReactElement, useMemo } from "react";
-import { get } from "react-hook-form";
 import {
 	Controller,
 	type FieldValues,
+	get,
 	type UseFormReturn,
 } from "react-hook-form";
 import type { FieldType, RenderParams } from "../../core";

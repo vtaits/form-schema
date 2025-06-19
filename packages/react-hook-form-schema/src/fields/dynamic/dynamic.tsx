@@ -1,5 +1,4 @@
 import { dynamic as dynamicBase } from "@vtaits/form-schema/fields/dynamic";
-import type { UseFormReturn } from "react-hook-form";
 import type { FieldType } from "../../core";
 import { DynamicField } from "./DynamicField";
 import type { DynamicSchema } from "./schema";

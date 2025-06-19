@@ -1,6 +1,5 @@
 import {
 	type CreateGetFieldSchemaParams,
-	type FieldSchemaBase,
 	type FieldType,
 	type GetFieldSchema,
 	parse,

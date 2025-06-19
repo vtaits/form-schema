@@ -57,11 +57,7 @@ export const loadOptions: LoadOptions<unknown, unknown> = async (
 	};
 };
 
-export function Simple({
-	required,
-}: {
-	required: boolean;
-}): ReactElement {
+export function Simple({ required }: { required: boolean }): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any

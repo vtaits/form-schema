@@ -1,9 +1,5 @@
 import { cleanup } from "@testing-library/react";
-import {
-	AccessorParamsType,
-	AccessorQueryType,
-	create,
-} from "react-integration-test-engine";
+import { AccessorQueryType, create } from "react-integration-test-engine";
 import { afterEach, expect, test } from "vitest";
 import { Dynamic } from "./Dynamic";
 import { changeInput } from "./testing/scenarios";

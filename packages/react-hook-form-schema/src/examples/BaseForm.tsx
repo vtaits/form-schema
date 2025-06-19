@@ -52,11 +52,7 @@ export const loadOptions: LoadOptions<unknown, unknown> = async (
 	};
 };
 
-export function BaseForm({
-	required,
-}: {
-	required: boolean;
-}): ReactElement {
+export function BaseForm({ required }: { required: boolean }): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any

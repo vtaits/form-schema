@@ -5,8 +5,7 @@ import type {
 	GetFieldSchema,
 	ParentType,
 } from "@vtaits/form-schema";
-import type { ReactNode } from "react";
-import type { BaseSyntheticEvent } from "react";
+import type { BaseSyntheticEvent, ReactNode } from "react";
 import type {
 	FieldValues,
 	Path,

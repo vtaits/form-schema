@@ -1,12 +1,12 @@
-import { type Locator, type Page, expect } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import { waitForClosePopper, waitForOpenPopper } from "./autocompletePopper";
 import { getInput } from "./input";
 import type { IFieldOptions } from "./types";
 
 export {
+	checkInputSuggestions as checkTagsSuggestions,
 	getInput as getTags,
 	getInputWithSuggestionsWrapper as getTagsWrapper,
-	checkInputSuggestions as checkTagsSuggestions,
 } from "./input";
 
 export async function addTagsValue(

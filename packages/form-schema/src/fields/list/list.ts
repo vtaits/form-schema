@@ -9,7 +9,7 @@ import {
 	setFieldErrors,
 	validateBeforeSubmit,
 } from "../../core";
-import { type ErrorMessages, defaultErrorMessages } from "../base";
+import { defaultErrorMessages, type ErrorMessages } from "../base";
 import type { ListSchema } from "./schema";
 
 function prepareValue(value: unknown): readonly unknown[] {

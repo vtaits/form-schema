@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 import {
 	addTagsValue,
 	getFieldError,
-	getTags,
 	getTagsValue,
 	getTagsWrapper,
 	removeTagsChip,

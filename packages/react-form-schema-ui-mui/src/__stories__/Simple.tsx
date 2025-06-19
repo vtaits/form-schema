@@ -13,11 +13,7 @@ const delay = (ms: number): Promise<void> =>
 		}, ms);
 	});
 
-export function Simple({
-	required,
-}: {
-	required: boolean;
-}): ReactElement {
+export function Simple({ required }: { required: boolean }): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any

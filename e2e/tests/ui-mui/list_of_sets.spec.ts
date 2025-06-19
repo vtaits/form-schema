@@ -11,7 +11,9 @@ import {
 	setInputValue,
 	toggleCheckbox,
 } from "@vtaits/react-form-schema-ui-mui-playwright";
+
 import exp = require("node:constants");
+
 import {
 	getResult,
 	getSubmitButton,
@@ -344,7 +346,7 @@ test.describe("validation", () => {
 			}),
 		);
 
-		const listBlock1 = getListBlock(page, fieldOptions, 0);
+		const _listBlock1 = getListBlock(page, fieldOptions, 0);
 
 		await addListBlock(page, fieldOptions);
 		await addListBlock(page, fieldOptions);

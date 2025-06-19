@@ -1,4 +1,4 @@
-import { type Page, expect } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 function getMenuByName(page: Page, name: string) {
 	return page.locator(`[id="menu-${name}"]`);

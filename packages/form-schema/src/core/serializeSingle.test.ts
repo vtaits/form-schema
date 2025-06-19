@@ -266,8 +266,9 @@ describe("serializeSingle", () => {
 
 				getFieldType: ({
 					type,
-				}: { type: string }): FieldType<any, any, any, any, any> =>
-					fieldTypes[type],
+				}: {
+					type: string;
+				}): FieldType<any, any, any, any, any> => fieldTypes[type],
 
 				parents,
 			}),

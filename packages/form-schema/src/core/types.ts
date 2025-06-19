@@ -15,7 +15,7 @@ export type GetFieldType<
 
 export type PhaseType = "parse" | "serialize" | "render";
 
-export type SetError<Values extends BaseValues> = (
+export type SetError<_Values extends BaseValues> = (
 	name: NameType,
 	parents: readonly ParentType[] | undefined,
 	error: unknown,

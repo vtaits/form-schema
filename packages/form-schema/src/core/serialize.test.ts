@@ -9,8 +9,6 @@ import type {
 	Serializer,
 } from "./types";
 
-type SerializerArgs = Parameters<Serializer<any, any, any, any, any>>;
-
 const parents: ParentType[] = [
 	{
 		values: {},
@@ -322,8 +320,9 @@ describe("serialize", () => {
 
 				getFieldType: ({
 					type,
-				}: { type: string }): FieldType<any, any, any, any, any> =>
-					fieldTypes[type],
+				}: {
+					type: string;
+				}): FieldType<any, any, any, any, any> => fieldTypes[type],
 
 				parents,
 			}),

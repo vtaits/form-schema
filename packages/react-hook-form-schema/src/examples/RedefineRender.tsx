@@ -1,8 +1,4 @@
-import type {
-	FieldSchemaBase,
-	GetFieldSchema,
-	NameType,
-} from "@vtaits/form-schema";
+import type { GetFieldSchema, NameType } from "@vtaits/form-schema";
 import { type ReactElement, useState } from "react";
 import {
 	type FieldSchemaWithRenderBase,

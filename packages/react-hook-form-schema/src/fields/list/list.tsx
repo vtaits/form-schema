@@ -5,9 +5,9 @@ import type { FieldType as FieldTypeBase } from "@vtaits/form-schema";
 import { list as listBase } from "@vtaits/form-schema/fields/list";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import { Fragment, type ReactElement } from "react";
-import { get } from "react-hook-form";
 import {
 	type FieldValues,
+	get,
 	type UseFormReturn,
 	useFieldArray,
 } from "react-hook-form";

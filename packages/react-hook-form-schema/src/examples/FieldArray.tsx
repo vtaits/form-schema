@@ -8,11 +8,11 @@ import {
 	setFieldErrors,
 } from "@vtaits/form-schema";
 import { Fragment, type ReactElement, useState } from "react";
-import { get } from "react-hook-form";
 import {
 	type ArrayPath,
 	type FieldArray as FieldArrayType,
 	type FieldValues,
+	get,
 	type Path,
 	type UseFormReturn,
 	useFieldArray,
@@ -331,7 +331,7 @@ const fieldTypes: Record<
 
 	input: {
 		render: (
-			{ name: nameProp, fieldSchema, payload, parents },
+			{ name: nameProp, fieldSchema, payload },
 			{ formState: { errors }, register },
 		) => {
 			const { label, placeholder } = fieldSchema as InputSchema;
@@ -476,7 +476,7 @@ export function FieldArray(): ReactElement {
 	};
 
 	const {
-		formState: { isSubmitting, errors },
+		formState: { isSubmitting },
 		handleSubmit,
 		renderField,
 	} = useFormSchema({

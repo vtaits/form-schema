@@ -1,5 +1,5 @@
 import type { FieldType } from "../../core";
-import { type ErrorMessages, defaultErrorMessages } from "../base";
+import { defaultErrorMessages, type ErrorMessages } from "../base";
 import type { TagsSchema } from "./schema";
 
 export function prepareValue(rawValue: unknown) {

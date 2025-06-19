@@ -1,6 +1,6 @@
 import { UTCDate } from "@date-fns/utc";
 import type { FieldType } from "../../core";
-import { type ErrorMessages, defaultErrorMessages } from "../base";
+import { defaultErrorMessages, type ErrorMessages } from "../base";
 import { parseValueAndValidate, serializeDate } from "../date-base";
 import {
 	DEFAULT_CLIENT_DATE_FORMAT,

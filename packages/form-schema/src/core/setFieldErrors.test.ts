@@ -162,34 +162,14 @@ describe("setFieldErrors", () => {
 
 		const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 			testType1: {
-				errorsSetter: ({
-					setError: setErrorCb,
-					errors,
-					name,
-					fieldSchema,
-					getFieldSchema: computedGetFieldSchema,
-					getFieldType,
-					values,
-					rawValues,
-					parents,
-				}) => {
+				errorsSetter: ({ setError: setErrorCb, errors, name, parents }) => {
 					setErrorCb(name, parents, [
 						errors[name][0] + errors[name][0] + errors[name][0],
 					]);
 				},
 			},
 			testType2: {
-				errorsSetter: ({
-					setError: setErrorCb,
-					errors,
-					name,
-					fieldSchema,
-					getFieldSchema: computedGetFieldSchema,
-					getFieldType,
-					values,
-					rawValues,
-					parents,
-				}) => {
+				errorsSetter: ({ setError: setErrorCb, errors, name, parents }) => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
 				},
 			},
@@ -208,8 +188,9 @@ describe("setFieldErrors", () => {
 			}),
 			getFieldType: ({
 				type,
-			}: { type: string }): FieldType<any, any, any, any, any> =>
-				fieldTypes[type],
+			}: {
+				type: string;
+			}): FieldType<any, any, any, any, any> => fieldTypes[type],
 			values: {},
 			rawValues: {},
 			parents,
@@ -268,11 +249,8 @@ describe("setFieldErrors", () => {
 		const fieldTypes: Record<string, FieldType<any, any, any, any, any>> = {
 			wrapper: {
 				errorsSetter: ({
-					setError: setErrorCb,
 					errors,
-					name,
 					fieldSchema: { childNames, childs },
-					getFieldSchema,
 					getFieldType,
 				}) => {
 					setFieldErrors({
@@ -292,17 +270,7 @@ describe("setFieldErrors", () => {
 			},
 
 			testType1: {
-				errorsSetter: ({
-					setError: setErrorCb,
-					errors,
-					name,
-					fieldSchema,
-					getFieldSchema: computedGetFieldSchema,
-					getFieldType,
-					values,
-					rawValues,
-					parents,
-				}) => {
+				errorsSetter: ({ setError: setErrorCb, errors, name, parents }) => {
 					setErrorCb(name, parents, [
 						errors[name][0] + errors[name][0] + errors[name][0],
 					]);
@@ -310,17 +278,7 @@ describe("setFieldErrors", () => {
 			},
 
 			testType2: {
-				errorsSetter: ({
-					setError: setErrorCb,
-					errors,
-					name,
-					fieldSchema,
-					getFieldSchema: computedGetFieldSchema,
-					getFieldType,
-					values,
-					rawValues,
-					parents,
-				}) => {
+				errorsSetter: ({ setError: setErrorCb, errors, name, parents }) => {
 					setErrorCb(name, parents, [errors[name][0] + errors[name][0]]);
 				},
 			},
@@ -344,8 +302,9 @@ describe("setFieldErrors", () => {
 
 			getFieldType: ({
 				type,
-			}: { type: string }): FieldType<any, any, any, any, any> =>
-				fieldTypes[type],
+			}: {
+				type: string;
+			}): FieldType<any, any, any, any, any> => fieldTypes[type],
 
 			values: {},
 			rawValues: {},

@@ -1,13 +1,8 @@
 import { waitFor } from "@testing-library/dom";
 import { cleanup } from "@testing-library/react";
-import {
-	AccessorParamsType,
-	AccessorQueryType,
-	create,
-} from "react-integration-test-engine";
+import { AccessorQueryType, create } from "react-integration-test-engine";
 import { afterEach, expect, test } from "vitest";
 import { FormError } from "./FormError";
-import { changeInput } from "./testing/scenarios";
 
 const render = create(
 	FormError,

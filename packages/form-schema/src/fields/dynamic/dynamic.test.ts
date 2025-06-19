@@ -683,7 +683,7 @@ describe("validatorBeforeSubmit", () => {
 			field2: "value2",
 		};
 
-		const result = validatorBeforeSubmit({
+		const _result = validatorBeforeSubmit({
 			setError,
 			setCurrentError,
 			value: null,

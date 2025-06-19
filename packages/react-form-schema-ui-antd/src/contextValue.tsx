@@ -478,6 +478,7 @@ export const contextValue: BaseUIContextValue = {
 	renderTags: ({ disabled, autoFocus, options, onChange, value }) => (
 		<Select
 			autoFocus={autoFocus}
+			value={value}
 			disabled={disabled}
 			mode="tags"
 			onChange={onChange}
