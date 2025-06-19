@@ -2,6 +2,7 @@
 
 - Added built-in field `list`
 - Added `fieldPath` render parameter
+- Added `renderPath` param to `set` field payload
 
 ## 1.1.0 (26 nov 2023)
 

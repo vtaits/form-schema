@@ -14,6 +14,26 @@ import {
 import { defaultRender } from "./defaultRender";
 import type { SetSchema } from "./schema";
 
+function getRenderPath(payload: unknown) {
+	if (!payload) {
+		return null;
+	}
+
+	const renderPath = (payload as Record<string, unknown>).renderPath;
+
+	if (!Array.isArray(renderPath)) {
+		return null;
+	}
+
+	if (typeof renderPath[0] !== "string") {
+		throw new Error(
+			`[set] \`renderPath\` should be an array of strings, received: \`${renderPath[0]}\``,
+		);
+	}
+
+	return renderPath as string[];
+}
+
 export type SetFieldProps<
 	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues,
@@ -49,6 +69,7 @@ export function SetField<
 		getFieldSchema,
 		getFieldType,
 		name: nameParam,
+		payload,
 		parents,
 	},
 	formResult,
@@ -96,6 +117,17 @@ export function SetField<
 						payload,
 						providedParents,
 					);
+
+				const renderPath = getRenderPath(payload);
+
+				if (renderPath) {
+					const [fieldName, ...restPath] = renderPath;
+
+					return renderField(fieldName, {
+						...payload,
+						renderPath: restPath,
+					} as Payload) as ReactElement;
+				}
 
 				return renderSet(renderField, names) as ReactElement;
 			}}

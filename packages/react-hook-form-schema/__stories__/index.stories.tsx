@@ -8,6 +8,7 @@ import { SerializerAndParser } from '../src/examples/SerializerAndParser';
 import { Simple } from '../src/examples/Simple';
 import { RedefineRender } from '../src/examples/RedefineRender';
 import { ValidateBeforeSubmit } from '../src/examples/ValidateBeforeSubmit';
+import { PartialRender } from '../src/examples/PartialRender';
 
 const meta: Meta = {
   title: 'react-hook-form-schema',
@@ -71,4 +72,10 @@ export const RedefineRenderStory: Story = {
   name: 'Redefine render',
   args: {},
   render: (props) => <RedefineRender {...props} />
+};
+
+export const PartialRenderStory: Story = {
+  name: 'Partial render',
+  args: {},
+  render: () => <PartialRender />
 };
