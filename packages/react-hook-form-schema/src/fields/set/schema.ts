@@ -11,5 +11,6 @@ export type SetSchema<
 	renderSet?: (
 		renderField: RenderField<Values, Payload>,
 		names: readonly string[],
+		excludePaths: readonly string[][] | undefined,
 	) => ReactNode;
 };

@@ -129,7 +129,12 @@ export function SetField<
 					} as Payload) as ReactElement;
 				}
 
-				return renderSet(renderField, names) as ReactElement;
+				return renderSet(
+					renderField,
+					names,
+					(payload as Record<string, unknown>)
+						?.excludePaths as readonly string[][],
+				) as ReactElement;
 			}}
 		/>
 	);
