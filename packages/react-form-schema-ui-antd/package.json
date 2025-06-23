@@ -55,7 +55,7 @@
     "@types/react-dom": "^19.1.6",
     "@vtaits/form-schema": "^2.3.0-alpha.13",
     "@vtaits/react-form-schema-base-ui": "^1.0.0-alpha.12",
-    "@vtaits/react-hook-form-schema": "^1.2.0-alpha.19",
+    "@vtaits/react-hook-form-schema": "^1.2.0",
     "antd": "5.26.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
