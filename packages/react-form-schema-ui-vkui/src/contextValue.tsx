@@ -389,7 +389,23 @@ export const contextValue: BaseUIContextValue = {
 	}) => {
 		return (
 			<FormItem
-				top={label}
+				top={
+					required ? (
+						<>
+							{label}
+
+							<span
+								style={{
+									color: "#e64646",
+								}}
+							>
+								{" *"}
+							</span>
+						</>
+					) : (
+						label
+					)
+				}
 				bottom={
 					<>
 						{hint && (
@@ -583,7 +599,23 @@ export const contextValue: BaseUIContextValue = {
 	renderWrapper: ({ children, error, hint, label, required }) => {
 		return (
 			<FormItem
-				top={label}
+				top={
+					required ? (
+						<>
+							{label}
+
+							<span
+								style={{
+									color: "#e64646",
+								}}
+							>
+								{" *"}
+							</span>
+						</>
+					) : (
+						label
+					)
+				}
 				bottom={error}
 				status={error ? "error" : undefined}
 				required={required}
