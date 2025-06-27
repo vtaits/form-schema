@@ -1,4 +1,12 @@
+## 1.3.0
+
+### New features
+
+- Added functions to result: `parseValues`, `setValues`
+
 ## 1.2.0
+
+### New features
 
 - Added built-in field `list`
 - Added `fieldPath` render parameter

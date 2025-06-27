@@ -30,6 +30,58 @@ export const defaultGetFieldSchema: GetFieldSchema<any> = (fieldSchema) =>
 	fieldSchema;
 export const defaultMapErrors: MapErrors = (errors) => errors;
 
+function setFormValues(
+	parent: string | null,
+	values: readonly unknown[] | Record<string, unknown>,
+	setValue: (name: string, value: unknown) => void,
+) {
+	if (Array.isArray(values)) {
+		for (let index = 0; index < values.length; ++index) {
+			const accName = parent ? `${parent}[${index}]` : `${index}`;
+
+			const value = values[index];
+
+			if (typeof value === "object") {
+				if (!value) {
+					setValue(accName, value);
+					continue;
+				}
+
+				setFormValues(
+					accName,
+					value as readonly unknown[] | Record<string, unknown>,
+					setValue,
+				);
+				continue;
+			}
+
+			setValue(accName, value);
+		}
+
+		return;
+	}
+
+	for (const [name, value] of Object.entries(values)) {
+		const accName = parent ? `${parent}.${name}` : name;
+
+		if (typeof value === "object") {
+			if (!value) {
+				setValue(accName, value);
+				continue;
+			}
+
+			setFormValues(
+				accName,
+				value as readonly unknown[] | Record<string, unknown>,
+				setValue,
+			);
+			continue;
+		}
+
+		setValue(accName, value);
+	}
+}
+
 export function useFormSchema<
 	FieldSchema extends FieldSchemaWithRenderBase,
 	Values extends FieldValues = FieldValues,
@@ -48,7 +100,14 @@ export function useFormSchema<
 		Payload,
 		TContext
 	>,
-): UseFormSchemaReturn<Values, SerializedValues, Errors, Payload, TContext> {
+): UseFormSchemaReturn<
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors,
+	Payload,
+	TContext
+> {
 	const {
 		defaultValues,
 		getFieldSchema = defaultGetFieldSchema as GetFieldSchema<FieldSchema>,
@@ -58,47 +117,42 @@ export function useFormSchema<
 		...rest
 	} = props;
 
+	const parseValues = useCallback(
+		(values: RawValues) =>
+			parse({
+				values,
+				names,
+				getFieldSchema,
+				getFieldType,
+				parents: [
+					{
+						values,
+					},
+				],
+			}),
+		[getFieldSchema, getFieldType, names],
+	);
+
 	const parsedDefaultValues = useMemo(() => {
 		if (typeof defaultValues === "function") {
 			const asyncDefaultValues = defaultValues as () => Promise<RawValues>;
 
 			return () =>
 				asyncDefaultValues().then(
-					(rawInitialValues) =>
-						(parse({
-							values: rawInitialValues,
-							names,
-							getFieldSchema,
-							getFieldType,
-							parents: [
-								{
-									values: rawInitialValues,
-								},
-							],
-						}) || {}) as Values,
+					(rawInitialValues) => (parseValues(rawInitialValues) || {}) as Values,
 				);
 		}
 
 		const rawInitialValues = defaultValues || {};
 
-		const parseResult = parse({
-			values: rawInitialValues as RawValues,
-			names,
-			getFieldSchema,
-			getFieldType,
-			parents: [
-				{
-					values: rawInitialValues as RawValues,
-				},
-			],
-		});
+		const parseResult = parseValues(rawInitialValues as RawValues);
 
 		if (isPromise(parseResult)) {
 			return () => parseResult;
 		}
 
 		return (parseResult as DefaultValues<Values>) || undefined;
-	}, [defaultValues, names, getFieldSchema, getFieldType]);
+	}, [defaultValues, parseValues]);
 
 	const formResult = useForm<Values, TContext, Values>({
 		...rest,
@@ -107,7 +161,20 @@ export function useFormSchema<
 
 	const { handleSubmit, ...restResult } = formResult;
 
-	const { getValues, setError } = restResult;
+	const { getValues, setValue, setError } = restResult;
+
+	const setValues = useCallback(
+		async (rawValues: RawValues) => {
+			const values = await parseValues(rawValues);
+
+			setFormValues(
+				null,
+				values,
+				setValue as (name: string, value: unknown) => void,
+			);
+		},
+		[parseValues, setValue],
+	);
 
 	const onSubmitBySchema = useCallback(
 		async (
@@ -219,6 +286,8 @@ export function useFormSchema<
 	return {
 		...restResult,
 		handleSubmit: handleSubmitBySchema,
+		parseValues,
+		setValues,
 		renderField,
 	};
 }

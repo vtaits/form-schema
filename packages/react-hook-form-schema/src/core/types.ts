@@ -195,6 +195,7 @@ export type RenderField<
 
 export type UseFormSchemaReturn<
 	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,
 	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
@@ -202,6 +203,8 @@ export type UseFormSchemaReturn<
 > = Readonly<
 	Omit<UseFormReturn<Values, TContext, Values>, "handleSubmit"> & {
 		handleSubmit: HandleSubmitBySchema<Values, SerializedValues, Errors>;
+		parseValues: (values: RawValues) => Values | Promise<Values>;
+		setValues: (rawValues: RawValues) => Promise<void>;
 		renderField: RenderField<Values, Payload>;
 	}
 >;

@@ -1,4 +1,4 @@
-import type { NameType } from "@vtaits/form-schema";
+import type { GetFieldSchema, NameType } from "@vtaits/form-schema";
 import { useUI } from "@vtaits/react-form-schema-base-ui";
 import {
 	type BaseSyntheticEvent,
@@ -12,6 +12,7 @@ import type { DefaultValues, FieldValues } from "react-hook-form";
 import {
 	type FieldSchemaWithRenderBase,
 	type FieldType,
+	type GetFieldType,
 	type OnSubmit,
 	type RenderField,
 	type UseFormSchemaReturn,
@@ -26,7 +27,9 @@ type AsyncDefaultValues<TFieldValues> = (
 ) => Promise<TFieldValues>;
 
 export type RenderProps<
+	FieldSchema,
 	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,
 	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
@@ -34,6 +37,17 @@ export type RenderProps<
 > = Readonly<{
 	formApi: UseFormSchemaReturn<
 		Values,
+		RawValues,
+		SerializedValues,
+		Errors,
+		Payload,
+		TContext
+	>;
+	getFieldSchema: GetFieldSchema<FieldSchema>;
+	getFieldType: GetFieldType<
+		FieldSchema,
+		Values,
+		RawValues,
 		SerializedValues,
 		Errors,
 		Payload,
@@ -46,7 +60,9 @@ export type RenderProps<
 }>;
 
 export function defaultRenderFields<
+	FieldSchema,
 	Values extends FieldValues = FieldValues,
+	RawValues extends FieldValues = FieldValues,
 	SerializedValues extends FieldValues = FieldValues,
 	Errors extends Record<string, any> = Record<string, any>,
 	Payload = any,
@@ -54,7 +70,15 @@ export function defaultRenderFields<
 >({
 	names,
 	renderField,
-}: RenderProps<Values, SerializedValues, Errors, Payload, TContext>) {
+}: RenderProps<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors,
+	Payload,
+	TContext
+>) {
 	return (
 		<>
 			{names.map((name) => (
@@ -112,7 +136,9 @@ export type FormProps<
 	 */
 	renderActions?: (
 		renderProps: RenderProps<
+			FieldSchema,
 			Values,
+			RawValues,
 			SerializedValues,
 			Errors,
 			Payload,
@@ -124,7 +150,9 @@ export type FormProps<
 	 */
 	renderFields?: (
 		renderProps: RenderProps<
+			FieldSchema,
 			Values,
+			RawValues,
 			SerializedValues,
 			Errors,
 			Payload,
@@ -190,7 +218,7 @@ export function Form<
 	const { renderForm } = useUI();
 
 	const getFieldSchema = useCallback(
-		(name: NameType) => schemas[name],
+		(name: NameType) => schemas[name] as FieldSchema,
 		[schemas],
 	);
 
@@ -291,13 +319,25 @@ export function Form<
 	const submitHandler = handleSubmit(onSubmit);
 
 	const renderProps: RenderProps<
+		FieldSchema,
 		Values,
+		RawValues,
 		SerializedValues,
 		Errors,
 		Payload,
 		TContext
 	> = {
 		formApi,
+		getFieldSchema,
+		getFieldType: getFieldType as GetFieldType<
+			FieldSchema,
+			Values,
+			RawValues,
+			SerializedValues,
+			Errors,
+			Payload,
+			TContext
+		>,
 		names,
 		onSubmit: submitHandler,
 		renderField,
