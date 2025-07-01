@@ -328,12 +328,7 @@ export const contextValue: BaseUIContextValue = {
 				data-testid={`@@list/${name}`}
 				required={required}
 			>
-				<Flex
-					gap="middle"
-					vertical
-					// biome-ignore lint/a11y/useSemanticElements: avoid excess styles
-					role="list"
-				>
+				<Flex gap="middle" vertical role="list">
 					{items}
 				</Flex>
 

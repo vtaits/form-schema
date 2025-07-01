@@ -1,5 +1,5 @@
 import type { TextFieldVariants } from "@mui/material";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { BaseUIContext } from "@vtaits/react-form-schema-base-ui";
 import { type PropsWithChildren, type ReactElement, useMemo } from "react";
