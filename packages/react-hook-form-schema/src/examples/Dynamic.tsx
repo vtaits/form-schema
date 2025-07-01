@@ -74,7 +74,7 @@ const fullSchema: Record<string, FieldSchema> = {
 	lastName: {
 		type: "dynamic",
 
-		getSchema: ({ firstName }: { firstName?: string }) => ({
+		getSchema: ({ values: { firstName } }) => ({
 			type: "input",
 			label: firstName
 				? `Last name of ${firstName}`
@@ -87,7 +87,7 @@ const fullSchema: Record<string, FieldSchema> = {
 	wow: {
 		type: "dynamic",
 
-		getSchema: ({ lastName }: { lastName?: string }) => {
+		getSchema: ({ values: { lastName } }) => {
 			if (!lastName) {
 				return null;
 			}

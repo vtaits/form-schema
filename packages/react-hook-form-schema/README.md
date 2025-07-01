@@ -88,8 +88,11 @@ const schema = {
   type: 'dynamic',
 
   getSchema: ({
-    otherField,
-  }, phase) => ({
+    values: {
+      otherField,
+    },
+    phase,
+  }) => ({
     type: 'string',
     label: 'String field',
     required: Boolean(otherField),
@@ -107,33 +110,33 @@ const getFieldType = (fieldSchema) => {
 
 Parameters:
 
-- `getSchema` - required, function, should return schema for render or `null`. Arguments:
+- `getSchema` - required, function, should return schema for render or `null`. Parameters:
 
-  1. `values` - object of values of form, depends from 2nd argument;
+  - `values` - object of values of form, depends from 2nd argument;
 
-  2. `phase` - current phase (`'parse'`, `'serialize'`, `'render'`). If phase is `'parse'`, 1st argument is initial values before parsing, otherwise it is current values of form.
+  - `phase` - current phase (`'parse'`, `'serialize'`, `'render'`). If phase is `'parse'`, 1st argument is initial values before parsing, otherwise it is current values of form.
 
-  3. `getFieldSchema` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
+  - `getFieldSchema` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
-  4. `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
+  - `getFieldType` - see [@vtaits/form-schema](https://github.com/vtaits/form-schema/tree/master/packages/form-schema);
 
-  5. `parents` - stack of parent fields above current field with runtime values;
+  - `parents` - stack of parent fields above current field with runtime values;
 
 - `getSchemaAsync` - not required, function. Can be used for asynchronous parsing. Similar to `getSchema` but should return `Promise` with result schema;
 
-- `onShow` - not required, callback that called when field has shown. Arguments:
+- `onShow` - not required, callback that called when field has shown. Parameters:
 
-  1. `formResult` - result of calling of `react-hook-form`;
+  - `formResult` - result of calling of `react-hook-form`;
 
-  2. `name` - name of field;
+  - `name` - name of field;
 
-  3. `schema` - result schema of subfield;
+  - `schema` - result schema of subfield;
 
-  4. `getFieldSchema` - current `getFieldSchema`;
+  - `getFieldSchema` - current `getFieldSchema`;
 
-  5. `getFieldType` - global `getFieldType`;
+  - `getFieldType` - global `getFieldType`;
 
-  6. `parents` - stack of parent fields above current field with runtime values;
+  - `parents` - stack of parent fields above current field with runtime values;
 
 - `onHide` - not required, callback that called when field has hidden. Arguments:
 

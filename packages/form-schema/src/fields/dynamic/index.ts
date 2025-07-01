@@ -1,2 +1,2 @@
 export { dynamic } from "./dynamic";
-export type { DynamicSchema } from "./schema";
+export type { DynamicGetSchemaParams, DynamicSchema } from "./schema";

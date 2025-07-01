@@ -34,13 +34,13 @@ describe("createGetFieldSchema", () => {
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
-		expect(getSchema).toHaveBeenCalledWith(
+		expect(getSchema).toHaveBeenCalledWith({
 			values,
-			"render",
+			phase: "render",
 			getFieldSchema,
-			defaultGetFieldType,
+			getFieldType: defaultGetFieldType,
 			parents,
-		);
+		});
 	});
 
 	test("should return parent `getFieldSchema` if `getSchema` returns falsy value", () => {
@@ -102,13 +102,13 @@ describe("serializer", () => {
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
-		expect(getSchema).toHaveBeenCalledWith(
+		expect(getSchema).toHaveBeenCalledWith({
 			values,
-			"serialize",
+			phase: "serialize",
 			getFieldSchema,
-			defaultGetFieldType,
+			getFieldType: defaultGetFieldType,
 			parents,
-		);
+		});
 	});
 
 	test("should return empty object if `getSchema` returns falsy value", () => {
@@ -254,13 +254,13 @@ describe("parser", () => {
 			});
 
 			expect(getSchema).toHaveBeenCalledTimes(1);
-			expect(getSchema).toHaveBeenCalledWith(
+			expect(getSchema).toHaveBeenCalledWith({
 				values,
-				"parse",
+				phase: "parse",
 				getFieldSchema,
-				defaultGetFieldType,
+				getFieldType: defaultGetFieldType,
 				parents,
-			);
+			});
 		});
 
 		test("should return empty object if `getSchema` returns falsy value", () => {
@@ -398,13 +398,13 @@ describe("parser", () => {
 			});
 
 			expect(getSchemaAsync).toHaveBeenCalledTimes(1);
-			expect(getSchemaAsync).toHaveBeenCalledWith(
+			expect(getSchemaAsync).toHaveBeenCalledWith({
 				values,
-				"parse",
+				phase: "parse",
 				getFieldSchema,
-				defaultGetFieldType,
+				getFieldType: defaultGetFieldType,
 				parents,
-			);
+			});
 
 			expect(getSchema).toHaveBeenCalledTimes(0);
 		});
@@ -575,13 +575,13 @@ describe("validatorBeforeSubmit", () => {
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
-		expect(getSchema).toHaveBeenCalledWith(
+		expect(getSchema).toHaveBeenCalledWith({
 			values,
-			"serialize",
+			phase: "serialize",
 			getFieldSchema,
-			defaultGetFieldType,
+			getFieldType: defaultGetFieldType,
 			parents,
-		);
+		});
 	});
 
 	test("should return empty object if `getSchema` returns falsy value", () => {
@@ -744,13 +744,13 @@ describe("errorsSetter", () => {
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
-		expect(getSchema).toHaveBeenCalledWith(
-			rawValues,
-			"serialize",
+		expect(getSchema).toHaveBeenCalledWith({
+			values: rawValues,
+			phase: "serialize",
 			getFieldSchema,
-			defaultGetFieldType,
+			getFieldType: defaultGetFieldType,
 			parents,
-		);
+		});
 	});
 
 	test("should return empty object if `getSchema` returns falsy value", () => {

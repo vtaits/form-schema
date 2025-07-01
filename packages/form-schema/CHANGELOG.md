@@ -1,4 +1,4 @@
-## 2.3.0
+## 3.0.0
 
 ### New features
 
@@ -9,6 +9,10 @@
 - Added `parseSingle` helper
 - Added `value` property for field methods
 - Added built-in parameters to schemas of fields: `serializer`, `serializerSingle`, `parser`, `parserSingle`, `validatorBeforeSubmit`
+
+### Breaking changes
+
+- Changed parameters of `getSchema` of `dynamic` field
 
 ## 2.2.0 (27 nov 2023)
 

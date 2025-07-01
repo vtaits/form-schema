@@ -1,3 +1,9 @@
+## 2.0.0
+
+### Breaking changes
+
+- Changed parameters of `getSchema` of `dynamic` field
+
 ## 1.3.0
 
 ### New features

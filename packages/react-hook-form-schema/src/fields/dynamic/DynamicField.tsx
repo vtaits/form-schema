@@ -67,13 +67,13 @@ export function DynamicField<
 	const onShowRef = useLatest(onShow);
 	const onHideRef = useLatest(onHide);
 
-	const schema = getSchema(
-		formResult.watch(),
-		"render",
+	const schema = getSchema({
+		values: formResult.watch(),
+		phase: "render",
 		getFieldSchema,
 		getFieldType,
 		parents,
-	);
+	});
 
 	const schemaRef = useLatest(schema);
 

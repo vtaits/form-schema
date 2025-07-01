@@ -39,13 +39,13 @@ export function createGetFieldSchema<
 		Errors
 	>;
 
-	const resultSchema = getSchema(
+	const resultSchema = getSchema({
 		values,
 		phase,
 		getFieldSchema,
 		getFieldType,
 		parents,
-	);
+	});
 
 	if (!resultSchema) {
 		return getFieldSchema;
@@ -67,13 +67,13 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 	}) => {
 		const { getSchema } = fieldSchema;
 
-		const resultSchema = getSchema(
+		const resultSchema = getSchema({
 			values,
-			"serialize",
+			phase: "serialize",
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 
 		if (!resultSchema) {
 			return {};
@@ -99,13 +99,13 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		const { getSchema, getSchemaAsync } = fieldSchema;
 
 		if (getSchemaAsync) {
-			return getSchemaAsync(
+			return getSchemaAsync({
 				values,
-				"parse",
+				phase: "parse",
 				getFieldSchema,
 				getFieldType,
 				parents,
-			).then((resultSchema) => {
+			}).then((resultSchema) => {
 				if (!resultSchema) {
 					return {};
 				}
@@ -120,13 +120,13 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 			});
 		}
 
-		const resultSchema = getSchema(
+		const resultSchema = getSchema({
 			values,
-			"parse",
+			phase: "parse",
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 
 		if (!resultSchema) {
 			return {};
@@ -152,13 +152,13 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 	}) => {
 		const { getSchema } = fieldSchema as DynamicSchema<any, any>;
 
-		const resultSchema = getSchema(
+		const resultSchema = getSchema({
 			values,
-			"serialize",
+			phase: "serialize",
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 
 		if (!resultSchema) {
 			return {};
@@ -187,13 +187,13 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 	}) => {
 		const { getSchema } = fieldSchema;
 
-		const resultSchema = getSchema(
-			rawValues,
-			"serialize",
+		const resultSchema = getSchema({
+			values: rawValues,
+			phase: "serialize",
 			getFieldSchema,
 			getFieldType,
 			parents,
-		);
+		});
 
 		if (!resultSchema) {
 			return {};
