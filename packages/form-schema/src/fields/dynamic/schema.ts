@@ -6,7 +6,7 @@ import type {
 	PhaseType,
 } from "../../core";
 
-export type DynamicGetSchemaParams<
+export type DynamicGetDependenciesParams<
 	FieldSchema extends FieldSchemaBase,
 	Values extends Record<string, any> = Record<string, any>,
 	RawValues extends Record<string, any> = Record<string, any>,
@@ -41,6 +41,22 @@ export type DynamicGetSchemaParams<
 	parents: readonly ParentType[];
 };
 
+export type DynamicGetSchemaParams<
+	FieldSchema extends FieldSchemaBase,
+	Values extends Record<string, any> = Record<string, any>,
+	RawValues extends Record<string, any> = Record<string, any>,
+	SerializedValues extends Record<string, any> = Record<string, any>,
+	Errors extends Record<string, any> = Record<string, any>,
+> = DynamicGetDependenciesParams<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors
+> & {
+	dependencies: unknown;
+};
+
 export type DynamicSchema<
 	FormApi,
 	FieldSchema extends FieldSchemaBase,
@@ -49,6 +65,19 @@ export type DynamicSchema<
 	SerializedValues extends Record<string, any> = Record<string, any>,
 	Errors extends Record<string, any> = Record<string, any>,
 > = FieldSchemaBase & {
+	/**
+	 * Callback that counts dependencies of the field to avoid excess recounts
+	 */
+	getDependencies: (
+		params: DynamicGetDependenciesParams<
+			FieldSchema,
+			Values,
+			RawValues,
+			SerializedValues,
+			Errors
+		>,
+	) => unknown;
+
 	/**
 	 * Callback that should return schema of field or `null` if field can't be shown
 	 */
@@ -63,7 +92,7 @@ export type DynamicSchema<
 	) => FieldSchema | null;
 
 	/**
-	 * Async callback that can be used instead of `getSchema` on parsing phase
+	 * Async callback that can be used instead of `getSchema` on parsing and render phase
 	 */
 	getSchemaAsync?: (
 		params: DynamicGetSchemaParams<
@@ -73,7 +102,7 @@ export type DynamicSchema<
 			SerializedValues,
 			Errors
 		>,
-	) => Promise<FieldSchema>;
+	) => Promise<FieldSchema | null>;
 
 	/**
 	 * callback than called when field has shown

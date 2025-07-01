@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 
 import type { ParentType } from "../../core";
 import { createGetFieldSchema, dynamic } from "./dynamic";
@@ -13,8 +13,11 @@ const parents: ParentType[] = [
 	},
 ];
 
+const dependencies = Symbol("dynamic dependencies");
+
 describe("createGetFieldSchema", () => {
 	const getFieldSchema = vi.fn();
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const defaultGetFieldType = () => ({});
 
 	test("should provide correct arguments to `getSchema`", () => {
@@ -25,7 +28,7 @@ describe("createGetFieldSchema", () => {
 		};
 
 		createGetFieldSchema({
-			fieldSchema: { getSchema },
+			fieldSchema: { getDependencies, getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			values,
@@ -33,8 +36,18 @@ describe("createGetFieldSchema", () => {
 			parents,
 		});
 
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "render",
+			getFieldSchema,
+			getFieldType: defaultGetFieldType,
+			parents,
+		});
+
 		expect(getSchema).toHaveBeenCalledTimes(1);
 		expect(getSchema).toHaveBeenCalledWith({
+			dependencies,
 			values,
 			phase: "render",
 			getFieldSchema,
@@ -47,7 +60,7 @@ describe("createGetFieldSchema", () => {
 		const getSchema = vi.fn();
 
 		const result = createGetFieldSchema({
-			fieldSchema: { getSchema },
+			fieldSchema: { getDependencies, getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			values: {},
@@ -61,6 +74,7 @@ describe("createGetFieldSchema", () => {
 	test("should return result of `getSchema` if `getSchema` returns truthy value", () => {
 		const result = createGetFieldSchema({
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -75,6 +89,7 @@ describe("createGetFieldSchema", () => {
 });
 
 describe("serializer", () => {
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 
@@ -95,7 +110,16 @@ describe("serializer", () => {
 			value: null,
 			values,
 			name: "test",
-			fieldSchema: { getSchema },
+			fieldSchema: { getDependencies, getSchema },
+			getFieldSchema,
+			getFieldType: defaultGetFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "serialize",
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			parents,
@@ -103,6 +127,7 @@ describe("serializer", () => {
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
 		expect(getSchema).toHaveBeenCalledWith({
+			dependencies,
 			values,
 			phase: "serialize",
 			getFieldSchema,
@@ -121,6 +146,7 @@ describe("serializer", () => {
 			values,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => null,
 			},
 			getFieldSchema,
@@ -145,6 +171,7 @@ describe("serializer", () => {
 			values,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -176,6 +203,7 @@ describe("serializer", () => {
 			values,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -212,6 +240,7 @@ describe("serializer", () => {
 			values,
 			name: "field1",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -226,8 +255,13 @@ describe("serializer", () => {
 });
 
 describe("parser", () => {
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
+
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
 
 	const { parser } = dynamic;
 
@@ -247,7 +281,16 @@ describe("parser", () => {
 				value: null,
 				values,
 				name: "test",
-				fieldSchema: { getSchema },
+				fieldSchema: { getDependencies, getSchema },
+				getFieldSchema,
+				getFieldType: defaultGetFieldType,
+				parents,
+			});
+
+			expect(getDependencies).toHaveBeenCalledTimes(1);
+			expect(getDependencies).toHaveBeenCalledWith({
+				values,
+				phase: "parse",
 				getFieldSchema,
 				getFieldType: defaultGetFieldType,
 				parents,
@@ -255,6 +298,7 @@ describe("parser", () => {
 
 			expect(getSchema).toHaveBeenCalledTimes(1);
 			expect(getSchema).toHaveBeenCalledWith({
+				dependencies,
 				values,
 				phase: "parse",
 				getFieldSchema,
@@ -273,6 +317,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchema: () => null,
 				},
 				getFieldSchema,
@@ -297,6 +342,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchema: () => childSchema,
 				},
 				getFieldSchema,
@@ -328,6 +374,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchema: () => childSchema,
 				},
 				getFieldSchema,
@@ -362,6 +409,7 @@ describe("parser", () => {
 				values,
 				name: "field1",
 				fieldSchema: {
+					getDependencies,
 					getSchema: () => "testSchema",
 				},
 				getFieldSchema,
@@ -389,6 +437,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchemaAsync,
 					getSchema,
 				},
@@ -397,8 +446,18 @@ describe("parser", () => {
 				parents,
 			});
 
+			expect(getDependencies).toHaveBeenCalledTimes(1);
+			expect(getDependencies).toHaveBeenCalledWith({
+				values,
+				phase: "parse",
+				getFieldSchema,
+				getFieldType: defaultGetFieldType,
+				parents,
+			});
+
 			expect(getSchemaAsync).toHaveBeenCalledTimes(1);
 			expect(getSchemaAsync).toHaveBeenCalledWith({
+				dependencies,
 				values,
 				phase: "parse",
 				getFieldSchema,
@@ -422,6 +481,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchemaAsync,
 					getSchema,
 				},
@@ -450,6 +510,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchemaAsync,
 					getSchema,
 				},
@@ -485,6 +546,7 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
+					getDependencies,
 					getSchemaAsync,
 					getSchema,
 				},
@@ -525,6 +587,7 @@ describe("parser", () => {
 				values,
 				name: "field1",
 				fieldSchema: {
+					getDependencies,
 					getSchemaAsync,
 					getSchema,
 				},
@@ -544,6 +607,7 @@ describe("parser", () => {
 });
 
 describe("validatorBeforeSubmit", () => {
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 	const setError = vi.fn();
@@ -568,7 +632,16 @@ describe("validatorBeforeSubmit", () => {
 			value: null,
 			values,
 			name: "test",
-			fieldSchema: { getSchema },
+			fieldSchema: { getDependencies, getSchema },
+			getFieldSchema,
+			getFieldType: defaultGetFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "serialize",
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			parents,
@@ -576,6 +649,7 @@ describe("validatorBeforeSubmit", () => {
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
 		expect(getSchema).toHaveBeenCalledWith({
+			dependencies,
 			values,
 			phase: "serialize",
 			getFieldSchema,
@@ -596,6 +670,7 @@ describe("validatorBeforeSubmit", () => {
 			values,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => null,
 			},
 			getFieldSchema,
@@ -622,6 +697,7 @@ describe("validatorBeforeSubmit", () => {
 			values,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -653,6 +729,7 @@ describe("validatorBeforeSubmit", () => {
 			values,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -690,6 +767,7 @@ describe("validatorBeforeSubmit", () => {
 			values,
 			name: "field1",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -702,6 +780,7 @@ describe("validatorBeforeSubmit", () => {
 });
 
 describe("errorsSetter", () => {
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 	const setError = vi.fn();
@@ -733,7 +812,7 @@ describe("errorsSetter", () => {
 			setCurrentError,
 			errors,
 			name: "test",
-			fieldSchema: { getSchema },
+			fieldSchema: { getDependencies, getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			value: null,
@@ -743,8 +822,18 @@ describe("errorsSetter", () => {
 			parents,
 		});
 
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values: rawValues,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType: defaultGetFieldType,
+			parents,
+		});
+
 		expect(getSchema).toHaveBeenCalledTimes(1);
 		expect(getSchema).toHaveBeenCalledWith({
+			dependencies,
 			values: rawValues,
 			phase: "serialize",
 			getFieldSchema,
@@ -764,6 +853,7 @@ describe("errorsSetter", () => {
 			errors,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => null,
 			},
 			getFieldSchema,
@@ -793,6 +883,7 @@ describe("errorsSetter", () => {
 			errors,
 			name: "test",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -827,6 +918,7 @@ describe("errorsSetter", () => {
 			errors,
 			name: "field1",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -868,6 +960,7 @@ describe("errorsSetter", () => {
 			errors,
 			name: "field1",
 			fieldSchema: {
+				getDependencies,
 				getSchema: () => "testSchema",
 			},
 			getFieldSchema,

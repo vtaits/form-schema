@@ -30,7 +30,7 @@ export function createGetFieldSchema<
 	SerializedValues,
 	Errors
 >): GetFieldSchema<FieldSchema> {
-	const { getSchema } = fieldSchema as DynamicSchema<
+	const { getDependencies, getSchema } = fieldSchema as DynamicSchema<
 		FormApi,
 		FieldSchema,
 		Values,
@@ -39,7 +39,16 @@ export function createGetFieldSchema<
 		Errors
 	>;
 
+	const dependencies = getDependencies({
+		values,
+		phase,
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
 	const resultSchema = getSchema({
+		dependencies,
 		values,
 		phase,
 		getFieldSchema,
@@ -65,9 +74,18 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		getFieldType,
 		parents,
 	}) => {
-		const { getSchema } = fieldSchema;
+		const { getSchema, getDependencies } = fieldSchema;
+
+		const dependencies = getDependencies({
+			values,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
 
 		const resultSchema = getSchema({
+			dependencies,
 			values,
 			phase: "serialize",
 			getFieldSchema,
@@ -96,10 +114,19 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		getFieldType,
 		parents,
 	}) => {
-		const { getSchema, getSchemaAsync } = fieldSchema;
+		const { getDependencies, getSchema, getSchemaAsync } = fieldSchema;
+
+		const dependencies = getDependencies({
+			values,
+			phase: "parse",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
 
 		if (getSchemaAsync) {
 			return getSchemaAsync({
+				dependencies,
 				values,
 				phase: "parse",
 				getFieldSchema,
@@ -121,6 +148,7 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		}
 
 		const resultSchema = getSchema({
+			dependencies,
 			values,
 			phase: "parse",
 			getFieldSchema,
@@ -150,9 +178,21 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		getFieldType,
 		parents,
 	}) => {
-		const { getSchema } = fieldSchema as DynamicSchema<any, any>;
+		const { getDependencies, getSchema } = fieldSchema as DynamicSchema<
+			any,
+			any
+		>;
+
+		const dependencies = getDependencies({
+			values,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
 
 		const resultSchema = getSchema({
+			dependencies,
 			values,
 			phase: "serialize",
 			getFieldSchema,
@@ -185,9 +225,18 @@ export const dynamic: FieldType<DynamicSchema<any, any>> = {
 		rawValues,
 		parents,
 	}) => {
-		const { getSchema } = fieldSchema;
+		const { getDependencies, getSchema } = fieldSchema;
+
+		const dependencies = getDependencies({
+			values: rawValues,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
 
 		const resultSchema = getSchema({
+			dependencies,
 			values: rawValues,
 			phase: "serialize",
 			getFieldSchema,
