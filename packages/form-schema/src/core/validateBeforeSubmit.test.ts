@@ -1,4 +1,5 @@
-import { afterEach, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
+import type { BaseFieldSchema } from "../fields/base";
 import type {
 	CreateGetFieldSchema,
 	FieldType,
@@ -21,8 +22,8 @@ afterEach(() => {
 	vi.clearAllMocks();
 });
 
-test("should call default validatorBeforeSubmit", () => {
-	validateBeforeSubmit({
+test("should call default validatorBeforeSubmit", async () => {
+	await validateBeforeSubmit({
 		setError,
 		values: {
 			value: "test",
@@ -44,7 +45,7 @@ test("should call default validatorBeforeSubmit", () => {
 	expect(setError).toHaveBeenCalledTimes(0);
 });
 
-test("should call redefined validatorBeforeSubmit with `setError`", () => {
+test("should call redefined validatorBeforeSubmit with `setError`", async () => {
 	const rawValues = {
 		value: "test",
 		value2: "test2",
@@ -67,7 +68,7 @@ test("should call redefined validatorBeforeSubmit with `setError`", () => {
 
 	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-	validateBeforeSubmit({
+	await validateBeforeSubmit({
 		setError,
 		values: rawValues,
 
@@ -95,7 +96,7 @@ test("should call redefined validatorBeforeSubmit with `setError`", () => {
 	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
 });
 
-test("should call redefined validatorBeforeSubmit with `setCurrentError` of field type", () => {
+test("should call redefined validatorBeforeSubmit with `setCurrentError` of field type", async () => {
 	const rawValues = {
 		value: "test",
 		value2: "test2",
@@ -118,7 +119,7 @@ test("should call redefined validatorBeforeSubmit with `setCurrentError` of fiel
 
 	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-	validateBeforeSubmit({
+	await validateBeforeSubmit({
 		setError,
 		values: rawValues,
 
@@ -146,7 +147,7 @@ test("should call redefined validatorBeforeSubmit with `setCurrentError` of fiel
 	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
 });
 
-test("should call redefined validatorBeforeSubmit with `setCurrentError` of field schema", () => {
+test("should call redefined validatorBeforeSubmit with `setCurrentError` of field schema", async () => {
 	const rawValues = {
 		value: "test",
 		value2: "test2",
@@ -172,7 +173,7 @@ test("should call redefined validatorBeforeSubmit with `setCurrentError` of fiel
 
 	const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-	validateBeforeSubmit({
+	await validateBeforeSubmit({
 		setError,
 		values: rawValues,
 
@@ -202,7 +203,7 @@ test("should call redefined validatorBeforeSubmit with `setCurrentError` of fiel
 	expect(setError).toHaveBeenNthCalledWith(1, "value", parents, "testtest");
 });
 
-test("should call multiple validators", () => {
+test("should call multiple validators", async () => {
 	const fields: Record<
 		string | number | symbol,
 		{
@@ -230,7 +231,7 @@ test("should call multiple validators", () => {
 		},
 	};
 
-	validateBeforeSubmit({
+	await validateBeforeSubmit({
 		setError,
 		values: {
 			value1: "test1",
@@ -258,10 +259,9 @@ test("should call multiple validators", () => {
 	expect(setError).toHaveBeenNthCalledWith(2, "value2", parents, "test2test2");
 });
 
-test("should redefine getFieldSchema", () => {
-	const validatorBeforeSubmit = vi.fn<
-		ValidatorBeforeSubmit<any, any, any, any, any>
-	>(() => ({}));
+test("should redefine getFieldSchema", async () => {
+	const validatorBeforeSubmit =
+		vi.fn<ValidatorBeforeSubmit<any, any, any, any, any>>();
 
 	const parentGetFieldSchema = vi.fn(() => ({
 		type: "testType",
@@ -279,7 +279,7 @@ test("should redefine getFieldSchema", () => {
 		createGetFieldSchema,
 	});
 
-	validateBeforeSubmit({
+	await validateBeforeSubmit({
 		setError,
 		values: {
 			value: "test",
@@ -310,5 +310,64 @@ test("should redefine getFieldSchema", () => {
 		},
 		phase: "serialize",
 		parents,
+	});
+});
+
+describe("getDependencies", () => {
+	const dependencies = Symbol("dependencies");
+
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
+	const getFieldType = vi.fn().mockReturnValue({});
+
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
+	test("provide dependencies", async () => {
+		const validatorBeforeSubmit = vi.fn().mockResolvedValue(undefined);
+
+		const fieldSchema = {
+			getDependencies,
+			validatorBeforeSubmit,
+		} satisfies BaseFieldSchema<unknown, unknown>;
+
+		const getFieldSchema = vi.fn().mockReturnValue(fieldSchema);
+
+		const values = {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		};
+
+		await validateBeforeSubmit({
+			setError,
+			values,
+			names: ["value1"],
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(validatorBeforeSubmit).toHaveBeenCalledWith({
+			setError,
+			fieldSchema,
+			dependencies,
+			values,
+			value: "test1",
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+			setCurrentError: expect.any(Function),
+		});
 	});
 });

@@ -1,5 +1,5 @@
-import isPromise from "is-promise";
-import { expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
+import type { BaseFieldSchema } from "../fields/base";
 import { parseSingle } from "./parseSingle";
 import type {
 	CreateGetFieldSchema,
@@ -37,48 +37,48 @@ const parents = [
 
 const defaultGetFieldSchema: GetFieldSchema<any> = (name) => fieldSchemas[name];
 
-test("should return `null` for falsy values object", () => {
-	expect(
-		parseSingle({
-			values: null,
-			name: "value",
-			getFieldSchema: defaultGetFieldSchema,
-			getFieldType: (): FieldType<any, any, any, any, any> => ({}),
-			parents,
-		}),
-	).toBe(null);
+test("should return `null` for falsy values object", async () => {
+	const result = await parseSingle({
+		values: null,
+		name: "value",
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType: (): FieldType<any, any, any, any, any> => ({}),
+		parents,
+	});
+
+	expect(result).toBe(null);
 });
 
-test("should call default parser", () => {
-	expect(
-		parseSingle({
-			values: {
-				value: "test",
-				value2: "test2",
-			},
-			name: "value",
-			getFieldSchema: defaultGetFieldSchema,
-			getFieldType: (): FieldType<any, any, any, any, any> => ({}),
-			parents,
-		}),
-	).toBe("test");
+test("should call default parser", async () => {
+	const result = await parseSingle({
+		values: {
+			value: "test",
+			value2: "test2",
+		},
+		name: "value",
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType: (): FieldType<any, any, any, any, any> => ({}),
+		parents,
+	});
+
+	expect(result).toBe("test");
 });
 
-test("should call default parser for empty value", () => {
-	expect(
-		parseSingle({
-			values: {
-				value2: "test2",
-			},
-			name: "value",
-			getFieldSchema: defaultGetFieldSchema,
-			getFieldType: () => ({}),
-			parents,
-		}),
-	).toBe(null);
+test("should call default parser for empty value", async () => {
+	const result = await parseSingle({
+		values: {
+			value2: "test2",
+		},
+		name: "value",
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType: () => ({}),
+		parents,
+	});
+
+	expect(result).toBe(null);
 });
 
-test("should call redefined parser of the type of the field", () => {
+test("should call redefined parser of the type of the field", async () => {
 	const rawValues: Values = {
 		value: "test",
 		value2: "test2",
@@ -92,15 +92,15 @@ test("should call redefined parser of the type of the field", () => {
 		parser,
 	});
 
-	expect(
-		parseSingle({
-			values: rawValues,
-			name: "value",
-			getFieldSchema: defaultGetFieldSchema,
-			getFieldType,
-			parents,
-		}),
-	).toBe("testtest");
+	const result = await parseSingle({
+		values: rawValues,
+		name: "value",
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(result).toBe("testtest");
 
 	expect(parser).toHaveBeenCalledTimes(1);
 	expect(parser).toHaveBeenCalledWith({
@@ -114,7 +114,7 @@ test("should call redefined parser of the type of the field", () => {
 	});
 });
 
-test("should call redefined parser of the schema of the field", () => {
+test("should call redefined parser of the schema of the field", async () => {
 	const rawValues: Values = {
 		value: "test",
 		value2: "test2",
@@ -135,15 +135,15 @@ test("should call redefined parser of the schema of the field", () => {
 
 	const getFieldSchema = () => fieldSchema;
 
-	expect(
-		parseSingle({
-			values: rawValues,
-			name: "value",
-			getFieldSchema,
-			getFieldType,
-			parents,
-		}),
-	).toBe("testtest");
+	const result = await parseSingle({
+		values: rawValues,
+		name: "value",
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(result).toBe("testtest");
 
 	expect(parser).toHaveBeenCalledTimes(0);
 
@@ -159,7 +159,7 @@ test("should call redefined parser of the schema of the field", () => {
 	});
 });
 
-test("should call single parser of the type of the field", () => {
+test("should call single parser of the type of the field", async () => {
 	const rawValues: Values = {
 		value: "test",
 		value2: "test2",
@@ -173,15 +173,15 @@ test("should call single parser of the type of the field", () => {
 		parserSingle,
 	});
 
-	expect(
-		parseSingle({
-			values: rawValues,
-			name: "value",
-			getFieldSchema: defaultGetFieldSchema,
-			getFieldType,
-			parents,
-		}),
-	).toBe("testtest");
+	const result = await parseSingle({
+		values: rawValues,
+		name: "value",
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(result).toBe("testtest");
 
 	expect(parserSingle).toHaveBeenCalledTimes(1);
 	expect(parserSingle).toHaveBeenCalledWith({
@@ -197,7 +197,7 @@ test("should call single parser of the type of the field", () => {
 	expect(parser).toHaveBeenCalledTimes(0);
 });
 
-test("should call single parser of the schema of the field", () => {
+test("should call single parser of the schema of the field", async () => {
 	const rawValues: Values = {
 		value: "test",
 		value2: "test2",
@@ -218,15 +218,15 @@ test("should call single parser of the schema of the field", () => {
 		parserSingle,
 	});
 
-	expect(
-		parseSingle({
-			values: rawValues,
-			name: "value",
-			getFieldSchema,
-			getFieldType,
-			parents,
-		}),
-	).toBe("testtest");
+	const result = await parseSingle({
+		values: rawValues,
+		name: "value",
+		getFieldSchema,
+		getFieldType,
+		parents,
+	});
+
+	expect(result).toBe("testtest");
 
 	expect(parserSingle).toHaveBeenCalledTimes(0);
 
@@ -244,7 +244,7 @@ test("should call single parser of the schema of the field", () => {
 	expect(parser).toHaveBeenCalledTimes(0);
 });
 
-test("should work correctly with multiple fields", () => {
+test("should work correctly with multiple fields", async () => {
 	const fields: Record<string, FieldType<any, any, any, any, any>> = {
 		testType1: {},
 		testType2: {
@@ -254,18 +254,18 @@ test("should work correctly with multiple fields", () => {
 		},
 	};
 
-	expect(
-		parseSingle({
-			values: {
-				value1: "test1",
-				value2: "test2",
-			},
-			name: "value2",
-			getFieldSchema: defaultGetFieldSchema,
-			getFieldType: ({ type }) => fields[type],
-			parents,
-		}),
-	).toBe("test2test2");
+	const result = await parseSingle({
+		values: {
+			value1: "test1",
+			value2: "test2",
+		},
+		name: "value2",
+		getFieldSchema: defaultGetFieldSchema,
+		getFieldType: ({ type }) => fields[type],
+		parents,
+	});
+
+	expect(result).toBe("test2test2");
 });
 
 test("should work with async parser", async () => {
@@ -285,7 +285,7 @@ test("should work with async parser", async () => {
 		},
 	};
 
-	const parseResult = parseSingle({
+	const result = await parseSingle({
 		values: {
 			value1: "test1",
 			value2: "test2",
@@ -296,10 +296,6 @@ test("should work with async parser", async () => {
 		getFieldType: ({ type }) => fields[type],
 		parents,
 	});
-
-	expect(isPromise(parseResult)).toBe(true);
-
-	const result = await parseResult;
 
 	expect(result).toBe("test3test3");
 });
@@ -319,7 +315,7 @@ test("should work with async single parser", async () => {
 		},
 	};
 
-	const parseResult = parseSingle({
+	const result = await parseSingle({
 		values: {
 			value1: "test1",
 			value2: "test2",
@@ -331,14 +327,10 @@ test("should work with async single parser", async () => {
 		parents,
 	});
 
-	expect(isPromise(parseResult)).toBe(true);
-
-	const result = await parseResult;
-
 	expect(result).toBe("test3test3");
 });
 
-test("should redefine getFieldSchema", () => {
+test("should redefine getFieldSchema", async () => {
 	const parser = vi.fn<Parser<any, any, any, any, any>>(() => ({}));
 
 	const parentGetFieldSchema = vi.fn(() => ({
@@ -357,7 +349,7 @@ test("should redefine getFieldSchema", () => {
 		createGetFieldSchema,
 	});
 
-	parseSingle({
+	await parseSingle({
 		values: {
 			value: "test",
 		},
@@ -385,5 +377,117 @@ test("should redefine getFieldSchema", () => {
 		},
 		phase: "parse",
 		parents,
+	});
+});
+
+describe("getDependencies", () => {
+	const dependencies = Symbol("dependencies");
+
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
+	const getFieldType = vi.fn().mockReturnValue({});
+
+	afterEach(() => {
+		getDependencies.mockClear();
+		vi.clearAllMocks();
+	});
+
+	test("multiple parser", async () => {
+		const parser = vi.fn().mockImplementation(({ name, value }) =>
+			Promise.resolve({
+				[name]: `${value}${value}`,
+			}),
+		);
+
+		const fieldSchema = {
+			getDependencies,
+			parser,
+		} satisfies BaseFieldSchema<unknown, unknown>;
+
+		const getFieldSchema = vi.fn().mockReturnValue(fieldSchema);
+
+		const values = {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		};
+
+		const result = await parseSingle({
+			values,
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "parse",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(parser).toHaveBeenCalledWith({
+			fieldSchema,
+			dependencies,
+			values,
+			value: "test1",
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toBe("test1test1");
+	});
+
+	test("single parser", async () => {
+		const parserSingle = vi
+			.fn()
+			.mockImplementation(({ value }) => Promise.resolve(`${value}${value}`));
+
+		const fieldSchema = {
+			getDependencies,
+			parserSingle,
+		} satisfies BaseFieldSchema<unknown, unknown>;
+
+		const getFieldSchema = vi.fn().mockReturnValue(fieldSchema);
+
+		const values = {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		};
+
+		const result = await parseSingle({
+			values,
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "parse",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(parserSingle).toHaveBeenCalledWith({
+			fieldSchema,
+			dependencies,
+			values,
+			value: "test1",
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toBe("test1test1");
 	});
 });

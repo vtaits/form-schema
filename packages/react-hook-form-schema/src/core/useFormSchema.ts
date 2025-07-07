@@ -6,10 +6,8 @@ import {
 	setFieldErrors,
 	validateBeforeSubmit,
 } from "@vtaits/form-schema";
-import isPromise from "is-promise";
 import { type BaseSyntheticEvent, useCallback, useMemo } from "react";
 import {
-	type DefaultValues,
 	type FieldValues,
 	type SubmitErrorHandler,
 	type SubmitHandler,
@@ -138,20 +136,16 @@ export function useFormSchema<
 			const asyncDefaultValues = defaultValues as () => Promise<RawValues>;
 
 			return () =>
-				asyncDefaultValues().then(
-					(rawInitialValues) => (parseValues(rawInitialValues) || {}) as Values,
-				);
+				asyncDefaultValues()
+					.then((rawInitialValues) => parseValues(rawInitialValues))
+					.then((result) => result || ({} as Values));
 		}
 
 		const rawInitialValues = defaultValues || {};
 
 		const parseResult = parseValues(rawInitialValues as RawValues);
 
-		if (isPromise(parseResult)) {
-			return () => parseResult;
-		}
-
-		return (parseResult as DefaultValues<Values>) || undefined;
+		return () => parseResult;
 	}, [defaultValues, parseValues]);
 
 	const formResult = useForm<Values, TContext, Values>({
@@ -203,7 +197,7 @@ export function useFormSchema<
 				return;
 			}
 
-			const valuesForSubmit = serialize({
+			const valuesForSubmit = await serialize({
 				values,
 				names,
 				getFieldSchema,

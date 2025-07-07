@@ -86,7 +86,7 @@ export function CheckboxGroupComponent({
 					renderCheckboxGroup({
 						disabled,
 						autoFocus,
-						value: field.value,
+						value: Array.isArray(field.value) ? field.value : [],
 						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,

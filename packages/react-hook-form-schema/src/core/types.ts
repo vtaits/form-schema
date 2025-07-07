@@ -61,6 +61,7 @@ export type RenderParams<
 	 * stack of parent fields above current field with runtime values
 	 */
 	parents: readonly ParentType<Values>[];
+	dependencies: unknown;
 }>;
 
 export type FieldType<

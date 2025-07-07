@@ -1,3 +1,4 @@
+import { cleanup, render as testingRender } from "@testing-library/react";
 import type { UseFormReturn } from "react-hook-form";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { renderBySchema } from "./renderBySchema";
@@ -11,11 +12,10 @@ const getValues = () => values;
 const fieldSchema = "FIELD_SCHEMA";
 
 const getFieldSchema = vi.fn();
-const getFieldType = vi.fn();
 
 const name = "NAME";
 const payload = "PAYLOAD";
-const renderResult = "RENDER_RESULT";
+const renderResult = <div>RENDER_RESULT</div>;
 
 const formResult = {
 	FORM_RESULT: true,
@@ -23,6 +23,7 @@ const formResult = {
 
 afterEach(() => {
 	vi.resetAllMocks();
+	cleanup();
 });
 
 describe.each([
@@ -63,25 +64,27 @@ describe.each([
 		expectedFieldPath: "NAME",
 	},
 ])("$label", ({ parents, expectedFieldPath, expectedParents }) => {
-	test("render with own `getFieldSchema`", () => {
+	test("render with own `getFieldSchema`", async () => {
 		const render = vi.fn().mockReturnValue(renderResult);
-
-		getFieldSchema.mockReturnValue(fieldSchema);
-		getFieldType.mockReturnValue({
+		const getFieldType = vi.fn().mockReturnValue({
 			render,
 		});
 
-		const result = renderBySchema(
-			formResult,
-			getFieldSchema,
-			getFieldType,
-			getValues,
-			name,
-			payload,
-			parents,
+		getFieldSchema.mockReturnValue(fieldSchema);
+
+		const result = testingRender(
+			renderBySchema(
+				formResult,
+				getFieldSchema,
+				getFieldType,
+				getValues,
+				name,
+				payload,
+				parents,
+			),
 		);
 
-		expect(result).toBe(renderResult);
+		await result.findByText("RENDER_RESULT");
 
 		expect(render).toHaveBeenCalledWith(
 			{
@@ -96,11 +99,10 @@ describe.each([
 			formResult,
 		);
 
-		expect(getFieldType).toHaveBeenCalledTimes(1);
 		expect(getFieldType).toHaveBeenCalledWith(fieldSchema);
 	});
 
-	test("render with computed `getFieldSchema`", () => {
+	test("render with computed `getFieldSchema`", async () => {
 		const render = vi.fn().mockReturnValue(renderResult);
 
 		const providedGetFieldSchema = vi.fn();
@@ -109,22 +111,24 @@ describe.each([
 			.mockReturnValue(providedGetFieldSchema);
 
 		getFieldSchema.mockReturnValue(fieldSchema);
-		getFieldType.mockReturnValue({
+		const getFieldType = vi.fn().mockReturnValue({
 			createGetFieldSchema,
 			render,
 		});
 
-		const result = renderBySchema(
-			formResult,
-			getFieldSchema,
-			getFieldType,
-			getValues,
-			name,
-			payload,
-			parents,
+		const result = testingRender(
+			renderBySchema(
+				formResult,
+				getFieldSchema,
+				getFieldType,
+				getValues,
+				name,
+				payload,
+				parents,
+			),
 		);
 
-		expect(result).toBe(renderResult);
+		await result.findByText("RENDER_RESULT");
 
 		expect(render).toHaveBeenCalledWith(
 			{
@@ -139,7 +143,60 @@ describe.each([
 			formResult,
 		);
 
-		expect(getFieldType).toHaveBeenCalledTimes(1);
+		expect(getFieldType).toHaveBeenCalledWith(fieldSchema);
+
+		expect(createGetFieldSchema).toHaveBeenCalledTimes(1);
+		expect(createGetFieldSchema).toHaveBeenCalledWith({
+			fieldSchema,
+			getFieldSchema,
+			getFieldType,
+			values,
+			phase: "render",
+			parents: expectedParents,
+		});
+	});
+
+	test("render with async computed `getFieldSchema`", async () => {
+		const render = vi.fn().mockReturnValue(renderResult);
+
+		const providedGetFieldSchema = vi.fn();
+		const createGetFieldSchema = vi
+			.fn()
+			.mockResolvedValue(providedGetFieldSchema);
+
+		getFieldSchema.mockReturnValue(fieldSchema);
+		const getFieldType = vi.fn().mockReturnValue({
+			createGetFieldSchema,
+			render,
+		});
+
+		const result = testingRender(
+			renderBySchema(
+				formResult,
+				getFieldSchema,
+				getFieldType,
+				getValues,
+				name,
+				payload,
+				parents,
+			),
+		);
+
+		await result.findByText("RENDER_RESULT");
+
+		expect(render).toHaveBeenCalledWith(
+			{
+				fieldPath: expectedFieldPath,
+				name,
+				payload,
+				parents: expectedParents,
+				getFieldSchema: providedGetFieldSchema,
+				getFieldType,
+				fieldSchema,
+			},
+			formResult,
+		);
+
 		expect(getFieldType).toHaveBeenCalledWith(fieldSchema);
 
 		expect(createGetFieldSchema).toHaveBeenCalledTimes(1);

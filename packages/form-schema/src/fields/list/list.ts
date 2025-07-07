@@ -1,4 +1,4 @@
-import isPromise from "is-promise";
+import { isPromise } from "es-toolkit";
 import { unwrapOr } from "krustykrab";
 import {
 	type BaseValues,

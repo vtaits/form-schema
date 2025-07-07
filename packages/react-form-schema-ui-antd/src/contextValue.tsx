@@ -174,7 +174,7 @@ export const contextValue: BaseUIContextValue = {
 					? [
 							{
 								name: selectedFile,
-								uid: `${Date.now()}`,
+								uid: selectedFile,
 							},
 						]
 					: []

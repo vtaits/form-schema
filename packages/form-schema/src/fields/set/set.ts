@@ -1,4 +1,4 @@
-import isPromise from "is-promise";
+import { isPromise } from "es-toolkit";
 import {
 	type BaseValues,
 	type FieldType,
@@ -17,7 +17,7 @@ export const set: FieldType<SetSchema<any>> = {
 		return (name) => schemas[name];
 	},
 
-	serializer: ({
+	serializer: async ({
 		name,
 		value,
 		values,
@@ -41,14 +41,16 @@ export const set: FieldType<SetSchema<any>> = {
 				},
 			];
 
+			const result = await serialize({
+				values: currentValues,
+				names,
+				getFieldSchema,
+				getFieldType,
+				parents: nextParents,
+			});
+
 			return {
-				[name]: serialize({
-					values: currentValues,
-					names,
-					getFieldSchema,
-					getFieldType,
-					parents: nextParents,
-				}),
+				[name]: result,
 			};
 		}
 

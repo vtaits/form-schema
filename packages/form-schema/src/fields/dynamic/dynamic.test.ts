@@ -17,32 +17,23 @@ const dependencies = Symbol("dynamic dependencies");
 
 describe("createGetFieldSchema", () => {
 	const getFieldSchema = vi.fn();
-	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const defaultGetFieldType = () => ({});
 
-	test("should provide correct arguments to `getSchema`", () => {
+	test("should provide correct arguments to `getSchema`", async () => {
 		const getSchema = vi.fn();
 
 		const values = {
 			field1: "value1",
 		};
 
-		createGetFieldSchema({
-			fieldSchema: { getDependencies, getSchema },
+		await createGetFieldSchema({
+			fieldSchema: { getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			values,
 			phase: "render",
 			parents,
-		});
-
-		expect(getDependencies).toHaveBeenCalledTimes(1);
-		expect(getDependencies).toHaveBeenCalledWith({
-			values,
-			phase: "render",
-			getFieldSchema,
-			getFieldType: defaultGetFieldType,
-			parents,
+			dependencies,
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
@@ -56,25 +47,25 @@ describe("createGetFieldSchema", () => {
 		});
 	});
 
-	test("should return parent `getFieldSchema` if `getSchema` returns falsy value", () => {
+	test("should return parent `getFieldSchema` if `getSchema` returns falsy value", async () => {
 		const getSchema = vi.fn();
 
-		const result = createGetFieldSchema({
-			fieldSchema: { getDependencies, getSchema },
+		const result = await createGetFieldSchema({
+			fieldSchema: { getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			values: {},
 			phase: "render",
 			parents,
+			dependencies,
 		});
 
 		expect(result).toBe(getFieldSchema);
 	});
 
-	test("should return result of `getSchema` if `getSchema` returns truthy value", () => {
-		const result = createGetFieldSchema({
+	test("should return result of `getSchema` if `getSchema` returns truthy value", async () => {
+		const result = await createGetFieldSchema({
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -82,6 +73,7 @@ describe("createGetFieldSchema", () => {
 			values: {},
 			phase: "render",
 			parents,
+			dependencies,
 		});
 
 		expect(result("test")).toBe(childSchema);
@@ -89,7 +81,6 @@ describe("createGetFieldSchema", () => {
 });
 
 describe("serializer", () => {
-	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 
@@ -99,30 +90,22 @@ describe("serializer", () => {
 		throw new Error("`serializer` is not defined");
 	}
 
-	test("should provide all values to `getSchema`", () => {
+	test("should provide all values to `getSchema`", async () => {
 		const getSchema = vi.fn();
 
 		const values = {
 			field1: "value1",
 		};
 
-		serializer({
+		await serializer({
 			value: null,
 			values,
 			name: "test",
-			fieldSchema: { getDependencies, getSchema },
+			fieldSchema: { getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			parents,
-		});
-
-		expect(getDependencies).toHaveBeenCalledTimes(1);
-		expect(getDependencies).toHaveBeenCalledWith({
-			values,
-			phase: "serialize",
-			getFieldSchema,
-			getFieldType: defaultGetFieldType,
-			parents,
+			dependencies,
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
@@ -136,28 +119,28 @@ describe("serializer", () => {
 		});
 	});
 
-	test("should return empty object if `getSchema` returns falsy value", () => {
+	test("should return empty object if `getSchema` returns falsy value", async () => {
 		const values = {
 			field1: "value1",
 		};
 
-		const result = serializer({
+		const result = await serializer({
 			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => null,
 			},
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(result).toEqual({});
 	});
 
-	test("should call `getFieldType` with correct argument", () => {
+	test("should call `getFieldType` with correct argument", async () => {
 		getFieldSchema.mockReturnValue(childSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({});
@@ -166,24 +149,24 @@ describe("serializer", () => {
 			field1: "value1",
 		};
 
-		serializer({
+		await serializer({
 			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
 			getFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(getFieldType).toHaveBeenCalledTimes(1);
 		expect(getFieldType).toHaveBeenCalledWith(childSchema);
 	});
 
-	test("should call serializer of computed field type if defined", () => {
+	test("should call serializer of computed field type if defined", async () => {
 		getFieldSchema.mockReturnValue(childSchema);
 
 		const fieldSerializer = vi.fn().mockReturnValue({
@@ -198,17 +181,17 @@ describe("serializer", () => {
 			field1: "value1",
 		};
 
-		const result = serializer({
+		const result = await serializer({
 			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
 			getFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(result).toEqual({
@@ -225,7 +208,7 @@ describe("serializer", () => {
 		});
 	});
 
-	test("should call default serializer for computed field", () => {
+	test("should call default serializer for computed field", async () => {
 		getFieldSchema.mockReturnValue(childSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({});
@@ -235,17 +218,17 @@ describe("serializer", () => {
 			field2: "value2",
 		};
 
-		const result = serializer({
+		const result = await serializer({
 			value: null,
 			values,
 			name: "field1",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
 			getFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(result).toEqual({
@@ -255,7 +238,6 @@ describe("serializer", () => {
 });
 
 describe("parser", () => {
-	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 
@@ -270,30 +252,22 @@ describe("parser", () => {
 	}
 
 	describe("getSchema", () => {
-		test("should provide all values to `getSchema`", () => {
+		test("should provide all values to `getSchema`", async () => {
 			const getSchema = vi.fn();
 
 			const values = {
 				field1: "value1",
 			};
 
-			parser({
+			await parser({
 				value: null,
 				values,
 				name: "test",
-				fieldSchema: { getDependencies, getSchema },
+				fieldSchema: { getSchema },
 				getFieldSchema,
 				getFieldType: defaultGetFieldType,
 				parents,
-			});
-
-			expect(getDependencies).toHaveBeenCalledTimes(1);
-			expect(getDependencies).toHaveBeenCalledWith({
-				values,
-				phase: "parse",
-				getFieldSchema,
-				getFieldType: defaultGetFieldType,
-				parents,
+				dependencies,
 			});
 
 			expect(getSchema).toHaveBeenCalledTimes(1);
@@ -307,171 +281,7 @@ describe("parser", () => {
 			});
 		});
 
-		test("should return empty object if `getSchema` returns falsy value", () => {
-			const values = {
-				field1: "value1",
-			};
-
-			const result = parser({
-				value: null,
-				values,
-				name: "test",
-				fieldSchema: {
-					getDependencies,
-					getSchema: () => null,
-				},
-				getFieldSchema,
-				getFieldType: defaultGetFieldType,
-				parents,
-			});
-
-			expect(result).toEqual({});
-		});
-
-		test("should call `getFieldType` with correct argument", () => {
-			getFieldSchema.mockReturnValue(childSchema);
-
-			const getFieldType = vi.fn().mockReturnValue({});
-
-			const values = {
-				field1: "value1",
-			};
-
-			parser({
-				value: null,
-				values,
-				name: "test",
-				fieldSchema: {
-					getDependencies,
-					getSchema: () => childSchema,
-				},
-				getFieldSchema,
-				getFieldType,
-				parents,
-			});
-
-			expect(getFieldType).toHaveBeenCalledTimes(1);
-			expect(getFieldType).toHaveBeenCalledWith(childSchema);
-		});
-
-		test("should call parser of computed field type if defined", () => {
-			getFieldSchema.mockReturnValue(childSchema);
-
-			const fieldParser = vi.fn().mockReturnValue({
-				field1: "parsed1",
-			});
-
-			const getFieldType = vi.fn().mockReturnValue({
-				parser: fieldParser,
-			});
-
-			const values = {
-				field1: "value1",
-			};
-
-			const result = parser({
-				value: null,
-				values,
-				name: "test",
-				fieldSchema: {
-					getDependencies,
-					getSchema: () => childSchema,
-				},
-				getFieldSchema,
-				getFieldType,
-				parents,
-			});
-
-			expect(result).toEqual({
-				field1: "parsed1",
-			});
-
-			expect(fieldParser).toHaveBeenCalledWith({
-				values,
-				name: "test",
-				fieldSchema: childSchema,
-				getFieldSchema,
-				getFieldType,
-				parents,
-			});
-		});
-
-		test("should call default parser for computed field", () => {
-			const getFieldType = vi.fn().mockReturnValue({});
-
-			const values = {
-				field1: "value1",
-				field2: "value2",
-			};
-
-			const result = parser({
-				value: null,
-				values,
-				name: "field1",
-				fieldSchema: {
-					getDependencies,
-					getSchema: () => "testSchema",
-				},
-				getFieldSchema,
-				getFieldType,
-				parents,
-			});
-
-			expect(result).toEqual({
-				field1: "value1",
-			});
-		});
-	});
-
-	describe("getSchemaAsync", () => {
-		test("should provide all values to `getSchemaAsync`", async () => {
-			const getSchema = vi.fn();
-			const getSchemaAsync = vi.fn().mockResolvedValue(null);
-
-			const values = {
-				field1: "value1",
-			};
-
-			await parser({
-				value: null,
-				values,
-				name: "test",
-				fieldSchema: {
-					getDependencies,
-					getSchemaAsync,
-					getSchema,
-				},
-				getFieldSchema,
-				getFieldType: defaultGetFieldType,
-				parents,
-			});
-
-			expect(getDependencies).toHaveBeenCalledTimes(1);
-			expect(getDependencies).toHaveBeenCalledWith({
-				values,
-				phase: "parse",
-				getFieldSchema,
-				getFieldType: defaultGetFieldType,
-				parents,
-			});
-
-			expect(getSchemaAsync).toHaveBeenCalledTimes(1);
-			expect(getSchemaAsync).toHaveBeenCalledWith({
-				dependencies,
-				values,
-				phase: "parse",
-				getFieldSchema,
-				getFieldType: defaultGetFieldType,
-				parents,
-			});
-
-			expect(getSchema).toHaveBeenCalledTimes(0);
-		});
-
-		test("should return empty object if `getSchemaAsync` returns falsy value", async () => {
-			const getSchema = vi.fn().mockReturnValue("testSchemaSync");
-			const getSchemaAsync = vi.fn().mockResolvedValue(null);
-
+		test("should return empty object if `getSchema` returns falsy value", async () => {
 			const values = {
 				field1: "value1",
 			};
@@ -481,13 +291,12 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
-					getDependencies,
-					getSchemaAsync,
-					getSchema,
+					getSchema: () => null,
 				},
 				getFieldSchema,
 				getFieldType: defaultGetFieldType,
 				parents,
+				dependencies,
 			});
 
 			expect(result).toEqual({});
@@ -495,9 +304,6 @@ describe("parser", () => {
 
 		test("should call `getFieldType` with correct argument", async () => {
 			getFieldSchema.mockReturnValue(childSchema);
-
-			const getSchema = vi.fn().mockReturnValue("testSchemaSync");
-			const getSchemaAsync = vi.fn().mockResolvedValue(childSchema);
 
 			const getFieldType = vi.fn().mockReturnValue({});
 
@@ -510,13 +316,12 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
-					getDependencies,
-					getSchemaAsync,
-					getSchema,
+					getSchema: () => childSchema,
 				},
 				getFieldSchema,
 				getFieldType,
 				parents,
+				dependencies,
 			});
 
 			expect(getFieldType).toHaveBeenCalledTimes(1);
@@ -526,9 +331,6 @@ describe("parser", () => {
 		test("should call parser of computed field type if defined", async () => {
 			getFieldSchema.mockReturnValue(childSchema);
 
-			const getSchema = vi.fn().mockReturnValue("testSchemaSync");
-			const getSchemaAsync = vi.fn().mockResolvedValue(childSchema);
-
 			const fieldParser = vi.fn().mockReturnValue({
 				field1: "parsed1",
 			});
@@ -546,13 +348,12 @@ describe("parser", () => {
 				values,
 				name: "test",
 				fieldSchema: {
-					getDependencies,
-					getSchemaAsync,
-					getSchema,
+					getSchema: () => childSchema,
 				},
 				getFieldSchema,
 				getFieldType,
 				parents,
+				dependencies,
 			});
 
 			expect(result).toEqual({
@@ -570,11 +371,6 @@ describe("parser", () => {
 		});
 
 		test("should call default parser for computed field", async () => {
-			getFieldSchema.mockReturnValue(childSchema);
-
-			const getSchema = vi.fn().mockReturnValue("testSchemaSync");
-			const getSchemaAsync = vi.fn().mockResolvedValue(childSchema);
-
 			const getFieldType = vi.fn().mockReturnValue({});
 
 			const values = {
@@ -587,17 +383,13 @@ describe("parser", () => {
 				values,
 				name: "field1",
 				fieldSchema: {
-					getDependencies,
-					getSchemaAsync,
-					getSchema,
+					getSchema: () => "testSchema",
 				},
 				getFieldSchema,
 				getFieldType,
 				parents,
+				dependencies,
 			});
-
-			expect(getFieldType).toHaveBeenCalledTimes(1);
-			expect(getFieldType).toHaveBeenCalledWith(childSchema);
 
 			expect(result).toEqual({
 				field1: "value1",
@@ -607,7 +399,7 @@ describe("parser", () => {
 });
 
 describe("validatorBeforeSubmit", () => {
-	const getDependencies = vi.fn().mockReturnValue(dependencies);
+	const _getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 	const setError = vi.fn();
@@ -619,32 +411,24 @@ describe("validatorBeforeSubmit", () => {
 		throw new Error("`validatorBeforeSubmit` is not defined");
 	}
 
-	test("should provide all values to `getSchema`", () => {
+	test("should provide all values to `getSchema`", async () => {
 		const getSchema = vi.fn();
 
 		const values = {
 			field1: "value1",
 		};
 
-		validatorBeforeSubmit({
+		await validatorBeforeSubmit({
 			setError,
 			setCurrentError,
 			value: null,
 			values,
 			name: "test",
-			fieldSchema: { getDependencies, getSchema },
+			fieldSchema: { getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			parents,
-		});
-
-		expect(getDependencies).toHaveBeenCalledTimes(1);
-		expect(getDependencies).toHaveBeenCalledWith({
-			values,
-			phase: "serialize",
-			getFieldSchema,
-			getFieldType: defaultGetFieldType,
-			parents,
+			dependencies,
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
@@ -658,30 +442,30 @@ describe("validatorBeforeSubmit", () => {
 		});
 	});
 
-	test("should return empty object if `getSchema` returns falsy value", () => {
+	test("should not call `getFieldType` if `getSchema` returns falsy value", async () => {
 		const values = {
 			field1: "value1",
 		};
 
-		const result = validatorBeforeSubmit({
+		await validatorBeforeSubmit({
 			setError,
 			setCurrentError,
 			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => null,
 			},
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			parents,
+			dependencies,
 		});
 
-		expect(result).toEqual({});
+		expect(defaultGetFieldType).toHaveBeenCalledTimes(0);
 	});
 
-	test("should call `getFieldType` with correct argument", () => {
+	test("should call `getFieldType` with correct argument", async () => {
 		getFieldSchema.mockReturnValue(childSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({});
@@ -690,26 +474,26 @@ describe("validatorBeforeSubmit", () => {
 			field1: "value1",
 		};
 
-		validatorBeforeSubmit({
+		await validatorBeforeSubmit({
 			setError,
 			setCurrentError,
 			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
 			getFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(getFieldType).toHaveBeenCalledTimes(1);
 		expect(getFieldType).toHaveBeenCalledWith(childSchema);
 	});
 
-	test("should call `validatorBeforeSubmit` of computed field type if defined", () => {
+	test("should call `validatorBeforeSubmit` of computed field type if defined", async () => {
 		getFieldSchema.mockReturnValue(childSchema);
 
 		const fieldValidatorBeforeSubmit = vi.fn();
@@ -722,19 +506,19 @@ describe("validatorBeforeSubmit", () => {
 			field1: "value1",
 		};
 
-		validatorBeforeSubmit({
+		await validatorBeforeSubmit({
 			setError,
 			setCurrentError,
 			value: null,
 			values,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
 			getFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(fieldValidatorBeforeSubmit).toHaveBeenCalledWith({
@@ -750,7 +534,7 @@ describe("validatorBeforeSubmit", () => {
 		});
 	});
 
-	test("should not set any error if `validatorBeforeSubmit` for computed field is not defined", () => {
+	test("should not set any error if `validatorBeforeSubmit` for computed field is not defined", async () => {
 		getFieldSchema.mockReturnValue(childSchema);
 
 		const getFieldType = vi.fn().mockReturnValue({});
@@ -760,19 +544,19 @@ describe("validatorBeforeSubmit", () => {
 			field2: "value2",
 		};
 
-		const _result = validatorBeforeSubmit({
+		await validatorBeforeSubmit({
 			setError,
 			setCurrentError,
 			value: null,
 			values,
 			name: "field1",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
 			getFieldType,
 			parents,
+			dependencies,
 		});
 
 		expect(setError).toHaveBeenCalledTimes(0);
@@ -780,7 +564,6 @@ describe("validatorBeforeSubmit", () => {
 });
 
 describe("errorsSetter", () => {
-	const getDependencies = vi.fn().mockReturnValue(dependencies);
 	const getFieldSchema = vi.fn();
 	const defaultGetFieldType = vi.fn();
 	const setError = vi.fn();
@@ -800,19 +583,19 @@ describe("errorsSetter", () => {
 		throw new Error("`errorsSetter` is not defined");
 	}
 
-	test("should provide all errors to `getSchema`", () => {
+	test("should provide all errors to `getSchema`", async () => {
 		const getSchema = vi.fn();
 
 		const errors = {
 			field1: "error1",
 		};
 
-		errorsSetter({
+		await errorsSetter({
 			setError,
 			setCurrentError,
 			errors,
 			name: "test",
-			fieldSchema: { getDependencies, getSchema },
+			fieldSchema: { getSchema },
 			getFieldSchema,
 			getFieldType: defaultGetFieldType,
 			value: null,
@@ -820,15 +603,7 @@ describe("errorsSetter", () => {
 			rawValue: null,
 			rawValues,
 			parents,
-		});
-
-		expect(getDependencies).toHaveBeenCalledTimes(1);
-		expect(getDependencies).toHaveBeenCalledWith({
-			values: rawValues,
-			phase: "serialize",
-			getFieldSchema,
-			getFieldType: defaultGetFieldType,
-			parents,
+			dependencies,
 		});
 
 		expect(getSchema).toHaveBeenCalledTimes(1);
@@ -842,18 +617,17 @@ describe("errorsSetter", () => {
 		});
 	});
 
-	test("should return empty object if `getSchema` returns falsy value", () => {
+	test("should call not `getFieldType`  if `getSchema` returns falsy value", async () => {
 		const errors = {
 			field1: "error1",
 		};
 
-		const result = errorsSetter({
+		await errorsSetter({
 			setError,
 			setCurrentError,
 			errors,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => null,
 			},
 			getFieldSchema,
@@ -863,12 +637,13 @@ describe("errorsSetter", () => {
 			rawValue: null,
 			rawValues,
 			parents,
+			dependencies,
 		});
 
-		expect(result).toEqual({});
+		expect(defaultGetFieldType).toHaveBeenCalledTimes(0);
 	});
 
-	test("should call `getFieldType` with correct argument", () => {
+	test("should call `getFieldType` with correct argument", async () => {
 		const getFieldType = vi.fn().mockReturnValue({});
 
 		getFieldSchema.mockReturnValue(childSchema);
@@ -877,13 +652,12 @@ describe("errorsSetter", () => {
 			field1: "error1",
 		};
 
-		errorsSetter({
+		await errorsSetter({
 			setError,
 			setCurrentError,
 			errors,
 			name: "test",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -893,13 +667,14 @@ describe("errorsSetter", () => {
 			rawValue: null,
 			rawValues,
 			parents,
+			dependencies,
 		});
 
 		expect(getFieldType).toHaveBeenCalledTimes(1);
 		expect(getFieldType).toHaveBeenCalledWith(childSchema);
 	});
 
-	test("should call errorsSetter of computed field type if defined", () => {
+	test("should call errorsSetter of computed field type if defined", async () => {
 		const fieldErrorsSetter = vi.fn();
 
 		const getFieldType = vi.fn().mockReturnValue({
@@ -912,13 +687,12 @@ describe("errorsSetter", () => {
 
 		getFieldSchema.mockReturnValue(childSchema);
 
-		errorsSetter({
+		await errorsSetter({
 			setError,
 			setCurrentError,
 			errors,
 			name: "field1",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => childSchema,
 			},
 			getFieldSchema,
@@ -928,6 +702,7 @@ describe("errorsSetter", () => {
 			rawValue: undefined,
 			rawValues,
 			parents,
+			dependencies,
 		});
 
 		expect(fieldErrorsSetter).toHaveBeenCalledWith({
@@ -946,7 +721,7 @@ describe("errorsSetter", () => {
 		});
 	});
 
-	test("should call default errorsSetter for computed field", () => {
+	test("should call default errorsSetter for computed field", async () => {
 		const getFieldType = vi.fn().mockReturnValue({});
 
 		const errors = {
@@ -954,13 +729,12 @@ describe("errorsSetter", () => {
 			field2: "error2",
 		};
 
-		errorsSetter({
+		await errorsSetter({
 			setError,
 			setCurrentError,
 			errors,
 			name: "field1",
 			fieldSchema: {
-				getDependencies,
 				getSchema: () => "testSchema",
 			},
 			getFieldSchema,
@@ -970,6 +744,7 @@ describe("errorsSetter", () => {
 			rawValue: null,
 			rawValues,
 			parents,
+			dependencies,
 		});
 
 		expect(setError).toHaveBeenCalledTimes(1);

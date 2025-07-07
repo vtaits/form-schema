@@ -1,4 +1,5 @@
-import { describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
+import type { BaseFieldSchema } from "../fields/base";
 import { defaultSerializer, serialize } from "./serialize";
 import type {
 	CreateGetFieldSchema,
@@ -16,68 +17,70 @@ const parents: ParentType[] = [
 ];
 
 describe("defaultSerializer", () => {
-	test("get value by name", () => {
-		expect(
-			defaultSerializer({
-				value: "error1",
-				values: {
-					foo: "error1",
-					bar: "error2",
-				},
-				name: "foo",
-				fieldSchema: null,
-				getFieldSchema: vi.fn(),
-				getFieldType: vi.fn(),
-				parents: [],
-			}),
-		).toEqual({
+	test("get value by name", async () => {
+		const result = await defaultSerializer({
+			value: "error1",
+			values: {
+				foo: "error1",
+				bar: "error2",
+			},
+			name: "foo",
+			fieldSchema: null,
+			getFieldSchema: vi.fn(),
+			getFieldType: vi.fn(),
+			parents: [],
+			dependencies: undefined,
+		});
+
+		expect(result).toEqual({
 			foo: "error1",
 		});
 	});
 
-	test("return an empty object if there is no value by name", () => {
-		expect(
-			defaultSerializer({
-				value: undefined,
-				values: {
-					bar: "error2",
-				},
-				name: "foo",
-				fieldSchema: null,
-				getFieldSchema: vi.fn(),
-				getFieldType: vi.fn(),
-				parents: [],
-			}),
-		).toEqual({});
+	test("return an empty object if there is no value by name", async () => {
+		const result = await defaultSerializer({
+			value: undefined,
+			values: {
+				bar: "error2",
+			},
+			name: "foo",
+			fieldSchema: null,
+			getFieldSchema: vi.fn(),
+			getFieldType: vi.fn(),
+			parents: [],
+			dependencies: undefined,
+		});
+
+		expect(result).toEqual({});
 	});
 });
 
 describe("serialize", () => {
-	test("should call default serializer", () => {
-		expect(
-			serialize({
-				values: {
-					value: "test",
-					value2: "test2",
-				},
+	test("should call default serializer", async () => {
+		const result = await serialize({
+			values: {
+				value: "test",
+				value2: "test2",
+			},
 
-				names: ["value"],
+			names: ["value"],
 
-				getFieldSchema: (): any => ({
-					type: "testType",
-					name: "value",
-				}),
-
-				getFieldType: () => ({}),
-
-				parents,
+			getFieldSchema: (): any => ({
+				type: "testType",
+				name: "value",
 			}),
-		).toEqual({
+
+			getFieldType: () => ({}),
+
+			parents,
+		});
+
+		expect(result).toEqual({
 			value: "test",
 		});
 	});
 
-	test("should call redefined serializer of the type of the field", () => {
+	test("should call redefined serializer of the type of the field", async () => {
 		const rawValues = {
 			value: "test",
 			value2: "test2",
@@ -100,17 +103,17 @@ describe("serialize", () => {
 
 		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-		expect(
-			serialize({
-				values: rawValues,
+		const result = await serialize({
+			values: rawValues,
 
-				names: ["value"],
+			names: ["value"],
 
-				getFieldSchema,
-				getFieldType,
-				parents,
-			}),
-		).toEqual({
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toEqual({
 			value: "testtest",
 		});
 
@@ -126,7 +129,7 @@ describe("serialize", () => {
 		});
 	});
 
-	test("should call redefined serializer of the schema of the field", () => {
+	test("should call redefined serializer of the schema of the field", async () => {
 		const rawValues = {
 			value: "test",
 			value2: "test2",
@@ -151,17 +154,17 @@ describe("serialize", () => {
 
 		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-		expect(
-			serialize({
-				values: rawValues,
+		const result = await serialize({
+			values: rawValues,
 
-				names: ["value"],
+			names: ["value"],
 
-				getFieldSchema,
-				getFieldType,
-				parents,
-			}),
-		).toEqual({
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toEqual({
 			value: "testtest",
 		});
 
@@ -179,7 +182,7 @@ describe("serialize", () => {
 		});
 	});
 
-	test("should call single serializer of the type of the field", () => {
+	test("should call single serializer of the type of the field", async () => {
 		const rawValues = {
 			value: "test",
 			value2: "test2",
@@ -200,17 +203,17 @@ describe("serialize", () => {
 
 		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-		expect(
-			serialize({
-				values: rawValues,
+		const result = await serialize({
+			values: rawValues,
 
-				names: ["value"],
+			names: ["value"],
 
-				getFieldSchema,
-				getFieldType,
-				parents,
-			}),
-		).toEqual({
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toEqual({
 			value: "serialized single",
 		});
 
@@ -228,7 +231,7 @@ describe("serialize", () => {
 		});
 	});
 
-	test("should call single serializer of the schema of the field", () => {
+	test("should call single serializer of the schema of the field", async () => {
 		const rawValues = {
 			value: "test",
 			value2: "test2",
@@ -251,17 +254,17 @@ describe("serialize", () => {
 
 		const getFieldSchema: GetFieldSchema<any> = () => fieldSchema;
 
-		expect(
-			serialize({
-				values: rawValues,
+		const result = await serialize({
+			values: rawValues,
 
-				names: ["value"],
+			names: ["value"],
 
-				getFieldSchema,
-				getFieldType,
-				parents,
-			}),
-		).toEqual({
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toEqual({
 			value: "serialized single",
 		});
 
@@ -280,7 +283,7 @@ describe("serialize", () => {
 		});
 	});
 
-	test("should call multiple serializers", () => {
+	test("should call multiple serializers", async () => {
 		const fields: Record<
 			string | number | symbol,
 			{
@@ -304,35 +307,35 @@ describe("serialize", () => {
 			},
 		};
 
-		expect(
-			serialize({
-				values: {
-					value1: "test1",
-					value2: "test2",
-				},
+		const result = await serialize({
+			values: {
+				value1: "test1",
+				value2: "test2",
+			},
 
-				names: ["value1", "value2"],
+			names: ["value1", "value2"],
 
-				getFieldSchema: (name): any => ({
-					...fields[name],
-					name,
-				}),
-
-				getFieldType: ({
-					type,
-				}: {
-					type: string;
-				}): FieldType<any, any, any, any, any> => fieldTypes[type],
-
-				parents,
+			getFieldSchema: (name): any => ({
+				...fields[name],
+				name,
 			}),
-		).toEqual({
+
+			getFieldType: ({
+				type,
+			}: {
+				type: string;
+			}): FieldType<any, any, any, any, any> => fieldTypes[type],
+
+			parents,
+		});
+
+		expect(result).toEqual({
 			value1: "test1",
 			value2: "test2test2",
 		});
 	});
 
-	test("should redefine getFieldSchema", () => {
+	test("should redefine getFieldSchema", async () => {
 		const serializer = vi.fn<Serializer<any, any, any, any, any>>(() => ({}));
 
 		const parentGetFieldSchema = vi.fn(() => ({
@@ -351,7 +354,7 @@ describe("serialize", () => {
 			createGetFieldSchema,
 		});
 
-		serialize({
+		await serialize({
 			values: {
 				value: "test",
 			},
@@ -379,6 +382,121 @@ describe("serialize", () => {
 			},
 			phase: "serialize",
 			parents,
+		});
+	});
+});
+
+describe("getDependencies", () => {
+	const dependencies = Symbol("dependencies");
+
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
+	const getFieldType = vi.fn().mockReturnValue({});
+
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
+	test("multiple serializer", async () => {
+		const serializer = vi.fn().mockImplementation(({ name, value }) =>
+			Promise.resolve({
+				[name]: `${value}${value}`,
+			}),
+		);
+
+		const fieldSchema = {
+			getDependencies,
+			serializer,
+		} satisfies BaseFieldSchema<unknown, unknown>;
+
+		const getFieldSchema = vi.fn().mockReturnValue(fieldSchema);
+
+		const values = {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		};
+
+		const result = await serialize({
+			values,
+			names: ["value1"],
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(serializer).toHaveBeenCalledWith({
+			fieldSchema,
+			dependencies,
+			values,
+			value: "test1",
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toEqual({
+			value1: "test1test1",
+		});
+	});
+
+	test("single serializer", async () => {
+		const serializerSingle = vi
+			.fn()
+			.mockImplementation(({ value }) => Promise.resolve(`${value}${value}`));
+
+		const fieldSchema = {
+			getDependencies,
+			serializerSingle,
+		} satisfies BaseFieldSchema<unknown, unknown>;
+
+		const getFieldSchema = vi.fn().mockReturnValue(fieldSchema);
+
+		const values = {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		};
+
+		const result = await serialize({
+			values,
+			names: ["value1"],
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(serializerSingle).toHaveBeenCalledWith({
+			fieldSchema,
+			dependencies,
+			values,
+			value: "test1",
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(result).toEqual({
+			value1: "test1test1",
 		});
 	});
 });

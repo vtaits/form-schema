@@ -50,7 +50,7 @@ Type declaration is an object with next params:
   * `getFieldType` - see above;
   * `parents` - stack of parent fields above current field with runtime values.
 
-  Should return **OBJECT** of values. By default returns
+  Should return **OBJECT** of values or `Promise` with object of values (can be `async`). By default returns
 
   ```
   {
@@ -75,7 +75,7 @@ Type declaration is an object with next params:
   }
   ```
 
-- `validatorBeforeSubmit` - function for collect validation errors of form before submit. Receives next arguments:
+- `validatorBeforeSubmit` - function for collect validation errors of form before submit. Receives next parameters:
 
   * `setError` - a function for setting errors;
   * `values` - all values of the form;
@@ -103,9 +103,10 @@ Type declaration is an object with next params:
   }
   ```
 
-- `errorsMapper` - function for map errors of field from backend format to format of field. Receives next arguments:
+- `errorsSetter` - function for map errors of field from backend format to format of field. Receives next parameters:
 
   * `setError` - a function for setting errors;
+  * `setCurrentError` - a function to set error on the current field;
   * `errors` - errors object;
   * `name` - name of current field;
   * `fieldSchema` - full schema of current field;

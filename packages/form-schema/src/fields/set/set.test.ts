@@ -66,14 +66,15 @@ describe("createGetFieldSchema", () => {
 		throw new Error("`createGetFieldSchema` is not defined");
 	}
 
-	test("should return child schema by name", () => {
-		const getFieldSchema = createGetFieldSchema({
+	test("should return child schema by name", async () => {
+		const getFieldSchema = await createGetFieldSchema({
 			fieldSchema,
 			getFieldSchema: vi.fn(),
 			getFieldType: vi.fn(),
 			parents: [],
 			phase: "render",
 			values: {},
+			dependencies: undefined,
 		});
 
 		expect(getFieldSchema("field1")).toBe("SCHEMA_1");
@@ -87,14 +88,14 @@ describe("serializer", () => {
 		throw new Error("`serializer` is not defined");
 	}
 
-	test("should return serialized values", () => {
+	test("should return serialized values", async () => {
 		const expectedResult = {
 			bar: "baz",
 		};
 
-		vi.mocked(serialize).mockReturnValue(expectedResult);
+		vi.mocked(serialize).mockResolvedValue(expectedResult);
 
-		const result = serializer({
+		const result = await serializer({
 			name,
 			fieldSchema,
 			getFieldSchema,
@@ -102,6 +103,7 @@ describe("serializer", () => {
 			parents,
 			value: undefined,
 			values,
+			dependencies: undefined,
 		});
 
 		expect(result).toBe(expectedResult);
@@ -117,14 +119,14 @@ describe("serializer", () => {
 		});
 	});
 
-	test("should return serialized values for nested field", () => {
+	test("should return serialized values for nested field", async () => {
 		const expectedResult = {
 			bar: "baz",
 		};
 
-		vi.mocked(serialize).mockReturnValue(expectedResult);
+		vi.mocked(serialize).mockResolvedValue(expectedResult);
 
-		const result = serializer({
+		const result = await serializer({
 			name,
 			fieldSchema: fieldSchemaNested,
 			getFieldSchema,
@@ -132,6 +134,7 @@ describe("serializer", () => {
 			parents,
 			value: values,
 			values: valuesForNested,
+			dependencies: undefined,
 		});
 
 		expect(result).toEqual({
@@ -156,14 +159,14 @@ describe("parser", () => {
 		throw new Error("`parser` is not defined");
 	}
 
-	test("should return parsed values", () => {
+	test("should return parsed values", async () => {
 		const expectedResult = {
 			bar: "baz",
 		};
 
-		vi.mocked(parse).mockReturnValue(expectedResult);
+		vi.mocked(parse).mockResolvedValue(expectedResult);
 
-		const result = parser({
+		const result = await parser({
 			name,
 			fieldSchema,
 			getFieldSchema,
@@ -171,6 +174,7 @@ describe("parser", () => {
 			parents,
 			value: undefined,
 			values,
+			dependencies: undefined,
 		});
 
 		expect(result).toBe(expectedResult);
@@ -185,38 +189,7 @@ describe("parser", () => {
 		});
 	});
 
-	test("should return parsed values for nested field", () => {
-		const expectedResult = {
-			bar: "baz",
-		};
-
-		vi.mocked(parse).mockReturnValue(expectedResult);
-
-		const result = parser({
-			name,
-			fieldSchema: fieldSchemaNested,
-			getFieldSchema,
-			getFieldType,
-			parents,
-			value: values,
-			values: valuesForNested,
-		});
-
-		expect(result).toEqual({
-			[name]: expectedResult,
-		});
-
-		expect(parse).toHaveBeenCalledTimes(1);
-		expect(parse).toHaveBeenCalledWith({
-			names: ["field1", "field2"],
-			getFieldSchema,
-			getFieldType,
-			parents: parentsForNested,
-			values,
-		});
-	});
-
-	test("should return asynchronously parsed values for nested field", async () => {
+	test("should return parsed values for nested field", async () => {
 		const expectedResult = {
 			bar: "baz",
 		};
@@ -231,6 +204,7 @@ describe("parser", () => {
 			parents,
 			value: values,
 			values: valuesForNested,
+			dependencies: undefined,
 		});
 
 		expect(result).toEqual({
@@ -255,8 +229,8 @@ describe("validatorBeforeSubmit", () => {
 		throw new Error("`validatorBeforeSubmit` is not defined");
 	}
 
-	test("should validate all childs", () => {
-		validatorBeforeSubmit({
+	test("should validate all childs", async () => {
+		await validatorBeforeSubmit({
 			name,
 			setError,
 			setCurrentError,
@@ -266,6 +240,7 @@ describe("validatorBeforeSubmit", () => {
 			parents,
 			value: undefined,
 			values,
+			dependencies: undefined,
 		});
 
 		expect(validateBeforeSubmit).toHaveBeenCalledTimes(1);
@@ -279,8 +254,8 @@ describe("validatorBeforeSubmit", () => {
 		});
 	});
 
-	test("should validate all childs for nested field", () => {
-		validatorBeforeSubmit({
+	test("should validate all childs for nested field", async () => {
+		await validatorBeforeSubmit({
 			name,
 			setError,
 			setCurrentError,
@@ -290,6 +265,7 @@ describe("validatorBeforeSubmit", () => {
 			parents,
 			value: values,
 			values: valuesForNested,
+			dependencies: undefined,
 		});
 
 		expect(validateBeforeSubmit).toHaveBeenCalledTimes(1);
@@ -311,7 +287,7 @@ describe("errorsSetter", () => {
 		throw new Error("`errorsSetter` is not defined");
 	}
 
-	test("should set errors to all childs", () => {
+	test("should set errors to all childs", async () => {
 		const errors = {
 			error: "message",
 		};
@@ -320,7 +296,7 @@ describe("errorsSetter", () => {
 			raw: "value",
 		};
 
-		errorsSetter({
+		await errorsSetter({
 			name,
 			setError,
 			setCurrentError,
@@ -333,6 +309,7 @@ describe("errorsSetter", () => {
 			errors,
 			rawValue: undefined,
 			rawValues,
+			dependencies: undefined,
 		});
 
 		expect(setFieldErrors).toHaveBeenCalledTimes(1);
@@ -348,7 +325,7 @@ describe("errorsSetter", () => {
 		});
 	});
 
-	test("should set errors to all childs for nested field", () => {
+	test("should set errors to all childs for nested field", async () => {
 		const errors = {
 			error: "message",
 		};
@@ -357,7 +334,7 @@ describe("errorsSetter", () => {
 			raw: "value",
 		};
 
-		errorsSetter({
+		await errorsSetter({
 			name,
 			setError,
 			setCurrentError,
@@ -374,6 +351,7 @@ describe("errorsSetter", () => {
 			rawValues: {
 				[name]: rawValues,
 			},
+			dependencies: undefined,
 		});
 
 		expect(setFieldErrors).toHaveBeenCalledTimes(1);

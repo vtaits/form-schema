@@ -12,6 +12,7 @@
 
 ### Breaking changes
 
+- Make all the helpers asynchronous
 - Changed parameters of `getSchema` of `dynamic` field
 
 ## 2.2.0 (27 nov 2023)

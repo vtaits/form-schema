@@ -292,7 +292,7 @@ const fieldTypes: Record<
 			const arrayErrors = errors[name];
 
 			if (!arrayErrors) {
-				return {};
+				return;
 			}
 
 			if (typeof arrayErrors === "string") {

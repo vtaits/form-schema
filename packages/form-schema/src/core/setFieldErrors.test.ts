@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
+import type { BaseFieldSchema } from "../fields/base";
 import { defaultFieldErrorsSetter, setFieldErrors } from "./setFieldErrors";
 import type {
 	CreateGetFieldSchema,
@@ -26,8 +27,8 @@ afterEach(() => {
 });
 
 describe("defaultFieldErrorsSetter", () => {
-	test("set error by name", () => {
-		defaultFieldErrorsSetter({
+	test("set error by name", async () => {
+		await defaultFieldErrorsSetter({
 			setError,
 			setCurrentError,
 			errors: {
@@ -43,14 +44,15 @@ describe("defaultFieldErrorsSetter", () => {
 			rawValue: null,
 			rawValues: {},
 			parents,
+			dependencies: null,
 		});
 
 		expect(setError).toHaveBeenCalledTimes(1);
 		expect(setError).toHaveBeenNthCalledWith(1, "foo", parents, "error1");
 	});
 
-	test("not set error if there is no error by name", () => {
-		defaultFieldErrorsSetter({
+	test("not set error if there is no error by name", async () => {
+		await defaultFieldErrorsSetter({
 			setError,
 			setCurrentError,
 			errors: {
@@ -65,14 +67,15 @@ describe("defaultFieldErrorsSetter", () => {
 			rawValue: null,
 			rawValues: {},
 			parents,
+			dependencies: null,
 		});
 		expect(setError).toHaveBeenCalledTimes(0);
 	});
 });
 
 describe("setFieldErrors", () => {
-	test("should call default errors mapper", () => {
-		setFieldErrors({
+	test("should call default errors mapper", async () => {
+		await setFieldErrors({
 			setError,
 			errors: {
 				value: ["test"],
@@ -93,8 +96,8 @@ describe("setFieldErrors", () => {
 		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["test"]);
 	});
 
-	test("should call redefined errors mapper with `setError`", () => {
-		setFieldErrors({
+	test("should call redefined errors mapper with `setError`", async () => {
+		await setFieldErrors({
 			setError,
 			errors: {
 				value: ["test"],
@@ -119,8 +122,8 @@ describe("setFieldErrors", () => {
 		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["testtest"]);
 	});
 
-	test("should call redefined errors mapper with `setCurrentError`", () => {
-		setFieldErrors({
+	test("should call redefined errors mapper with `setCurrentError`", async () => {
+		await setFieldErrors({
 			setError,
 			errors: {
 				value: ["test"],
@@ -145,7 +148,7 @@ describe("setFieldErrors", () => {
 		expect(setError).toHaveBeenNthCalledWith(1, "value", parents, ["testtest"]);
 	});
 
-	test("should call multiple errors mappers", () => {
+	test("should call multiple errors mappers", async () => {
 		const fields: Record<
 			string | number | symbol,
 			{
@@ -175,7 +178,7 @@ describe("setFieldErrors", () => {
 			},
 		};
 
-		setFieldErrors({
+		await setFieldErrors({
 			setError,
 			errors: {
 				value1: ["test1"],
@@ -205,7 +208,7 @@ describe("setFieldErrors", () => {
 		]);
 	});
 
-	test("should call multiple nested errors mappers", () => {
+	test("should call multiple nested errors mappers", async () => {
 		const fields: Record<
 			string | number | symbol,
 			{
@@ -284,7 +287,7 @@ describe("setFieldErrors", () => {
 			},
 		};
 
-		setFieldErrors({
+		await setFieldErrors({
 			setError,
 			errors: {
 				value1: ["test1"],
@@ -326,7 +329,7 @@ describe("setFieldErrors", () => {
 		]);
 	});
 
-	test("should provide correct arguments to errorsSetter", () => {
+	test("should provide correct arguments to errorsSetter", async () => {
 		const errorsSetter = vi.fn();
 
 		const values: Values = {
@@ -346,7 +349,7 @@ describe("setFieldErrors", () => {
 			errorsSetter,
 		});
 
-		setFieldErrors({
+		await setFieldErrors({
 			setError,
 			errors: {
 				value: "test",
@@ -381,10 +384,8 @@ describe("setFieldErrors", () => {
 		});
 	});
 
-	test("should redefine getFieldSchema", () => {
-		const errorsSetter = vi.fn<ErrorsSetter<any, any, any, any, any>>(
-			() => ({}),
-		);
+	test("should redefine getFieldSchema", async () => {
+		const errorsSetter = vi.fn<ErrorsSetter<any, any, any, any, any>>();
 
 		const parentGetFieldSchema = vi.fn(() => ({
 			type: "testType",
@@ -402,7 +403,7 @@ describe("setFieldErrors", () => {
 			createGetFieldSchema,
 		});
 
-		setFieldErrors({
+		await setFieldErrors({
 			setError,
 			errors: {
 				value: "error",
@@ -439,6 +440,78 @@ describe("setFieldErrors", () => {
 			},
 			phase: "serialize",
 			parents,
+		});
+	});
+});
+
+describe("getDependencies", () => {
+	const dependencies = Symbol("dependencies");
+
+	const getDependencies = vi.fn().mockReturnValue(dependencies);
+	const getFieldType = vi.fn().mockReturnValue({});
+
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
+	test("provide dependencies", async () => {
+		const errorsSetter = vi.fn().mockResolvedValue(undefined);
+
+		const fieldSchema = {
+			getDependencies,
+			errorsSetter,
+		} satisfies BaseFieldSchema<unknown, unknown>;
+
+		const getFieldSchema = vi.fn().mockReturnValue(fieldSchema);
+
+		const values = {
+			value1: "test1",
+			value2: "test2",
+			value3: "test3",
+		};
+
+		const rawValues = {
+			value: "test",
+		};
+
+		const errors = {
+			value: "error",
+		};
+
+		await setFieldErrors({
+			setError,
+			errors,
+			values,
+			rawValues,
+			names: ["value1"],
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(getDependencies).toHaveBeenCalledTimes(1);
+		expect(getDependencies).toHaveBeenCalledWith({
+			values,
+			phase: "serialize",
+			getFieldSchema,
+			getFieldType,
+			parents,
+		});
+
+		expect(errorsSetter).toHaveBeenCalledWith({
+			errors,
+			setError,
+			fieldSchema,
+			dependencies,
+			values,
+			value: "test1",
+			rawValue: undefined,
+			rawValues,
+			name: "value1",
+			getFieldSchema,
+			getFieldType,
+			parents,
+			setCurrentError: expect.any(Function),
 		});
 	});
 });

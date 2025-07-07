@@ -29,6 +29,41 @@ export type ParentType<Values extends BaseValues = BaseValues> = {
 	values: Values;
 };
 
+export type GetDependenciesParams<
+	FieldSchema,
+	Values extends Record<string, any> = Record<string, any>,
+	RawValues extends Record<string, any> = Record<string, any>,
+	SerializedValues extends Record<string, any> = Record<string, any>,
+	Errors extends Record<string, any> = Record<string, any>,
+> = {
+	/**
+	 * object of values of form, type depends from `phase` (2nd argument)
+	 */
+	values: Values | RawValues;
+	/**
+	 * current phase
+	 */
+	phase: PhaseType;
+	/**
+	 * current `getFieldSchema`
+	 */
+	getFieldSchema: GetFieldSchema<FieldSchema>;
+	/**
+	 * global `getFieldType`
+	 */
+	getFieldType: GetFieldType<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>;
+	/**
+	 * stack of parent fields above current field with runtime values
+	 */
+	parents: readonly ParentType[];
+};
+
 export type CreateGetFieldSchemaParams<
 	FieldSchema,
 	Values extends BaseValues,
@@ -67,6 +102,7 @@ export type CreateGetFieldSchemaParams<
 	 * raw values for phase 'parse' and runtime values otherwise
 	 */
 	parents: readonly ParentType[];
+	dependencies: unknown;
 }>;
 
 /**
@@ -87,7 +123,7 @@ export type CreateGetFieldSchema<
 		SerializedValues,
 		Errors
 	>,
-) => GetFieldSchema<FieldSchema>;
+) => GetFieldSchema<FieldSchema> | Promise<GetFieldSchema<FieldSchema>>;
 
 /**
  * Parameters of serializer of the field
@@ -133,6 +169,7 @@ export type SerializerParams<
 	 * stack of parent fields above current field with runtime values
 	 */
 	parents: readonly ParentType[];
+	dependencies: unknown;
 }>;
 
 export type Serializer<
@@ -149,7 +186,7 @@ export type Serializer<
 		SerializedValues,
 		Errors
 	>,
-) => SerializedValues;
+) => SerializedValues | Promise<SerializedValues>;
 
 /**
  * Single serializer of the field
@@ -168,7 +205,7 @@ export type SerializerSingle<
 		SerializedValues,
 		Errors
 	>,
-) => unknown;
+) => unknown | Promise<unknown>;
 
 /**
  * Parameters of parser of the field
@@ -214,6 +251,7 @@ export type ParserParams<
 	 * stack of parent fields above current field with raw values
 	 */
 	parents: readonly ParentType[];
+	dependencies: unknown;
 }>;
 
 export type Parser<
@@ -300,6 +338,7 @@ export type ValidatorBeforeSubmitParams<
 	 * stack of parent fields above current field with runtime values
 	 */
 	parents: readonly ParentType[];
+	dependencies: unknown;
 }>;
 
 export type ValidatorBeforeSubmit<
@@ -316,7 +355,7 @@ export type ValidatorBeforeSubmit<
 		SerializedValues,
 		Errors
 	>,
-) => void;
+) => void | Promise<void>;
 
 export type ErrorsSetterParams<
 	FieldSchema,
@@ -379,6 +418,7 @@ export type ErrorsSetterParams<
 	 * stack of parent fields above current field with runtime values
 	 */
 	parents: readonly ParentType[];
+	dependencies: unknown;
 }>;
 
 export type ErrorsSetter<
@@ -395,7 +435,7 @@ export type ErrorsSetter<
 		SerializedValues,
 		Errors
 	>,
-) => void;
+) => void | Promise<void>;
 
 export type FieldType<
 	FieldSchema,
@@ -450,6 +490,18 @@ export type FieldType<
 };
 
 export type FieldSchemaBase = {
+	/**
+	 * Callback that counts dependencies of the field to avoid excess recounts
+	 */
+	getDependencies?: (
+		params: GetDependenciesParams<
+			FieldSchemaBase,
+			BaseValues,
+			BaseValues,
+			BaseValues
+		>,
+	) => unknown;
+
 	serializer?: Serializer<FieldSchemaBase, BaseValues, BaseValues, BaseValues>;
 	serializerSingle?: SerializerSingle<
 		FieldSchemaBase,
@@ -459,6 +511,12 @@ export type FieldSchemaBase = {
 	>;
 	parser?: Parser<FieldSchemaBase, BaseValues, BaseValues, BaseValues>;
 	parserSingle?: ParserSingle<
+		FieldSchemaBase,
+		BaseValues,
+		BaseValues,
+		BaseValues
+	>;
+	errorsSetter?: ErrorsSetter<
 		FieldSchemaBase,
 		BaseValues,
 		BaseValues,

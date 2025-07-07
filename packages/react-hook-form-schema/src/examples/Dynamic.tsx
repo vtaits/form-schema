@@ -74,7 +74,8 @@ const fullSchema: Record<string, FieldSchema> = {
 	lastName: {
 		type: "dynamic",
 
-		getDependencies: ({ values: { firstName } }) => firstName,
+		getDependencies: ({ values }) =>
+			(values as Record<string, unknown>).firstName,
 
 		getSchema: ({ dependencies: firstName }) => ({
 			type: "input",
@@ -89,38 +90,19 @@ const fullSchema: Record<string, FieldSchema> = {
 	wow: {
 		type: "dynamic",
 
-		getDependencies: ({ values: { lastName } }) => lastName,
+		getDependencies: ({ values }) =>
+			(values as Record<string, unknown>).lastName,
 
-		getSchema: ({ dependencies: lastName }) => {
+		getSchema: async ({ dependencies: lastName }) => {
+			await new Promise((resolve) => {
+				setTimeout(resolve, 500);
+			});
+
 			if (!lastName) {
 				return null;
 			}
 
 			return {
-				type: "set",
-
-				schemas: {
-					wow: {
-						type: "input",
-						label: "Async WOW",
-						placeholder: "WOW",
-					},
-
-					owo: {
-						type: "input",
-						label: "Async OWO",
-						placeholder: "OWO",
-					},
-				},
-			};
-		},
-
-		getSchemaAsync: ({ dependencies: lastName }) => {
-			if (!lastName) {
-				return Promise.resolve(null);
-			}
-
-			return Promise.resolve({
 				type: "set",
 
 				schemas: {
@@ -136,7 +118,7 @@ const fullSchema: Record<string, FieldSchema> = {
 						placeholder: "OWO",
 					},
 				},
-			});
+			};
 		},
 	},
 };

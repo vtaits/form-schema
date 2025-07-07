@@ -1,4 +1,3 @@
-import isPromise from "is-promise";
 import { defaultParser } from "./parse";
 import type {
 	BaseValues,
@@ -29,7 +28,7 @@ export type ParseSingleParams<
 	parents: readonly ParentType[];
 }>;
 
-export function parseSingle<
+export async function parseSingle<
 	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
@@ -41,10 +40,13 @@ export function parseSingle<
 	getFieldSchema,
 	getFieldType,
 	parents,
-}: ParseSingleParams<FieldSchema, Values, RawValues, SerializedValues, Errors>):
-	| unknown
-	| Promise<unknown>
-	| null {
+}: ParseSingleParams<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors
+>): Promise<unknown> {
 	if (!values) {
 		return null;
 	}
@@ -52,14 +54,29 @@ export function parseSingle<
 	const fieldSchema = getFieldSchema(name);
 	const fieldType = getFieldType(fieldSchema);
 
+	const dependencies = fieldSchema.getDependencies?.({
+		values,
+		phase: "parse",
+		getFieldSchema,
+		getFieldType: getFieldType as unknown as GetFieldType<
+			FieldSchemaBase,
+			BaseValues,
+			BaseValues,
+			BaseValues,
+			Record<string, any>
+		>,
+		parents,
+	});
+
 	const computedGetFieldSchema = fieldType.createGetFieldSchema
-		? fieldType.createGetFieldSchema({
+		? await fieldType.createGetFieldSchema({
 				fieldSchema,
 				getFieldSchema,
 				getFieldType,
 				values,
 				phase: "parse",
 				parents,
+				dependencies,
 			})
 		: getFieldSchema;
 
@@ -71,6 +88,7 @@ export function parseSingle<
 		getFieldSchema: computedGetFieldSchema,
 		getFieldType,
 		parents,
+		dependencies,
 	};
 
 	const parserSingle =
@@ -86,13 +104,7 @@ export function parseSingle<
 		fieldType.parser ||
 		defaultParser;
 
-	const parserResult = parser(params);
-
-	if (isPromise(parserResult)) {
-		return parserResult.then(
-			(result) => (result as Values)[name as keyof Values],
-		);
-	}
+	const parserResult = await parser(params);
 
 	return parserResult[name];
 }

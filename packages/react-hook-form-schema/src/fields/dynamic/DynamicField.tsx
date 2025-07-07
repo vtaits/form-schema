@@ -1,7 +1,8 @@
 import type { FieldSchemaBase } from "@vtaits/form-schema";
-import { isEqual } from "es-toolkit";
+import { isEqual, isPromise } from "es-toolkit";
 import type { ReactElement } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useAsync } from "react-async-hook";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import useLatest from "use-latest";
 import { type RenderParams, renderBySchema } from "../../core";
@@ -43,6 +44,7 @@ export function DynamicField<
 		getFieldType,
 		parents,
 		payload,
+		dependencies,
 	},
 	formResult,
 	formResult: { getValues },
@@ -57,34 +59,21 @@ export function DynamicField<
 >): ReactElement | null {
 	const formResultRef = useLatest(formResult);
 
-	const { getDependencies, getSchema, getSchemaAsync, onShow, onHide } =
-		fieldSchema as unknown as DynamicSchema<
-			FieldSchema,
-			Values,
-			RawValues,
-			SerializedValues,
-			Errors
-		>;
+	const { getSchema, onShow, onHide } = fieldSchema as unknown as DynamicSchema<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>;
 
 	const onShowRef = useLatest(onShow);
 	const onHideRef = useLatest(onHide);
 
-	const dependencies = getDependencies({
-		values: formResult.watch(),
-		phase: "render",
-		getFieldSchema,
-		getFieldType,
-		parents,
-	});
-
 	const prevDependenciesRef = useRef(dependencies);
 
-	const [schema, setSchema] = useState(() => {
-		if (getSchemaAsync) {
-			return null;
-		}
-
-		return getSchema({
+	const countSchema = () =>
+		getSchema({
 			dependencies,
 			values: formResult.getValues(),
 			phase: "render",
@@ -92,58 +81,37 @@ export function DynamicField<
 			getFieldType,
 			parents,
 		});
-	});
+
+	const [schemaResult, setSchemaResult] = useState(() => countSchema());
 
 	const isFirstRenderCheckDependenciesRef = useRef(true);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: trigger only on dependencies change
 	useEffect(() => {
 		if (isFirstRenderCheckDependenciesRef.current) {
-			if (getSchemaAsync) {
-				getSchemaAsync({
-					dependencies,
-					values: formResult.getValues(),
-					phase: "render",
-					getFieldSchema,
-					getFieldType,
-					parents,
-				}).then((asyncSchema) => {
-					setSchema(asyncSchema);
-				});
-			}
-
 			isFirstRenderCheckDependenciesRef.current = false;
 			return;
 		}
 
 		if (!isEqual(prevDependenciesRef.current, dependencies)) {
-			if (getSchemaAsync) {
-				getSchemaAsync({
-					dependencies,
-					values: formResult.getValues(),
-					phase: "render",
-					getFieldSchema,
-					getFieldType,
-					parents,
-				}).then((asyncSchema) => {
-					setSchema(asyncSchema);
-				});
-			} else {
-				setSchema(
-					getSchema({
-						dependencies,
-						values: formResult.getValues(),
-						phase: "render",
-						getFieldSchema,
-						getFieldType,
-						parents,
-					}),
-				);
-			}
+			setSchemaResult(countSchema());
 
 			prevDependenciesRef.current = dependencies;
 		}
 	}, [dependencies]);
+
+	const { result: schemaResultAsync } = useAsync(async () => {
+		const res = await schemaResult;
+		return res;
+	}, [schemaResult]);
+
+	const schema = useMemo(() => {
+		if (isPromise(schemaResult)) {
+			return schemaResultAsync || null;
+		}
+
+		return schemaResult;
+	}, [schemaResult, schemaResultAsync]);
 
 	const schemaRef = useLatest(schema);
 

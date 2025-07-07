@@ -6,6 +6,7 @@ import type {
 	GetFieldType,
 	NameType,
 	ParentType,
+	Serializer,
 } from "./types";
 
 export type SerializeSingleParams<
@@ -28,7 +29,7 @@ export type SerializeSingleParams<
 	parents: readonly ParentType[];
 }>;
 
-export function serializeSingle<
+export async function serializeSingle<
 	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
@@ -46,18 +47,33 @@ export function serializeSingle<
 	RawValues,
 	SerializedValues,
 	Errors
->): unknown {
+>): Promise<unknown> {
 	const fieldSchema = getFieldSchema(name);
 	const fieldType = getFieldType(fieldSchema);
 
+	const dependencies = fieldSchema.getDependencies?.({
+		values,
+		phase: "serialize",
+		getFieldSchema,
+		getFieldType: getFieldType as unknown as GetFieldType<
+			FieldSchemaBase,
+			BaseValues,
+			BaseValues,
+			BaseValues,
+			Record<string, any>
+		>,
+		parents,
+	});
+
 	const computedGetFieldSchema = fieldType.createGetFieldSchema
-		? fieldType.createGetFieldSchema({
+		? await fieldType.createGetFieldSchema({
 				fieldSchema,
 				getFieldSchema,
 				getFieldType,
 				values,
 				phase: "serialize",
 				parents,
+				dependencies,
 			})
 		: getFieldSchema;
 
@@ -69,6 +85,7 @@ export function serializeSingle<
 		getFieldSchema: computedGetFieldSchema,
 		getFieldType,
 		parents,
+		dependencies,
 	};
 
 	const serializerSingle =
@@ -82,9 +99,15 @@ export function serializeSingle<
 	const serializer =
 		(fieldSchema.serializer as typeof fieldType.serializer) ||
 		fieldType.serializer ||
-		defaultSerializer;
+		(defaultSerializer as Serializer<
+			FieldSchema,
+			Values,
+			RawValues,
+			SerializedValues,
+			Errors
+		>);
 
-	const serialized = serializer(params);
+	const serialized = await serializer(params);
 
-	return serialized[name];
+	return serialized[name as keyof SerializedValues];
 }

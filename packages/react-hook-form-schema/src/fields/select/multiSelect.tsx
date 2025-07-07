@@ -93,7 +93,7 @@ export function MultiSelectComponent({
 
 					return renderMultiSelect({
 						disabled,
-						value: field.value,
+						value: Array.isArray(field.value) ? field.value : [],
 						name: fieldPath,
 						getOptionLabel,
 						getOptionValue,

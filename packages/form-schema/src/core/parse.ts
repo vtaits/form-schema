@@ -1,4 +1,3 @@
-import isPromise from "is-promise";
 import type {
 	BaseValues,
 	FieldSchemaBase,
@@ -44,7 +43,7 @@ export type ParseParams<
 	parents: readonly ParentType[];
 }>;
 
-export function parse<
+export async function parse<
 	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
@@ -56,90 +55,83 @@ export function parse<
 	getFieldSchema,
 	getFieldType,
 	parents,
-}: ParseParams<FieldSchema, Values, RawValues, SerializedValues, Errors>):
-	| Values
-	| Promise<Values> {
+}: ParseParams<
+	FieldSchema,
+	Values,
+	RawValues,
+	SerializedValues,
+	Errors
+>): Promise<Values> {
 	if (!values) {
 		return {} as Values;
 	}
 
-	const res = {} as Values;
+	const preparsedValues = await Promise.all(
+		names.map(async (name) => {
+			const fieldSchema = getFieldSchema(name);
+			const fieldType = getFieldType(fieldSchema);
 
-	let hasPromise = false;
-	const preparsedValues: Array<Values | Promise<Values>> = [];
+			const dependencies = fieldSchema.getDependencies?.({
+				values,
+				phase: "parse",
+				getFieldSchema,
+				getFieldType: getFieldType as unknown as GetFieldType<
+					FieldSchemaBase,
+					BaseValues,
+					BaseValues,
+					BaseValues,
+					Record<string, any>
+				>,
+				parents,
+			});
 
-	for (const name of names) {
-		const fieldSchema = getFieldSchema(name);
-		const fieldType = getFieldType(fieldSchema);
+			const computedGetFieldSchema = fieldType.createGetFieldSchema
+				? await fieldType.createGetFieldSchema({
+						fieldSchema,
+						getFieldSchema,
+						getFieldType,
+						values,
+						phase: "parse",
+						parents,
+						dependencies,
+					})
+				: getFieldSchema;
 
-		const computedGetFieldSchema = fieldType.createGetFieldSchema
-			? fieldType.createGetFieldSchema({
-					fieldSchema,
-					getFieldSchema,
-					getFieldType,
-					values,
-					phase: "parse",
-					parents,
-				})
-			: getFieldSchema;
+			const params = {
+				value: values[name as keyof RawValues],
+				values,
+				name,
+				fieldSchema,
+				getFieldSchema: computedGetFieldSchema,
+				getFieldType,
+				parents,
+				dependencies,
+			};
 
-		const params = {
-			value: values[name as keyof RawValues],
-			values,
-			name,
-			fieldSchema,
-			getFieldSchema: computedGetFieldSchema,
-			getFieldType,
-			parents,
-		};
+			const parserSingle =
+				(fieldSchema.parserSingle as typeof fieldType.parserSingle) ||
+				fieldType.parserSingle;
 
-		const parserSingle =
-			(fieldSchema.parserSingle as typeof fieldType.parserSingle) ||
-			fieldType.parserSingle;
+			if (parserSingle) {
+				const singleResult = await parserSingle(params);
 
-		if (parserSingle) {
-			const parsedSingle = parserSingle(params);
-
-			if (isPromise(parsedSingle)) {
-				hasPromise = true;
-
-				preparsedValues.push(
-					parsedSingle.then((singleResult) => ({
-						[name]: singleResult,
-					})) as Promise<Values>,
-				);
-			} else {
-				preparsedValues.push({
-					[name]: parsedSingle,
-				} as Values);
+				return {
+					[name]: singleResult,
+				};
 			}
-		} else {
+
 			const parser =
 				(fieldSchema.parser as typeof fieldType.parser) ||
 				fieldType.parser ||
 				defaultParser;
 
-			const parserResult = parser(params);
+			return parser(params);
+		}),
+	);
 
-			if (isPromise(parserResult)) {
-				hasPromise = true;
-			}
+	const res = {} as Values;
 
-			preparsedValues.push(parserResult);
-		}
-	}
-
-	if (hasPromise) {
-		return Promise.all(preparsedValues).then((parsedValues) => {
-			for (const parsedValue of parsedValues) {
-				Object.assign(res, parsedValue);
-			}
-
-			return res;
-		});
-	}
-
-	for (const parsedValue of preparsedValues as Values[]) {
+	for (const parsedValue of preparsedValues) {
 		Object.assign(res, parsedValue);
 	}
 

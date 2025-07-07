@@ -94,7 +94,7 @@
   "dependencies": {
     "@date-fns/utc": "^2.1.0",
     "date-fns": "^4.1.0",
-    "is-promise": "^4.0.0",
+    "es-toolkit": "^1.39.6",
     "krustykrab": "^1.1.0",
     "select-async-paginate-model": "^1.0.0-alpha.1"
   },

@@ -29,7 +29,7 @@ export type ValidateBeforeSubmitParams<
 	parents: readonly ParentType[];
 }>;
 
-export const validateBeforeSubmit = <
+export async function validateBeforeSubmit<
 	FieldSchema extends FieldSchemaBase,
 	Values extends BaseValues,
 	RawValues extends BaseValues,
@@ -48,40 +48,58 @@ export const validateBeforeSubmit = <
 	RawValues,
 	SerializedValues,
 	Errors
->) => {
-	for (const name of names) {
-		const fieldSchema = getFieldSchema(name);
-		const fieldType = getFieldType(fieldSchema);
+>): Promise<void> {
+	await Promise.all(
+		names.map(async (name) => {
+			const fieldSchema = getFieldSchema(name);
+			const fieldType = getFieldType(fieldSchema);
 
-		const validatorBeforeSubmit =
-			(fieldSchema.validatorBeforeSubmit as typeof fieldType.validatorBeforeSubmit) ||
-			fieldType.validatorBeforeSubmit;
-
-		if (validatorBeforeSubmit) {
-			const computedGetFieldSchema = fieldType.createGetFieldSchema
-				? fieldType.createGetFieldSchema({
-						fieldSchema,
-						getFieldSchema,
-						getFieldType,
-						values,
-						phase: "serialize",
-						parents,
-					})
-				: getFieldSchema;
-
-			validatorBeforeSubmit({
-				setError,
-				setCurrentError: (error) => {
-					setError(name, parents, error);
-				},
-				value: values[name as keyof Values],
+			const dependencies = fieldSchema.getDependencies?.({
 				values,
-				name,
-				fieldSchema,
-				getFieldSchema: computedGetFieldSchema,
-				getFieldType,
+				phase: "serialize",
+				getFieldSchema,
+				getFieldType: getFieldType as unknown as GetFieldType<
+					FieldSchemaBase,
+					BaseValues,
+					BaseValues,
+					BaseValues,
+					Record<string, any>
+				>,
 				parents,
 			});
-		}
-	}
-};
+
+			const validatorBeforeSubmit =
+				(fieldSchema.validatorBeforeSubmit as typeof fieldType.validatorBeforeSubmit) ||
+				fieldType.validatorBeforeSubmit;
+
+			if (validatorBeforeSubmit) {
+				const computedGetFieldSchema = fieldType.createGetFieldSchema
+					? await fieldType.createGetFieldSchema({
+							fieldSchema,
+							getFieldSchema,
+							getFieldType,
+							values,
+							phase: "serialize",
+							parents,
+							dependencies,
+						})
+					: getFieldSchema;
+
+				await validatorBeforeSubmit({
+					setError,
+					setCurrentError: (error) => {
+						setError(name, parents, error);
+					},
+					value: values[name as keyof Values],
+					values,
+					name,
+					fieldSchema,
+					getFieldSchema: computedGetFieldSchema,
+					getFieldType,
+					parents,
+					dependencies,
+				});
+			}
+		}),
+	);
+}
