@@ -1,5 +1,4 @@
 {
-	"root": false,
 	"linter": {
 		"rules": {
 			"suspicious": {
@@ -7,6 +6,7 @@
 			},
 
 			"a11y": {
+				"noAutofocus": "off",
 				"useSemanticElements": "off"
 			},
 			"style": {
