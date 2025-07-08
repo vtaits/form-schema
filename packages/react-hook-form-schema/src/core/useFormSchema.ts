@@ -178,7 +178,7 @@ export function useFormSchema<
 		) => {
 			let hasCleintError = false;
 
-			validateBeforeSubmit({
+			await validateBeforeSubmit({
 				setError: makeSetError(setError, CLIENT_ERROR, () => {
 					hasCleintError = true;
 				}),
@@ -221,7 +221,7 @@ export function useFormSchema<
 				values,
 			);
 
-			setFieldErrors({
+			await setFieldErrors({
 				setError: makeSetError(setError, SERVER_ERROR, () => {}),
 				errors: preparedErrors,
 				names,
