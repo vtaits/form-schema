@@ -22,7 +22,7 @@
     },
     "packages/form-schema": {
       "name": "@vtaits/form-schema",
-      "version": "3.0.0",
+      "version": "3.0.1",
       "dependencies": {
         "@date-fns/utc": "^2.1.0",
         "date-fns": "^4.1.0",
