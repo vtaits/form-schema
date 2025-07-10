@@ -36,22 +36,24 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 	}) => {
 		const arrayValue = prepareValue(value);
 
-		return arrayValue.map((arrayValueItem, index) =>
-			serializeSingle({
-				values: {
-					[index]: arrayValueItem,
-				},
-				name: String(index),
-				getFieldSchema,
-				getFieldType,
-				parents: [
-					...parents,
-					{
-						name,
-						values: arrayValue,
+		return Promise.all(
+			arrayValue.map((arrayValueItem, index) =>
+				serializeSingle({
+					values: {
+						[index]: arrayValueItem,
 					},
-				],
-			}),
+					name: String(index),
+					getFieldSchema,
+					getFieldType,
+					parents: [
+						...parents,
+						{
+							name,
+							values: arrayValue,
+						},
+					],
+				}),
+			),
 		);
 	},
 
@@ -83,7 +85,7 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 		return preparsed;
 	},
 
-	validatorBeforeSubmit: ({
+	validatorBeforeSubmit: async ({
 		value,
 		name,
 		setCurrentError,
@@ -131,7 +133,7 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 			},
 		];
 
-		validateBeforeSubmit({
+		await validateBeforeSubmit({
 			setError,
 			values: arrayValue,
 			names: Object.keys(arrayValue) as (keyof BaseValues)[],
@@ -141,7 +143,7 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 		});
 	},
 
-	errorsSetter: ({
+	errorsSetter: async ({
 		name,
 		setError,
 		errors,
@@ -170,7 +172,7 @@ export const list: FieldType<ListSchema<unknown, any>> = {
 			return;
 		}
 
-		setFieldErrors({
+		await setFieldErrors({
 			setError,
 			errors: (errors[name] || {}) as Record<string, unknown>,
 			names,

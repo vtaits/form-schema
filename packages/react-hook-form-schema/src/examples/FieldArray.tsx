@@ -188,7 +188,7 @@ const fieldTypes: Record<
 			return getChildFieldSchema;
 		},
 
-		serializer: ({
+		serializer: async ({
 			values,
 			name,
 			fieldSchema,
@@ -206,8 +206,8 @@ const fieldTypes: Record<
 				};
 			}
 
-			return {
-				[name]: (arrayValues as Values[]).map((arrayValue, index) =>
+			const result = await Promise.all(
+				(arrayValues as Values[]).map((arrayValue, index) =>
 					serialize({
 						values: arrayValue || {},
 						names,
@@ -222,6 +222,10 @@ const fieldTypes: Record<
 						],
 					}),
 				),
+			);
+
+			return {
+				[name]: result,
 			};
 		},
 
@@ -276,7 +280,7 @@ const fieldTypes: Record<
 			};
 		},
 
-		errorsSetter: ({
+		errorsSetter: async ({
 			setError,
 			errors,
 			name,
@@ -304,7 +308,7 @@ const fieldTypes: Record<
 				for (let index = 0; index < arrayErrors.length; ++index) {
 					const arrayError = arrayErrors[index];
 
-					setFieldErrors({
+					await setFieldErrors({
 						setError,
 						errors: arrayError || {},
 						names,
