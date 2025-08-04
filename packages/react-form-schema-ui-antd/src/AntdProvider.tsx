@@ -1,10 +1,25 @@
-import { BaseUIContext } from "@vtaits/react-form-schema-base-ui";
-import type { PropsWithChildren, ReactElement } from "react";
-import { contextValue } from "./contextValue";
+import {
+	BaseUIContext,
+	type BaseUIContextValue,
+} from "@vtaits/react-form-schema-base-ui";
+import { type PropsWithChildren, type ReactElement, useMemo } from "react";
+import { contextValue as baseUI } from "./contextValue";
+
+type IAntdProviderProps = PropsWithChildren<{
+	ui?: Partial<BaseUIContextValue>;
+}>;
 
 export function AntdProvider({
 	children = undefined,
-}: PropsWithChildren): ReactElement {
+	ui = undefined,
+}: IAntdProviderProps): ReactElement {
+	const contextValue = useMemo(() => {
+		return {
+			...baseUI,
+			...ui,
+		};
+	}, [ui]);
+
 	return (
 		<BaseUIContext.Provider value={contextValue}>
 			{children}
