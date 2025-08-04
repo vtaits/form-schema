@@ -1,10 +1,19 @@
 import { BaseUIContext } from "@vtaits/react-form-schema-base-ui";
-import type { PropsWithChildren, ReactElement } from "react";
-import { contextValue } from "./contextValue";
+import { type PropsWithChildren, type ReactElement, useMemo } from "react";
+import { getContextValue, type IGetContextValusParams } from "./contextValue";
 
 export function VKUIProvider({
+	cardMode = undefined,
 	children = undefined,
-}: PropsWithChildren): ReactElement {
+}: PropsWithChildren<IGetContextValusParams>): ReactElement {
+	const contextValue = useMemo(
+		() =>
+			getContextValue({
+				cardMode,
+			}),
+		[cardMode],
+	);
+
 	return (
 		<BaseUIContext.Provider value={contextValue}>
 			{children}
