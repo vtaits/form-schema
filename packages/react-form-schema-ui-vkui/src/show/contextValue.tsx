@@ -181,7 +181,6 @@ export function getContextValue({
 			items,
 			label,
 			name,
-			required,
 		}) => {
 			return (
 				<FormItem
@@ -221,7 +220,6 @@ export function getContextValue({
 						</>
 					}
 					data-testid={`@@list/${name}`}
-					required={required}
 				>
 					<div
 						role="list"
@@ -294,13 +292,12 @@ export function getContextValue({
 			</div>
 		),
 
-		renderWrapper: ({ children, error, hint, label, required }) => {
+		renderWrapper: ({ children, error, hint, label }) => {
 			return (
 				<FormItem
 					top={label}
 					bottom={error}
 					status={error ? "error" : undefined}
-					required={required}
 				>
 					{children}
 
