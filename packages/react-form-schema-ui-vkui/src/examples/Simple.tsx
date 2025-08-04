@@ -6,7 +6,7 @@ import {
 } from "@vtaits/react-hook-form-schema/form";
 import { type ReactElement, useMemo, useState } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
-import { VKUIProvider } from "..";
+import { VKUIProvider, VKUIShowProvider } from "..";
 
 type OptionType = {
 	value: number;
@@ -312,17 +312,27 @@ export function Simple({ required }: { required: boolean }): ReactElement {
 					)}
 					title="VKUI integraion form"
 				/>
-
-				{submittedValues && (
-					<>
-						<hr />
-
-						<h3>Submitted values:</h3>
-
-						<pre>{JSON.stringify(submittedValues, null, 2)}</pre>
-					</>
-				)}
 			</VKUIProvider>
+
+			{submittedValues && (
+				<>
+					<hr />
+
+					<h3>Submitted values:</h3>
+
+					<pre>{JSON.stringify(submittedValues, null, 2)}</pre>
+
+					<hr />
+
+					<VKUIShowProvider>
+						<Form
+							defaultValues={submittedValues}
+							schemas={schemas}
+							title="VKUI show form"
+						/>
+					</VKUIShowProvider>
+				</>
+			)}
 		</AppRoot>
 	);
 }
