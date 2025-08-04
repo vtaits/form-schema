@@ -165,10 +165,10 @@ export function Simple({
 			list: {
 				type: "list",
 				label: "List",
-				getBlockLabel: (index: number) => `Block #${index + 1}`,
 				initialItem: "Initial",
+				compact: true,
+				inline: true,
 				itemSchema: {
-					label: "Input",
 					type: "input",
 				},
 				required,
