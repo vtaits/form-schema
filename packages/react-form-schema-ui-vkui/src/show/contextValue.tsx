@@ -1,6 +1,7 @@
 import { Icon16Attach } from "@vkontakte/icons";
 import {
 	CardGrid,
+	type CardProps,
 	ContentCard,
 	Counter,
 	Footnote,
@@ -33,279 +34,288 @@ function Flex({
 	);
 }
 
-export const contextValue: BaseUIContextValue = {
-	renderAsyncSelect: ({ value, getOptionLabel }) => {
-		if (value) {
-			return getOptionLabel(value);
-		}
+export type IGetContextValusParams = {
+	cardMode?: CardProps["mode"];
+};
 
-		return null;
-	},
+export function getContextValue({
+	cardMode,
+}: IGetContextValusParams): BaseUIContextValue {
+	return {
+		renderAsyncSelect: ({ value, getOptionLabel }) => {
+			if (value) {
+				return getOptionLabel(value);
+			}
 
-	renderAsyncMultiSelect: ({ value, getOptionLabel, getOptionValue }) => {
-		if (value) {
-			return (
-				<Flex gap="s">
-					{value.map((option) => (
-						<Counter key={getOptionValue(option)}>
-							{getOptionLabel(option)}
-						</Counter>
-					))}
-				</Flex>
-			);
-		}
+			return null;
+		},
 
-		return null;
-	},
+		renderAsyncMultiSelect: ({ value, getOptionLabel, getOptionValue }) => {
+			if (value) {
+				return (
+					<Flex gap="s">
+						{value.map((option) => (
+							<Counter key={getOptionValue(option)}>
+								{getOptionLabel(option)}
+							</Counter>
+						))}
+					</Flex>
+				);
+			}
 
-	renderCheckbox: ({ checked }) => {
-		if (checked) {
-			return "Да";
-		}
+			return null;
+		},
 
-		return "Нет";
-	},
+		renderCheckbox: ({ checked }) => {
+			if (checked) {
+				return "Да";
+			}
 
-	renderCheckboxGroup: ({ value, getOptionLabel, getOptionValue }) => {
-		if (value) {
-			return (
-				<Flex gap="s">
-					{value.map((option) => (
-						<Counter key={getOptionValue(option)}>
-							{getOptionLabel(option)}
-						</Counter>
-					))}
-				</Flex>
-			);
-		}
+			return "Нет";
+		},
 
-		return null;
-	},
+		renderCheckboxGroup: ({ value, getOptionLabel, getOptionValue }) => {
+			if (value) {
+				return (
+					<Flex gap="s">
+						{value.map((option) => (
+							<Counter key={getOptionValue(option)}>
+								{getOptionLabel(option)}
+							</Counter>
+						))}
+					</Flex>
+				);
+			}
 
-	renderDatePicker: ({ value, displayDateFormat = defaultDateFormat }) => {
-		if (value) {
-			return format(value, displayDateFormat);
-		}
+			return null;
+		},
 
-		return null;
-	},
+		renderDatePicker: ({ value, displayDateFormat = defaultDateFormat }) => {
+			if (value) {
+				return format(value, displayDateFormat);
+			}
 
-	renderDateTimePicker: ({
-		value,
-		displayDateFormat = defaultDatetimeFormat,
-	}) => {
-		if (value) {
-			return format(value, displayDateFormat);
-		}
+			return null;
+		},
 
-		return null;
-	},
+		renderDateTimePicker: ({
+			value,
+			displayDateFormat = defaultDatetimeFormat,
+		}) => {
+			if (value) {
+				return format(value, displayDateFormat);
+			}
 
-	renderFileInput: ({ selectedFile }) => {
-		if (selectedFile) {
-			// TO DO: link
-			return (
-				<p
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "10px",
-					}}
-				>
-					<Icon16Attach />
-					{selectedFile}
-				</p>
-			);
-		}
+			return null;
+		},
 
-		return null;
-	},
-
-	renderForm: ({ actions, error, fields, title }) => (
-		<div>
-			{title && (
-				<Title
-					level="3"
-					style={{
-						marginBottom: "30px",
-					}}
-				>
-					{title}
-				</Title>
-			)}
-
-			{fields}
-
-			{error && (
-				<div
-					style={{
-						marginTop: "20px",
-						marginBottom: "20px",
-					}}
-				>
-					<FormStatus mode="error" data-testid="@@form/error">
-						{error}
-					</FormStatus>
-				</div>
-			)}
-
-			<FormItem>{actions}</FormItem>
-		</div>
-	),
-
-	renderInput: ({ inputProps: { value } = {} }) => {
-		return value;
-	},
-
-	renderListAddButton: () => null,
-
-	renderListItemWrapper: ({ children, title, name }) => (
-		<CardGrid size="l" data-testid={`@@list-item/${name}`}>
-			<ContentCard
-				header={
-					<div
+		renderFileInput: ({ selectedFile }) => {
+			if (selectedFile) {
+				// TO DO: link
+				return (
+					<p
 						style={{
 							display: "flex",
 							alignItems: "center",
-							justifyContent: "space-between",
+							gap: "10px",
 						}}
 					>
-						<div>{title}</div>
+						<Icon16Attach />
+						{selectedFile}
+					</p>
+				);
+			}
+
+			return null;
+		},
+
+		renderForm: ({ actions, error, fields, title }) => (
+			<div>
+				{title && (
+					<Title
+						level="3"
+						style={{
+							marginBottom: "30px",
+						}}
+					>
+						{title}
+					</Title>
+				)}
+
+				{fields}
+
+				{error && (
+					<div
+						style={{
+							marginTop: "20px",
+							marginBottom: "20px",
+						}}
+					>
+						<FormStatus mode="error" data-testid="@@form/error">
+							{error}
+						</FormStatus>
 					</div>
-				}
-				text={children}
-			/>
-		</CardGrid>
-	),
+				)}
 
-	renderListWrapper: ({
-		actions,
-		error,
-		hint,
-		items,
-		label,
-		name,
-		required,
-	}) => {
-		return (
-			<FormItem
-				top={label}
-				bottom={
-					<>
-						{hint && (
-							<p
-								style={{
-									color: "gray",
-								}}
-							>
-								{hint}
-							</p>
-						)}
+				<FormItem>{actions}</FormItem>
+			</div>
+		),
 
-						{actions && (
-							<div
-								style={{
-									marginTop: "8px",
-								}}
-							>
-								{actions}
-							</div>
-						)}
+		renderInput: ({ inputProps: { value } = {} }) => {
+			return value;
+		},
 
-						{error && (
-							<p
-								style={{
-									color: "red",
-								}}
-								role="alert"
-							>
-								{error}
-							</p>
-						)}
-					</>
-				}
-				data-testid={`@@list/${name}`}
-				required={required}
-			>
-				<div role="list">{items}</div>
-			</FormItem>
-		);
-	},
+		renderListAddButton: () => null,
 
-	renderMultiSelect: ({ value, getOptionLabel, getOptionValue }) => {
-		if (value) {
+		renderListItemWrapper: ({ children, title, name }) => (
+			<CardGrid size="l" data-testid={`@@list-item/${name}`}>
+				<ContentCard
+					mode={cardMode}
+					header={
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+							}}
+						>
+							<div>{title}</div>
+						</div>
+					}
+					text={children}
+				/>
+			</CardGrid>
+		),
+
+		renderListWrapper: ({
+			actions,
+			error,
+			hint,
+			items,
+			label,
+			name,
+			required,
+		}) => {
+			return (
+				<FormItem
+					top={label}
+					bottom={
+						<>
+							{hint && (
+								<p
+									style={{
+										color: "gray",
+									}}
+								>
+									{hint}
+								</p>
+							)}
+
+							{actions && (
+								<div
+									style={{
+										marginTop: "8px",
+									}}
+								>
+									{actions}
+								</div>
+							)}
+
+							{error && (
+								<p
+									style={{
+										color: "red",
+									}}
+									role="alert"
+								>
+									{error}
+								</p>
+							)}
+						</>
+					}
+					data-testid={`@@list/${name}`}
+					required={required}
+				>
+					<div role="list">{items}</div>
+				</FormItem>
+			);
+		},
+
+		renderMultiSelect: ({ value, getOptionLabel, getOptionValue }) => {
+			if (value) {
+				return (
+					<Flex gap="s">
+						{value.map((option) => (
+							<Counter key={getOptionValue(option)}>
+								{getOptionLabel(option)}
+							</Counter>
+						))}
+					</Flex>
+				);
+			}
+
+			return null;
+		},
+
+		renderRadioGroup: ({ value, getOptionLabel }) => {
+			if (value) {
+				return getOptionLabel(value);
+			}
+
+			return null;
+		},
+
+		renderSelect: ({ value, getOptionLabel }) => {
+			if (value) {
+				return getOptionLabel(value);
+			}
+
+			return null;
+		},
+
+		renderTags: ({ value }) => {
 			return (
 				<Flex gap="s">
-					{value.map((option) => (
-						<Counter key={getOptionValue(option)}>
-							{getOptionLabel(option)}
-						</Counter>
+					{value.map((tag, index) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: there is no id
+						<Counter key={index}>{tag}</Counter>
 					))}
 				</Flex>
 			);
-		}
+		},
 
-		return null;
-	},
-
-	renderRadioGroup: ({ value, getOptionLabel }) => {
-		if (value) {
-			return getOptionLabel(value);
-		}
-
-		return null;
-	},
-
-	renderSelect: ({ value, getOptionLabel }) => {
-		if (value) {
-			return getOptionLabel(value);
-		}
-
-		return null;
-	},
-
-	renderTags: ({ value }) => {
-		return (
-			<Flex gap="s">
-				{value.map((tag, index) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: there is no id
-					<Counter key={index}>{tag}</Counter>
-				))}
-			</Flex>
-		);
-	},
-
-	renderTextArea: ({ textAreaProps: { defaultValue, value } = {} }) => (
-		<div
-			style={{
-				whiteSpace: "pre-wrap",
-			}}
-		>
-			{String(value ?? defaultValue)}
-		</div>
-	),
-
-	renderWrapper: ({ children, error, hint, label, required }) => {
-		return (
-			<FormItem
-				top={label}
-				bottom={error}
-				status={error ? "error" : undefined}
-				required={required}
+		renderTextArea: ({ textAreaProps: { defaultValue, value } = {} }) => (
+			<div
+				style={{
+					whiteSpace: "pre-wrap",
+				}}
 			>
-				{children}
+				{String(value ?? defaultValue)}
+			</div>
+		),
 
-				{hint && (
-					<Footnote
-						style={{
-							color: "gray",
-							paddingTop: 6,
-						}}
-					>
-						{hint}
-					</Footnote>
-				)}
-			</FormItem>
-		);
-	},
-};
+		renderWrapper: ({ children, error, hint, label, required }) => {
+			return (
+				<FormItem
+					top={label}
+					bottom={error}
+					status={error ? "error" : undefined}
+					required={required}
+				>
+					{children}
+
+					{hint && (
+						<Footnote
+							style={{
+								color: "gray",
+								paddingTop: 6,
+							}}
+						>
+							{hint}
+						</Footnote>
+					)}
+				</FormItem>
+			);
+		},
+	};
+}

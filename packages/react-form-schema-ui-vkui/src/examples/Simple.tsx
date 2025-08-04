@@ -1,4 +1,4 @@
-import { AppRoot, Button } from "@vkontakte/vkui";
+import { AppRoot, Button, type CardProps } from "@vkontakte/vkui";
 import type { FieldSchemaBase } from "@vtaits/form-schema";
 import {
 	type DefaultFieldSchema,
@@ -57,7 +57,13 @@ export const loadOptions: LoadOptions<unknown, unknown> = async (
 	};
 };
 
-export function Simple({ required }: { required: boolean }): ReactElement {
+export function Simple({
+	cardMode,
+	required,
+}: {
+	required: boolean;
+	cardMode: CardProps["mode"];
+}): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
 		string,
 		any
@@ -301,7 +307,7 @@ export function Simple({ required }: { required: boolean }): ReactElement {
 
 	return (
 		<AppRoot>
-			<VKUIProvider>
+			<VKUIProvider cardMode={cardMode}>
 				<Form
 					schemas={schemas}
 					onSubmit={onSubmit}
@@ -324,7 +330,7 @@ export function Simple({ required }: { required: boolean }): ReactElement {
 
 					<hr />
 
-					<VKUIShowProvider>
+					<VKUIShowProvider cardMode={cardMode}>
 						<Form
 							defaultValues={submittedValues}
 							schemas={schemas}

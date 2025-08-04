@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { AdaptivityProvider, AppRoot, ConfigProvider } from "@vkontakte/vkui";
+import { AdaptivityProvider, AppRoot, type CardProps, ConfigProvider } from "@vkontakte/vkui";
 import { Simple } from "../src/examples/Simple";
 
 const meta: Meta = {
@@ -8,12 +8,16 @@ const meta: Meta = {
 };
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<{
+	required: boolean;
+	cardMode: CardProps['mode']
+}>;
 
 export const SimpleStory: Story = {
 	name: "Simple",
 	args: {
 		required: false,
+		cardMode: undefined
 	},
 	render: (props) => (
 		<ConfigProvider>
