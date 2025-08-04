@@ -148,30 +148,36 @@ export function getContextValue({
 
 		renderListAddButton: () => null,
 
-		renderListItemWrapper: ({ children, title, name }) => (
-			<CardGrid size="l" data-testid={`@@list-item/${name}`}>
-				<ContentCard
-					mode={cardMode}
-					title={
-						<div
-							style={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "space-between",
-							}}
-						>
-							<div>{title}</div>
-						</div>
-					}
-					description={children}
-				/>
-			</CardGrid>
-		),
+		renderListItemWrapper: ({ children, compact, title, name }) => {
+			const testId = `@@list-item/${name}`;
+
+			if (compact) {
+				return (
+					<div
+						data-testid={testId}
+						style={{
+							margin: -12,
+						}}
+					>
+						{title && <div>{title}</div>}
+
+						<div>{children}</div>
+					</div>
+				);
+			}
+
+			return (
+				<CardGrid size="l" data-testid={testId}>
+					<ContentCard mode={cardMode} title={title} description={children} />
+				</CardGrid>
+			);
+		},
 
 		renderListWrapper: ({
 			actions,
 			error,
 			hint,
+			inline,
 			items,
 			label,
 			name,
@@ -217,7 +223,20 @@ export function getContextValue({
 					data-testid={`@@list/${name}`}
 					required={required}
 				>
-					<div role="list">{items}</div>
+					<div
+						role="list"
+						style={
+							inline
+								? {
+										display: "flex",
+										flexWrap: "wrap",
+										gap: 6,
+									}
+								: undefined
+						}
+					>
+						{items}
+					</div>
 				</FormItem>
 			);
 		},

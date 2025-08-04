@@ -26,10 +26,12 @@ export function ListComponent<FieldSchema>({
 		fieldSchema,
 		fieldSchema: {
 			addButtonLabel = "Add",
+			compact,
 			disabled,
 			getBlockLabel,
 			label,
 			hint,
+			inline,
 			renderListItemWrapper: renderListItemWrapperParam,
 			required,
 		},
@@ -79,6 +81,7 @@ export function ListComponent<FieldSchema>({
 
 	return renderListWrapper({
 		...wrapperParams,
+		compact,
 		actions: renderListAddButton({
 			disabled,
 			children: addButtonLabel,
@@ -91,6 +94,7 @@ export function ListComponent<FieldSchema>({
 				clearErrors(fieldPath);
 			},
 		}),
+		inline,
 		items: fields.map((field, index) => {
 			return (
 				<Fragment key={field.id}>
@@ -104,11 +108,13 @@ export function ListComponent<FieldSchema>({
 							undefined,
 							itemParents,
 						),
+						compact,
 						disabled,
 						handleRemove: () => {
 							remove(index);
 							clearErrors(fieldPath);
 						},
+						inline,
 						name: `${fieldPath}[${index}]`,
 						title: getBlockLabel?.(index),
 					})}

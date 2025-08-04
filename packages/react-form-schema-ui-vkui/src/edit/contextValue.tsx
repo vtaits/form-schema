@@ -351,23 +351,35 @@ export function getContextValue({
 
 		renderListItemWrapper: ({
 			children,
+			compact,
 			disabled,
 			handleRemove,
 			title,
 			name,
-		}) => (
-			<CardGrid size="l" data-testid={`@@list-item/${name}`}>
-				<ContentCard
-					mode={cardMode}
-					title={
+		}) => {
+			const testId = `@@list-item/${name}`;
+
+			if (compact) {
+				return (
+					<div data-testid={testId}>
+						{title && <div>{title}</div>}
+
 						<div
 							style={{
-								display: "flex",
+								display: "grid",
+								gap: 6,
+								gridTemplateColumns: "1fr auto",
 								alignItems: "center",
-								justifyContent: "space-between",
 							}}
 						>
-							<div>{title}</div>
+							<div
+								style={{
+									marginLeft: -12,
+									marginRight: -12,
+								}}
+							>
+								{children}
+							</div>
 
 							{handleRemove && (
 								<IconButton
@@ -379,11 +391,40 @@ export function getContextValue({
 								</IconButton>
 							)}
 						</div>
-					}
-					description={children}
-				/>
-			</CardGrid>
-		),
+					</div>
+				);
+			}
+
+			return (
+				<CardGrid size="l" data-testid={testId}>
+					<ContentCard
+						mode={cardMode}
+						title={
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "space-between",
+								}}
+							>
+								<div>{title}</div>
+
+								{handleRemove && (
+									<IconButton
+										disabled={disabled}
+										label="Удалить"
+										onClick={handleRemove}
+									>
+										<Icon16Delete />
+									</IconButton>
+								)}
+							</div>
+						}
+						description={children}
+					/>
+				</CardGrid>
+			);
+		},
 
 		renderListWrapper: ({
 			actions,

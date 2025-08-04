@@ -8,6 +8,8 @@ export type ListSchema<FieldSchema> = Readonly<
 		BaseFieldSchema & {
 			addButtonLabel?: ReactNode;
 			getBlockLabel?: (index: number) => ReactNode;
+			compact?: boolean;
+			inline?: boolean;
 			renderListItemWrapper?: (
 				renderProps: ListItemWrapperRenderProps,
 			) => ReactNode;

@@ -9,16 +9,20 @@ export type ButtonRenderProps = Readonly<{
 
 export type ListItemWrapperRenderProps = Readonly<{
 	children?: ReactNode;
+	compact?: boolean;
 	disabled?: boolean;
 	handleRemove?: () => void;
+	inline?: boolean;
 	name: string;
 	title?: ReactNode;
 }>;
 
 export type ListWrapperRenderProps = Readonly<{
 	actions?: ReactNode;
+	compact?: boolean;
 	error?: ReactNode;
 	hint?: ReactNode;
+	inline?: boolean;
 	name: string;
 	items?: ReactNode;
 	label?: ReactNode;
