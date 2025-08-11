@@ -30,7 +30,7 @@ function AsyncOptions<OptionType, Additional>({
 	selectedValuesSet?: Set<string | number>;
 	render: (children: { children: ReactNode }) => ReactNode;
 }) {
-	const [currentCache, _model] = useSelectAsyncPaginate({
+	const { currentCache } = useSelectAsyncPaginate({
 		autoload: true,
 		initialAdditional,
 		additional,

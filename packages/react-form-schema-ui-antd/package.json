@@ -43,7 +43,7 @@
   },
   "peerDependencies": {
     "@ant-design/icons": "^5.3.7",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0",
+    "@vtaits/react-form-schema-base-ui": "^1.0.1",
     "antd": "^5.12.3",
     "react": "^18.0.0 || ^19.0.0"
   },
@@ -53,9 +53,9 @@
     "@storybook/react-vite": "^9.1.1",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
-    "@vtaits/form-schema": "^3.0.0",
-    "@vtaits/react-form-schema-base-ui": "^1.0.0",
-    "@vtaits/react-hook-form-schema": "^2.1.0",
+    "@vtaits/form-schema": "^3.0.2",
+    "@vtaits/react-form-schema-base-ui": "^1.0.1",
+    "@vtaits/react-hook-form-schema": "^2.1.1",
     "antd": "5.27.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

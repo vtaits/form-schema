@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@vtaits/react-form-schema-base-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
   "files": [
     "dist"
@@ -61,6 +61,6 @@
   "dependencies": {
     "date-fns": "^4.1.0",
     "select-async-paginate-model": "^1.0.0-alpha.2",
-    "use-select-async-paginate": "^1.0.0-alpha.2"
+    "use-select-async-paginate": "^1.0.0-alpha.3"
   }
 }

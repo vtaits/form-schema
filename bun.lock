@@ -22,7 +22,7 @@
     },
     "packages/form-schema": {
       "name": "@vtaits/form-schema",
-      "version": "3.0.1",
+      "version": "3.0.2",
       "dependencies": {
         "@date-fns/utc": "^2.1.1",
         "date-fns": "^4.1.0",
@@ -41,11 +41,11 @@
     },
     "packages/react-form-schema-base-ui": {
       "name": "@vtaits/react-form-schema-base-ui",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "date-fns": "^4.1.0",
         "select-async-paginate-model": "^1.0.0-alpha.2",
-        "use-select-async-paginate": "^1.0.0-alpha.2",
+        "use-select-async-paginate": "^1.0.0-alpha.3",
       },
       "devDependencies": {
         "@biomejs/biome": "^2.1.4",
@@ -77,9 +77,9 @@
         "@storybook/react-vite": "^9.1.1",
         "@types/react": "^19.1.9",
         "@types/react-dom": "^19.1.7",
-        "@vtaits/form-schema": "^3.0.0",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
-        "@vtaits/react-hook-form-schema": "^2.1.0",
+        "@vtaits/form-schema": "^3.0.2",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
+        "@vtaits/react-hook-form-schema": "^2.1.1",
         "antd": "5.27.0",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
@@ -88,7 +88,7 @@
       },
       "peerDependencies": {
         "@ant-design/icons": "^5.3.7",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
         "antd": "^5.12.3",
         "react": "^18.0.0 || ^19.0.0",
       },
@@ -110,9 +110,9 @@
         "@storybook/react-vite": "^9.1.1",
         "@types/react": "^19.1.9",
         "@types/react-dom": "^19.1.7",
-        "@vtaits/form-schema": "^3.0.0",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
-        "@vtaits/react-hook-form-schema": "^2.1.0",
+        "@vtaits/form-schema": "^3.0.2",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
+        "@vtaits/react-hook-form-schema": "^2.1.1",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
         "tsup": "^8.5.0",
@@ -121,7 +121,7 @@
       "peerDependencies": {
         "@mui/icons-material": "^5.15.19 || ^6.0.0",
         "@mui/material": "^5.0.0 || ^6.0.0",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
         "react": "^18.0.0 || ^19.0.0",
       },
     },
@@ -152,9 +152,9 @@
         "@types/react-dom": "^19.1.7",
         "@vkontakte/icons": "^3.15.0",
         "@vkontakte/vkui": "7.5.4",
-        "@vtaits/form-schema": "^3.0.0",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
-        "@vtaits/react-hook-form-schema": "^2.1.0",
+        "@vtaits/form-schema": "^3.0.2",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
+        "@vtaits/react-hook-form-schema": "^2.1.1",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
         "select-async-paginate-model": "^1.0.0-alpha.2",
@@ -164,16 +164,16 @@
       "peerDependencies": {
         "@vkontakte/icons": "^2.0.0",
         "@vkontakte/vkui": "^7.0.0",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
         "react": "^18.0.0 || ^19.0.0",
       },
     },
     "packages/react-hook-form-schema": {
       "name": "@vtaits/react-hook-form-schema",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "dependencies": {
-        "@vtaits/form-schema": "^3.0.0",
-        "@vtaits/react-form-schema-base-ui": "^1.0.0",
+        "@vtaits/form-schema": "^3.0.2",
+        "@vtaits/react-form-schema-base-ui": "^1.0.1",
         "es-toolkit": "^1.39.9",
         "react-async-hook": "^4.0.0",
         "use-latest": "^1.3.0",
@@ -1296,7 +1296,7 @@
 
     "use-latest": ["use-latest@1.3.0", "", { "dependencies": { "use-isomorphic-layout-effect": "^1.1.1" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-mhg3xdm9NaM8q+gLT8KryJPnRFOz1/5XPBhmDEVZK1webPzDjrPk7f/mbpeLqTgB9msytYWANxgALOCJKnLvcQ=="],
 
-    "use-select-async-paginate": ["use-select-async-paginate@1.0.0-alpha.2", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "select-async-paginate-model": "^1.0.0-alpha.1" } }, "sha512-SkC7jHV6NAP2I4WAbuvukqX2wkggbsIaYmVz5Rz87wXydtlfYU6IcvCAkg3aWoILzLR+bO1I9D5V+XfU1Gf3hA=="],
+    "use-select-async-paginate": ["use-select-async-paginate@1.0.0-alpha.3", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "select-async-paginate-model": "^1.0.0-alpha.2" } }, "sha512-amblunbedADTcrjnA+3LQ+2TxeV3buhTKFP/PbWufV6S6mMs4jCEAmsFdYg9aiuO3oE/WcQAK93sZEqOniroZQ=="],
 
     "use-sync-external-store": ["use-sync-external-store@1.5.0", "", { "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A=="],
 
@@ -1407,8 +1407,6 @@
     "recast/source-map": ["source-map@0.6.1", "", {}, "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="],
 
     "redent/strip-indent": ["strip-indent@3.0.0", "", { "dependencies": { "min-indent": "^1.0.0" } }, "sha512-laJTa3Jb+VQpaC6DseHhF7dXVqHTfJPCRDaEbid/drOhgitgYku/letMUqOXFoWV0zIIUbjpdH2t+tYj4bQMRQ=="],
-
-    "select-async-paginate-vkui/use-select-async-paginate": ["use-select-async-paginate@1.0.0-alpha.3", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "select-async-paginate-model": "^1.0.0-alpha.2" } }, "sha512-amblunbedADTcrjnA+3LQ+2TxeV3buhTKFP/PbWufV6S6mMs4jCEAmsFdYg9aiuO3oE/WcQAK93sZEqOniroZQ=="],
 
     "string-width-cjs/emoji-regex": ["emoji-regex@8.0.0", "", {}, "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="],
 
