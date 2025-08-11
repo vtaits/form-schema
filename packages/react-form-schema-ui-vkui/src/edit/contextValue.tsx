@@ -55,12 +55,13 @@ export function getContextValue({
 			value,
 			onChange,
 			getOptionValue,
+			getOptionLabel,
 		}) => (
 			<CustomAsyncPaginate
 				allowClearButton={clearable}
 				autoFocus={autoFocus}
 				disabled={disabled}
-				onChange={(_, nextValue) => {
+				onChange={(_event, nextValue) => {
 					const selectedOption =
 						typeof nextValue === "string" || typeof nextValue === "number"
 							? optionsCacheRef.current[nextValue]
@@ -68,7 +69,14 @@ export function getContextValue({
 					onChange(selectedOption);
 				}}
 				placeholder={placeholder}
-				value={value ? getOptionValue(value) : ""}
+				valueWithLabel={
+					value
+						? {
+								value: getOptionValue(value),
+								label: getOptionLabel(value),
+							}
+						: null
+				}
 				additional={additional}
 				initialAdditional={initialAdditional}
 				loadOptions={
