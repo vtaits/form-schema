@@ -55,6 +55,7 @@ export function getContextValue({
 			value,
 			onChange,
 			getOptionValue,
+			getOptionLabel,
 		}) => (
 			<CustomAsyncPaginate
 				allowClearButton={clearable}
@@ -70,7 +71,14 @@ export function getContextValue({
 					onChange(selectedOption);
 				}}
 				placeholder={placeholder}
-				value={value ? getOptionValue(value) : ""}
+				valueWithLabel={
+					value
+						? {
+								value: getOptionValue(value),
+								label: getOptionLabel(value),
+							}
+						: null
+				}
 				additional={additional}
 				initialAdditional={initialAdditional}
 				loadOptions={
