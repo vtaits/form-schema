@@ -83,6 +83,7 @@ export function getContextValue({
 						? {
 								value: getOptionValue(value),
 								label: getOptionLabel(value),
+								source: value,
 							}
 						: null
 				}
@@ -128,6 +129,7 @@ export function getContextValue({
 						? value.map((option) => ({
 								label: getOptionLabel(option),
 								value: getOptionValue(option),
+								source: option,
 							}))
 						: []
 				}
@@ -564,12 +566,14 @@ export function getContextValue({
 						? value.map((option) => ({
 								label: getOptionLabel(option),
 								value: getOptionValue(option),
+								source: option,
 							}))
 						: []
 				}
 				options={options.map((option) => ({
 					label: getOptionLabel(option),
 					value: getOptionValue(option),
+					source: option,
 				}))}
 				renderOption={
 					renderOption
@@ -647,6 +651,7 @@ export function getContextValue({
 				options={options.map((option) => ({
 					label: getOptionLabel(option),
 					value: getOptionValue(option),
+					source: option,
 				}))}
 				renderOption={
 					renderOption
