@@ -47,12 +47,12 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "@storybook/react-vite": "^9.1.1",
-    "@types/react": "^19.1.9",
+    "@biomejs/biome": "^2.2.0",
+    "@storybook/react-vite": "^9.1.2",
+    "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vkontakte/icons": "^3.15.0",
-    "@vkontakte/vkui": "7.5.4",
+    "@vkontakte/vkui": "7.6.0",
     "@vtaits/form-schema": "^3.0.2",
     "@vtaits/react-form-schema-base-ui": "^1.0.1",
     "@vtaits/react-hook-form-schema": "^2.1.1",
