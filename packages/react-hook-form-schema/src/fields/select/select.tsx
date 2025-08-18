@@ -36,6 +36,7 @@ export function SelectComponent({
 			getOptionValue: getOptionValueParam,
 			onChange = undefined,
 			options,
+			renderOption,
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
@@ -106,6 +107,7 @@ export function SelectComponent({
 						options,
 						optionsCacheRef,
 						placeholder,
+						renderOption,
 						wrapper: wrapperParams,
 					}) as ReactElement;
 				}}

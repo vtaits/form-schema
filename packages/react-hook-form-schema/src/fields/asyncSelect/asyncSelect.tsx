@@ -40,6 +40,7 @@ export function SelectComponent({
 			loadOptions,
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
+			renderOption,
 			valueKey = DEFAULT_VALUE_KEY,
 		},
 	},
@@ -113,6 +114,7 @@ export function SelectComponent({
 						optionsCacheRef,
 						loadOptions: loadOptionsProxy,
 						placeholder,
+						renderOption,
 						wrapper: wrapperParams,
 					}) as ReactElement;
 				}}

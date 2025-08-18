@@ -56,6 +56,7 @@ export function getContextValue({
 			onChange,
 			getOptionValue,
 			getOptionLabel,
+			renderOption,
 		}) => (
 			<CustomAsyncPaginate
 				allowClearButton={clearable}
@@ -86,6 +87,15 @@ export function getContextValue({
 					>
 				}
 				searchable
+				renderOption={
+					renderOption
+						? (renderProps) =>
+								renderOption(
+									renderProps.option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: undefined
+				}
 			/>
 		),
 
@@ -99,6 +109,7 @@ export function getContextValue({
 			onChange,
 			getOptionLabel,
 			getOptionValue,
+			renderOption,
 		}) => (
 			<ChipsAsyncPaginate
 				autoFocus={autoFocus}
@@ -115,6 +126,15 @@ export function getContextValue({
 				additional={additional}
 				initialAdditional={initialAdditional}
 				loadOptions={loadOptions as unknown as LoadOptions<ChipOption, unknown>}
+				renderOption={
+					renderOption
+						? (renderProps, option) =>
+								renderOption(
+									option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: undefined
+				}
 			/>
 		),
 
@@ -497,6 +517,7 @@ export function getContextValue({
 			onChange,
 			getOptionLabel,
 			getOptionValue,
+			renderOption,
 		}: MultiSelectRenderProps<OptionType>) => (
 			<ChipsSelect
 				autoFocus={autoFocus}
@@ -526,6 +547,15 @@ export function getContextValue({
 					label: getOptionLabel(option),
 					value: getOptionValue(option),
 				}))}
+				renderOption={
+					renderOption
+						? (renderProps, option) =>
+								renderOption(
+									option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: undefined
+				}
 			/>
 		),
 
@@ -575,6 +605,7 @@ export function getContextValue({
 			onChange,
 			getOptionLabel,
 			getOptionValue,
+			renderOption,
 		}) => (
 			<Select
 				allowClearButton={clearable}
@@ -593,6 +624,15 @@ export function getContextValue({
 					label: getOptionLabel(option),
 					value: getOptionValue(option),
 				}))}
+				renderOption={
+					renderOption
+						? (renderProps) =>
+								renderOption(
+									renderProps.option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: undefined
+				}
 				searchable
 			/>
 		),

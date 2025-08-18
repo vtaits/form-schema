@@ -35,6 +35,7 @@ export function MultiSelectComponent({
 			getOptionValue: getOptionValueParam,
 			onChange = undefined,
 			options,
+			renderOption,
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
 			valueKey = DEFAULT_VALUE_KEY,
@@ -105,6 +106,7 @@ export function MultiSelectComponent({
 						options,
 						optionsCacheRef,
 						placeholder,
+						renderOption,
 						wrapper: wrapperParams,
 					}) as ReactElement;
 				}}

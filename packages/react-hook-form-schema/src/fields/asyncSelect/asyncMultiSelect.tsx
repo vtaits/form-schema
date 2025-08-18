@@ -39,6 +39,7 @@ export function AsyncMultiSelectComponent({
 			loadOptions,
 			labelKey = DEFAULT_LABEL_KEY,
 			placeholder,
+			renderOption,
 			valueKey = DEFAULT_VALUE_KEY,
 			required,
 		},
@@ -112,6 +113,7 @@ export function AsyncMultiSelectComponent({
 						optionsCacheRef,
 						loadOptions: loadOptionsProxy,
 						placeholder,
+						renderOption,
 						wrapper: wrapperParams,
 					}) as ReactElement;
 				}}

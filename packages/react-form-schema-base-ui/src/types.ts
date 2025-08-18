@@ -98,6 +98,7 @@ export type MultiSelectRenderProps<OptionType> = Readonly<
 		onChange: (nextValue: readonly OptionType[]) => void;
 		getOptionLabel: (option: OptionType) => string;
 		getOptionValue: (option: OptionType) => string | number;
+		renderOption?: (option: OptionType, payload: unknown) => ReactNode;
 	}
 >;
 
@@ -112,6 +113,7 @@ export type SelectRenderProps<OptionType> = Readonly<
 		onChange: (nextValue: OptionType | null | undefined) => void;
 		getOptionLabel: (option: OptionType) => string;
 		getOptionValue: (option: OptionType) => string | number;
+		renderOption?: (option: OptionType, payload: unknown) => ReactNode;
 	}
 >;
 
@@ -127,6 +129,7 @@ export type AsyncMultiSelectRenderProps<OptionType, Additional> = Readonly<
 		onChange: (nextValue: readonly OptionType[]) => void;
 		getOptionLabel: (option: OptionType) => string;
 		getOptionValue: (option: OptionType) => string | number;
+		renderOption?: (option: OptionType, payload: unknown) => ReactNode;
 	}
 >;
 
@@ -143,6 +146,7 @@ export type AsyncSelectRenderProps<OptionType, Additional> = Readonly<
 		onChange: (nextValue: OptionType | null | undefined) => void;
 		getOptionLabel: (option: OptionType) => string;
 		getOptionValue: (option: OptionType) => string | number;
+		renderOption?: (option: OptionType, payload: unknown) => ReactNode;
 	}
 >;
 
