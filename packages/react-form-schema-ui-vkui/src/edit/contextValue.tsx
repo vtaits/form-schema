@@ -12,7 +12,9 @@ import {
 	type ChipOption,
 	unstable_ChipsSelect as ChipsSelect,
 	ContentCard,
+	CustomSelectOption,
 	type CustomSelectOptionInterface,
+	type CustomSelectOptionProps,
 	DateInput,
 	File,
 	Footnote,
@@ -35,6 +37,10 @@ import {
 	CustomAsyncPaginate,
 } from "select-async-paginate-vkui-v5";
 
+function defaultRenderChipSelectOption(renderProps: CustomSelectOptionProps) {
+	return <CustomSelectOption {...renderProps} />;
+}
+
 export type IGetContextValusParams = {
 	cardMode?: CardProps["mode"];
 };
@@ -56,6 +62,7 @@ export function getContextValue({
 			onChange,
 			getOptionValue,
 			getOptionLabel,
+			renderOption,
 		}) => (
 			<CustomAsyncPaginate
 				allowClearButton={clearable}
@@ -88,6 +95,15 @@ export function getContextValue({
 					>
 				}
 				searchable
+				renderOption={
+					renderOption
+						? (renderProps) =>
+								renderOption(
+									renderProps.option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: undefined
+				}
 			/>
 		),
 
@@ -101,6 +117,7 @@ export function getContextValue({
 			onChange,
 			getOptionLabel,
 			getOptionValue,
+			renderOption,
 		}) => (
 			<ChipsAsyncPaginate
 				autoFocus={autoFocus}
@@ -117,6 +134,15 @@ export function getContextValue({
 				additional={additional}
 				initialAdditional={initialAdditional}
 				loadOptions={loadOptions as unknown as LoadOptions<ChipOption, unknown>}
+				renderOption={
+					renderOption
+						? (renderProps) =>
+								renderOption(
+									renderProps.option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: defaultRenderChipSelectOption
+				}
 			/>
 		),
 
@@ -515,6 +541,7 @@ export function getContextValue({
 			onChange,
 			getOptionLabel,
 			getOptionValue,
+			renderOption,
 		}: MultiSelectRenderProps<OptionType>) => (
 			<ChipsSelect
 				autoFocus={autoFocus}
@@ -544,6 +571,15 @@ export function getContextValue({
 					label: getOptionLabel(option),
 					value: getOptionValue(option),
 				}))}
+				renderOption={
+					renderOption
+						? (renderProps) =>
+								renderOption(
+									renderProps.option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: defaultRenderChipSelectOption
+				}
 			/>
 		),
 
@@ -593,6 +629,7 @@ export function getContextValue({
 			onChange,
 			getOptionLabel,
 			getOptionValue,
+			renderOption,
 		}) => (
 			<Select
 				allowClearButton={clearable}
@@ -611,6 +648,15 @@ export function getContextValue({
 					label: getOptionLabel(option),
 					value: getOptionValue(option),
 				}))}
+				renderOption={
+					renderOption
+						? (renderProps) =>
+								renderOption(
+									renderProps.option as Parameters<typeof renderOption>[0],
+									renderProps,
+								)
+						: undefined
+				}
 				searchable
 			/>
 		),

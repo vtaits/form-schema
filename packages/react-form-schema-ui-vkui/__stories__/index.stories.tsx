@@ -10,6 +10,7 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<{
 	required: boolean;
+	customOptionRender: boolean;
 	cardMode: CardProps['mode']
 }>;
 
@@ -17,6 +18,7 @@ export const SimpleStory: Story = {
 	name: "Simple",
 	args: {
 		required: false,
+		customOptionRender: false,
 		cardMode: undefined
 	},
 	render: (props) => (

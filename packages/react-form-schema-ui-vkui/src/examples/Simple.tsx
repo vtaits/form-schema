@@ -1,4 +1,10 @@
-import { AppRoot, Button, type CardProps } from "@vkontakte/vkui";
+import {
+	AppRoot,
+	Button,
+	type CardProps,
+	CustomSelectOption,
+	type CustomSelectOptionProps,
+} from "@vkontakte/vkui";
 import type { FieldSchemaBase } from "@vtaits/form-schema";
 import {
 	type DefaultFieldSchema,
@@ -27,6 +33,19 @@ const delay = (ms: number): Promise<void> =>
 			resolve();
 		}, ms);
 	});
+
+function renderOption(option: unknown, renderProps: unknown) {
+	const { label, value } = option as OptionType;
+
+	return (
+		<CustomSelectOption
+			{...(renderProps as CustomSelectOptionProps)}
+			description={`Custom render example for option #${value}`}
+		>
+			{label}
+		</CustomSelectOption>
+	);
+}
 
 export const loadOptions: LoadOptions<unknown, unknown> = async (
 	search,
@@ -59,9 +78,11 @@ export const loadOptions: LoadOptions<unknown, unknown> = async (
 
 export function Simple({
 	cardMode,
+	customOptionRender,
 	required,
 }: {
 	required: boolean;
+	customOptionRender: boolean;
 	cardMode: CardProps["mode"];
 }): ReactElement {
 	const [submittedValues, setSubmittedValues] = useState<Record<
@@ -77,6 +98,7 @@ export function Simple({
 				placeholder: "Async multi select",
 				loadOptions,
 				required,
+				renderOption: customOptionRender ? renderOption : undefined,
 			},
 
 			asyncSelect: {
@@ -85,6 +107,7 @@ export function Simple({
 				placeholder: "Async select",
 				loadOptions,
 				required,
+				renderOption: customOptionRender ? renderOption : undefined,
 			},
 
 			checkbox: {
@@ -215,6 +238,7 @@ export function Simple({
 					},
 				],
 				required,
+				renderOption: customOptionRender ? renderOption : undefined,
 			},
 
 			radioGroup: {
@@ -256,6 +280,7 @@ export function Simple({
 					},
 				],
 				required,
+				renderOption: customOptionRender ? renderOption : undefined,
 			},
 
 			tags: {
@@ -274,7 +299,7 @@ export function Simple({
 				required,
 			},
 		}),
-		[required],
+		[customOptionRender, required],
 	);
 
 	const onSubmit = async (
