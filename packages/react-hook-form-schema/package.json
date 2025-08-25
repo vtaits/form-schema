@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@vtaits/react-hook-form-schema",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Integration of react-hook-form and @vtaits/form-schema",
   "files": [
     "dist"
@@ -115,7 +115,7 @@
     "react-hook-form": "^7.0.0"
   },
   "dependencies": {
-    "@vtaits/form-schema": "^3.0.2",
+    "@vtaits/form-schema": "^3.1.0",
     "@vtaits/react-form-schema-base-ui": "^1.1.0",
     "es-toolkit": "^1.39.10",
     "react-async-hook": "^4.0.0",
