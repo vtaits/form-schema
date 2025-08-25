@@ -6,6 +6,7 @@ import {
 	parse,
 	serialize,
 	setFieldErrors,
+	setValues,
 	validateBeforeSubmit,
 } from "../../core";
 import type { SetSchema } from "./schema";
@@ -220,6 +221,53 @@ export const set: FieldType<SetSchema<any>> = {
 			getFieldType,
 			values,
 			rawValues,
+			parents,
+		});
+	},
+
+	valueSetter: ({
+		name,
+		setValue,
+		fieldSchema,
+		getFieldSchema,
+		getFieldType,
+		value,
+		values,
+		parents,
+	}) => {
+		const { nested, schemas } = fieldSchema;
+
+		const names = Object.keys(schemas) as (keyof BaseValues)[];
+
+		if (nested) {
+			const currentValues = (value || {}) as Record<string, unknown>;
+
+			const nextParents = [
+				...parents,
+				{
+					name,
+					values: currentValues,
+				},
+			];
+
+			setValues({
+				setValue,
+				names,
+				getFieldSchema,
+				getFieldType,
+				values: currentValues,
+				parents: nextParents,
+			});
+
+			return;
+		}
+
+		setValues({
+			setValue,
+			names,
+			getFieldSchema,
+			getFieldType,
+			values,
 			parents,
 		});
 	},

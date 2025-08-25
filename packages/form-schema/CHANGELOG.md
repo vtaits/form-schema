@@ -1,3 +1,9 @@
+## 3.1.0
+
+### New features
+
+- Added `setValues` helper
+
 ## 3.0.0
 
 ### New features

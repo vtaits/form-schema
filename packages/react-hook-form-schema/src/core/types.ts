@@ -205,7 +205,8 @@ export type UseFormSchemaReturn<
 	Omit<UseFormReturn<Values, TContext, Values>, "handleSubmit"> & {
 		handleSubmit: HandleSubmitBySchema<Values, SerializedValues, Errors>;
 		parseValues: (values: RawValues) => Values | Promise<Values>;
-		setValues: (rawValues: RawValues) => Promise<void>;
+		setValues: (values: Values) => Promise<void>;
+		parseAndSetValues: (rawValues: RawValues) => Promise<void>;
 		renderField: RenderField<Values, Payload>;
 	}
 >;

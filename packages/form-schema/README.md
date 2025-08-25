@@ -41,8 +41,9 @@ There are next entities:
 
 Type declaration is an object with next params:
 
-- `serializer` - function for serialize form values before submit. E.g. local value of select can be an object `{ value, label }`, but only `value` should be submitted. Parameters:
+- `serializer` - function for serializing form values before submit. E.g. local value of select can be an object `{ value, label }`, but only `value` should be submitted. Parameters:
 
+  * `value` - current value of the field;
   * `values` - all values of form;
   * `name` - name of current field;
   * `fieldSchema` - full schema of current field;
@@ -58,9 +59,10 @@ Type declaration is an object with next params:
   }
   ```
 
-- `parser` - function for parse initial values of form before initialize. Parameters:
+- `parser` - function for parsing initial values of form before initialize. Parameters:
 
-  * `values` - all values of form;
+  * `value` - current value of the field;
+  * `values` - all values of the form;
   * `name` - name of current field;
   * `fieldSchema` - full schema of current field;
   * `getFieldSchema` - see above;
@@ -75,9 +77,10 @@ Type declaration is an object with next params:
   }
   ```
 
-- `validatorBeforeSubmit` - function for collect validation errors of form before submit. Receives next parameters:
+- `validatorBeforeSubmit` - function for collecting validation errors of form before submit. Receives next parameters:
 
   * `setError` - a function for setting errors;
+  * `value` - current value of the field;
   * `values` - all values of the form;
   * `name` - name of current field;
   * `fieldSchema` - full schema of current field;
@@ -103,7 +106,7 @@ Type declaration is an object with next params:
   }
   ```
 
-- `errorsSetter` - function for map errors of field from backend format to format of field. Receives next parameters:
+- `errorsSetter` - function for mapping errors of field from backend format to format of field. Receives next parameters:
 
   * `setError` - a function for setting errors;
   * `setCurrentError` - a function to set error on the current field;
@@ -113,7 +116,9 @@ Type declaration is an object with next params:
   * `getFieldSchema` - see above;
   * `getFieldType` - see above;
   * `values` - serialized values of form using `serializer` functions of field;
+  * `value` - current serialized value of the field;
   * `rawValues` - all values of form without processing;
+  * `rawValue` - current value without processing of the field;
   * `parents` - stack of parent fields above current field with runtime values.
 
   Should return **OBJECT** of values. By default returns
@@ -123,6 +128,17 @@ Type declaration is an object with next params:
     [name]: errors[name],
   }
   ```
+
+- `valueSetter` - function for setting current runtime values. Receives next parameters:
+
+  * `setValue` - a function to set value of the current field;
+  * `name` - name of current field;
+  * `fieldSchema` - full schema of current field;
+  * `getFieldSchema` - see above;
+  * `getFieldType` - see above;
+  * `value` - current value of the field;
+  * `values` - all values of the form;
+  * `parents` - stack of parent fields above current field with runtime values.
 
 - `createGetFieldSchema` - function for create `getFieldSchema` for nested fields. Can be helpful for arrays of repeating fields etc. Parameters:
 

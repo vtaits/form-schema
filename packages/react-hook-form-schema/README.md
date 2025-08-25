@@ -36,6 +36,8 @@ import { useFormSchema } from '@vtaits/react-hook-form-schema';
 const {
   handleSubmit,
   renderField,
+  setValues,
+  parseAndSetValues,
   ...restResult
 } = useFormSchema({
 		defaultValues,
@@ -74,6 +76,14 @@ A function for rendering field by name according to its schema. Arguments:
 1. `name` - required, string, name of field for render;
 2. `payload` - not required, payload prop of nested field;
 3. `parents` - not required, stack of parent fields for child field.
+
+### setValues
+
+A function for setting runtime values of the form
+
+### parseAndSetValues
+
+A function that parses input and sets runtime values of the form
 
 ## Built-in field types
 

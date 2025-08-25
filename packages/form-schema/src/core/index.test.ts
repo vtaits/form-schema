@@ -4,6 +4,7 @@ import { defaultParser, parse } from "./parse";
 import { defaultSerializer, serialize } from "./serialize";
 import { serializeSingle } from "./serializeSingle";
 import { defaultFieldErrorsSetter, setFieldErrors } from "./setFieldErrors";
+import { setValues } from "./setValues";
 import { validateBeforeSubmit } from "./validateBeforeSubmit";
 
 test("should export needed modules", () => {
@@ -27,6 +28,9 @@ test("should export needed modules", () => {
 
 	expect(formSchamaLib.setFieldErrors).toBe(setFieldErrors);
 	expect(formSchamaLib.setFieldErrors).toBeTruthy();
+
+	expect(formSchamaLib.setValues).toBe(setValues);
+	expect(formSchamaLib.setValues).toBeTruthy();
 
 	expect(formSchamaLib.defaultFieldErrorsSetter).toBe(defaultFieldErrorsSetter);
 	expect(formSchamaLib.defaultFieldErrorsSetter).toBeTruthy();

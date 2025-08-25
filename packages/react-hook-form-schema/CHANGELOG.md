@@ -1,3 +1,9 @@
+## 2.3.0
+
+### New features
+
+- Added `parseAndSetValues` function to result
+
 ## 2.0.0
 
 ### Breaking changes

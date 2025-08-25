@@ -254,6 +254,51 @@ export type ParserParams<
 	dependencies: unknown;
 }>;
 
+export type ValueSetterParams<
+	FieldSchema,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = Readonly<{
+	setValue: (name: string, value: unknown) => void;
+	/**
+	 * current value by field name
+	 */
+	value: unknown;
+	/**
+	 * values
+	 */
+	values: Values;
+	/**
+	 * name of current field
+	 */
+	name: NameType;
+	/**
+	 * schema of current field
+	 */
+	fieldSchema: FieldSchema;
+	/**
+	 * current `getFieldSchema`
+	 */
+	getFieldSchema: GetFieldSchema<FieldSchema>;
+	/**
+	 * global `getFieldType`
+	 */
+	getFieldType: GetFieldType<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>;
+	/**
+	 * stack of parent fields above current field with raw values
+	 */
+	parents: readonly ParentType[];
+	dependencies: unknown;
+}>;
+
 export type Parser<
 	FieldSchema,
 	Values extends BaseValues,
@@ -269,6 +314,22 @@ export type Parser<
 		Errors
 	>,
 ) => Values | Promise<Values>;
+
+export type ValueSetter<
+	FieldSchema,
+	Values extends BaseValues,
+	RawValues extends BaseValues,
+	SerializedValues extends BaseValues,
+	Errors extends Record<string, unknown> = Record<string, unknown>,
+> = (
+	params: ValueSetterParams<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>,
+) => void;
 
 /**
  * Single parser of the field
@@ -465,6 +526,13 @@ export type FieldType<
 		SerializedValues,
 		Errors
 	>;
+	valueSetter?: ValueSetter<
+		FieldSchema,
+		Values,
+		RawValues,
+		SerializedValues,
+		Errors
+	>;
 	parser?: Parser<FieldSchema, Values, RawValues, SerializedValues, Errors>;
 	parserSingle?: ParserSingle<
 		FieldSchema,
@@ -504,6 +572,12 @@ export type FieldSchemaBase = {
 
 	serializer?: Serializer<FieldSchemaBase, BaseValues, BaseValues, BaseValues>;
 	serializerSingle?: SerializerSingle<
+		FieldSchemaBase,
+		BaseValues,
+		BaseValues,
+		BaseValues
+	>;
+	valueSetter?: ValueSetter<
 		FieldSchemaBase,
 		BaseValues,
 		BaseValues,

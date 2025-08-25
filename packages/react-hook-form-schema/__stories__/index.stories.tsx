@@ -8,6 +8,7 @@ import { FormError } from "../src/examples/FormError";
 import { PartialRender } from "../src/examples/PartialRender";
 import { RedefineRender } from "../src/examples/RedefineRender";
 import { SerializerAndParser } from "../src/examples/SerializerAndParser";
+import { SetValues } from "../src/examples/SetValues";
 import { Simple } from "../src/examples/Simple";
 import { ValidateBeforeSubmit } from "../src/examples/ValidateBeforeSubmit";
 
@@ -25,6 +26,14 @@ export const BaseFormStory: Story = {
 		required: false,
 	},
 	render: (props) => <BaseForm {...props} />,
+};
+
+export const SetValuesStory: Story = {
+	name: "Set values",
+	args: {
+		required: false,
+	},
+	render: (props) => <SetValues {...props} />,
 };
 
 export const DynamicStory: StoryObj<{
