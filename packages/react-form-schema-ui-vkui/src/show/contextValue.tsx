@@ -282,6 +282,12 @@ export function getContextValue({
 			);
 		},
 
+		renderSet: ({ children, label, rootProps }) => (
+			<CardGrid size="l" {...rootProps}>
+				<ContentCard mode={cardMode} title={label} description={children} />
+			</CardGrid>
+		),
+
 		renderTextArea: ({ textAreaProps: { defaultValue, value } = {} }) => (
 			<div
 				style={{

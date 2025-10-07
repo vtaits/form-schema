@@ -631,6 +631,14 @@ export function getContextValue(
 			/>
 		),
 
+		renderSet: ({ children, label, rootProps }) => (
+			<Card {...rootProps}>
+				{label && <CardHeader title={label} />}
+
+				<CardContent>{children}</CardContent>
+			</Card>
+		),
+
 		renderTextArea: ({
 			disabled,
 			autoFocus,

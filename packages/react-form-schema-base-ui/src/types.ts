@@ -1,4 +1,4 @@
-import type { HTMLProps, ReactNode, RefObject } from "react";
+import type { HTMLAttributes, HTMLProps, ReactNode, RefObject } from "react";
 import type { LoadOptions } from "select-async-paginate-model";
 
 export type ButtonRenderProps = Readonly<{
@@ -150,6 +150,12 @@ export type AsyncSelectRenderProps<OptionType, Additional> = Readonly<
 	}
 >;
 
+export type SetRenderProps = {
+	label?: ReactNode;
+	rootProps?: Partial<HTMLAttributes<HTMLElement>>;
+	children?: ReactNode;
+};
+
 export type TagsRenderProps = Readonly<
 	BaseFieldRenderProps & {
 		createLabel?: ReactNode;
@@ -194,6 +200,7 @@ export type BaseUIContextValue = Readonly<{
 	renderSelect: <OptionType>(
 		renderProps: SelectRenderProps<OptionType>,
 	) => ReactNode;
+	renderSet: (renderProps: SetRenderProps) => ReactNode;
 	renderTags: (renderProps: TagsRenderProps) => ReactNode;
 	renderTextArea: (renderProps: TextareaRenderProps) => ReactNode;
 	renderWrapper: (renderProps: WrapperRenderProps) => ReactNode;

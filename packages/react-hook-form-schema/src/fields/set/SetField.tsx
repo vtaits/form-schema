@@ -1,3 +1,4 @@
+import { useUI } from "@vtaits/react-form-schema-base-ui";
 import type { ReactElement } from "react";
 import { useMemo } from "react";
 import {
@@ -83,6 +84,9 @@ export function SetField<
 	TContext
 >): ReactElement | null {
 	const {
+		label,
+		isWrapped,
+		rootProps,
 		nested,
 		schemas,
 		renderSet = defaultRender,
@@ -91,6 +95,8 @@ export function SetField<
 	const names = useMemo(() => Object.keys(schemas), [schemas]);
 
 	const { control, getValues } = formResult;
+
+	const { renderSet: uiRenderSet, renderWrapper } = useUI();
 
 	return (
 		<Controller
@@ -129,12 +135,24 @@ export function SetField<
 					} as Payload) as ReactElement;
 				}
 
-				return renderSet(
+				const content = renderSet(
 					renderField,
 					names,
 					(payload as Record<string, unknown>)
 						?.excludePaths as readonly string[][],
 				) as ReactElement;
+
+				if (!isWrapped) {
+					return content;
+				}
+
+				return renderWrapper({
+					children: uiRenderSet({
+						children: content,
+						label,
+						rootProps,
+					}),
+				}) as ReactElement;
 			}}
 		/>
 	);

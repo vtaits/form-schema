@@ -470,6 +470,12 @@ export const contextValue: BaseUIContextValue = {
 		/>
 	),
 
+	renderSet: ({ children, label, rootProps }) => (
+		<Card title={label} {...rootProps}>
+			{children}
+		</Card>
+	),
+
 	renderTags: ({ disabled, autoFocus, options, onChange, value }) => (
 		<Select
 			autoFocus={autoFocus}

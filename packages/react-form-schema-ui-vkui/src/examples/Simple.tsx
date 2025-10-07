@@ -298,6 +298,24 @@ export function Simple({
 				},
 				required,
 			},
+
+			set: {
+				type: "set",
+				label: "Set",
+				nested: true,
+				isWrapped: true,
+				schemas: {
+					firstName: {
+						type: "input",
+						label: "First name",
+					},
+
+					lastName: {
+						type: "input",
+						label: "Last name",
+					},
+				},
+			},
 		}),
 		[customOptionRender, required],
 	);

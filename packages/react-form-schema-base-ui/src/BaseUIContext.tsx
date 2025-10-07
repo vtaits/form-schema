@@ -618,6 +618,14 @@ export const BaseUIContext = createContext<BaseUIContextValue>({
 		/>
 	),
 
+	renderSet: ({ children, label, rootProps }) => (
+		<fieldset {...rootProps}>
+			{label && <legend>{label}</legend>}
+
+			{children}
+		</fieldset>
+	),
+
 	renderTextArea: ({ disabled, autoFocus, name, textAreaProps }) => (
 		<textarea
 			autoFocus={autoFocus}
