@@ -17,6 +17,7 @@ export default defineConfig({
     fields_set: "src/fields/set/index.ts",
     fields_select: "src/fields/select/index.ts",
     fields_tags: "src/fields/tags/index.ts",
+    fields_template: "src/fields/template/index.ts",
     fields_textarea: "src/fields/textarea/index.ts",
     form: "src/form/index.ts",
     utils: "src/utils/index.ts",

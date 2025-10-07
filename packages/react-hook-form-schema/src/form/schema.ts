@@ -14,6 +14,7 @@ import type { RadioGroupSchema } from "../fields/radioGroup";
 import type { MultiSelectSchema, SelectSchema } from "../fields/select";
 import type { SetSchema } from "../fields/set";
 import type { TagsSchema } from "../fields/tags";
+import type { TemplateSchema } from "../fields/template";
 import type { TextAreaSchema } from "../fields/textarea";
 
 export type BuiltInFieldSchema<
@@ -67,6 +68,9 @@ export type BuiltInFieldSchema<
 	  })
 	| (ListSchema<any> & {
 			type: "list";
+	  })
+	| (TemplateSchema & {
+			type: "template";
 	  })
 	| (TextAreaSchema & {
 			type: "textarea";

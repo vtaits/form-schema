@@ -263,6 +263,20 @@ export function BaseForm({ required }: { required: boolean }): ReactElement {
 				required,
 			},
 
+			template: {
+				type: "template",
+				renderTemplate: ({ formResult }) => (
+					<>
+						<h1>Template</h1>
+						<h2>
+							Submitted successfully:{" "}
+							{`${formResult.formState.isSubmitSuccessful}`}
+						</h2>
+						,
+					</>
+				),
+			},
+
 			set: {
 				type: "set",
 				label: "Set",

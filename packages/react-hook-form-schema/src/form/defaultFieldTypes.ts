@@ -11,6 +11,7 @@ import { radioGroup } from "../fields/radioGroup";
 import { multiSelect, select } from "../fields/select";
 import { set } from "../fields/set";
 import { tags } from "../fields/tags";
+import { template } from "../fields/template";
 import { textarea } from "../fields/textarea";
 
 export const defaultFieldTypes = {
@@ -29,5 +30,6 @@ export const defaultFieldTypes = {
 	select,
 	set,
 	tags,
+	template,
 	textarea,
 };

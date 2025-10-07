@@ -71,6 +71,10 @@
       "types": "./dist/fields_tags.d.ts",
       "import": "./dist/fields_tags.js"
     },
+    "./fields/template": {
+      "types": "./dist/fields_template.d.ts",
+      "import": "./dist/fields_template.js"
+    },
     "./fields/textarea": {
       "types": "./dist/fields_textarea.d.ts",
       "import": "./dist/fields_textarea.js"
