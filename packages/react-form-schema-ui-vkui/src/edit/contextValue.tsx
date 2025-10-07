@@ -666,6 +666,12 @@ export function getContextValue({
 			/>
 		),
 
+		renderSet: ({ children, label, rootProps }) => (
+			<CardGrid size="l" {...rootProps}>
+				<ContentCard mode={cardMode} header={label} text={children} />
+			</CardGrid>
+		),
+
 		renderTags: ({ disabled, autoFocus, name, onChange, options, value }) => (
 			<ChipsSelect
 				autoFocus={autoFocus}

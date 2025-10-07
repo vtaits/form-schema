@@ -298,6 +298,38 @@ export function Simple({
 				},
 				required,
 			},
+
+			template: {
+				type: "template",
+				renderTemplate: ({ formResult }) => (
+					<>
+						<h1>Template</h1>
+						<h2>
+							Submitted successfully:{" "}
+							{`${formResult.formState.isSubmitSuccessful}`}
+						</h2>
+						,
+					</>
+				),
+			},
+
+			set: {
+				type: "set",
+				label: "Set",
+				nested: true,
+				isWrapped: true,
+				schemas: {
+					firstName: {
+						type: "input",
+						label: "First name",
+					},
+
+					lastName: {
+						type: "input",
+						label: "Last name",
+					},
+				},
+			},
 		}),
 		[customOptionRender, required],
 	);
