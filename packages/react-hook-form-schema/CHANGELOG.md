@@ -1,3 +1,10 @@
+## 2.4.0  (07 oct 2025)
+
+### New features
+
+- Added built-in field `template`
+- Added params to `set` field: `label`, `isWrapped`, `rootProps`
+
 ## 2.3.0  (25 aug 2025)
 
 ### New features

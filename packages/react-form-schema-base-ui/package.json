@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@vtaits/react-form-schema-base-ui",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Structure of base ui-components to construct complex forms using @vtaits/form-schema",
   "files": [
     "dist"
